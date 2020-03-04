@@ -1,6 +1,16 @@
 <?php 
 	include('config.php');
-	session_start();
+  session_start();
+  if(isset($_SESSION['email'])){
+    if($_SESSION['role']=='student')
+    header("location: student/index.php");
+  else if($_SESSION['role']=='faculty')
+    header("location: faculty/index.php");
+  else if($_SESSION['role']=='faculty_co')
+    header("location: faculty_coordinator/index.php");
+  else if($_SESSION['role']=='inst_coor')
+    header("location: institutional_coordinator/index.php");
+  }
  ?>
  <!DOCTYPE html>
 <html lang="en">

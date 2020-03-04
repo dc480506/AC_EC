@@ -38,11 +38,18 @@
 
   <hr class="sidebar-divider">
 
-  <!-- Nav Item - Utilities Collapse Menu -->
   <li class="nav-item">
-    <a class="nav-link" href="addcourse.php">
-      <i class="fas fa-book"></i>
-      <span>Add Course</span></a>
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages4" aria-expanded="true" aria-controls="collapseUtilities">
+      <i class="fas fa-fw fa-wrench"></i>
+      <span>Add Course</span>
+    </a>
+    <div id="collapsePages4" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="addcourse.php">Audit Course</a>
+        <a class="collapse-item" href="addcourse_idc.php">Interdisciplinary Course</a>
+        <a class="collapse-item" href="addcourse_ec.php">Elective Course</a>
+      </div>
+    </div>
   </li>
 
   <hr class="sidebar-divider">

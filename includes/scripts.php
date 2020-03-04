@@ -39,6 +39,18 @@
       field3.style.display = "none";
     }
   }
+
+  
+  function myFunction1() {
+    var checkBox = document.getElementById("exampleCheck1");
+    var field2 = document.getElementById("exampleFormControlSelect1");
+    if (checkBox.checked == true) {
+      field2.style.display = "block";
+
+    } else {
+      field2.style.display = "none";
+    }
+  }
 </script>
 
 

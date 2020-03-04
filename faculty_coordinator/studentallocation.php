@@ -1,8 +1,8 @@
-<?php include('../includes/header.php');
+<?php 
 include('../config.php');
-session_start();
+include_once('verify.php');
+include('../includes/header.php');
 ?>
-
 <?php include('sidebar.php'); ?>
 
 <?php include('../includes/topbar.php'); ?>
@@ -39,10 +39,10 @@ session_start();
                             <!-- Table -->
 
                             <form class="forms-sample" method="POST" action="">
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect1"><b>First Name</b>
-                                    </label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="fname">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction1()">
+                                    <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -50,10 +50,10 @@ session_start();
                                         <option>5</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect2"><b>Last Name</b>
-                                    </label>
-                                    <select class="form-control" id="exampleFormControlSelect2" name="lname">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -61,10 +61,10 @@ session_start();
                                         <option>5</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect3"><b>Year</b>
-                                    </label>
-                                    <select class="form-control" id="exampleFormControlSelect3" name="year">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -72,10 +72,10 @@ session_start();
                                         <option>5</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect4"><b>Email ID</b>
-                                    </label>
-                                    <select class="form-control" id="exampleFormControlSelect4" name="email">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -83,10 +83,10 @@ session_start();
                                         <option>5</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect5"><b>Semester</b>
-                                    </label>
-                                    <select class="form-control" id="exampleFormControlSelect5" name="semester">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -94,20 +94,10 @@ session_start();
                                         <option>5</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect6"><b>Department</b>
-                                    </label>
-                                    <select class="form-control" id="exampleFormControlSelect6" name="department">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
+
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                    <button type="submit" class="btn btn-outline-primary" name="add">Add</button>
+                                    <button type="submit" class="btn btn-outline-primary" name="filter">Filter</button>
                                 </div>
                             </form>
                         </div>

@@ -1,8 +1,8 @@
-<?php include('../includes/header.php');
+<?php 
 include('../config.php');
-session_start();
- ?>
-
+include_once('verify.php');
+include('../includes/header.php');
+?>
 <?php include('sidebar.php'); ?>
 
 <?php include('../includes/topbar.php'); ?>
@@ -18,12 +18,95 @@ session_start();
                     <h4 class="font-weight-bold text-primary mb-0">Course Records</h4>
                 </div>
                 <div class="col text-right">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                </div>
+                <div class="col text-right">
                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
                         <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course
                     </button>
                 </div>
-            </div>
 
+            </div>
+            <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle2">Filter</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <!--filter form start-->
+                            <form class="forms-sample" method="POST" action="">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction1()">
+                                    <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
+                                    <select class="form-control"  style="display: none" id="exampleFormControlSelect2" name="cname">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
+                                    <select class="form-control"  style="display: none" id="exampleFormControlSelect3" name="cname">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="cname">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
+                                    <select class="form-control"  style="display: none" id="exampleFormControlSelect5" name="cname">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                    <button type="submit" class="btn btn-outline-primary" name="filter">Filter</button>
+                                </div>
+                            </form>
+                            <!-- fiter form end-->
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -37,7 +120,7 @@ session_start();
                         <div class="modal-body">
                             <!-- Table -->
 
-                            <form class="forms-sample" method="POST" action="">
+                            <form class="forms-sample" method="POST" action="queries.php">
                                 <div class="form-group">
                                     <label for="exampleInputName1"><b>Name</b></label>
                                     <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Name">
@@ -84,7 +167,7 @@ session_start();
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                    <button type="button" class="btn btn-primary" name="add">Add</button>
+                                    <button type="submit" class="btn btn-primary" name="addcourse">Add</button>
                                 </div>
                             </form>
                         </div>

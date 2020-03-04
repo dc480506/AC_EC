@@ -5,6 +5,11 @@ $client = new Google_Client(['client_id' => $CLIENT_ID]);  // Specify the CLIENT
 $id_token=$_POST['idtoken'];
 $payload = $client->verifyIdToken($id_token);
 if ($payload) {
+  $search="@somaiya.edu";
+  if(!preg_match("/{$search}/i", $payload['email'])){
+    header("Location: index.php?loginerror");
+    exit();
+   }
   session_start();
   $_SESSION['email']=$payload['email'];
   $sql="SELECT * FROM login_role WHERE email_id= '{$_SESSION['email']}' ";
@@ -14,6 +19,7 @@ if ($payload) {
       if($count==1)
       {
         $_SESSION['username']=$row['username'];
+        $_SESSION['role']=$row['role'];
         if($row['role']=='student')
           header("location: student/index.php");
         else if($row['role']=='faculty')
@@ -32,4 +38,3 @@ if ($payload) {
   // Invalid ID token
   header("index.php");
 }
-?>
