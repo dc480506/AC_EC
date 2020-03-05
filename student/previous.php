@@ -1,7 +1,6 @@
-<?php 
+<?php include('../includes/header.php');
 include('../config.php');
 include_once('verify.php');
-include('../includes/header.php');
 ?>
 
 <?php include('sidebar.php'); ?>
@@ -49,25 +48,34 @@ include('../includes/header.php');
                                 </tr>
                             </tfoot>
                             <tbody>
+                            <?php 
+                                $sql="SELECT sal.cid,sal.sem,sal.year,acl.cname,dep.dept_name,f.fname,f.mname,f.lname,sal.complete_status,sal.student_attendence FROM student_audit_log AS sal,audit_course_log AS acl,department AS dep,faculty AS f,faculty_audit_log AS fal WHERE dep.dept_id=acl.dept_id AND sal.sem=acl.sem AND sal.year=acl.year AND sal.cid=acl.cid AND sal.email_id='{$_SESSION['email']}' AND f.email_id=fal.email_id AND fal.cid=acl.cid AND fal.sem=acl.sem AND fal.year=acl.year";
+                                $result =mysqli_query($conn,$sql);
+                                $count=0;
+                                 while($row = mysqli_fetch_array($result)) 
+                                 {
+                            ?>
                                 <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>61</td>
-                                    <td>2011/04/25</td>
+                                    <td><?php echo $row['cname'];?></td>
+                                    <td><?php echo $row['cid'];?></td>
+                                    <td><?php echo $row['year'];?></td>
+                                    <td><?php echo $row['sem'];?></td>
+                                    <td><?php echo $row['dept_name'];?></td>
                                     <td>
 
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter">
+                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter<?php echo $count;?>">
                                             <i class="fas fa-tools"></i>
                                         </button>
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    
+                                                    
+                                        <div class="modal fade" id="exampleModalCenter<?php echo $count;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalCenterTitle">About</h5>
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle<?php echo $count;?>">About</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -78,14 +86,20 @@ include('../includes/header.php');
                                                                 <div class="form-group">
                                                                     <label for="exampleInputUsername1"><b>Faculty Name</b></label>
                                                                     <br>
-                                                                    <span>24-02-2020</span>
+                                                                    <span><?php
+                                                                     echo" {$row['fname']} {$row['mname']} {$row['lname']}";?></span>
                                                                 </div>
                                                             </div>
                                                             <div class=" col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="exampleInputUsername1"><b>Course Status</b></label>
                                                                     <br>
-                                                                    <span>Operating System</span>
+                                                                    <span><?php 
+                                                                    if($row['complete_status']==1)
+                                                                        echo "Completed";
+                                                                    else
+                                                                        echo "Incomplete";
+                                                                    ?></span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -94,14 +108,14 @@ include('../includes/header.php');
                                                                 <div class="form-group">
                                                                     <label for="exampleInputUsername1"><b>Syllabus Link</b></label>
                                                                     <br>
-                                                                    <span>24-02-2020</span>
+                                                                    <span>aayega jaldi ayega</span>
                                                                 </div>
                                                             </div>
                                                             <div class=" col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="exampleInputUsername1"><b>Attendance</b></label>
                                                                     <br>
-                                                                    <span>Operating System</span>
+                                                                    <span><?php echo $row['student_attendence'];?></span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -110,7 +124,9 @@ include('../includes/header.php');
                                                                 <div class="form-group">
                                                                     <label for="exampleInputUsername1"><b>Marks</b></label>
                                                                     <br>
-                                                                    <span>24-02-2020</span>
+                                                                    <span>woh bhi milenge tension mat le!!!<?php echo $count;
+                                                                    $count++;
+                                                                    ?></span>
                                                                 </div>
                                                             </div>
 
@@ -124,6 +140,7 @@ include('../includes/header.php');
                                         </div>
                                     </td>
                                 </tr>
+                            <?php } ?>
                             </tbody>
                         </table>
                     </div>
