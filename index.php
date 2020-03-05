@@ -124,7 +124,7 @@
                      	<div class="col-sm-6">
               			  <div class="content-wrapper label-input">
 		                    <h2 class="page-title mb-4">Sign in to Explore</h2>
-		                    <form method="post">
+		                    <form method="post" action="loginusername.php">
 		                         <div class="phone-wrapper field-wrapper">
 		                            <input type="text" name="uname" placeholder="Username">
 		                        </div>
@@ -182,46 +182,6 @@
 
 		</script>
 		</section>
-
-<?php
-//echo "its not in";
-if(isset($_POST['submit']))
-{
-	  $login_user = mysqli_real_escape_string($conn,$_POST['uname']);
-      $Password = mysqli_real_escape_string($conn,$_POST['password']);
-      // echo "its in 'thats what she said'";
-      $sql="SELECT * FROM login_role where username='$login_user' AND password='$Password'";
-      $result = mysqli_query($conn,$sql);
-      $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-      $count = mysqli_num_rows($result);
-      
-      if($count==1)
-      {
-      	$_SESSION['username']=$login_user;
-        $_SESSION['email']=$row['email'];
-      	if($row['role']=='student')
-      		header("location: student/index.php");
-      	else if($row['role']=='faculty')
-      		header("location: faculty/index.php");
-      	else if($row['role']=='faculty co')
-      		header("location: faculty_coordinator/index.php");
-      	else if($row['role']=='inst coor')
-      		header("location: institutional_coordinator/index.php");
-      	else 
-      		echo"<script>
-      				alert('tera role banaya nahi hai- enjoy!!!!!!!!!!!');
-      				windows.href.location='index.php';
-      			</script>";
-      }
-      else {
-      	echo"<script>
-      			alert('username or password incorrect');
-      			windows.href.location(index.php);
-      		</script>";
-      }
-}
-
-?>
 
       <!-- End of Main Content -->
 <!-- Footer -->
