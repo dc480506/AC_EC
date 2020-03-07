@@ -41,9 +41,49 @@
   }
 
   
-  function myFunction1() {
+  function disp1() {
     var checkBox = document.getElementById("exampleCheck1");
     var field2 = document.getElementById("exampleFormControlSelect1");
+    if (checkBox.checked == true) {
+      field2.style.display = "block";
+
+    } else {
+      field2.style.display = "none";
+    }
+  }
+  function disp2() {
+    var checkBox = document.getElementById("exampleCheck2");
+    var field2 = document.getElementById("exampleFormControlSelect2");
+    if (checkBox.checked == true) {
+      field2.style.display = "block";
+
+    } else {
+      field2.style.display = "none";
+    }
+  }
+  function disp3() {
+    var checkBox = document.getElementById("exampleCheck3");
+    var field2 = document.getElementById("exampleFormControlSelect3");
+    if (checkBox.checked == true) {
+      field2.style.display = "block";
+
+    } else {
+      field2.style.display = "none";
+    }
+  }
+  function disp4() {
+    var checkBox = document.getElementById("exampleCheck4");
+    var field2 = document.getElementById("exampleFormControlSelect4");
+    if (checkBox.checked == true) {
+      field2.style.display = "block";
+
+    } else {
+      field2.style.display = "none";
+    }
+  }
+  function disp5(){
+    var checkBox = document.getElementById("exampleCheck5");
+    var field2 = document.getElementById("exampleFormControlSelect5");
     if (checkBox.checked == true) {
       field2.style.display = "block";
 

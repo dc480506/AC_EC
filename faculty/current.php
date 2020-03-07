@@ -36,7 +36,7 @@ include('../includes/header.php');
               </div>
               <form class="forms-sample" method="POST" action="">
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction1()">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()" name="cname_cbox">
                   <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
                   <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
                     <option>1</option>
@@ -47,9 +47,9 @@ include('../includes/header.php');
                   </select>
                 </div>
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()" name="cid_box">
                   <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
-                  <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cname">
+                  <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cid">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -58,9 +58,9 @@ include('../includes/header.php');
                   </select>
                 </div>
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()" name="sem_cbox">
                   <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
-                  <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="cname">
+                  <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="sem">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -69,9 +69,9 @@ include('../includes/header.php');
                   </select>
                 </div>
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
-                  <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
-                  <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="cname">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()" name="dos_cbox">
+                  <label class="form-check-label" for="exampleFormControlSelect4">Department of Study</label>
+                  <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="dept">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -79,8 +79,8 @@ include('../includes/header.php');
                     <option>5</option>
                   </select>
                 </div>
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                <!-- <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
                   <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
                   <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
                     <option>1</option>
@@ -89,7 +89,7 @@ include('../includes/header.php');
                     <option>4</option>
                     <option>5</option>
                   </select>
-                </div>
+                </div> -->
 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
