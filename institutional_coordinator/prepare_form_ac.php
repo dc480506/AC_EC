@@ -21,35 +21,35 @@ include('../includes/header.php');
                     <form>
                         <div class="form-group">
                             <label for="exampleInputPreference"><b>No of Preferences</b></label>
-                            <input type="number" class="form-control" id="exampleInputPreference" name="no_of_preferences">
+                            <input type="number" required class="form-control" id="exampleInputPreference" name="no_of_preferences">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputSem"><b>Semester</b></label>
-                            <input type="number" class="form-control" id="exampleInputSem" name="semester">
+                            <input type="number" required class="form-control" id="exampleInputSem" name="semester">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputYear"><b>Year</b></label>
-                            <input type="year" class="form-control" id="exampleInputYear" name="year">
+                            <input type="year" required class="form-control" id="exampleInputYear" name="year">
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>Start Date</b></label>
-                                    <input type="date" class="form-control" id="exampleInputStartDate" name="start_date">
+                                    <input type="date" required class="form-control" id="exampleInputStartDate" name="start_date">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>Start Time</b></label>
-                                    <input type="time" class="form-control" id="exampleInputStartDate" name="start_time">
+                                    <input type="time" required class="form-control" id="exampleInputStartDate" name="start_time">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>End Date</b></label>
-                                    <input type="date" class="form-control" id="exampleInputStartDate" name="end_date">
+                                    <input type="date" required class="form-control" id="exampleInputStartDate" name="end_date">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>End Time</b></label>
-                                    <input type="time" class="form-control" id="exampleInputStartDate" name="end_time">
+                                    <input type="time" required class="form-control" id="exampleInputStartDate" name="end_time">
                                 </div>
                             </div>
                         </div>
