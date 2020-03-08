@@ -39,44 +39,106 @@ include('../includes/header.php');
                   <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()" name="cname_cbox">
                   <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
                   <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    <?php
+                        $email = $_SESSION['email'];
+                        $department = 'department';
+                        $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
+                        if($result = mysqli_query($conn, $query)){
+                          $rowcount = mysqli_num_rows($result);
+                          while($row = mysqli_fetch_array($result)){
+                              $cid = $row['cid'];
+                              $query1 = "SELECT cname FROM audit_course WHERE cid = '$cid'";
+                              $result1 = mysqli_query($conn, $query1);
+                              $row1= mysqli_fetch_assoc($result1);
+                              $cname = $row1['cname'];
+                              echo '
+                                      <option>'.$cname.'<option>
+                                    ';
+                          }
+                        }
+                    ?>
                   </select>
                 </div>
                 <div class="form-check">
                   <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()" name="cid_box">
                   <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
                   <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cid">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    <?php
+                        $email = $_SESSION['email'];
+                        $department = 'department';
+                        $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
+                        if($result = mysqli_query($conn, $query)){
+                          $rowcount = mysqli_num_rows($result);
+                          while($row = mysqli_fetch_array($result)){
+                              $cid = $row['cid'];
+                              echo '
+                                      <option>'.$cid.'<option>
+                                    ';
+                          }
+                        }
+                    ?>
                   </select>
                 </div>
                 <div class="form-check">
                   <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()" name="sem_cbox">
                   <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
                   <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="sem">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    <?php
+                        $email = $_SESSION['email'];
+                        $department = 'department';
+                        $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
+                        if($result = mysqli_query($conn, $query)){
+                          $rowcount = mysqli_num_rows($result);
+                          while($row = mysqli_fetch_array($result)){
+                              $cid = $row['cid'];
+                              $query1 = "SELECT sem FROM audit_course WHERE cid = '$cid'";
+                              $result1 = mysqli_query($conn, $query1);
+                              $row1= mysqli_fetch_assoc($result1);
+                              $sem = $row1['sem'];
+                              echo '
+                                      <option>'.$sem.'<option>
+                                    ';
+                          }
+                        }
+                    ?>
                   </select>
                 </div>
                 <div class="form-check">
                   <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()" name="dos_cbox">
                   <label class="form-check-label" for="exampleFormControlSelect4">Department of Study</label>
                   <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="dept">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    <?php
+                      $dept_names = array();
+                      $email = $_SESSION['email'];
+                      $department = 'department';
+                      $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
+                      if($result = mysqli_query($conn, $query)){
+                        $rowcount = mysqli_num_rows($result);
+                        while($row = mysqli_fetch_array($result)){
+                            $cid = $row['cid'];
+                            
+                            $query1 = "SELECT dept_id FROM audit_course WHERE cid = '$cid'";
+                            $result1 = mysqli_query($conn, $query1);
+                            $row1= mysqli_fetch_assoc($result1);
+                            $dept_id = $row1['dept_id'];
+                            
+                            $query2 = "SELECT DISTINCT dept_name FROM department WHERE dept_id = '$dept_id'";
+                            $result2 = mysqli_query($conn, $query2);
+                            $row2= mysqli_fetch_assoc($result2);
+                            $dept_name = $row2['dept_name'];
+                            if(!in_array($dept_name, $dept_names)){
+                              array_push($dept_names, $dept_name);
+                            }
+                        }
+                        $count = 0; 
+
+                        while($count < count($dept_names)) {
+                            echo '<option>'.$dept_names[$count].'<option>';
+                            $count++;
+                        } 
+
+                      }
+                    ?>
                   </select>
                 </div>
                 <!-- <div class="form-check">
@@ -133,18 +195,58 @@ include('../includes/header.php');
                 </tr>
               </tfoot>
               <tbody>
-                <tr>
-                  <td>Tiger </td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>2011/04/25</td>
-                  <td>2011/04/25</td>
-                  <td>2011/04/25</td>
-                  <td>61</td>
-                  <td>61</td>
-                </tr>
+                <?php
+                  $email = $_SESSION['email'];
+                  $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
+                  if($result = mysqli_query($conn, $query)){
+                    
+                      while($row = mysqli_fetch_array($result)){
+                          $cid = $row['cid'];
+
+                          $query1 = "SELECT cname FROM audit_course WHERE cid = '$cid'";
+                          $result1 = mysqli_query($conn, $query1);
+                          $row1= mysqli_fetch_assoc($result1);
+                          $cname = $row1['cname'];
+
+                          $query2 = "SELECT email_id, sem, year, student_attendance FROM student_audit WHERE cid = '$cid'";
+                          if($result2 = mysqli_query($conn, $query2)){
+
+                          while($row2 = mysqli_fetch_array($result2)){
+                            $email_id = $row2['email_id'];
+                            $sem = $row2['sem'];
+                            $year = $row2['year'];
+                            $attendance = $row2['student_attendance'];
+                            $query3 = "SELECT rollno, fname, mname, lname, dept_id FROM student WHERE email_id = '$email_id'";
+                            $result3 = mysqli_query($conn, $query3);
+                            $row3 = mysqli_fetch_assoc($result3);
+                            $rollno = $row3['rollno'];
+                            $fname = $row3['fname'];
+                            $mname = $row3['mname'];
+                            $lname = $row3['lname'];
+
+                            $query4 = "SELECT dept_name FROM department WHERE dept_id = '$dept_id'";
+                            $result4 = mysqli_query($conn, $query4);
+                            $row4 = mysqli_fetch_assoc($result4);
+                            $dept_name = $row4['dept_name'];
+
+                            echo '
+                                  <tr>
+                                    <td>' .$fname.'</td>
+                                    <td>' .$mname.'</td>
+                                    <td>' .$lname.'</td>
+                                    <td>' .$year.'</td>
+                                    <td>' .$email_id.'</td>
+                                    <td>' .$sem.'</td>
+                                    <td>' .$dept_name.'</td>
+                                    <td>' .$cname.'</td>
+                                    <td>' .$attendance.'</td>
+                                    <td>' .$rollno.'</td>
+                                  </tr>
+                                  ';
+                          }}
+                    }
+                  }
+                ?>
               </tbody>
             </table>
           </div>

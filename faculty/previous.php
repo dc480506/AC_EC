@@ -42,14 +42,41 @@ include('../includes/header.php');
                 </tr>
               </tfoot>
               <tbody>
-                <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>2011/04/25</td>
-                </tr>
+                <?php
+                    $email = $_SESSION['email'];
+                    $query = "SELECT cid FROM faculty_audit_log WHERE email_id = '$email'";
+                    if($result = mysqli_query($conn, $query)){
+                      $rowcount = mysqli_num_rows($result);
+                      while($row = mysqli_fetch_array($result)){
+                          $cid = $row['cid'];
+
+                          $query1 = "SELECT cname, sem, year, no_of_allocated, dept_id FROM audit_course_log WHERE cid = '$cid'";
+                          $result1 = mysqli_query($conn, $query1);
+                          $row1= mysqli_fetch_assoc($result1);
+                          $cname = $row1['cname'];
+                          $sem = $row1['sem'];
+                          $year = $row1['year'];
+                          $dept_id = $row1['dept_id'];
+                          $no_of_allocated = $row1['no_of_allocated'];
+
+                          $query2 = "SELECT dept_name FROM department WHERE dept_id = '$dept_id'";
+                          $result2 = mysqli_query($conn, $query2);
+                          $row2= mysqli_fetch_assoc($result2);
+                          $dept_name = $row2['dept_name'];
+                          
+                          echo '
+                                <tr>
+                                  <td>' .$cname.'</td>
+                                  <td>' .$cid.'</td>
+                                  <td>' .$year.'</td>
+                                  <td>' .$sem.'</td>
+                                  <td>' .$dept_name.'</td>
+                                  <td>' .$no_of_allocated.'</td>
+                                </tr>
+                                ';                      
+                        }
+                      }
+                  ?>
               </tbody>
             </table>
           </div>
