@@ -1,7 +1,6 @@
-<?php
+<?php include('../includes/header.php');
 include('../config.php');
-include_once('verify.php');
-include('../includes/header.php');
+session_start();
 ?>
 
 <?php include('sidebar.php'); ?>
