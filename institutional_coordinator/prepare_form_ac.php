@@ -94,7 +94,7 @@ include('../includes/header.php');
 
                         <?php
                         include_once('../config.php');
-                        $sql = "SELECT sem,year,start_date,start_time,end_date,end_time,no_of_preferences FROM audit_form";
+                        $sql = "SELECT sem,year,start_timestamp,end_timestamp,no_of_preferences FROM audit_form";
 
                         $result = mysqli_query($conn, $sql);
                         if (mysqli_num_rows($result) > 0) {
@@ -102,14 +102,22 @@ include('../includes/header.php');
 
                             while ($row = mysqli_fetch_assoc($result)) {
                                 $status = "Not opened yet";
+                                $start_timestamp=$row['start_timestamp'];
+                                $end_timestamp=$row['end_timestamp'];
+                                $sArr=explode(" ",$start_timestamp);
+                                $start_date=$sArr[0];
+                                $start_time=$sArr[1];
+                                $eArr=explode(" ",$end_timestamp);
+                                $end_date=$eArr[0];
+                                $end_time=$eArr[1];
                                 echo '
                             <tr>
                             <td>' . $row['sem'] . '</td>
                             <td>' . $row['year'] . '</td>
-                            <td>' . date("d-M-Y", strtotime($row['start_date'])) . '</td>
-                            <td>' . $row['start_time'] . '</td>
-                            <td>' . date("d-M-Y", strtotime($row['end_date'])) . '</td>
-                            <td>' . $row['end_time'] . '</td>
+                            <td>' . date("d-M-Y", strtotime($start_date)) . '</td>
+                            <td>' . $start_time . '</td>
+                            <td>' . date("d-M-Y", strtotime($end_date)) . '</td>
+                            <td>' . $end_time . '</td>
                             <td>' . $row['no_of_preferences'] . '</td>
                             <td>' . $status . '</td>
                             <td>
@@ -174,21 +182,21 @@ include('../includes/header.php');
                                                                 <div class="col-6">
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>Start Date</b></label>
-                                                                        <input type="date" required class="form-control" name="start_date" value="' . $row['start_date'] . '">
+                                                                        <input type="date" required class="form-control" name="start_date" value="' . $start_date . '">
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>Start Time</b></label>
-                                                                        <input type="time" required class="form-control"  name="start_time" value="' . $row['start_time'] . '">
+                                                                        <input type="time" required class="form-control"  name="start_time" value="' . $start_time . '">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-6">
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>End Date</b></label>
-                                                                        <input type="date" required class="form-control" name="end_date" value="' . $row['end_date'] . '">
+                                                                        <input type="date" required class="form-control" name="end_date" value="' . $end_date . '">
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>End Time</b></label>
-                                                                        <input type="time" required class="form-control"  name="end_time" value="' . $row['end_time'] . '">
+                                                                        <input type="time" required class="form-control"  name="end_time" value="' . $end_time . '">
                                                                     </div>
                                                                 </div>
                                                             </div>
