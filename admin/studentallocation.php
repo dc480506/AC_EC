@@ -1,8 +1,8 @@
-<?php
+<?php include('../includes/header.php');
 include('../config.php');
-include_once('verify.php');
-include('../includes/header.php');
-?>
+session_start();
+ ?>
+
 <?php include('sidebar.php'); ?>
 
 <?php include('../includes/topbar.php'); ?>
@@ -17,7 +17,7 @@ include('../includes/header.php');
                 <div class="col">
                     <h4 class="font-weight-bold text-primary mb-0">Student Records</h4>
                     <div class="col text-right">
-                        <button type="button" class="btn btn-primary" name="filter" data-toggle="modal" data-target="#exampleModalCenter2">
+                        <button type="button" class="btn btn-primary" name="filter" data-toggle="modal" data-target="#exampleModalCenter1">
                             <i class="fas fa-filter"></i>
                         </button>
                     </div>
@@ -25,84 +25,95 @@ include('../includes/header.php');
                 </div>
             </div>
 
-            <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+            <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle1">Filter</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <div class="modal-body">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle2">Filter</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <!--filter form start-->
-                            <form class="forms-sample" method="POST" action="">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()" name="cname_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()" name="cid_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cid">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()" name="sem_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="sem">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()" name="year_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="year">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()" name="dept_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="dept">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
+                            <!-- Table -->
 
+                            <form class="forms-sample" method="POST" action="">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1"><b>First Name</b>
+                                    </label>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="fname">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect2"><b>Last Name</b>
+                                    </label>
+                                    <select class="form-control" id="exampleFormControlSelect2" name="lname">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect3"><b>Year</b>
+                                    </label>
+                                    <select class="form-control" id="exampleFormControlSelect3" name="year">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect4"><b>Email ID</b>
+                                    </label>
+                                    <select class="form-control" id="exampleFormControlSelect4" name="email">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect5"><b>Semester</b>
+                                    </label>
+                                    <select class="form-control" id="exampleFormControlSelect5" name="semester">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect6"><b>Department</b>
+                                    </label>
+                                    <select class="form-control" id="exampleFormControlSelect6" name="department">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                    <button type="submit" class="btn btn-outline-primary" name="filter">Filter</button>
+                                    <button type="submit" class="btn btn-outline-primary" name="add">Add</button>
                                 </div>
                             </form>
-                            <!-- fiter form end-->
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="card shadow mb-4">
 
                 <div class="card-body">
@@ -133,8 +144,6 @@ include('../includes/header.php');
                                 </tr>
                             </tfoot>
                             <tbody>
-
-
                                 <tr>
                                     <td>Tiger Nixon</td>
                                     <td>System Architect</td>

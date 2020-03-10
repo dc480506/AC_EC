@@ -23,22 +23,6 @@
 <!-- Page level custom scripts -->
 <script src="../vendor/js/demo/datatables-demo.js"></script>
 <script>
-  function myFunction() {
-    var checkBox = document.getElementById("exampleCheck1");
-    var field1 = document.getElementById("previous_field1");
-    var field2 = document.getElementById("previous_field2");
-    var field3 = document.getElementById("previous_field3");
-    if (checkBox.checked == true) {
-      field1.style.display = "block";
-      field2.style.display = "block";
-      field3.style.display = "block";
-
-    } else {
-      field1.style.display = "none";
-      field2.style.display = "none";
-      field3.style.display = "none";
-    }
-  }
 
   
   function disp1() {

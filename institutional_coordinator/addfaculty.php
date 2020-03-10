@@ -90,7 +90,7 @@ include('../includes/header.php');
 
                         <form class="forms-sample" method="POST" action="">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction1()">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()">
                                 <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
                                 <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
                                     <option>1</option>
@@ -101,7 +101,7 @@ include('../includes/header.php');
                                 </select>
                             </div>
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()">
                                 <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
                                 <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cname">
                                     <option>1</option>
@@ -112,7 +112,7 @@ include('../includes/header.php');
                                 </select>
                             </div>
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()">
                                 <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
                                 <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="cname">
                                     <option>1</option>
@@ -123,7 +123,7 @@ include('../includes/header.php');
                                 </select>
                             </div>
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()">
                                 <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
                                 <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="cname">
                                     <option>1</option>
@@ -134,7 +134,7 @@ include('../includes/header.php');
                                 </select>
                             </div>
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
                                 <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
                                 <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
                                     <option>1</option>
@@ -187,16 +187,16 @@ include('../includes/header.php');
                             <td>
 
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter1">
+                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter2">
                                     <i class="fas fa-tools"></i>
                                 </button>
 
                                 <!-- Modal -->
-                                <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                                <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalCenterTitle1">Action</h5>
+                                                <h5 class="modal-title" id="exampleModalCenterTitle2">Action</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
