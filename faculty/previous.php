@@ -44,25 +44,19 @@ include('../includes/header.php');
               <tbody>
                 <?php
                     $email = $_SESSION['email'];
-                    $query = "SELECT cid FROM faculty_audit_log WHERE email_id = '$email'";
+
+                    $query = "SELECT cid, cname, sem, year, no_of_allocated, dept_name FROM faculty_audit_log NATURAL JOIN audit_course_log NATURAL JOIN department WHERE email_id = '$email'";
+
                     if($result = mysqli_query($conn, $query)){
                       $rowcount = mysqli_num_rows($result);
                       while($row = mysqli_fetch_array($result)){
+
                           $cid = $row['cid'];
-
-                          $query1 = "SELECT cname, sem, year, no_of_allocated, dept_id FROM audit_course_log WHERE cid = '$cid'";
-                          $result1 = mysqli_query($conn, $query1);
-                          $row1= mysqli_fetch_assoc($result1);
-                          $cname = $row1['cname'];
-                          $sem = $row1['sem'];
-                          $year = $row1['year'];
-                          $dept_id = $row1['dept_id'];
-                          $no_of_allocated = $row1['no_of_allocated'];
-
-                          $query2 = "SELECT dept_name FROM department WHERE dept_id = '$dept_id'";
-                          $result2 = mysqli_query($conn, $query2);
-                          $row2= mysqli_fetch_assoc($result2);
-                          $dept_name = $row2['dept_name'];
+                          $cname = $row['cname'];
+                          $sem = $row['sem'];
+                          $year = $row['year'];
+                          $no_of_allocated = $row['no_of_allocated'];
+                          $dept_name = $row['dept_name'];
                           
                           echo '
                                 <tr>

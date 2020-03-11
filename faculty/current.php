@@ -42,15 +42,11 @@ include('../includes/header.php');
                     <?php
                         $email = $_SESSION['email'];
                         $department = 'department';
-                        $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
+                        $query = "SELECT cname FROM faculty_audit NATURAL JOIN audit_course WHERE email_id = '$email'";
                         if($result = mysqli_query($conn, $query)){
                           $rowcount = mysqli_num_rows($result);
                           while($row = mysqli_fetch_array($result)){
-                              $cid = $row['cid'];
-                              $query1 = "SELECT cname FROM audit_course WHERE cid = '$cid'";
-                              $result1 = mysqli_query($conn, $query1);
-                              $row1= mysqli_fetch_assoc($result1);
-                              $cname = $row1['cname'];
+                              $cname = $row['cname'];
                               echo '
                                       <option>'.$cname.'<option>
                                     ';
@@ -86,15 +82,11 @@ include('../includes/header.php');
                     <?php
                         $email = $_SESSION['email'];
                         $department = 'department';
-                        $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
+                        $query = "SELECT sem FROM faculty_audit NATURAL JOIN audit_course WHERE email_id = '$email'";
                         if($result = mysqli_query($conn, $query)){
                           $rowcount = mysqli_num_rows($result);
                           while($row = mysqli_fetch_array($result)){
-                              $cid = $row['cid'];
-                              $query1 = "SELECT sem FROM audit_course WHERE cid = '$cid'";
-                              $result1 = mysqli_query($conn, $query1);
-                              $row1= mysqli_fetch_assoc($result1);
-                              $sem = $row1['sem'];
+                              $sem = $row['sem'];
                               echo '
                                       <option>'.$sem.'<option>
                                     ';
@@ -111,31 +103,13 @@ include('../includes/header.php');
                       $dept_names = array();
                       $email = $_SESSION['email'];
                       $department = 'department';
-                      $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
+                      $query = "SELECT distinct(dept_name) FROM faculty_audit NATURAL JOIN audit_course NATURAL JOIN department WHERE email_id = '$email'";
                       if($result = mysqli_query($conn, $query)){
                         $rowcount = mysqli_num_rows($result);
                         while($row = mysqli_fetch_array($result)){
-                            $cid = $row['cid'];
-                            
-                            $query1 = "SELECT dept_id FROM audit_course WHERE cid = '$cid'";
-                            $result1 = mysqli_query($conn, $query1);
-                            $row1= mysqli_fetch_assoc($result1);
-                            $dept_id = $row1['dept_id'];
-                            
-                            $query2 = "SELECT DISTINCT dept_name FROM department WHERE dept_id = '$dept_id'";
-                            $result2 = mysqli_query($conn, $query2);
-                            $row2= mysqli_fetch_assoc($result2);
-                            $dept_name = $row2['dept_name'];
-                            if(!in_array($dept_name, $dept_names)){
-                              array_push($dept_names, $dept_name);
-                            }
+                            $dept_name = $row['dept_name'];
+                            echo '<option>'.$dept_name.'<option>';
                         }
-                        $count = 0; 
-
-                        while($count < count($dept_names)) {
-                            echo '<option>'.$dept_names[$count].'<option>';
-                            $count++;
-                        } 
 
                       }
                     ?>
@@ -203,10 +177,11 @@ include('../includes/header.php');
                       while($row = mysqli_fetch_array($result)){
                           $cid = $row['cid'];
 
-                          $query1 = "SELECT cname FROM audit_course WHERE cid = '$cid'";
+                          $query1 = "SELECT cname, dept_id FROM audit_course WHERE cid = '$cid'";
                           $result1 = mysqli_query($conn, $query1);
                           $row1= mysqli_fetch_assoc($result1);
                           $cname = $row1['cname'];
+                          $dept_id = $row1['dept_id'];
 
                           $query2 = "SELECT email_id, sem, year, student_attendance FROM student_audit WHERE cid = '$cid'";
                           if($result2 = mysqli_query($conn, $query2)){
