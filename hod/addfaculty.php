@@ -1,5 +1,6 @@
-<?php 
+<?php
 include('../config.php');
+
 include('../includes/header.php');
 ?>
 
@@ -17,7 +18,7 @@ include('../includes/header.php');
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
-                <h4 class="m-0 font-weight-bold text-primary">Faculty Records</h4>
+                    <h4 class="m-0 font-weight-bold text-primary">Faculty Records</h4>
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
@@ -26,7 +27,7 @@ include('../includes/header.php');
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
-                        <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course
+                        <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Faculty
                     </button>
                 </div>
             </div>
@@ -86,6 +87,7 @@ include('../includes/header.php');
                     </div>
                     <div class="modal-body">
                         <!-- Table -->
+
 
                         <form class="forms-sample" method="POST" action="">
                             <div class="form-check">

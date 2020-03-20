@@ -1,6 +1,7 @@
-<?php include('../includes/header.php'); 
+<?php 
 include('../config.php');
-session_start();
+
+include('../includes/header.php');
 ?>
 
 <?php include('sidebar.php'); ?>
@@ -84,6 +85,8 @@ session_start();
                                 </div>
                             </div>
                         </div>
+
+
                     </form>
                 </div>
             </div>
