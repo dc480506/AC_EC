@@ -1,4 +1,4 @@
-<?php
+<?php 
 include('../config.php');
 include('../includes/header.php');
 ?>
@@ -14,7 +14,7 @@ include('../includes/header.php');
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Result</h4>
+                    <h4 class="font-weight-bold text-primary mb-0">Course Records</h4>
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
@@ -23,7 +23,7 @@ include('../includes/header.php');
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
-                        <i class="fas fa-calculator"></i>
+                        <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course
                     </button>
                 </div>
             </div>
@@ -38,7 +38,7 @@ include('../includes/header.php');
                                 </button>
                             </div>
                             <!--filter form start-->
-
+                            
                             <form class="forms-sample" method="POST" action="">
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()">
@@ -110,78 +110,68 @@ include('../includes/header.php');
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Add New Course</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <div class="modal-body">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">Calculator</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <!--filter form start-->
+                            <!-- Table -->
 
-                            <form class="forms-sample" method="POST" action="">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()">
-                                    <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
+                            <form class="forms-sample" method="POST" action="queries.php">
+                                <div class="form-group">
+                                    <label for="exampleInputName1"><b>Name</b></label>
+                                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputCourseid"><b>Course ID</b></label>
+                                    <input type="number" class="form-control" id="exampleInputCourseid" name="courseid" placeholder="Course ID">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputSemester"><b>Semester</b></label>
+                                    <input type="text" class="form-control" id="exampleInputSemester" name="semester" placeholder="Semester">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputYear"><b>Year</b></label>
+                                    <input type="text" class="form-control" id="exampleInputYear" name="year" placeholder="Year">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputDepartment"><b>Department</b></label>
+                                    <input type="text" class="form-control" id="exampleInputDepartment" name="department" placeholder="Department">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputMax"><b>Max</b></label>
+                                    <input type="number" class="form-control" id="exampleInputMax" name="max" placeholder="Maximum number of students">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputMin"><b>Min</b></label>
+                                    <input type="number" class="form-control" id="exampleInputMin" name="min" placeholder="Minimum number of students">
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()">
-                                    <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cname">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
+                                    <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
+                                    <label class="form-check-label" for="exampleCheck1">Similar previous course</label>
                                 </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()">
-                                    <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="cname">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
+                                <div id="map_section" style="display: none;">
+                                    <div class="form-group" id="previous_field1" style="display: block;">
+                                        <label for="previous_field1"><b>Course ID</b></label>
+                                        <input type="text" class="form-control" id="previous_id" name="prevcid" placeholder="Course Id">
+                                    </div>
+                                    <div class="form-group" id="previous_field2" style="display: block;">
+                                        <label for="previous_field2"><b>Previous Semester</b></label>
+                                        <input type="text" class="form-control" id="previous_sem" name="prevsem" placeholder="Previous Semester">
+                                    </div>
+                                    <div class="form-group" id="previous_field3" style="display: block;">
+                                        <label for="previous_field3"><b>Previous Year</b></label>
+                                        <input type="text" class="form-control" id="previous_year" name="prevyear" placeholder="Previous Year">
+                                    </div>
                                 </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()">
-                                    <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="cname">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
-                                    <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-
+                                
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                    <button type="submit" class="btn btn-outline-primary" name="calculate">Calculate</button>
+                                    <button type="submit" class="btn btn-primary" name="addcourse">Add</button>
                                 </div>
                             </form>
-                            <!-- fiter form end-->
                         </div>
                     </div>
                 </div>
@@ -193,29 +183,25 @@ include('../includes/header.php');
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Year Admitted</th>
-                            <th>Email Address</th>
-                            <th>Current Semester</th>
+                            <th>Course Name</th>
+                            <th>Course ID</th>
+                            <th>Semester</th>
+                            <th>Year</th>
                             <th>Department</th>
-                            <th>UT-1</th>
-                            <th>UT-2</th>
-                            <th>ESE</th>
+                            <th>Max</th>
+                            <th>Min</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Year Admitted</th>
-                            <th>Email Address</th>
-                            <th>Current Semester</th>
+                            <th>Course Name</th>
+                            <th>Course ID</th>
+                            <th>Semester</th>
+                            <th>Year</th>
                             <th>Department</th>
-                            <th>UT-1</th>
-                            <th>UT-2</th>
-                            <th>ESE</th>
+                            <th>Max</th>
+                            <th>Min</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -226,8 +212,6 @@ include('../includes/header.php');
                             <td>Edinburgh</td>
                             <td>61</td>
                             <td>2011/04/25</td>
-                            <td>61</td>
-                            <td>61</td>
                             <td>61</td>
                             <td>61</td>
                             <td>
@@ -270,42 +254,41 @@ include('../includes/header.php');
                                                     <!--end Deletion-->
                                                     <!--Update-->
                                                     <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
-                                                                <form action="">
-                                                                    <div class="form-row mt-4">
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="fname"><b>First Name</b></label>
-                                                                            <input type="text" class="form-control" id="fname" name="fname" placeholder="first name">
-                                                                        </div>
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="lname"><b>Last Name</b></label>
-                                                                            <input type="text" class="form-control" id="lname" name="lname" placeholder="last name">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-row">
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="department"><b>Department</b></label>
-                                                                            <input type="text" class="form-control" id="department" name="department" placeholder="department">
-                                                                        </div>
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="emailid"><b>Email Address</b></label>
-                                                                            <input type="email" class="form-control" id="emailid" name="emailid" placeholder="email@gmail.com">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-row">
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="csem"><b>Current Semester</b></label>
-                                                                            <input type="number" class="form-control" id="csem" name="csem" placeholder="1">
-                                                                        </div>
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="year"><b>Year Admitted</b></label>
-                                                                            <input type="email" class="form-control" id="year" name="year" placeholder="2020">
-                                                                        </div>
-                                                                    </div>
-                                                                    
-
-                                                                    <button type="submit" class="btn btn-primary" name="update">Update</button>
-                                                                </form>
+                                                        <form action="">
+                                                            <div class="form-row mt-4">
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="cname"><b>Name</b></label>
+                                                                    <input type="text" class="form-control" id="cname" placeholder="name" name="name">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="courseid"><b>Course ID</b></label>
+                                                                    <input type="text" class="form-control" id="courseid" placeholder="00000" name="courseid">
+                                                                </div>
                                                             </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="semester"><b>Semester</b></label>
+                                                                    <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="year"><b>Year</b></label>
+                                                                    <input type="text" class="form-control" id="year" name="year" placeholder="year">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="max"><b>Max</b></label>
+                                                                    <input type="number" class="form-control" id="max" name="max" placeholder="120">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="min"><b>Min</b></label>
+                                                                    <input type="number" class="form-control" id="min" name="min" placeholder="1">
+                                                                </div>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary" name="update">Update</button>
+                                                        </form>
+                                                        <br>
+                                                    </div>
                                                     <!--Update end-->
                                                 </div>
 

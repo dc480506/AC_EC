@@ -1,12 +1,11 @@
-<?php include('../includes/header.php');
+<?php 
 include('../config.php');
-session_start();
+include('../includes/header.php');
 ?>
 
 <?php include('sidebar.php'); ?>
 
 <?php include('../includes/topbar.php'); ?>
-
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -39,9 +38,10 @@ session_start();
                                 </button>
                             </div>
                             <!--filter form start-->
+                            
                             <form class="forms-sample" method="POST" action="">
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()" name="cname_cbox">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()">
                                     <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
                                     <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
                                         <option>1</option>
@@ -52,9 +52,9 @@ session_start();
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()" name="cid_cbox">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()">
                                     <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cid">
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -63,9 +63,9 @@ session_start();
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()" name="sem_cbox">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()">
                                     <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="sem">
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -74,9 +74,9 @@ session_start();
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()" name="year_cbox">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()">
                                     <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="year">
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -85,9 +85,9 @@ session_start();
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()" name="dept_cbox">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
                                     <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="dept">
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -106,7 +106,6 @@ session_start();
                     </div>
                 </div>
             </div>
-
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -120,7 +119,7 @@ session_start();
                         <div class="modal-body">
                             <!-- Table -->
 
-                            <form class="forms-sample" method="POST" action="">
+                            <form class="forms-sample" method="POST" action="queries.php">
                                 <div class="form-group">
                                     <label for="exampleInputName1"><b>Name</b></label>
                                     <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Name">
@@ -167,9 +166,10 @@ session_start();
                                         <input type="text" class="form-control" id="previous_year" name="prevyear" placeholder="Previous Year">
                                     </div>
                                 </div>
+                                
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                    <button type="button" class="btn btn-primary" name="add">Add</button>
+                                    <button type="submit" class="btn btn-primary" name="addcourse">Add</button>
                                 </div>
                             </form>
                         </div>
@@ -309,6 +309,7 @@ session_start();
     </div>
 </div>
 <!-- /.container-fluid -->
+
 <script>
     function showMapSection() {
         var checkBox = document.getElementById("map_cbox");
