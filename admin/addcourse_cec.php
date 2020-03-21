@@ -1,5 +1,6 @@
-<?php 
+<?php
 include('../config.php');
+
 include('../includes/header.php');
 ?>
 
@@ -38,7 +39,7 @@ include('../includes/header.php');
                                 </button>
                             </div>
                             <!--filter form start-->
-                            
+
                             <form class="forms-sample" method="POST" action="">
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()">
@@ -148,6 +149,33 @@ include('../includes/header.php');
                                     <label for="exampleInputMin"><b>Min</b></label>
                                     <input type="number" class="form-control" id="exampleInputMin" name="min" placeholder="Minimum number of students">
                                 </div>
+                                <label for="branch"><b>Branches to opt for</b></label>
+                                <br>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                    <label class="custom-control-label" for="customCheck7">All</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck8">
+                                    <label class="custom-control-label" for="customCheck8">COMP</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck9">
+                                    <label class="custom-control-label" for="customCheck9">IT</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck10">
+                                    <label class="custom-control-label" for="customCheck10">MECH</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck11">
+                                    <label class="custom-control-label" for="customCheck11">EXTC</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck12">
+                                    <label class="custom-control-label" for="customCheck12">ETRX</label>
+                                </div>
+                                <br>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
                                     <label class="form-check-label" for="exampleCheck1">Similar previous course</label>
@@ -166,7 +194,7 @@ include('../includes/header.php');
                                         <input type="text" class="form-control" id="previous_year" name="prevyear" placeholder="Previous Year">
                                     </div>
                                 </div>
-                                
+
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                     <button type="submit" class="btn btn-primary" name="addcourse">Add</button>
@@ -285,6 +313,33 @@ include('../includes/header.php');
                                                                     <input type="number" class="form-control" id="min" name="min" placeholder="1">
                                                                 </div>
                                                             </div>
+                                                            <label for="branch"><b>Branches to opt for</b></label>
+                                                            <br>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                                <label class="custom-control-label" for="customCheck1">All</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                                                <label class="custom-control-label" for="customCheck2">COMP</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck3">
+                                                                <label class="custom-control-label" for="customCheck3">IT</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck4">
+                                                                <label class="custom-control-label" for="customCheck4">MECH</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck5">
+                                                                <label class="custom-control-label" for="customCheck5">EXTC</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
+                                                                <label class="custom-control-label" for="customCheck6">ETRX</label>
+                                                            </div>
+                                                            <br>
                                                             <button type="submit" class="btn btn-primary" name="update">Update</button>
                                                         </form>
                                                         <br>
