@@ -47,9 +47,10 @@
     </a>
     <div id="collapsePages4" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="addcourse.php">Audit Course</a>
+        <a class="collapse-item" href="addcourse_ac.php">Audit Course</a>
         <a class="collapse-item" href="addcourse_idc.php">Interdisciplinary Course</a>
-        <a class="collapse-item" href="addcourse_ec.php">Elective Course</a>
+        <a class="collapse-item" href="addcourse_cec.php">Close Elective Course</a>
+        <a class="collapse-item" href="addcourse_oec.php">Open Elective Course</a>
       </div>
     </div>
   </li>
@@ -72,7 +73,9 @@
       <div class="bg-white py-2 collapse-inner rounded">
         <a class="collapse-item" href="prepare_form_ac.php">Audit Course</a>
         <a class="collapse-item" href="prepare_form_idc.php">Interdisciplinary Course</a>
-        <a class="collapse-item" href="prepare_form_elec.php">Elective Course</a>
+        <a class="collapse-item" href="prepare_form_cec.php">Close Elective Course</a>
+        <a class="collapse-item" href="prepare_form_oec.php">Open Elective Course</a>
+        
       </div>
     </div>
   </li>

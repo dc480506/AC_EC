@@ -27,7 +27,7 @@ include('../includes/header.php');
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
-                        <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course
+                        <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Faculty
                     </button>
                 </div>
             </div>

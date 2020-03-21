@@ -40,7 +40,7 @@ include('../includes/header.php');
 
                             <form class="forms-sample" method="POST" action="">
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction1()">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()">
                                     <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
                                     <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
                                         <option>1</option>
@@ -51,7 +51,7 @@ include('../includes/header.php');
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()">
                                     <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
                                     <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cname">
                                         <option>1</option>
@@ -62,7 +62,7 @@ include('../includes/header.php');
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()">
                                     <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
                                     <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="cname">
                                         <option>1</option>
@@ -73,7 +73,7 @@ include('../includes/header.php');
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()">
                                     <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
                                     <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="cname">
                                         <option>1</option>
@@ -84,7 +84,7 @@ include('../includes/header.php');
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="myFunction()">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
                                     <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
                                     <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
                                         <option>1</option>

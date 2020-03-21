@@ -1,12 +1,12 @@
 <?php
 include('../config.php');
-include_once('verify.php');
+
 include('../includes/header.php');
 ?>
+
 <?php include('sidebar.php'); ?>
 
 <?php include('../includes/topbar.php'); ?>
-
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -27,7 +27,6 @@ include('../includes/header.php');
                         <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course
                     </button>
                 </div>
-
             </div>
             <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -40,9 +39,10 @@ include('../includes/header.php');
                                 </button>
                             </div>
                             <!--filter form start-->
+
                             <form class="forms-sample" method="POST" action="">
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()" name="cname_cbox">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()">
                                     <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
                                     <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
                                         <option>1</option>
@@ -53,9 +53,9 @@ include('../includes/header.php');
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()" name="cid_cbox">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()">
                                     <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cid">
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -64,9 +64,9 @@ include('../includes/header.php');
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()" name="sem_cbox">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()">
                                     <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="sem">
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -75,9 +75,9 @@ include('../includes/header.php');
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()" name="year_cbox">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()">
                                     <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="year">
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -86,9 +86,9 @@ include('../includes/header.php');
                                     </select>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()" name="dept_cbox">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
                                     <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="dept">
+                                    <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -120,43 +120,62 @@ include('../includes/header.php');
                         <div class="modal-body">
                             <!-- Table -->
 
-                            <form class="forms-sample" method="POST" action="ic_queries/addcourse_queries.php">
+                            <form class="forms-sample" method="POST" action="queries.php">
                                 <div class="form-group">
                                     <label for="exampleInputName1"><b>Name</b></label>
-                                    <input type="text" class="form-control" required id="exampleInputName1" name="cname" placeholder="Name">
+                                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Name">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputCourseid"><b>Course ID</b></label>
-                                    <input type="text" class="form-control" required id="exampleInputCourseid" name="courseid" placeholder="Course ID">
+                                    <input type="number" class="form-control" id="exampleInputCourseid" name="courseid" placeholder="Course ID">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputSemester"><b>Semester</b></label>
-                                    <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester">
+                                    <input type="text" class="form-control" id="exampleInputSemester" name="semester" placeholder="Semester">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputYear"><b>Year</b></label>
-                                    <input type="text" class="form-control" required id="exampleInputYear" name="year" placeholder="Year">
+                                    <input type="text" class="form-control" id="exampleInputYear" name="year" placeholder="Year">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputDepartment"><b>Department</b></label>
-                                    <select class="form-control" required name="dept">
-                                        <?php
-                                        include_once("../config.php");
-                                        $sql = "SELECT dept_name FROM department";
-                                        $result = mysqli_query($conn, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<option>" . $row['dept_name'] . "</option>";
-                                        }
-                                        ?>
-                                    </select> </div>
+                                    <input type="text" class="form-control" id="exampleInputDepartment" name="department" placeholder="Department">
+                                </div>
                                 <div class="form-group">
                                     <label for="exampleInputMax"><b>Max</b></label>
-                                    <input type="number" class="form-control" required id="exampleInputMax" name="max" placeholder="Maximum number of students">
+                                    <input type="number" class="form-control" id="exampleInputMax" name="max" placeholder="Maximum number of students">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputMin"><b>Min</b></label>
-                                    <input type="number" class="form-control" required id="exampleInputMin" name="min" placeholder="Minimum number of students">
+                                    <input type="number" class="form-control" id="exampleInputMin" name="min" placeholder="Minimum number of students">
                                 </div>
+                                <label for="branch"><b>Branches to opt for</b></label>
+                                <br>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                    <label class="custom-control-label" for="customCheck7">All</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck8">
+                                    <label class="custom-control-label" for="customCheck8">COMP</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck9">
+                                    <label class="custom-control-label" for="customCheck9">IT</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck10">
+                                    <label class="custom-control-label" for="customCheck10">MECH</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck11">
+                                    <label class="custom-control-label" for="customCheck11">EXTC</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck12">
+                                    <label class="custom-control-label" for="customCheck12">ETRX</label>
+                                </div>
+                                <br>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
                                     <label class="form-check-label" for="exampleCheck1">Similar previous course</label>
@@ -175,9 +194,10 @@ include('../includes/header.php');
                                         <input type="text" class="form-control" id="previous_year" name="prevyear" placeholder="Previous Year">
                                     </div>
                                 </div>
+
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                    <button type="submit" class="btn btn-primary" name="add_course">Add</button>
+                                    <button type="submit" class="btn btn-primary" name="addcourse">Add</button>
                                 </div>
                             </form>
                         </div>
@@ -214,31 +234,23 @@ include('../includes/header.php');
                         </tr>
                     </tfoot>
                     <tbody>
-                        <?php
-                        $sql = "SELECT cname,cid,sem,year,dept_name,max,min FROM audit_course NATURAL JOIN department";
-                        $result = mysqli_query($conn, $sql);
-                        if (mysqli_num_rows($result) > 0) {
-
-                            $count = 500;
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                echo '
-                                <tr>
-                            <td>' . $row['cname'] . '</td>
-                            <td>' . $row['cid'] . '</td>
-                            <td>' . $row['sem'] . '</td>
-                            <td>' . $row['year'] . '</td>
-                            <td>' . $row['dept_name'] . '</td>
-                            <td>' . $row['max'] . '</td>
-                            <td>' . $row['min'] . '</td>
+                        <tr>
+                            <td>Tiger Nixon</td>
+                            <td>System Architect</td>
+                            <td>Edinburgh</td>
+                            <td>61</td>
+                            <td>2011/04/25</td>
+                            <td>61</td>
+                            <td>61</td>
                             <td>
 
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
+                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter1">
                                     <i class="fas fa-tools"></i>
                                 </button>
-                    
+
                                 <!-- Modal -->
-                                <div class="modal fade" id="exampleModalCenter' . $count . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                                <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -250,65 +262,85 @@ include('../includes/header.php');
                                             <div class="modal-body">
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                        <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
-                                                        <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update' . $count . '" role="tab" aria-controls="nav-update' . $count . '" aria-selected="false">Update</a>
+                                                        <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
+                                                        <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">
                                                     <!--Deletion-->
-                                                    <div class="tab-pane fade show active" id="nav-delete' . $count . '" role="tabpanel" aria-labelledby="nav-delete-tab">
-                                                        <form action="ic_queries/addcourse_queries.php" method="POST">
+                                                    <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
+                                                        <form action="">
                                                             <div class="form-group">
                                                                 <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
                                                                 </label>
                                                                 <br>
-                                                                <input type="hidden" name="cid" value="' . $row['cid'] . '">
-                                                                <input type="hidden" name="sem" value="' . $row['sem'] . '">
-                                                                <input type="hidden" name="year" value="' . $row['year'] . '">
-                                                                <button type="submit" class="btn btn-primary" name="delete_course">Yes</button>
-                                                                <button type="button" class="btn btn-secondary" name="no">No</button>
+                                                                <button type="submit" class="btn btn-primary" name="yes">Yes</button>
+                                                                <button type="submit" class="btn btn-secondary" name="no">No</button>
                                                             </div>
                                                         </form>
                                                     </div>
                                                     <!--end Deletion-->
                                                     <!--Update-->
-                                                    <div class="tab-pane fade" id="nav-update' . $count . '" role="tabpanel" aria-labelledby="nav-update-tab">
-                                                        <form action="ic_queries/addcourse_queries.php" method="POST">
+                                                    <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
+                                                        <form action="">
                                                             <div class="form-row mt-4">
                                                                 <div class="form-group col-md-6">
                                                                     <label for="cname"><b>Name</b></label>
-                                                                    <input type="text" class="form-control" required="required" placeholder="New Course Name" name="coursename" value="' . $row['cname'] . '">
-                                                                    
+                                                                    <input type="text" class="form-control" id="cname" placeholder="name" name="name">
                                                                 </div>
                                                                 <div class="form-group col-md-6">
                                                                     <label for="courseid"><b>Course ID</b></label>
-                                                                    <input type="text" class="form-control" required="required" placeholder="00000" name="courseidnew" value="' . $row['cid'] . '">
-                                                                    <input type="hidden" class="form-control"  placeholder="00000" name="courseidold" value="' . $row['cid'] . '">
+                                                                    <input type="text" class="form-control" id="courseid" placeholder="00000" name="courseid">
                                                                 </div>
                                                             </div>
                                                             <div class="form-row">
                                                                 <div class="form-group col-md-6">
                                                                     <label for="semester"><b>Semester</b></label>
-                                                                    <input type="text" class="form-control" required="required" placeholder="Semester" name="semnew" value="' . $row['sem'] . '">
-                                                                    <input type="hidden" class="form-control" placeholder="Semester" name="semold" value="' . $row['sem'] . '">
+                                                                    <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester">
                                                                 </div>
                                                                 <div class="form-group col-md-6">
                                                                     <label for="year"><b>Year</b></label>
-                                                                    <input type="text" class="form-control"  name="year" disabled placeholder="year" value="' . $row['year'] . '">
-                                                                    <input type="hidden" class="form-control"  name="year" placeholder="year" value="' . $row['year'] . '">
+                                                                    <input type="text" class="form-control" id="year" name="year" placeholder="year">
                                                                 </div>
                                                             </div>
                                                             <div class="form-row">
                                                                 <div class="form-group col-md-6">
                                                                     <label for="max"><b>Max</b></label>
-                                                                    <input type="number" class="form-control" required="required" name="max" placeholder="120" value="' . $row['max'] . '">
+                                                                    <input type="number" class="form-control" id="max" name="max" placeholder="120">
                                                                 </div>
                                                                 <div class="form-group col-md-6">
                                                                     <label for="min"><b>Min</b></label>
-                                                                    <input type="number" class="form-control" required="required" name="min" placeholder="1" value="' . $row['min'] . '">
+                                                                    <input type="number" class="form-control" id="min" name="min" placeholder="1">
                                                                 </div>
                                                             </div>
-                                                            <button type="submit" class="btn btn-primary" name="update_course">Update</button>
+                                                            <label for="branch"><b>Branches to opt for</b></label>
+                                                            <br>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                                <label class="custom-control-label" for="customCheck1">All</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                                                <label class="custom-control-label" for="customCheck2">COMP</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck3">
+                                                                <label class="custom-control-label" for="customCheck3">IT</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck4">
+                                                                <label class="custom-control-label" for="customCheck4">MECH</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck5">
+                                                                <label class="custom-control-label" for="customCheck5">EXTC</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
+                                                                <label class="custom-control-label" for="customCheck6">ETRX</label>
+                                                            </div>
+                                                            <br>
+                                                            <button type="submit" class="btn btn-primary" name="update">Update</button>
                                                         </form>
                                                         <br>
                                                     </div>
@@ -325,14 +357,6 @@ include('../includes/header.php');
                                 </div>
                             </td>
                         </tr>
-
-                                ';
-                                $count++;
-                            }
-                        }
-
-                        ?>
-
                     </tbody>
                 </table>
             </div>
@@ -340,6 +364,7 @@ include('../includes/header.php');
     </div>
 </div>
 <!-- /.container-fluid -->
+
 <script>
     function showMapSection() {
         var checkBox = document.getElementById("map_cbox");
