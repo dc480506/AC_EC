@@ -1,5 +1,6 @@
 <?php
 include('../config.php');
+include_once('verify.php');
 include('../includes/header.php');
 ?>
 <?php include('sidebar.php'); ?>
@@ -20,43 +21,68 @@ include('../includes/header.php');
                     <form>
                         <div class="form-group">
                             <label for="exampleInputPreference"><b>No of Preferences</b></label>
-                            <input type="number" required class="form-control" id="exampleInputPreference" name="no_of_preferences">
+                            <input type="number" class="form-control" id="exampleInputPreference" name="no_of_preferences">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputSem"><b>Semester</b></label>
-                            <input type="number" required class="form-control" id="exampleInputSem" name="semester">
+                            <input type="number" class="form-control" id="exampleInputSem" name="semester">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputYear"><b>Year</b></label>
-                            <input type="year" required class="form-control" id="exampleInputYear" name="year">
+                            <input type="year" class="form-control" id="exampleInputYear" name="year">
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                            <label class="custom-control-label" for="customCheck1">All</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="customCheck2">
+                            <label class="custom-control-label" for="customCheck2">COMP</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="customCheck3">
+                            <label class="custom-control-label" for="customCheck3">IT</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="customCheck4">
+                            <label class="custom-control-label" for="customCheck4">MECH</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="customCheck5">
+                            <label class="custom-control-label" for="customCheck5">EXTC</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="customCheck6">
+                            <label class="custom-control-label" for="customCheck6">ETRX</label>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>Start Date</b></label>
-                                    <input type="date" required class="form-control" id="exampleInputStartDate" name="start_date">
+                                    <input type="date" class="form-control" id="exampleInputStartDate" name="start_date">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>Start Time</b></label>
-                                    <input type="time" required class="form-control" id="exampleInputStartDate" name="start_time">
+                                    <input type="time" class="form-control" id="exampleInputStartDate" name="start_time">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>End Date</b></label>
-                                    <input type="date" required class="form-control" id="exampleInputStartDate" name="end_date">
+                                    <input type="date" class="form-control" id="exampleInputStartDate" name="end_date">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>End Time</b></label>
-                                    <input type="time" required class="form-control" id="exampleInputStartDate" name="end_time">
+                                    <input type="time" class="form-control" id="exampleInputStartDate" name="end_time">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary align-center" name="submit">Submit</button>
+                            <button type="modify" class="btn btn-primary align-center" name="modify">Modify</button>
                         </div>
-                    </form>
 
+                    </form>
                 </div>
             </div>
         </div>
@@ -65,48 +91,52 @@ include('../includes/header.php');
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Year Admitted</th>
-                            <th>Email Address</th>
-                            <th>Current Semester</th>
-                            <th>Department</th>
+                            <th>Semester</th>
+                            <th>Year</th>
+                            <th>Start Date</th>
+                            <th>Start Time</th>
+                            <th>End Date</th>
+                            <th>End Time</th>
+                            <th>No of Preferences</th>
+                            <th>Branches</th>
                             <th>Form Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Year Admitted</th>
-                            <th>Email Address</th>
-                            <th>Current Semester</th>
-                            <th>Department</th>
+                            <th>Semester</th>
+                            <th>Year</th>
+                            <th>Start Date</th>
+                            <th>Start Time</th>
+                            <th>End Date</th>
+                            <th>End Time</th>
+                            <th>No of Preferences</th>
+                            <th>Branches</th>
                             <th>Form Status</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
                     <tbody>
-
-
                         <tr>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td>61</td>
-                            <td>2011/04/25</td>
-                            <td>2011/04/25</td>
-                            <td>2011/04/25</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td>
 
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter1">
+                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter">
                                     <i class="fas fa-tools"></i>
                                 </button>
 
                                 <!-- Modal -->
-                                <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -125,55 +155,83 @@ include('../includes/header.php');
                                                 <div class="tab-content" id="nav-tabContent">
                                                     <!--Deletion-->
                                                     <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
-                                                        <form action="">
+                                                        <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
                                                             <div class="form-group">
                                                                 <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
                                                                 </label>
                                                                 <br>
-                                                                <button type="submit" class="btn btn-primary" name="yes">Yes</button>
-                                                                <button type="submit" class="btn btn-secondary" name="no">No</button>
+                                                                <input type="hidden" name="sem" value="">
+                                                                <input type="hidden" name="year" value="">
+                                                                <button type="submit" class="btn btn-primary" name="deleteForm">Yes</button>
+                                                                <button type="button" class="btn btn-secondary" name="no">No</button>
                                                             </div>
                                                         </form>
                                                     </div>
                                                     <!--end Deletion-->
                                                     <!--Update-->
                                                     <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
-                                                        <form>
+                                                        <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
                                                             <div class="form-group">
                                                                 <label for="exampleInputPreference"><b>No of Preferences</b></label>
-                                                                <input type="number" required class="form-control" id="exampleInputPreference" name="no_of_preferences">
+                                                                <input type="number" required class="form-control" name="nop" value="">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInputSem"><b>Semester</b></label>
-                                                                <input type="number" required class="form-control" id="exampleInputSem" name="semester">
+                                                                <input type="number" required class="form-control" name="sem" value="">
+                                                                <input type="hidden" required class="form-control" name="oldsem" value="">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInputYear"><b>Year</b></label>
-                                                                <input type="year" required class="form-control" id="exampleInputYear" name="year">
+                                                                <input type="year" required class="form-control" name="year" value="">
+                                                                <input type="hidden" required class="form-control" name="oldyear" value="">
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                                                <label class="custom-control-label" for="customCheck7">All</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck8">
+                                                                <label class="custom-control-label" for="customCheck8">COMP</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck9">
+                                                                <label class="custom-control-label" for="customCheck9">IT</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck10">
+                                                                <label class="custom-control-label" for="customCheck10">MECH</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck11">
+                                                                <label class="custom-control-label" for="customCheck11">EXTC</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck12">
+                                                                <label class="custom-control-label" for="customCheck12">ETRX</label>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-6">
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>Start Date</b></label>
-                                                                        <input type="date" required class="form-control" id="exampleInputStartDate" name="start_date">
+                                                                        <input type="date" required class="form-control" name="start_date" value="">
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>Start Time</b></label>
-                                                                        <input type="time" required class="form-control" id="exampleInputStartDate" name="start_time">
+                                                                        <input type="time" required class="form-control" name="start_time" value="">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-6">
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>End Date</b></label>
-                                                                        <input type="date" required class="form-control" id="exampleInputStartDate" name="end_date">
+                                                                        <input type="date" required class="form-control" name="end_date" value="' . $end_date . '">
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>End Time</b></label>
-                                                                        <input type="time" required class="form-control" id="exampleInputStartDate" name="end_time">
+                                                                        <input type="time" required class="form-control" name="end_time" value="">
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <button type="modify" class="btn btn-primary align-center" name="modify">Modify</button>
+                                                            <button type="submit" class="btn btn-primary align-center" name="modifyForm">Modify</button>
                                                         </form>
                                                         <br>
                                                     </div>

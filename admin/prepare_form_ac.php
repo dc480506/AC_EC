@@ -1,6 +1,5 @@
 <?php
 include('../config.php');
-include_once('verify.php');
 include('../includes/header.php');
 ?>
 <?php include('sidebar.php'); ?>
