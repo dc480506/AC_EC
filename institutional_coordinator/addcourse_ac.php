@@ -160,10 +160,25 @@ include('../includes/header.php');
                                 <label for="branch"><b>Branches to opt for</b></label>
                                 <br>
                                 <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck7" checked>
                                     <label class="custom-control-label" for="customCheck7">All</label>
                                 </div>
-                                <div class="custom-control custom-checkbox custom-control-inline">
+                                <?php
+                          include_once('../config.php');
+                          $sql="SELECT * FROM department";
+                          $result=mysqli_query($conn,$sql);
+                          $c=8;
+                          while($row=mysqli_fetch_assoc($result)){
+                              echo '
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                              <input type="checkbox" class="custom-control-input dept" id="customCheck'.$c.'"  name="check_dept[]" value="'.$row['dept_id'].'">
+                              <label class="custom-control-label" for="customCheck'.$c.'">'.$row['dept_name'].'</label>
+                             </div>
+                              ';
+                              $c++;
+                          }
+                        ?>
+                                <!-- <div class="custom-control custom-checkbox custom-control-inline">
                                     <input type="checkbox" class="custom-control-input" id="customCheck8">
                                     <label class="custom-control-label" for="customCheck8">COMP</label>
                                 </div>
@@ -182,7 +197,7 @@ include('../includes/header.php');
                                 <div class="custom-control custom-checkbox custom-control-inline">
                                     <input type="checkbox" class="custom-control-input" id="customCheck12">
                                     <label class="custom-control-label" for="customCheck12">ETRX</label>
-                                </div>
+                                </div> -->
                                 <br>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
@@ -242,12 +257,41 @@ include('../includes/header.php');
                     </tfoot>
                     <tbody>
                         <?php
+                        $sql3="SELECT * FROM department";
+                        $dept_list=array();
+                        $result3=mysqli_query($conn,$sql3);
+                        while($row=mysqli_fetch_assoc($result3)){
+                            array_push($dept_list,$row['dept_id'],$row['dept_name']);
+                        }
                         $sql = "SELECT cname,cid,sem,year,dept_name,max,min FROM audit_course NATURAL JOIN department";
                         $result = mysqli_query($conn, $sql);
                         if (mysqli_num_rows($result) > 0) {
 
                             $count = 500;
                             while ($row = mysqli_fetch_assoc($result)) {
+                                $checkbox_div="";
+                                $cid=$row['cid'];
+                                $sem=$row['sem'];
+                                $year=$row['year'];
+                                $checked_dept=array();
+                                $sql2="SELECT dept_id FROM audit_course_applicable_dept WHERE cid='$cid' AND sem='$sem' AND year='$year'";
+                                $result2=mysqli_query($conn,$sql2);
+                                while($row2=mysqli_fetch_assoc($result2)){
+                                    array_push($checked_dept,$row2['dept_id']);
+                                }
+                                for($i=0;$i<count($dept_list)-1;$i=$i+2){
+                                    $checkbox_div.='
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck'.($i+100*$count).'" name="check_dept[]" value="'.$dept_list[$i].'"';
+                                        if(in_array($dept_list[$i],$checked_dept)){
+                                            $checkbox_div.=" checked";
+                                        }
+                                        $checkbox_div.='>
+                                        <label class="custom-control-label" for="customCheck'.($i+100*$count).'">'.$dept_list[$i+1].'</label>
+                                    </div>
+                                    ';
+
+                                }
                                 echo '
                                 <tr>
                             <td>' . $row['cname'] . '</td>
@@ -337,30 +381,7 @@ include('../includes/header.php');
                                                             </div>
                                                             <label for="branch"><b>Branches to opt for</b></label>
                                                             <br>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                                <label class="custom-control-label" for="customCheck1">All</label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                                                <label class="custom-control-label" for="customCheck2">COMP</label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck3">
-                                                                <label class="custom-control-label" for="customCheck3">IT</label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck4">
-                                                                <label class="custom-control-label" for="customCheck4">MECH</label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck5">
-                                                                <label class="custom-control-label" for="customCheck5">EXTC</label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6">ETRX</label>
-                                                            </div>
+                                                            '.$checkbox_div.'
                                                             <br>
                                                             <button type="submit" class="btn btn-primary" name="update_course">Update</button>
                                                         </form>
@@ -378,9 +399,9 @@ include('../includes/header.php');
                                     </div>
                                 </div>
                             </td>
-                        </tr>
+                        </tr>';
 
-                                ';
+                                
                                 $count++;
                             }
                         }
@@ -404,6 +425,46 @@ include('../includes/header.php');
             document.querySelector("#map_section").style.display = "none";
         }
     }
+    dept_checkbox=document.querySelectorAll(".dept");
+    
+    if(document.querySelector("#customCheck7").checked){
+        for (i=0;i<dept_checkbox.length;i++){
+                dept_checkbox[i].checked=true;
+            }
+    }
+    all_cbox=document.querySelector("#customCheck7")
+    for(i=0;i<dept_checkbox.length;i++){
+        dept_checkbox[i].addEventListener("click",function(){
+            if(!this.checked && all_cbox.checked){
+                all_cbox.checked=false;
+            }
+            if(this.checked){
+                p=true;
+                for(i=0;i<dept_checkbox.length;i++){
+                    if(!dept_checkbox[i].checked){
+                        p=false
+                        break;
+                    }
+                }
+                if(p){
+                    all_cbox.checked=true;
+                }
+            }
+        })
+    }
+    all_cbox.addEventListener("click",function(){
+        if(this.checked){
+            //Check all boxes
+            for (i=0;i<dept_checkbox.length;i++){
+                dept_checkbox[i].checked=true;
+            }
+        }else{
+            //Uncheck all boxes
+            for (i=0;i<dept_checkbox.length;i++){
+                dept_checkbox[i].checked=false;
+            }
+        }
+    })
 </script>
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');

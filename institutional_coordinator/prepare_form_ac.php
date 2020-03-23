@@ -31,11 +31,12 @@ include('../includes/header.php');
                             <label for="exampleInputYear"><b>Year</b></label>
                             <input type="year" required class="form-control" id="exampleInputYear" name="year">
                         </div>
-                        <div class="custom-control custom-checkbox custom-control-inline">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                        <!-- <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="customCheck1" name="checkedAll" checked>
                             <label class="custom-control-label" for="customCheck1">All</label>
                         </div>
-                        <div class="custom-control custom-checkbox custom-control-inline">
+                         -->
+                        <!-- <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" class="custom-control-input" id="customCheck2">
                             <label class="custom-control-label" for="customCheck2">COMP</label>
                         </div>
@@ -54,7 +55,7 @@ include('../includes/header.php');
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" class="custom-control-input" id="customCheck6">
                             <label class="custom-control-label" for="customCheck6">ETRX</label>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
@@ -97,7 +98,6 @@ include('../includes/header.php');
                             <th>End Date</th>
                             <th>End Time</th>
                             <th>No of Preferences</th>
-                            <th>Branches</th>
                             <th>Form Status</th>
                             <th>Action</th>
                         </tr>
@@ -111,7 +111,6 @@ include('../includes/header.php');
                             <th>End Date</th>
                             <th>End Time</th>
                             <th>No of Preferences</th>
-                            <th>Branches</th>
                             <th>Form Status</th>
                             <th>Action</th>
                         </tr>
@@ -120,7 +119,7 @@ include('../includes/header.php');
 
                         <?php
                         include_once('../config.php');
-                        $sql = "SELECT sem,year,start_timestamp,end_timestamp,no_of_preferences FROM audit_form";
+                        $sql = "SELECT sem,year,start_timestamp,end_timestamp,no_of_preferences FROM form WHERE form_type='audit'";
 
                         $result = mysqli_query($conn, $sql);
                         if (mysqli_num_rows($result) > 0) {
@@ -145,7 +144,6 @@ include('../includes/header.php');
                             <td>' . date("d-M-Y", strtotime($end_date)) . '</td>
                             <td>' . $end_time . '</td>
                             <td>' . $row['no_of_preferences'] . '</td>
-                            <td>ALL</td>
                             <td>' . $status . '</td>
                             <td>
 
