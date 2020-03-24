@@ -15,7 +15,7 @@ include('../includes/header.php');
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Course Records</h4>
+                    <h4 class="font-weight-bold text-primary mb-0">Audit Course Records</h4>
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
@@ -235,11 +235,13 @@ include('../includes/header.php');
                         <tr>
                             <th>Course Name</th>
                             <th>Course ID</th>
-                            <th>Semester</th>
-                            <th>Year</th>
-                            <th>Department</th>
+                            <th>Sem</th>
+                            <th>Academic Year</th>
+                            <th>Floating Department</th>
+                            <th>Departments Applicable</th>
                             <th>Max</th>
                             <th>Min</th>
+                            <th>Allocated</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -247,11 +249,13 @@ include('../includes/header.php');
                         <tr>
                             <th>Course Name</th>
                             <th>Course ID</th>
-                            <th>Semester</th>
-                            <th>Year</th>
-                            <th>Department</th>
+                            <th>Sem</th>
+                            <th>Academic Year</th>
+                            <th>Floating Department</th>
+                            <th>Departments Applicable</th>
                             <th>Max</th>
                             <th>Min</th>
+                            <th>Allocated</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -263,7 +267,7 @@ include('../includes/header.php');
                         while($row=mysqli_fetch_assoc($result3)){
                             array_push($dept_list,$row['dept_id'],$row['dept_name']);
                         }
-                        $sql = "SELECT cname,cid,sem,year,dept_name,max,min FROM audit_course NATURAL JOIN department";
+                        $sql = "SELECT cname,cid,sem,year,dept_name,max,min,no_of_allocated FROM audit_course NATURAL JOIN department";
                         $result = mysqli_query($conn, $sql);
                         if (mysqli_num_rows($result) > 0) {
 
@@ -274,11 +278,14 @@ include('../includes/header.php');
                                 $sem=$row['sem'];
                                 $year=$row['year'];
                                 $checked_dept=array();
-                                $sql2="SELECT dept_id FROM audit_course_applicable_dept WHERE cid='$cid' AND sem='$sem' AND year='$year'";
+                                $applicable_dept="";
+                                $sql2="SELECT dept_id,dept_name FROM audit_course_applicable_dept NATURAL JOIN department WHERE cid='$cid' AND sem='$sem' AND year='$year'";
                                 $result2=mysqli_query($conn,$sql2);
                                 while($row2=mysqli_fetch_assoc($result2)){
                                     array_push($checked_dept,$row2['dept_id']);
+                                    $applicable_dept.=$row2['dept_name']." , ";
                                 }
+                                $applicable_dept=substr($applicable_dept,0,strlen($applicable_dept)-2);
                                 for($i=0;$i<count($dept_list)-1;$i=$i+2){
                                     $checkbox_div.='
                                     <div class="custom-control custom-checkbox custom-control-inline">
@@ -299,8 +306,10 @@ include('../includes/header.php');
                             <td>' . $row['sem'] . '</td>
                             <td>' . $row['year'] . '</td>
                             <td>' . $row['dept_name'] . '</td>
+                            <td>' . $applicable_dept . '</td>
                             <td>' . $row['max'] . '</td>
                             <td>' . $row['min'] . '</td>
+                            <td>' . $row['no_of_allocated'] . '</td>
                             <td>
 
                                 <!-- Button trigger modal -->

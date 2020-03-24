@@ -17,7 +17,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
         $end_time=mysqli_escape_string($conn,$_POST['end_time']);
         $end_timestamp=$end_date." ".$end_time;
         $no=0;
-        $type="audit";
+        $type="idc";
         // echo $end_timestamp;
         date_default_timezone_set('Asia/Kolkata');
         $timestamp=date("Y-m-d H:i:s");
@@ -25,13 +25,13 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
         $sql="INSERT INTO form (`sem`,`year`,`no`,`form_type`,`email_id`,`timestamp_created`,`start_timestamp`,`end_timestamp`,`no_of_preferences`) 
         VALUES('$sem','$year','$no','$type','$email','$timestamp','$start_timestamp','$end_timestamp','$nop')";
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
-        header("Location: ../prepare_form_ac.php");
+        header("Location: ../prepare_form_idc.php");
     }else if(isset($_POST['deleteForm'])){
         $sem=mysqli_escape_string($conn,$_POST['sem']);
         $year=mysqli_escape_string($conn,$_POST['year']);
-        $sql="DELETE FROM form WHERE sem='$sem' AND year='$year' AND form_type= 'audit'";
+        $sql="DELETE FROM form WHERE sem='$sem' AND year='$year' AND form_type= 'idc'";
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
-        header("Location: ../prepare_form_ac.php");
+        header("Location: ../prepare_form_idc.php");
     }else if(isset($_POST['modifyForm'])){
         $nop=mysqli_escape_string($conn,$_POST['nop']);
         $sem=mysqli_escape_string($conn,$_POST['sem']);
@@ -45,9 +45,9 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
         $end_time=mysqli_escape_string($conn,$_POST['end_time']);
         $end_timestamp=$end_date." ".$end_time;
         $sql="UPDATE form SET no_of_preferences='$nop',sem='$sem',year='$year',start_timestamp='$start_timestamp',
-        end_timestamp='$end_timestamp' WHERE sem='$oldsem' AND year='$year' AND form_type='audit'";
+        end_timestamp='$end_timestamp' WHERE sem='$oldsem' AND year='$year' AND form_type='idc'";
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
-        header("Location: ../prepare_form_ac.php");
+        header("Location: ../prepare_form_idc.php");
     }
 }
 

@@ -14,28 +14,29 @@ include('../includes/header.php');
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <div class="row align-items-center">
-                        <h1 class="h3 mb-4 text-gray-800">Prepare Form Fill</h1>
+                        <h1 class="h3 mb-4 text-gray-800">Prepare IDC Form</h1>
                     </div>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form action="ic_queries/prepare_form_idc_queries.php" method="POST">
                         <div class="form-group">
                             <label for="exampleInputPreference"><b>No of Preferences</b></label>
-                            <input type="number" class="form-control" id="exampleInputPreference" name="no_of_preferences">
+                            <input type="number" required class="form-control" id="exampleInputPreference" name="nop">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputSem"><b>Semester</b></label>
-                            <input type="number" class="form-control" id="exampleInputSem" name="semester">
+                            <input type="number" required class="form-control" id="exampleInputSem" name="sem">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputYear"><b>Year</b></label>
-                            <input type="year" class="form-control" id="exampleInputYear" name="year">
+                            <input type="year" required class="form-control" id="exampleInputYear" name="year">
                         </div>
-                        <div class="custom-control custom-checkbox custom-control-inline">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                        <!-- <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="customCheck1" name="checkedAll" checked>
                             <label class="custom-control-label" for="customCheck1">All</label>
                         </div>
-                        <div class="custom-control custom-checkbox custom-control-inline">
+                         -->
+                        <!-- <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" class="custom-control-input" id="customCheck2">
                             <label class="custom-control-label" for="customCheck2">COMP</label>
                         </div>
@@ -54,35 +55,34 @@ include('../includes/header.php');
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" class="custom-control-input" id="customCheck6">
                             <label class="custom-control-label" for="customCheck6">ETRX</label>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>Start Date</b></label>
-                                    <input type="date" class="form-control" id="exampleInputStartDate" name="start_date">
+                                    <input type="date" required class="form-control" id="exampleInputStartDate" name="start_date">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>Start Time</b></label>
-                                    <input type="time" class="form-control" id="exampleInputStartDate" name="start_time">
+                                    <input type="time" required class="form-control" id="exampleInputStartTime" name="start_time">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>End Date</b></label>
-                                    <input type="date" class="form-control" id="exampleInputStartDate" name="end_date">
+                                    <input type="date" required class="form-control" id="exampleInputEndDate" name="end_date">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-check-label" for="exampleInputStartDate"><b>End Time</b></label>
-                                    <input type="time" class="form-control" id="exampleInputStartDate" name="end_time">
+                                    <input type="time" required class="form-control" id="exampleInputEndTime" name="end_time">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary align-center" name="submit">Submit</button>
-                            <button type="modify" class="btn btn-primary align-center" name="modify">Modify</button>
+                            <button type="submit" class="btn btn-primary align-center" name="createForm">Create Form</button>
                         </div>
-
                     </form>
+
                 </div>
             </div>
         </div>
@@ -98,7 +98,6 @@ include('../includes/header.php');
                             <th>End Date</th>
                             <th>End Time</th>
                             <th>No of Preferences</th>
-                            <th>Branches</th>
                             <th>Form Status</th>
                             <th>Action</th>
                         </tr>
@@ -112,31 +111,58 @@ include('../includes/header.php');
                             <th>End Date</th>
                             <th>End Time</th>
                             <th>No of Preferences</th>
-                            <th>Branches</th>
                             <th>Form Status</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+
+                        <?php
+                        include_once('../config.php');
+                        $sql = "SELECT sem,year,start_timestamp,end_timestamp,no_of_preferences FROM form WHERE form_type='idc'";
+
+                        $result = mysqli_query($conn, $sql);
+                        if (mysqli_num_rows($result) > 0) {
+                            $count = 500;
+
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $status = "Not opened yet";
+                                date_default_timezone_set('Asia/Kolkata');
+                                $timestamp=date("Y-m-d H:i");
+                                $start_timestamp = $row['start_timestamp'];
+                                $end_timestamp = $row['end_timestamp'];
+                                if($timestamp>=$start_timestamp){
+                                    if($timestamp<$end_timestamp){
+                                        $status="Open";
+                                    }else{
+                                        $status="Closed";
+                                    }
+                                }
+                                $sArr = explode(" ", $start_timestamp);
+                                $start_date = $sArr[0];
+                                $start_time = $sArr[1];
+                                $eArr = explode(" ", $end_timestamp);
+                                $end_date = $eArr[0];
+                                $end_time = $eArr[1];
+                                echo '
+                            <tr>
+                            <td>' . $row['sem'] . '</td>
+                            <td>' . $row['year'] . '</td>
+                            <td>' . date("d-M-Y", strtotime($start_date)) . '</td>
+                            <td>' . $start_time . '</td>
+                            <td>' . date("d-M-Y", strtotime($end_date)) . '</td>
+                            <td>' . $end_time . '</td>
+                            <td>' . $row['no_of_preferences'] . '</td>
+                            <td>' . $status . '</td>
                             <td>
 
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter">
+                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
                                     <i class="fas fa-tools"></i>
                                 </button>
 
                                 <!-- Modal -->
-                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                                <div class="modal fade" id="exampleModalCenter' . $count . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -148,20 +174,20 @@ include('../includes/header.php');
                                             <div class="modal-body">
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                        <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
-                                                        <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
+                                                        <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
+                                                        <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update' . $count . '" role="tab" aria-controls="nav-update' . $count . '" aria-selected="false">Update</a>
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">
                                                     <!--Deletion-->
-                                                    <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
-                                                        <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
+                                                    <div class="tab-pane fade show active" id="nav-delete' . $count . '" role="tabpanel" aria-labelledby="nav-delete-tab">
+                                                        <form action="ic_queries/prepare_form_idc_queries.php" method="POST">
                                                             <div class="form-group">
                                                                 <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
                                                                 </label>
                                                                 <br>
-                                                                <input type="hidden" name="sem" value="">
-                                                                <input type="hidden" name="year" value="">
+                                                                <input type="hidden" name="sem" value="' . $row['sem'] . '">
+                                                                <input type="hidden" name="year" value="' . $row['year'] . '">
                                                                 <button type="submit" class="btn btn-primary" name="deleteForm">Yes</button>
                                                                 <button type="button" class="btn btn-secondary" name="no">No</button>
                                                             </div>
@@ -169,21 +195,22 @@ include('../includes/header.php');
                                                     </div>
                                                     <!--end Deletion-->
                                                     <!--Update-->
-                                                    <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
-                                                        <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
+                                                    <div class="tab-pane fade" id="nav-update' . $count . '" role="tabpanel" aria-labelledby="nav-update-tab">
+                                                        <form action="ic_queries/prepare_form_idc_queries.php" method="POST">
                                                             <div class="form-group">
                                                                 <label for="exampleInputPreference"><b>No of Preferences</b></label>
-                                                                <input type="number" required class="form-control" name="nop" value="">
+                                                                <input type="number" required class="form-control" name="nop" value="' . $row['no_of_preferences'] . '">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInputSem"><b>Semester</b></label>
-                                                                <input type="number" required class="form-control" name="sem" value="">
-                                                                <input type="hidden" required class="form-control" name="oldsem" value="">
+                                                                <input type="number" required class="form-control" name="sem" value="' . $row['sem'] . '">
+                                                                <input type="hidden" required class="form-control" name="oldsem" value="' . $row['sem'] . '">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInputYear"><b>Year</b></label>
-                                                                <input type="year" required class="form-control" name="year" value="">
-                                                                <input type="hidden" required class="form-control" name="oldyear" value="">
+                                                                <input type="year" required class="form-control" name="year" value="' . $row['year'] . '">
+                                                                <input type="hidden" required class="form-control" name="oldyear" value="' . $row['year'] . '">
+
                                                             </div>
                                                             <div class="custom-control custom-checkbox custom-control-inline">
                                                                 <input type="checkbox" class="custom-control-input" id="customCheck7">
@@ -213,11 +240,11 @@ include('../includes/header.php');
                                                                 <div class="col-6">
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>Start Date</b></label>
-                                                                        <input type="date" required class="form-control" name="start_date" value="">
+                                                                        <input type="date" required class="form-control" name="start_date" value="' . $start_date . '">
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>Start Time</b></label>
-                                                                        <input type="time" required class="form-control" name="start_time" value="">
+                                                                        <input type="time" required class="form-control"  name="start_time" value="' . $start_time . '">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-6">
@@ -227,7 +254,7 @@ include('../includes/header.php');
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="form-check-label" for="exampleInputStartDate"><b>End Time</b></label>
-                                                                        <input type="time" required class="form-control" name="end_time" value="">
+                                                                        <input type="time" required class="form-control"  name="end_time" value="' . $end_time . '">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -248,6 +275,12 @@ include('../includes/header.php');
                                 </div>
                             </td>
                         </tr>
+                            ';
+                                $count++;
+                            }
+                        }
+                        ?>
+
                     </tbody>
                 </table>
             </div>

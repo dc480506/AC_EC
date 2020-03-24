@@ -127,8 +127,17 @@ include('../includes/header.php');
 
                             while ($row = mysqli_fetch_assoc($result)) {
                                 $status = "Not opened yet";
+                                date_default_timezone_set('Asia/Kolkata');
+                                $timestamp=date("Y-m-d H:i");
                                 $start_timestamp = $row['start_timestamp'];
                                 $end_timestamp = $row['end_timestamp'];
+                                if($timestamp>=$start_timestamp){
+                                    if($timestamp<$end_timestamp){
+                                        $status="Open";
+                                    }else{
+                                        $status="Closed";
+                                    }
+                                }
                                 $sArr = explode(" ", $start_timestamp);
                                 $start_date = $sArr[0];
                                 $start_time = $sArr[1];
