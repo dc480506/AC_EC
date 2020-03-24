@@ -14,10 +14,12 @@ include('../includes/header.php');
         <div class="col-md-12 grid-margin stretch-card mt-2">
              <?php 
                 // inserting the my profile card
-                $sql="SELECT s.fname,s.mname,s.lname,s.email_id,d.dept_name,s.rollno FROM student AS s,department AS d WHERE s.email_id='{$_SESSION['email']}' AND s.dept_id=d.dept_id";
+                $sql="SELECT s.fname,s.mname,s.lname,s.email_id,d.dept_name,s.rollno,s.year_of_admission,s.current_sem FROM student AS s,department AS d WHERE s.email_id='{$_SESSION['email']}' AND s.dept_id=d.dept_id";
                 $result= mysqli_query($conn,$sql);
                 $row= mysqli_fetch_array($result,MYSQLI_ASSOC);
                 $count= mysqli_num_rows($result);
+                $_SESSION['sem']=$row['current_sem'];
+                // $_SESSION['year']=$row['year'];
                 if($count==1)
                 {
             ?>
@@ -64,7 +66,7 @@ include('../includes/header.php');
                             <h5><strong> Audit Course </strong></h5>
                         </p>
                         <?php 
-                        $sql="SELECT ac.cname,sa.sem,ac.no_of_allocated,sa.complete_status FROM audit_course AS ac,student_audit AS sa WHERE sa.email_id='{$_SESSION['email']}' AND sa.cid=ac.cid AND sa.sem=ac.sem AND ac.year=sa.year";
+                        $sql="SELECT ac.cname,sa.sem,ac.no_of_allocated,sa.complete_status,ac.year FROM audit_course AS ac,student_audit AS sa WHERE sa.email_id='{$_SESSION['email']}' AND sa.cid=ac.cid AND sa.sem=ac.sem AND ac.year=sa.year";
                             $result= mysqli_query($conn,$sql);
                             $row= mysqli_fetch_array($result,MYSQLI_ASSOC);
                             $count= mysqli_num_rows($result);
