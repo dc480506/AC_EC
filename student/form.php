@@ -7,7 +7,7 @@ include('../includes/topbar.php');
 $course=array();
 $index=0;
 // TO get timestamp(start as well as end fOr a particular student) OF a FORM
-$sql1 = "SELECT audit_form.start_timestamp,audit_form.end_timestamp,audit_form.no_of_preferences,student.form_filled FROM audit_form INNER JOIN student ON audit_form.sem=student.current_sem AND student.email_id='{$_SESSION['email']}'";
+$sql1 = "SELECT form.start_timestamp,form.end_timestamp,form.no_of_preferences,student.form_filled FROM form INNER JOIN student ON form.sem=student.current_sem AND student.email_id='{$_SESSION['email']}' AND form.form_type='audit'";
 $result1 = mysqli_query($conn, $sql1);
 $row1 = mysqli_fetch_array($result1);
 $_SESSION['no_of_preferences']=$row1['no_of_preferences'];
@@ -40,7 +40,12 @@ else{
 // }
 // $prefer.="pref".$i."";
 // echo $prefer;
-$sql2="SELECT audit_course.cname,audit_course.cid,audit_course.year FROM audit_course LEFT JOIN student ON student.current_sem=audit_course.sem AND student.email_id='{$_SESSION['email']}' EXCEPT SELECT hide_student_audit_course.cname, hide_student_audit_course.cid,hide_student_audit_course.year FROM hide_student_audit_course LEFT JOIN student ON hide_student_audit_course.email_id=student.email_id AND student.current_sem=hide_student_audit_course.sem AND student.email_id='{$_SESSION['email']}'";
+$sql2="SELECT audit_course.cname,audit_course.cid,audit_course.year FROM audit_course 
+      INNER JOIN student ON student.current_sem=audit_course.sem AND student.email_id='{$_SESSION['email']}' 
+      AND student.dept_id IN(SELECT dept_id FROM audit_course_applicable_dept aca 
+                             WHERE aca.cid=audit_course.cid AND aca.sem=audit_course.sem AND aca.year=audit_course.year) 
+      EXCEPT (SELECT hide_student_audit_course.cname, hide_student_audit_course.cid,hide_student_audit_course.year FROM hide_student_audit_course 
+              LEFT JOIN student ON hide_student_audit_course.email_id=student.email_id AND student.current_sem=hide_student_audit_course.sem AND student.email_id='{$_SESSION['email']}')";
 $result2 = mysqli_query($conn, $sql2);
 while($row2 = mysqli_fetch_array($result2))
 {

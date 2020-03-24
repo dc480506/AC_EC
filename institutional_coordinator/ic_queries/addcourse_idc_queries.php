@@ -7,10 +7,10 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $cid=mysqli_escape_string($conn,$_POST['cid']);
         $sem=mysqli_escape_string($conn,$_POST['sem']);
         $year=mysqli_escape_string($conn,$_POST['year']);
-        $sql="DELETE FROM audit_course WHERE cid='$cid' AND sem='$sem' AND year='$year'";
+        $sql="DELETE FROM idc WHERE cid='$cid' AND sem='$sem' AND year='$year'";
         echo $sql;
         mysqli_query($conn,$sql);
-        header("Location: ../addcourse_ac.php");
+        header("Location: ../addcourse_idc.php");
         exit();
     }else if(isset($_POST['update_course'])){
         $cname=mysqli_escape_string($conn,$_POST['coursename']);
@@ -21,10 +21,10 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $year=mysqli_escape_string($conn,$_POST['year']);
         $min=mysqli_escape_string($conn,$_POST['min']);
         $max=mysqli_escape_string($conn,$_POST['max']);
-        $sql="UPDATE audit_course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
+        $sql="UPDATE idc SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
         AND sem='$semold' AND year='$year'";
         mysqli_query($conn,$sql);
-        $sql="SELECT dept_id FROM audit_course_applicable_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year'";
+        $sql="SELECT dept_id FROM idc_applicable_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year'";
         $result=mysqli_query($conn,$sql);
         $delete_dept=array();
         $insert_dept=array();
@@ -64,7 +64,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
             }
             $s=substr($s,0,strlen($s)-1);
             $s.=")";
-            $sql="DELETE FROM audit_course_applicable_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year' AND dept_id IN ($s)";
+            $sql="DELETE FROM idc_applicable_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year' AND dept_id IN ($s)";
             mysqli_query($conn,$sql);
         }
         if(!empty($insert_dept)){
@@ -72,11 +72,11 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         foreach($insert_dept as $u){
            $Values.="('$cidnew','$semnew','$year','$u'),";
         }
-        $sql="INSERT INTO audit_course_applicable_dept VALUES ".substr($Values,0,strlen($Values)-1);
+        $sql="INSERT INTO idc_applicable_dept VALUES ".substr($Values,0,strlen($Values)-1);
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
         }
         
-        header("Location: ../addcourse_ac.php");
+        header("Location: ../addcourse_idc.php");
         exit();
     }else if(isset($_POST['add_course'])){
         $cname=mysqli_escape_string($conn,$_POST['cname']);
@@ -108,15 +108,15 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $email=$_SESSION['email'];
         date_default_timezone_set('Asia/Kolkata');
         $timestamp=date("Y-m-d H:i:s");
-        $sql="INSERT INTO audit_course(`cid`,`sem`,`year`,`cname`,`dept_id`,`min`,`max`,`email_id`,`timestamp`) VALUES('$cid','$sem','$year','$cname','$dept_id','$min','$max','$email','$timestamp')";
+        $sql="INSERT INTO idc(`cid`,`sem`,`year`,`cname`,`dept_id`,`min`,`max`,`email_id`,`timestamp`) VALUES('$cid','$sem','$year','$cname','$dept_id','$min','$max','$email','$timestamp')";
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
         $Values="";
         foreach($_POST['check_dept'] as $u){
            $Values.="('$cid','$sem','$year','$u'),";
         };
-        $sql="INSERT INTO audit_course_applicable_dept VALUES ".substr($Values,0,strlen($Values)-1);
+        $sql="INSERT INTO idc_applicable_dept VALUES ".substr($Values,0,strlen($Values)-1);
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
-        header("Location: ../addcourse_ac.php");
+        header("Location: ../addcourse_idc.php");
     }
 }
 ?>
