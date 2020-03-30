@@ -24,12 +24,16 @@ include('../includes/header.php');
                             <input type="number" required class="form-control" id="exampleInputPreference" name="nop">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputSem"><b>Semester</b></label>
-                            <input type="number" required class="form-control" id="exampleInputSem" name="sem">
+                            <label for="exampleInputSem"><b>Floating Semester</b></label>
+                            <input type="number" required class="form-control" id="exampleInputSem" onkeyup="defaultOpenSemVal()" name="sem">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputYear"><b>Year</b></label>
                             <input type="year" required class="form-control" id="exampleInputYear" name="year">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputCurrSem"><b>Opening Semester</b></label>
+                            <input type="number" required class="form-control" id="exampleInputCurrSem" name="curr_sem">
                         </div>
                         <!-- <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" class="custom-control-input" id="customCheck1" name="checkedAll" checked>
@@ -91,8 +95,9 @@ include('../includes/header.php');
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Semester</th>
+                            <th>Floating Sem</th>
                             <th>Year</th>
+                            <th>Opening Sem</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
                             <th>End Date</th>
@@ -104,8 +109,9 @@ include('../includes/header.php');
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>Semester</th>
+                            <th>Floating Sem</th>
                             <th>Year</th>
+                            <th>Opening Sem</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
                             <th>End Date</th>
@@ -119,7 +125,7 @@ include('../includes/header.php');
 
                         <?php
                         include_once('../config.php');
-                        $sql = "SELECT sem,year,start_timestamp,end_timestamp,no_of_preferences FROM form WHERE form_type='idc'";
+                        $sql = "SELECT sem,year,curr_sem,start_timestamp,end_timestamp,no_of_preferences FROM form WHERE form_type='idc'";
 
                         $result = mysqli_query($conn, $sql);
                         if (mysqli_num_rows($result) > 0) {
@@ -148,6 +154,7 @@ include('../includes/header.php');
                             <tr>
                             <td>' . $row['sem'] . '</td>
                             <td>' . $row['year'] . '</td>
+                            <td>' . $row['curr_sem'] . '</td>
                             <td>' . date("d-M-Y", strtotime($start_date)) . '</td>
                             <td>' . $start_time . '</td>
                             <td>' . date("d-M-Y", strtotime($end_date)) . '</td>
@@ -211,6 +218,11 @@ include('../includes/header.php');
                                                                 <input type="year" required class="form-control" name="year" value="' . $row['year'] . '">
                                                                 <input type="hidden" required class="form-control" name="oldyear" value="' . $row['year'] . '">
 
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputCurrSem"><b>Semester</b></label>
+                                                                <input type="number" required class="form-control" name="curr_sem" value="' . $row['curr_sem'] . '">
+                                    
                                                             </div>
                                                             <div class="custom-control custom-checkbox custom-control-inline">
                                                                 <input type="checkbox" class="custom-control-input" id="customCheck7">
@@ -288,7 +300,15 @@ include('../includes/header.php');
     </div>
 
     <!-- /.container-fluid -->
-
+    <script>
+      function defaultOpenSemVal(){
+        newval=document.querySelector("#exampleInputSem").value-1;
+        if(newval<0)
+          document.querySelector("#exampleInputCurrSem").value="";
+        else
+          document.querySelector("#exampleInputCurrSem").value=newval;
+      }
+    </script>
     <?php include('../includes/footer.php');
     include('../includes/scripts.php');
     ?>
