@@ -209,7 +209,7 @@ include('../includes/header.php');
                                                                 <input type="number" required class="form-control" name="nop" value="' . $row['no_of_preferences'] . '">
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="exampleInputSem"><b>Semester</b></label>
+                                                                <label for="exampleInputSem"><b>Floating Semester</b></label>
                                                                 <input type="number" required class="form-control" name="sem" value="' . $row['sem'] . '">
                                                                 <input type="hidden" required class="form-control" name="oldsem" value="' . $row['sem'] . '">
                                                             </div>
@@ -220,7 +220,7 @@ include('../includes/header.php');
 
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="exampleInputCurrSem"><b>Semester</b></label>
+                                                                <label for="exampleInputCurrSem"><b>Opening Semester</b></label>
                                                                 <input type="number" required class="form-control" name="curr_sem" value="' . $row['curr_sem'] . '">
                                     
                                                             </div>
