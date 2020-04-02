@@ -6,7 +6,13 @@ include('../includes/header.php');
 
 <?php include('sidebar.php'); ?>
 
-<?php include('../includes/topbar.php'); ?>
+<?php include('../includes/topbar.php'); 
+$fetch_facco_dept="SELECT faculty_coordinator.dept_id,department.dept_name FROM faculty_coordinator,department WHERE faculty_coordinator.email_id='{$_SESSION['email']}' AND faculty_coordinator.dept_id=department.dept_id;";
+$result= mysqli_query($conn,$fetch_facco_dept);
+$row= mysqli_fetch_array($result,MYSQLI_ASSOC);
+$_SESSION['dept_id']=$row['dept_id'];
+$_SESSION['dept_name']=$row['dept_name'];
+?>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
