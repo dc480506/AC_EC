@@ -137,11 +137,16 @@ include('../includes/header.php');
                                 $timestamp=date("Y-m-d H:i");
                                 $start_timestamp = $row['start_timestamp'];
                                 $end_timestamp = $row['end_timestamp'];
+                                $show_allocate=false;
+                                $tabs= '<a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
+                                <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update' . $count . '" role="tab" aria-controls="nav-update' . $count . '" aria-selected="false">Update</a>';
                                 if($timestamp>=$start_timestamp){
                                     if($timestamp<$end_timestamp){
                                         $status="Open";
                                     }else{
                                         $status="Closed";
+                                        $show_allocate=true;
+                                        $tabs.='<a class="nav-item nav-link" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate' . $count . '" role="tab" aria-controls="nav-allocate' . $count . '" aria-selected="false">Allocate</a>';
                                     }
                                 }
                                 $sArr = explode(" ", $start_timestamp);
@@ -181,8 +186,7 @@ include('../includes/header.php');
                                             <div class="modal-body">
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                        <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
-                                                        <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update' . $count . '" role="tab" aria-controls="nav-update' . $count . '" aria-selected="false">Update</a>
+                                                        '.$tabs.'
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">
@@ -275,8 +279,27 @@ include('../includes/header.php');
                                                         <br>
                                                     </div>
                                                     <!--Update end-->
-                                                </div>
-
+                                                ';
+                                                if($show_allocate){
+                                                    echo'
+                                                    <div class="tab-pane fade" id="nav-allocate' . $count . '" role="tabpanel" aria-labelledby="nav-allocate-tab">
+                                                        <form action="ic_queries/allocate_audit.php" method="POST">
+                                                            <div class="form-group">
+                                                                <label for="exampleFormControlSelect3"><b>Are you sure you want to Allocate courses for Semester '.$row['sem'].' and Academic Year '.$row['year'].' ?</b>
+                                                                </label>
+                                                                <br>
+                                                                <input type="hidden" name="sem" value="' . $row['sem'] . '">
+                                                                <input type="hidden" name="year" value="' . $row['year'] . '">
+                                                                <input type="hidden" name="nop" value="' . $row['no_of_preferences'] . '">
+                                                                <button type="submit" class="btn btn-primary" name="allocate">Yes</button>
+                                                                <button type="button" class="btn btn-secondary" name="no">No</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    ';
+                                                }
+                                               echo '
+                                               </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                                     <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>

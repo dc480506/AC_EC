@@ -102,7 +102,7 @@ else{
       AND student.dept_id IN(SELECT dept_id FROM audit_course_applicable_dept aca 
                              WHERE aca.cid=audit_course.cid AND aca.sem=audit_course.sem AND aca.year=audit_course.year) 
       EXCEPT (SELECT hide_student_audit_course.cname, hide_student_audit_course.cid,hide_student_audit_course.year FROM hide_student_audit_course 
-              LEFT JOIN student ON hide_student_audit_course.email_id=student.email_id AND student.current_sem=hide_student_audit_course.sem AND student.email_id='{$_SESSION['email']}')";
+              INNER JOIN student ON hide_student_audit_course.email_id=student.email_id AND hide_student_audit_course.sem='$sem' AND student.email_id='{$_SESSION['email']}')";
 $result2 = mysqli_query($conn, $sql2);
 while($row2 = mysqli_fetch_array($result2))
 {
