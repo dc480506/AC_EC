@@ -13,7 +13,17 @@ include('../includes/header.php');
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row align-items-center">
-                <h1 class="h3 mb-4 text-gray-800">Allocation : Semester 5 and Academic Year 2019-20 </h1>
+                <div class="col">
+                    <h4 class="font-weight-bold text-primary mb-0">Allocation : Semester 5 and Academic Year 2019-20</h4>
+                </div>
+                <div class="col text-right">
+                    <a href="#" class="btn btn-danger btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <span class="text">Cancel Allocation</span>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="modal-body">
