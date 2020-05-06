@@ -81,24 +81,6 @@
   </li>
 
   <!-- Divider -->
-  <hr class="sidebar-divider">
-
-  <li class="nav-item">
-    <a class="nav-link" href="analysis.php">
-      <i class="fas fa-chart-area"></i>
-      <span>Analysis</span></a>
-  </li>
-
-  <hr class="sidebar-divider">
-  <!-- Nav Item - Pages Collapse Menu -->
-  <li class="nav-item">
-    <a class="nav-link" href="allocate.php">
-      <i class="fas fa-plus"></i>
-      <span>Allocate</span></a>
-  </li>
-
-
-  <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
 
   <!-- Sidebar Toggler (Sidebar) -->

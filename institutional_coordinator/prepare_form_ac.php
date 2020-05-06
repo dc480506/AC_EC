@@ -35,31 +35,6 @@ include('../includes/header.php');
                             <label for="exampleInputCurrSem"><b>Opening Semester</b></label>
                             <input type="number" required class="form-control" id="exampleInputCurrSem" name="curr_sem">
                         </div>
-                        <!-- <div class="custom-control custom-checkbox custom-control-inline">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1" name="checkedAll" checked>
-                            <label class="custom-control-label" for="customCheck1">All</label>
-                        </div>
-                         -->
-                        <!-- <div class="custom-control custom-checkbox custom-control-inline">
-                            <input type="checkbox" class="custom-control-input" id="customCheck2">
-                            <label class="custom-control-label" for="customCheck2">COMP</label>
-                        </div>
-                        <div class="custom-control custom-checkbox custom-control-inline">
-                            <input type="checkbox" class="custom-control-input" id="customCheck3">
-                            <label class="custom-control-label" for="customCheck3">IT</label>
-                        </div>
-                        <div class="custom-control custom-checkbox custom-control-inline">
-                            <input type="checkbox" class="custom-control-input" id="customCheck4">
-                            <label class="custom-control-label" for="customCheck4">MECH</label>
-                        </div>
-                        <div class="custom-control custom-checkbox custom-control-inline">
-                            <input type="checkbox" class="custom-control-input" id="customCheck5">
-                            <label class="custom-control-label" for="customCheck5">EXTC</label>
-                        </div>
-                        <div class="custom-control custom-checkbox custom-control-inline">
-                            <input type="checkbox" class="custom-control-input" id="customCheck6">
-                            <label class="custom-control-label" for="customCheck6">ETRX</label>
-                        </div> -->
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
@@ -156,7 +131,11 @@ include('../includes/header.php');
                                 $end_date = $eArr[0];
                                 $end_time = $eArr[1];
                                 echo '
-                            <tr>
+                                <!-- class="table-danger" -- red
+                                     class="table-success" --green
+                                     class="table-secondary" --grey
+                                     class="table-warning" --yellow -->
+                            <tr class="table-danger"">
                             <td>' . $row['sem'] . '</td>
                             <td>' . $row['year'] . '</td>
                             <td>' . $row['curr_sem'] . '</td>
@@ -169,7 +148,8 @@ include('../includes/header.php');
                             <td>
 
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
+                                <!-- Add disabled = "disabled" in button tag to disable the button -->
+                                <button type="button" class="btn btn-primary icon-btn"  data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
                                     <i class="fas fa-tools"></i>
                                 </button>
 
@@ -291,8 +271,8 @@ include('../includes/header.php');
                                                                 <input type="hidden" name="sem" value="' . $row['sem'] . '">
                                                                 <input type="hidden" name="year" value="' . $row['year'] . '">
                                                                 <input type="hidden" name="nop" value="' . $row['no_of_preferences'] . '">
-                                                                <button type="submit" class="btn btn-primary" name="allocate">Yes</button>
-                                                                <button type="button" class="btn btn-secondary" name="no">No</button>
+                                                                <a class="btn btn-primary" href="allocate.php" role="button" name="allocate">Yes</a>
+                                                                <a class="btn btn-primary" href="prepare_form_ac.php" role="button" name="no">No</a>
                                                             </div>
                                                         </form>
                                                     </div>
