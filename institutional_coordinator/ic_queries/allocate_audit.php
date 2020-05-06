@@ -47,15 +47,15 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         }
     }
     echo 'student cid<br>';
-    print_r($student_cid);
+    echo json_encode($student_cid);
     echo '<br>';
     echo '<br>';
     echo 'student unallocated<br>';
-    print_r($unallocated_student);
+    echo json_encode($unallocated_student);
     echo '<br>';
     echo '<br>';
     echo 'Course info<br>';
-    print_r($courses_info_array);
+    echo json_encode($courses_info_array);
     echo '<br>';
     echo '<br>';
 
@@ -77,16 +77,16 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         }
     }
     echo 'Course insufficient<br>';
-    print_r($course_insufficient);
+    echo json_encode($course_insufficient);
     echo '<br>';
     echo '<br>';
     echo 'Unallocated students insufficient<br>';
-    print_r($unallocated_student_insufficient);
+    echo json_encode($unallocated_student_insufficient);
     echo '<br>';
     echo '<br>';
 
     echo 'student cid<br>';
-    print_r($student_cid);
+    echo json_encode($student_cid);
     echo '<br>';
 
     
