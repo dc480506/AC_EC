@@ -72,7 +72,7 @@ include('../includes/header.php');
                         <tr>
                             <th>Floating Sem</th>
                             <th>Year</th>
-                            <th>Opening Sem</th>
+                            <th>Current Sem</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
                             <th>End Date</th>
@@ -86,7 +86,7 @@ include('../includes/header.php');
                         <tr>
                             <th>Floating Sem</th>
                             <th>Year</th>
-                            <th>Opening Sem</th>
+                            <th>Current Sem</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
                             <th>End Date</th>
@@ -100,7 +100,7 @@ include('../includes/header.php');
 
                         <?php
                         include_once('../config.php');
-                        $sql = "SELECT sem,year,curr_sem,start_timestamp,end_timestamp,no_of_preferences FROM form WHERE form_type='audit'";
+                        $sql = "SELECT sem,year,curr_sem,start_timestamp,end_timestamp,no_of_preferences,allocate_status FROM form WHERE form_type='audit'";
 
                         $result = mysqli_query($conn, $sql);
                         if (mysqli_num_rows($result) > 0) {
@@ -113,15 +113,22 @@ include('../includes/header.php');
                                 $start_timestamp = $row['start_timestamp'];
                                 $end_timestamp = $row['end_timestamp'];
                                 $show_allocate=false;
+                                $color='table-warning';
                                 $tabs= '<a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
                                 <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update' . $count . '" role="tab" aria-controls="nav-update' . $count . '" aria-selected="false">Update</a>';
                                 if($timestamp>=$start_timestamp){
                                     if($timestamp<$end_timestamp){
                                         $status="Open";
+                                        $color='table-success';
                                     }else{
                                         $status="Closed";
-                                        $show_allocate=true;
                                         $tabs.='<a class="nav-item nav-link" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate' . $count . '" role="tab" aria-controls="nav-allocate' . $count . '" aria-selected="false">Allocate</a>';
+                                        $color='table-danger';
+                                        $show_allocate=true;
+                                        if($row['allocate_status']==1){
+                                            $status='Already Allocated';
+                                            $color='table-secondary';
+                                        }
                                     }
                                 }
                                 $sArr = explode(" ", $start_timestamp);
@@ -131,11 +138,7 @@ include('../includes/header.php');
                                 $end_date = $eArr[0];
                                 $end_time = $eArr[1];
                                 echo '
-                                <!-- class="table-danger" -- red
-                                     class="table-success" --green
-                                     class="table-secondary" --grey
-                                     class="table-warning" --yellow -->
-                            <tr class="table-danger"">
+                        <tr class="'.$color.'"">
                             <td>' . $row['sem'] . '</td>
                             <td>' . $row['year'] . '</td>
                             <td>' . $row['curr_sem'] . '</td>
@@ -144,7 +147,9 @@ include('../includes/header.php');
                             <td>' . date("d-M-Y", strtotime($end_date)) . '</td>
                             <td>' . $end_time . '</td>
                             <td>' . $row['no_of_preferences'] . '</td>
-                            <td>' . $status . '</td>
+                            <td>' . $status . '</td>';
+                            if($status!='Already Allocated'){
+                                echo'
                             <td>
 
                                 <!-- Button trigger modal -->
@@ -208,30 +213,6 @@ include('../includes/header.php');
                                                                 <input type="number" required class="form-control" name="curr_sem" value="' . $row['curr_sem'] . '">
                                     
                                                             </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck7">
-                                                                <label class="custom-control-label" for="customCheck7">All</label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck8">
-                                                                <label class="custom-control-label" for="customCheck8">COMP</label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck9">
-                                                                <label class="custom-control-label" for="customCheck9">IT</label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck10">
-                                                                <label class="custom-control-label" for="customCheck10">MECH</label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                                                <label class="custom-control-label" for="customCheck11">EXTC</label>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                                                <label class="custom-control-label" for="customCheck12">ETRX</label>
-                                                            </div>
                                                             <div class="row">
                                                                 <div class="col-6">
                                                                     <div class="form-group">
@@ -273,6 +254,10 @@ include('../includes/header.php');
                                                                 <input type="hidden" name="nop" value="' . $row['no_of_preferences'] . '">
                                                                 <a class="btn btn-primary" href="allocate.php" role="button" name="allocate">Yes</a>
                                                                 <a class="btn btn-primary" href="prepare_form_ac.php" role="button" name="no">No</a>
+                                                                <br>
+                                        
+                                                                <button type="submit" class="btn btn-primary" name="deleteForm">Yes</button>
+                                                                <button type="button" class="btn btn-secondary" name="no">No</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -288,9 +273,22 @@ include('../includes/header.php');
                                         </div>
                                     </div>
                                 </div>
+                            </td>';
+                            }else{
+                            echo' 
+                            <td>
+
+                                <!-- Button trigger modal -->
+                                <!-- Add disabled = "disabled" in button tag to disable the button -->
+                                <button type="button" class="btn btn-primary icon-btn" disabled="disabled" data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
+                                    <i class="fas fa-tools"></i>
+                                </button>
                             </td>
-                        </tr>
-                            ';
+                                ';
+                            }
+                        echo '</tr>';
+                        
+                                            
                                 $count++;
                             }
                         }
@@ -315,3 +313,7 @@ include('../includes/header.php');
     <?php include('../includes/footer.php');
     include('../includes/scripts.php');
     ?>
+<!-- class="table-danger" -- red
+    class="table-success" --green
+    class="table-secondary" --grey
+    class="table-warning" --yellow -->
