@@ -164,20 +164,20 @@ include('../includes/header.php');
                                     <label class="custom-control-label" for="customCheck7">All</label>
                                 </div>
                                 <?php
-                          include_once('../config.php');
-                          $sql="SELECT * FROM department";
-                          $result=mysqli_query($conn,$sql);
-                          $c=8;
-                          while($row=mysqli_fetch_assoc($result)){
-                              echo '
+                                include_once('../config.php');
+                                $sql = "SELECT * FROM department";
+                                $result = mysqli_query($conn, $sql);
+                                $c = 8;
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo '
                               <div class="custom-control custom-checkbox custom-control-inline">
-                              <input type="checkbox" class="custom-control-input dept" id="customCheck'.$c.'"  name="check_dept[]" value="'.$row['dept_id'].'">
-                              <label class="custom-control-label" for="customCheck'.$c.'">'.$row['dept_name'].'</label>
+                              <input type="checkbox" class="custom-control-input dept" id="customCheck' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '">
+                              <label class="custom-control-label" for="customCheck' . $c . '">' . $row['dept_name'] . '</label>
                              </div>
                               ';
-                              $c++;
-                          }
-                        ?>
+                                    $c++;
+                                }
+                                ?>
                                 <!-- <div class="custom-control custom-checkbox custom-control-inline">
                                     <input type="checkbox" class="custom-control-input" id="customCheck8">
                                     <label class="custom-control-label" for="customCheck8">COMP</label>
@@ -241,7 +241,8 @@ include('../includes/header.php');
                             <th>Departments Applicable</th>
                             <th>Max</th>
                             <th>Min</th>
-                            <th>Allocated</th>
+                            <th>Students Allocated</th>
+                            <th>Allocate faculty</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -255,17 +256,19 @@ include('../includes/header.php');
                             <th>Departments Applicable</th>
                             <th>Max</th>
                             <th>Min</th>
-                            <th>Allocated</th>
+                            <th>Students Allocated</th>
+                            <th>Allocate faculty</th>
                             <th>Action</th>
+
                         </tr>
                     </tfoot>
                     <tbody>
                         <?php
-                        $sql3="SELECT * FROM department";
-                        $dept_list=array();
-                        $result3=mysqli_query($conn,$sql3);
-                        while($row=mysqli_fetch_assoc($result3)){
-                            array_push($dept_list,$row['dept_id'],$row['dept_name']);
+                        $sql3 = "SELECT * FROM department";
+                        $dept_list = array();
+                        $result3 = mysqli_query($conn, $sql3);
+                        while ($row = mysqli_fetch_assoc($result3)) {
+                            array_push($dept_list, $row['dept_id'], $row['dept_name']);
                         }
                         $sql = "SELECT cname,cid,sem,year,dept_name,max,min,no_of_allocated FROM audit_course NATURAL JOIN department";
                         $result = mysqli_query($conn, $sql);
@@ -273,31 +276,30 @@ include('../includes/header.php');
 
                             $count = 500;
                             while ($row = mysqli_fetch_assoc($result)) {
-                                $checkbox_div="";
-                                $cid=$row['cid'];
-                                $sem=$row['sem'];
-                                $year=$row['year'];
-                                $checked_dept=array();
-                                $applicable_dept="";
-                                $sql2="SELECT dept_id,dept_name FROM audit_course_applicable_dept NATURAL JOIN department WHERE cid='$cid' AND sem='$sem' AND year='$year'";
-                                $result2=mysqli_query($conn,$sql2);
-                                while($row2=mysqli_fetch_assoc($result2)){
-                                    array_push($checked_dept,$row2['dept_id']);
-                                    $applicable_dept.=$row2['dept_name']." , ";
+                                $checkbox_div = "";
+                                $cid = $row['cid'];
+                                $sem = $row['sem'];
+                                $year = $row['year'];
+                                $checked_dept = array();
+                                $applicable_dept = "";
+                                $sql2 = "SELECT dept_id,dept_name FROM audit_course_applicable_dept NATURAL JOIN department WHERE cid='$cid' AND sem='$sem' AND year='$year'";
+                                $result2 = mysqli_query($conn, $sql2);
+                                while ($row2 = mysqli_fetch_assoc($result2)) {
+                                    array_push($checked_dept, $row2['dept_id']);
+                                    $applicable_dept .= $row2['dept_name'] . " , ";
                                 }
-                                $applicable_dept=substr($applicable_dept,0,strlen($applicable_dept)-2);
-                                for($i=0;$i<count($dept_list)-1;$i=$i+2){
-                                    $checkbox_div.='
+                                $applicable_dept = substr($applicable_dept, 0, strlen($applicable_dept) - 2);
+                                for ($i = 0; $i < count($dept_list) - 1; $i = $i + 2) {
+                                    $checkbox_div .= '
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck'.($i+100*$count).'" name="check_dept[]" value="'.$dept_list[$i].'"';
-                                        if(in_array($dept_list[$i],$checked_dept)){
-                                            $checkbox_div.=" checked";
-                                        }
-                                        $checkbox_div.='>
-                                        <label class="custom-control-label" for="customCheck'.($i+100*$count).'">'.$dept_list[$i+1].'</label>
+                                        <input type="checkbox" class="custom-control-input" id="customCheck' . ($i + 100 * $count) . '" name="check_dept[]" value="' . $dept_list[$i] . '"';
+                                    if (in_array($dept_list[$i], $checked_dept)) {
+                                        $checkbox_div .= " checked";
+                                    }
+                                    $checkbox_div .= '>
+                                        <label class="custom-control-label" for="customCheck' . ($i + 100 * $count) . '">' . $dept_list[$i + 1] . '</label>
                                     </div>
                                     ';
-
                                 }
                                 echo '
                                 <tr>
@@ -310,6 +312,88 @@ include('../includes/header.php');
                             <td>' . $row['max'] . '</td>
                             <td>' . $row['min'] . '</td>
                             <td>' . $row['no_of_allocated'] . '</td>
+                            
+                            <td>
+
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter5' . $count . '">
+                                    <i class="fas fa-toolbox"></i>
+                                </button>
+                    
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModalCenter5' . $count . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle5" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalCenterTitle5">Action</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <nav>
+                                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                        <a class="nav-item nav-link active" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate' . $count . '" role="tab" aria-controls="nav-allocate' . $count . '" aria-selected="false">Allocate</a>
+                                                    </div>
+                                                </nav>
+                                                <div class="tab-content" id="nav-tabContent">
+                                                    <!--Allocate-->
+                                                    <div class="tab-pane fade show active" id="nav-allocate' . $count . '" role="tabpanel" aria-labelledby="nav-allocate-tab">
+                                                        <form action="ic_queries/addcourse_queries.php" method="POST">
+                                                            <div class="form-row mt-4">
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="cname"><b>Name</b></label>
+                                                                    <input type="text" class="form-control" required="required" placeholder="New Course Name" name="coursename" value="' . $row['cname'] . '">
+                                                                    
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="courseid"><b>Course ID</b></label>
+                                                                    <input type="text" class="form-control" required="required" placeholder="00000" name="courseidnew" value="' . $row['cid'] . '">
+                                                                    <input type="hidden" class="form-control"  placeholder="00000" name="courseidold" value="' . $row['cid'] . '">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="semester"><b>Semester</b></label>
+                                                                    <input type="text" class="form-control" required="required" placeholder="Semester" name="semnew" value="' . $row['sem'] . '">
+                                                                    <input type="hidden" class="form-control" placeholder="Semester" name="semold" value="' . $row['sem'] . '">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="year"><b>Year</b></label>
+                                                                    <input type="text" class="form-control"  name="year" disabled placeholder="year" value="' . $row['year'] . '">
+                                                                    <input type="hidden" class="form-control"  name="year" placeholder="year" value="' . $row['year'] . '">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="max"><b>Max</b></label>
+                                                                    <input type="number" class="form-control" required="required" name="max" placeholder="120" value="' . $row['max'] . '">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="min"><b>Min</b></label>
+                                                                    <input type="number" class="form-control" required="required" name="min" placeholder="1" value="' . $row['min'] . '">
+                                                                </div>
+                                                            </div>
+                                                            <label for="branch"><b>Branches to opt for</b></label>
+                                                            <br>
+                                                            ' . $checkbox_div . '
+                                                            <br>
+                                                            <button type="submit" class="btn btn-primary" name="update_course">Update</button>
+                                                        </form>
+                                                        <br>
+                                                    </div>
+                                                    <!--Allocate end-->
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                    <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                             <td>
 
                                 <!-- Button trigger modal -->
@@ -390,7 +474,7 @@ include('../includes/header.php');
                                                             </div>
                                                             <label for="branch"><b>Branches to opt for</b></label>
                                                             <br>
-                                                            '.$checkbox_div.'
+                                                            ' . $checkbox_div . '
                                                             <br>
                                                             <button type="submit" class="btn btn-primary" name="update_course">Update</button>
                                                         </form>
@@ -410,7 +494,7 @@ include('../includes/header.php');
                             </td>
                         </tr>';
 
-                                
+
                                 $count++;
                             }
                         }
@@ -434,43 +518,43 @@ include('../includes/header.php');
             document.querySelector("#map_section").style.display = "none";
         }
     }
-    dept_checkbox=document.querySelectorAll(".dept");
-    
-    if(document.querySelector("#customCheck7").checked){
-        for (i=0;i<dept_checkbox.length;i++){
-                dept_checkbox[i].checked=true;
-            }
+    dept_checkbox = document.querySelectorAll(".dept");
+
+    if (document.querySelector("#customCheck7").checked) {
+        for (i = 0; i < dept_checkbox.length; i++) {
+            dept_checkbox[i].checked = true;
+        }
     }
-    all_cbox=document.querySelector("#customCheck7")
-    for(i=0;i<dept_checkbox.length;i++){
-        dept_checkbox[i].addEventListener("click",function(){
-            if(!this.checked && all_cbox.checked){
-                all_cbox.checked=false;
+    all_cbox = document.querySelector("#customCheck7")
+    for (i = 0; i < dept_checkbox.length; i++) {
+        dept_checkbox[i].addEventListener("click", function() {
+            if (!this.checked && all_cbox.checked) {
+                all_cbox.checked = false;
             }
-            if(this.checked){
-                p=true;
-                for(i=0;i<dept_checkbox.length;i++){
-                    if(!dept_checkbox[i].checked){
-                        p=false
+            if (this.checked) {
+                p = true;
+                for (i = 0; i < dept_checkbox.length; i++) {
+                    if (!dept_checkbox[i].checked) {
+                        p = false
                         break;
                     }
                 }
-                if(p){
-                    all_cbox.checked=true;
+                if (p) {
+                    all_cbox.checked = true;
                 }
             }
         })
     }
-    all_cbox.addEventListener("click",function(){
-        if(this.checked){
+    all_cbox.addEventListener("click", function() {
+        if (this.checked) {
             //Check all boxes
-            for (i=0;i<dept_checkbox.length;i++){
-                dept_checkbox[i].checked=true;
+            for (i = 0; i < dept_checkbox.length; i++) {
+                dept_checkbox[i].checked = true;
             }
-        }else{
+        } else {
             //Uncheck all boxes
-            for (i=0;i<dept_checkbox.length;i++){
-                dept_checkbox[i].checked=false;
+            for (i = 0; i < dept_checkbox.length; i++) {
+                dept_checkbox[i].checked = false;
             }
         }
     })
