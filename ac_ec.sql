@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2020 at 08:26 PM
+-- Generation Time: May 07, 2020 at 07:20 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.5
 
@@ -52,7 +52,7 @@ INSERT INTO `audit_course` (`cid`, `sem`, `year`, `cname`, `dept_id`, `min`, `ma
 ('UCEC7636', 6, '2019-20', 'DBMS', 1, 30, 80, 0, 'IC@somaiya.edu', '2020-03-31 01:07:27'),
 ('UCEC7637', 6, '2019-20', 'BCT', 2, 30, 40, 0, 'IC@somaiya.edu', '2020-03-31 01:08:42'),
 ('UCEC7638', 6, '2019-20', 'Business Analytics', 2, 40, 50, 0, 'IC@somaiya.edu', '2020-03-31 01:09:36'),
-('UCEC764272', 5, '2019-20', 'JHSKSN', 1, 30, 70, 0, 'facco_comp@somaiya.edu', '2020-05-04 18:40:43'),
+('UCEC7845', 4, '2018-19', 'AVY', 1, 30, 40, 0, 'IC@somaiya.edu', '2020-05-07 16:16:25'),
 ('UCEC8950', 6, '2019-20', 'Python for Data Science', 1, 30, 40, 0, 'IC@somaiya.edu', '2020-03-24 01:01:25'),
 ('UCEC8951', 5, '2019-20', 'PQR', 3, 20, 40, 0, 'IC@somaiya.edu', '2020-03-24 18:03:34'),
 ('UCEC8952', 5, '2019-20', 'UVW', 5, 20, 30, 0, 'IC@somaiya.edu', '2020-03-24 18:04:59'),
@@ -109,11 +109,11 @@ INSERT INTO `audit_course_applicable_dept` (`cid`, `sem`, `year`, `dept_id`) VAL
 ('UCEC7638', 6, '2019-20', 2),
 ('UCEC7638', 6, '2019-20', 3),
 ('UCEC7638', 6, '2019-20', 5),
-('UCEC764272', 5, '2019-20', 1),
-('UCEC764272', 5, '2019-20', 2),
-('UCEC764272', 5, '2019-20', 3),
-('UCEC764272', 5, '2019-20', 4),
-('UCEC764272', 5, '2019-20', 5),
+('UCEC7845', 4, '2018-19', 1),
+('UCEC7845', 4, '2018-19', 2),
+('UCEC7845', 4, '2018-19', 3),
+('UCEC7845', 4, '2018-19', 4),
+('UCEC7845', 4, '2018-19', 5),
 ('UCEC8950', 6, '2019-20', 1),
 ('UCEC8950', 6, '2019-20', 2),
 ('UCEC8951', 5, '2019-20', 1),
@@ -171,7 +171,7 @@ CREATE TABLE `audit_course_log` (
   `max` int(11) NOT NULL,
   `no_of_allocated` int(11) NOT NULL,
   `email_id` varchar(50) NOT NULL,
-  `timestamp` varchar(15) NOT NULL
+  `timestamp` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -179,7 +179,8 @@ CREATE TABLE `audit_course_log` (
 --
 
 INSERT INTO `audit_course_log` (`cid`, `sem`, `year`, `cname`, `dept_id`, `min`, `max`, `no_of_allocated`, `email_id`, `timestamp`) VALUES
-('UCEC123', 5, '2019', 'Python', 1, 45, 60, 25, 'IC@somaiya.edu', '4545');
+('UCEC123', 5, '2019', 'Python', 1, 45, 60, 25, 'IC@somaiya.edu', '4545'),
+('UCEC878', 3, '2018-19', 'ABC2', 1, 30, 40, 35, 'IC@somaiya.edu', '454545');
 
 -- --------------------------------------------------------
 
@@ -195,6 +196,14 @@ CREATE TABLE `audit_map` (
   `oldsem` int(11) NOT NULL,
   `oldyear` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `audit_map`
+--
+
+INSERT INTO `audit_map` (`newcid`, `newsem`, `newyear`, `oldcid`, `oldsem`, `oldyear`) VALUES
+('UCEC121', 5, '2019-20', 'UCEC878', 3, '2018-19'),
+('UCEC8958', 5, '2019-20', 'UCEC7845', 4, '2018-19');
 
 -- --------------------------------------------------------
 
@@ -413,9 +422,12 @@ CREATE TABLE `form` (
 --
 
 INSERT INTO `form` (`sem`, `year`, `no`, `form_type`, `curr_sem`, `start_timestamp`, `end_timestamp`, `timestamp_created`, `email_id`, `no_of_preferences`, `allocate_status`) VALUES
-(5, '2019-20', 0, 'audit', 4, '2020-05-04 07:00', '2020-05-04 17:00', '2020-05-04 18:47:28', 'IC@somaiya.edu', 4, 0),
+(5, '2019-20', 0, 'audit', 4, '2020-05-08 02:00', '2020-05-09 01:00', '2020-05-07 16:33:17', 'IC@somaiya.edu', 4, 0),
 (5, '2019-20', 0, 'idc', 4, '2020-03-30 02:00', '2020-04-04 00:02', '2020-03-31 16:14:32', 'IC@somaiya.edu', 3, 0),
-(7, '2019-20', 0, 'idc', 6, '2020-04-09 04:00', '2020-04-16 11:00', '2020-04-06 21:55:50', 'IC@somaiya.edu', 6, 0);
+(6, '2019-20', 0, 'audit', 5, '2020-05-07 02:00', '2020-05-10 13:00', '2020-05-06 14:32:15', 'IC@somaiya.edu', 6, 0),
+(7, '2019-20', 0, 'audit', 6, '2020-05-01 02:00', '2020-05-03 13:00', '2020-05-06 14:49:36', 'IC@somaiya.edu', 3, 0),
+(7, '2019-20', 0, 'idc', 6, '2020-04-09 04:00', '2020-04-16 11:00', '2020-04-06 21:55:50', 'IC@somaiya.edu', 6, 0),
+(8, '2019-20', 0, 'audit', 7, '2020-05-02 01:00', '2020-05-04 13:00', '2020-05-05 19:52:20', 'IC@somaiya.edu', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -437,7 +449,8 @@ CREATE TABLE `hide_student_audit_course` (
 
 INSERT INTO `hide_student_audit_course` (`email_id`, `cid`, `sem`, `year`, `cname`) VALUES
 ('student2@somaiya.edu', 'UCEC7637', 6, '2019-20', 'BCT'),
-('student@somaiya.edu', 'UCEC121', 5, '2019-20', 'ABC');
+('student@somaiya.edu', 'UCEC121', 5, '2019-20', 'ABC'),
+('student@somaiya.edu', 'UCEC8958', 5, '2019-20', 'GHI');
 
 -- --------------------------------------------------------
 
@@ -643,6 +656,13 @@ CREATE TABLE `student_audit` (
   `student_attendance` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `student_audit`
+--
+
+INSERT INTO `student_audit` (`email_id`, `cid`, `sem`, `year`, `complete_status`, `student_attendance`) VALUES
+('student@somaiya.edu', 'UCEC7845', 4, '2018-19', 0, 70);
+
 -- --------------------------------------------------------
 
 --
@@ -663,7 +683,7 @@ CREATE TABLE `student_audit_log` (
 --
 
 INSERT INTO `student_audit_log` (`email_id`, `cid`, `sem`, `year`, `complete_status`, `student_attendence`) VALUES
-('student@somaiya.edu', 'UCEC123', 5, '2019', 1, 55);
+('student@somaiya.edu', 'UCEC878', 3, '2018-19', 1, 70);
 
 -- --------------------------------------------------------
 
@@ -685,9 +705,7 @@ CREATE TABLE `student_form` (
 --
 
 INSERT INTO `student_form` (`sem`, `year`, `no`, `form_type`, `email_id`, `timestamp`) VALUES
-(6, '2019-20', 0, 'audit', 'student2@somaiya.edu', '2020-03-31 15:49:27'),
-(5, '2019-20', 0, 'audit', 'student3@somaiya.edu', '2020-05-04 21:59:28'),
-(5, '2019-20', 0, 'audit', 'student@somaiya.edu', '2020-05-04 21:57:45');
+(5, '2019-20', 0, 'audit', 'student3@somaiya.edu', '2020-05-05 20:00:45');
 
 -- --------------------------------------------------------
 
@@ -714,9 +732,7 @@ CREATE TABLE `student_preference_audit` (
 --
 
 INSERT INTO `student_preference_audit` (`email_id`, `sem`, `year`, `timestamp`, `allocate_status`, `no_of_valid_preferences`, `pref1`, `pref2`, `pref3`, `pref4`, `pref5`) VALUES
-('student2@somaiya.edu', 6, '2019-20', '2020-03-31 15:49:27', 0, 3, 'UCEC8950', 'UCEC9874', 'UCEC7636', '', ''),
-('student3@somaiya.edu', 5, '2019-20', '2020-05-04 21:59:28', 0, 4, 'UCEC67398', 'UCEC121', 'UCEC8953', 'UCEC8952', ''),
-('student@somaiya.edu', 5, '2019-20', '2020-05-04 21:57:45', 0, 4, 'UCEC67398', 'UCEC8951', 'UCEC4896', 'UCEC8952', '');
+('student2@somaiya.edu', 6, '2019-20', '2020-03-31 15:49:27', 0, 3, 'UCEC8950', 'UCEC9874', 'UCEC7636', '', '');
 
 -- --------------------------------------------------------
 
@@ -977,12 +993,6 @@ ALTER TABLE `audit_course_applicable_dept`
 ALTER TABLE `audit_course_applicable_dept_log`
   ADD CONSTRAINT `audit_course_applicable_audit_course_log` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `audit_course_log` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `audit_course_applicable_dept` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `audit_map`
---
-ALTER TABLE `audit_map`
-  ADD CONSTRAINT `audit_map_audit_course_log` FOREIGN KEY (`oldcid`,`oldsem`,`oldyear`) REFERENCES `audit_course_log` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `external_faculty_certification`

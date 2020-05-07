@@ -29,11 +29,17 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
 
 
         //for hide_student audit course
+        // $sql="INSERT INTO hide_student_audit_course (`email_id`,`cid`,`sem`,`year`,`cname`) 
+        // SELECT s.email_id,a.newcid,a.newsem,a.newyear,ac.cname from student_audit_log as s 
+        // inner join (audit_course_log as i inner join audit_map as a 
+        // on i.cid=a.oldcid and i.sem=a.oldsem and i.year=a.oldyear) on s.cid=i.cid 
+        // inner join audit_course as ac on ac.cid=a.newcid";
         $sql="INSERT INTO hide_student_audit_course (`email_id`,`cid`,`sem`,`year`,`cname`) 
-        SELECT s.email_id,a.newcid,a.newsem,a.newyear,ac.cname from student_audit_log as s 
-        inner join (audit_course_log as i inner join audit_map as a 
-        on i.cid=a.oldcid and i.sem=a.oldsem and i.year=a.oldyear) on s.cid=i.cid 
-        inner join audit_course as ac on ac.cid=a.newcid";
+        SELECT s.email_id,a.newcid,a.newsem,a.newyear,ac.cname from audit_map as a 
+        inner join (SELECT email_id,cid,sem,year FROM student_audit 
+        UNION ALL SELECT email_id,cid,sem,year FROM student_audit_log) as s
+        ON s.cid=a.oldcid AND s.sem=a.oldsem AND s.year=a.oldyear AND a.newsem='$sem' AND a.newyear='$year'
+        INNER JOIN audit_course as ac ON ac.cid= a.newcid";
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 
