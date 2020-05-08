@@ -39,7 +39,8 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
         inner join (SELECT email_id,cid,sem,year FROM student_audit 
         UNION ALL SELECT email_id,cid,sem,year FROM student_audit_log) as s
         ON s.cid=a.oldcid AND s.sem=a.oldsem AND s.year=a.oldyear AND a.newsem='$sem' AND a.newyear='$year'
-        INNER JOIN audit_course as ac ON ac.cid= a.newcid";
+        INNER JOIN audit_course as ac ON ac.cid= a.newcid
+        EXCEPT SELECT email_id,cid,sem,year,cname FROM hide_student_audit_course WHERE sem='$sem' AND year='$year'";
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 
