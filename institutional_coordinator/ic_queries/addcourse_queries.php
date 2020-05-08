@@ -116,6 +116,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         };
         $sql="INSERT INTO audit_course_applicable_dept VALUES ".substr($Values,0,strlen($Values)-1);
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
         header("Location: ../addcourse_ac.php");
     }
 }

@@ -26,6 +26,24 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
         $sql="INSERT INTO form (`sem`,`year`,`no`,`form_type`,`curr_sem`,`email_id`,`timestamp_created`,`start_timestamp`,`end_timestamp`,`no_of_preferences`) 
         VALUES('$sem','$year','$no','$type','$curr_sem','$email','$timestamp','$start_timestamp','$end_timestamp','$nop')";
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+
+        //for hide_student audit course
+        // $sql="INSERT INTO hide_student_audit_course (`email_id`,`cid`,`sem`,`year`,`cname`) 
+        // SELECT s.email_id,a.newcid,a.newsem,a.newyear,ac.cname from student_audit_log as s 
+        // inner join (audit_course_log as i inner join audit_map as a 
+        // on i.cid=a.oldcid and i.sem=a.oldsem and i.year=a.oldyear) on s.cid=i.cid 
+        // inner join audit_course as ac on ac.cid=a.newcid";
+        $sql="INSERT INTO hide_student_audit_course (`email_id`,`cid`,`sem`,`year`,`cname`) 
+        SELECT s.email_id,a.newcid,a.newsem,a.newyear,ac.cname from audit_map as a 
+        inner join (SELECT email_id,cid,sem,year FROM student_audit 
+        UNION ALL SELECT email_id,cid,sem,year FROM student_audit_log) as s
+        ON s.cid=a.oldcid AND s.sem=a.oldsem AND s.year=a.oldyear AND a.newsem='$sem' AND a.newyear='$year'
+        INNER JOIN audit_course as ac ON ac.cid= a.newcid";
+        mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+
+
         header("Location: ../prepare_form_ac.php");
     }else if(isset($_POST['deleteForm'])){
         $sem=mysqli_escape_string($conn,$_POST['sem']);

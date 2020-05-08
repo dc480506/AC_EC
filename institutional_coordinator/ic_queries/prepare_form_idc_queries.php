@@ -26,6 +26,17 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
         $sql="INSERT INTO form (`sem`,`year`,`no`,`form_type`,`curr_sem`,`email_id`,`timestamp_created`,`start_timestamp`,`end_timestamp`,`no_of_preferences`) 
         VALUES('$sem','$year','$no','$type','$curr_sem','$email','$timestamp','$start_timestamp','$end_timestamp','$nop')";
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+        //for hide_student IDC
+        // $sql="INSERT INTO hide_student_idc (`email_id`,`cid`,`sem`,`year`,`cname`) 
+        // SELECT s.email_id,a.newcid,a.newsem,a.newyear,ac.cname from student_idc_log as s 
+        // inner join (idc_log as i inner join idc_map as a 
+        // on i.cid=a.oldcid and i.sem=a.oldsem and i.year=a.oldyear) on s.cid=i.cid 
+        // inner join idc as ac on ac.cid=a.newcid";
+        // mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+
+
         header("Location: ../prepare_form_idc.php");
     }else if(isset($_POST['deleteForm'])){
         $sem=mysqli_escape_string($conn,$_POST['sem']);
