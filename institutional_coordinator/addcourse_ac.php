@@ -206,7 +206,7 @@ include('../includes/header.php');
                                 <div id="map_section" style="display: none;">
                                 <!-- <input type="hidden" value="0" id="total_prev" name="total_prev"> -->
                                     <!-- <div id="map_sec1" style="display :none;"> -->
-                                        <h5 class="modal-title">Previous Course 1</h5>
+                                        <!-- <h5 class="modal-title">Previous Course 1</h5>
                                         <div class="form-group" id="previous_field1" style="display: block;">
                                             <label for="previous_field1"><b>Course ID</b></label>
                                             <input type="text" class="form-control" id="previous_id1" name="prevcid1" placeholder="Course Id">
@@ -218,13 +218,13 @@ include('../includes/header.php');
                                         <div class="form-group" id="previous_field3" style="display: block;">
                                             <label for="previous_field3"><b>Previous Year</b></label>
                                             <input type="text" class="form-control" id="previous_year1" name="prevyear1" placeholder="Previous Year">
-                                        </div>
+                                        </div> -->
                                     <!-- </div> -->
                                 </div>
                                 <BR>
                                 <button type="button" class="add_prev" style="display: none;">Add More Previous Course</button>
                                 <button type="button" class="rem_prev" style="display: none;">Remove the Previous Course</button>
-                                <input type="hidden" value="1" id="total_prev" name="total_prev">
+                                <input type="hidden" value="0" id="total_prev" name="total_prev">
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
@@ -577,8 +577,10 @@ include('../includes/header.php');
 
 <script type="text/javascript">
 // previous course details
+    // var new_prev_no=1;
     $('.add_prev').on('click',add);
     $('.rem_prev').on('click',rem);
+    
     function add(){
         var new_prev_no = parseInt($('#total_prev').val()) + 1;
         var new_input=`<div id="prev_`+new_prev_no+`">
@@ -606,7 +608,7 @@ include('../includes/header.php');
 
     function rem(){
         var last_prev_no=$('#total_prev').val();
-        if(last_prev_no > 1){
+        if(last_prev_no > 0){
             $('#prev_' + last_prev_no).remove();
             $('#total_prev').val(last_prev_no - 1);
         }

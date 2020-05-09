@@ -86,27 +86,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $dept_name=mysqli_escape_string($conn,$_POST['dept']);
         $max=mysqli_escape_string($conn,$_POST['max']);
         $min=mysqli_escape_string($conn,$_POST['min']);
-        if(isset($_POST['map_cbox'])){
-            // $prevcid=mysqli_escape_string($conn,$_POST['prevcid']);
-            // $prevsem=mysqli_escape_string($conn,$_POST['prevsem']);
-            // $prevyear=mysqli_escape_string($conn,$_POST['prevyear']);
-            $total_prev=mysqli_escape_string($conn,$_POST['total_prev']);
-            // echo $total_prev;
-            $temp=1;
-            for($i=0;$i<$total_prev;$i++){
-                $prevcid=mysqli_escape_string($conn,$_POST['prevcid'.$temp]);
-                $prevsem=mysqli_escape_string($conn,$_POST['prevsem'.$temp]);
-                $prevyear=mysqli_escape_string($conn,$_POST['prevyear'.$temp]);
-                $sql="INSERT into audit_map VALUES('$cid','$sem','$year','$prevcid','$prevsem','$prevyear')";
-                $result=mysqli_query($conn,$sql);
-                $row=mysqli_fetch_assoc($result);
-                // echo ''.$prevcid.'';
-                $temp++;
-            }
-            // $sql="INSERT into audit_map VALUES('$cid','$sem','$year','$prevcid','$prevsem','$prevyear')";
-            // $result=mysqli_query($conn,$sql);
-            // $row=mysqli_fetch_assoc($result);
-        }
+        
         // echo $cname."<br>";
         // echo $cid."<br>";
         // echo $sem."<br>";
@@ -132,6 +112,30 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         };
         $sql="INSERT INTO audit_course_applicable_dept VALUES ".substr($Values,0,strlen($Values)-1);
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+        if(isset($_POST['map_cbox'])){
+            // $prevcid=mysqli_escape_string($conn,$_POST['prevcid']);
+            // $prevsem=mysqli_escape_string($conn,$_POST['prevsem']);
+            // $prevyear=mysqli_escape_string($conn,$_POST['prevyear']);
+            $total_prev=mysqli_escape_string($conn,$_POST['total_prev']);
+            // echo $total_prev;
+            $temp=1;
+            $tuples="";
+            for($i=0;$i<$total_prev;$i++){
+                $prevcid=mysqli_escape_string($conn,$_POST['prevcid'.$temp]);
+                $prevsem=mysqli_escape_string($conn,$_POST['prevsem'.$temp]);
+                $prevyear=mysqli_escape_string($conn,$_POST['prevyear'.$temp]);
+                // echo ''.$prevcid.'';
+                $tuples.="('$cid','$sem','$year','$prevcid','$prevsem','$prevyear'),";
+                $temp++;
+            }
+            $sql="INSERT into audit_map VALUES ".substr($tuples,0,strlen($tuples)-1);
+            $result=mysqli_query($conn,$sql);
+            // $row=mysqli_fetch_assoc($result);
+            // $sql="INSERT into audit_map VALUES('$cid','$sem','$year','$prevcid','$prevsem','$prevyear')";
+            // $result=mysqli_query($conn,$sql);
+            // $row=mysqli_fetch_assoc($result);
+        }
 
         header("Location: ../addcourse_ac.php");
     }
