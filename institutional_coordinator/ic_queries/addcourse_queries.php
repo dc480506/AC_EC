@@ -87,9 +87,25 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $max=mysqli_escape_string($conn,$_POST['max']);
         $min=mysqli_escape_string($conn,$_POST['min']);
         if(isset($_POST['map_cbox'])){
-            $prevcid=mysqli_escape_string($conn,$_POST['prevcid']);
-            $prevsem=mysqli_escape_string($conn,$_POST['prevsem']);
-            $prevyear=mysqli_escape_string($conn,$_POST['prevyear']);
+            // $prevcid=mysqli_escape_string($conn,$_POST['prevcid']);
+            // $prevsem=mysqli_escape_string($conn,$_POST['prevsem']);
+            // $prevyear=mysqli_escape_string($conn,$_POST['prevyear']);
+            $total_prev=mysqli_escape_string($conn,$_POST['total_prev']);
+            // echo $total_prev;
+            $temp=1;
+            for($i=0;$i<$total_prev;$i++){
+                $prevcid=mysqli_escape_string($conn,$_POST['prevcid'.$temp]);
+                $prevsem=mysqli_escape_string($conn,$_POST['prevsem'.$temp]);
+                $prevyear=mysqli_escape_string($conn,$_POST['prevyear'.$temp]);
+                $sql="INSERT into audit_map VALUES('$cid','$sem','$year','$prevcid','$prevsem','$prevyear')";
+                $result=mysqli_query($conn,$sql);
+                $row=mysqli_fetch_assoc($result);
+                // echo ''.$prevcid.'';
+                $temp++;
+            }
+            // $sql="INSERT into audit_map VALUES('$cid','$sem','$year','$prevcid','$prevsem','$prevyear')";
+            // $result=mysqli_query($conn,$sql);
+            // $row=mysqli_fetch_assoc($result);
         }
         // echo $cname."<br>";
         // echo $cid."<br>";
