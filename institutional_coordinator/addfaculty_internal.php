@@ -18,7 +18,7 @@ include('../includes/header.php');
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
-                <h4 class="m-0 font-weight-bold text-primary">Faculty Records</h4>
+                <h4 class="m-0 font-weight-bold text-primary">Internal Faculty Records</h4>
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
@@ -45,35 +45,48 @@ include('../includes/header.php');
                         <div class="modal-body">
                             <!-- Table -->
                             <form class="forms-sample" method="POST" action="ic_queries/addfaculty_queries.php">
-                                <div class="form-group">
-                                    <label for="exampleInputName1"><b>Name</b></label>
-                                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Name">
+                                <div class="form-row mt-4">
+                                    <div class="form-group col-md-6">
+                                        <label for="name"><b>Name</b></label>
+                                        <input type="text" class="form-control" id="nameadd" name="name" placeholder="name">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="emailid"><b>Email Address</b></label>
+                                        <input type="email" class="form-control" id="emailidadd" name="email" placeholder="email@gmail.com">
+                                    
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail"><b>Email address</b></label>
-                                    <input type="email" class="form-control" id="exampleInputEmail3" name="email" placeholder="Email">
+                                <div class="form-row mt-4">
+                                    <div class="form-group col-md-6">
+                                        <label for="faculty_code"><b>Faculty Code</b></label>
+                                        <input type="text" class="form-control" id="faculty_code_add" name="faculty_code" placeholder="faculty code">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="eid"><b>Employee ID</b></label>
+                                        <input type="text" class="form-control" id="eidadd" name="eid" placeholder="Employee Id">
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputDepartment"><b>Department</b></label>
-                                    <select class="form-control" required name="dept">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="department"><b>Department</b></label>
+                                        <select class="form-control" required name="dept">';
                                         <?php
-                                        include_once("../config.php");
-                                        $sql = "SELECT dept_name FROM department";
-                                        $result = mysqli_query($conn, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<option>" . $row['dept_name'] . "</option>";
-                                        }
-                                        ?>
-                                    </select> 
+                                            include_once("../config.php");
+                                            $sql = "SELECT dept_id,dept_name FROM department";
+                                            $result = mysqli_query($conn, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo "<option value=".$row['dept_id'].">" . $row['dept_name'] . "</option>";
+                                            }
+                                            ?>
+                                        </select> 
+                                        <!-- <input type="text" class="form-control" id="department" name="department" placeholder="department"> -->
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="postadd"><b>Post</b></label>
+                                        <input type="text" class="form-control" id="postadd" name="post" placeholder="post">
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputAccomplishment"><b>Accomplishment</b></label>
-                                    <input type="text" class="form-control" id="exampleInputAccomplishment" name="accomplishment" placeholder="Accomplishment">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPost"><b>Post</b></label>
-                                    <input type="text" class="form-control" id="exampleInputPost" name="post" placeholder="Post">
-                                </div>
+ 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                     <button type="submit" class="btn btn-outline-primary" name="add_faculty">Add</button>
@@ -168,20 +181,22 @@ include('../includes/header.php');
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>Faculty Code</th>
+                            <th>Employee Id</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Department</th>
-                            <th>Accomplishment</th>
                             <th>Post</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
+                            <th>Faculty Code</th>
+                            <th>Employee ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Department</th>
-                            <th>Accomplishment</th>
                             <th>Post</th>
                             <th>Action</th>
                         </tr>
@@ -192,20 +207,25 @@ include('../includes/header.php');
                         include '../config.php';
                         if(isset($_SESSION['email']))
                         {
-                            $sql="SELECT c.email_id,f.fname,f.lname,f.mname,d.dept_name,c.course_certified,f.post FROM ((`faculty_certification` as c inner JOIN `faculty` as f on c.email_id=f.email_id ) INNER JOIN `department` as d on f.dept_id = d.dept_id )";
+                            $sql="SELECT f.email_id,f.fname,f.lname,f.mname,d.dept_name,f.faculty_code,f.employee_id,f.post,f.dept_id FROM `faculty` as f INNER JOIN `department` as d on f.dept_id = d.dept_id ";
                             $result = mysqli_query($conn, $sql);
                             $output='';
-                            $sql1 = "SELECT dept_name FROM department";
+                            $sql1 = "SELECT dept_id,dept_name FROM department";
                             $result1 = mysqli_query($conn, $sql1);
                             $count = 500;
+                            $dept_dropdown='';
+                            while ($row1 = mysqli_fetch_assoc($result1)) {
+                                $dept_dropdown.='<option value="'.$row1["dept_id"].'">'. $row1['dept_name'] . '</option>';
+                                }
                             while($row = mysqli_fetch_array($result))
                             {
                             //$name=$row["fname"]+" "+$row["mname"]+" "+$row["lname"];
                             $output.= '<tr>
+                                <td>'.$row["faculty_code"].'</td>
+                                <td>'.$row["employee_id"].'</td>
                                 <td>'.$row["fname"]." ".$row["mname"]." ".$row["lname"].'</td>
                                 <td>'.$row["email_id"].'</td>
                                 <td>'.$row["dept_name"].'</td>
-                                <td>'.$row["course_certified"].'</td>
                                 <td>'.$row["post"].'</td>
                                 <td>
                                     <!-- Button trigger modal -->
@@ -238,8 +258,6 @@ include('../includes/header.php');
                                                                     </label>
                                                                     <br>
                                                                     <input type="hidden" name="email" value="' . $row['email_id'] . '">
-                                                                    <input type="hidden" name="department" value="' . $row['dept_name'] . '">
-                                                                    <input type="hidden" name="post" value="' . $row['post'] . '">
                                                                     <button type="submit" class="btn btn-primary" name="delete_faculty">Yes</button>
                                                                     <button type="submit" class="btn btn-secondary" name="no">No</button>
                                                                 </div>
@@ -252,11 +270,22 @@ include('../includes/header.php');
                                                                 <div class="form-row mt-4">
                                                                     <div class="form-group col-md-6">
                                                                         <label for="name"><b>Name</b></label>
-                                                                        <input type="text" class="form-control" id="name" name="name" placeholder="name" value="'.$row["fname"]." ".$row["mname"]." ".$row["lname"].'">
+                                                                        <input type="text" class="form-control" id="name'.$count.'" name="name" placeholder="name" value="'.$row["fname"]." ".$row["mname"]." ".$row["lname"].'">
                                                                     </div>
                                                                     <div class="form-group col-md-6">
                                                                         <label for="emailid"><b>Email Address</b></label>
-                                                                        <input type="email" class="form-control" id="emailid" name="email" placeholder="email@gmail.com" value="'.$row["email_id"].'">
+                                                                        <input type="email" class="form-control" id="emailid'.$count.'" name="newemail" placeholder="email@gmail.com" value="'.$row["email_id"].'">
+                                                                        <input type="hidden" class="form-control"  name="oldemail"  value="'.$row["email_id"].'">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row mt-4">
+                                                                    <div class="form-group col-md-6">
+                                                                        <label for="faculty_code"><b>Faculty Code</b></label>
+                                                                        <input type="text" class="form-control" id="faculty_code'.$count.'" name="faculty_code" placeholder="" value="'.$row["faculty_code"].'">
+                                                                    </div>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label for="eid"><b>Employee ID</b></label>
+                                                                        <input type="text" class="form-control" id="eid'.$count.'" name="eid" placeholder="" value="'.$row["employee_id"].'">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
@@ -266,24 +295,17 @@ include('../includes/header.php');
                                                                             
                                                                             //include_once("../config.php");
 
-                                                                            while ($row1 = mysqli_fetch_assoc($result1)) {
-                                                                                $output.= "<option>" . $row1['dept_name'] . "</option>";
-                                                                            }
+                                                                        $output.=$dept_dropdown;
                     
                                                                         $output.='</select> 
                                                                         <!-- <input type="text" class="form-control" id="department" name="department" placeholder="department"> -->
                                                                     </div>
                                                                     <div class="form-group col-md-6">
-                                                                        <label for="accomplishment"><b>Accomplishment</b></label>
-                                                                        <input type="text" class="form-control" id="accomplishment" name="accomplishment" placeholder="accomplishment" value="'.$row["course_certified"].'">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-6">
                                                                         <label for="post"><b>Post</b></label>
-                                                                        <input type="text" class="form-control" id="post" name="post" placeholder="post" value="'.$row["post"].'">
+                                                                        <input type="text" class="form-control" id="post'.$count.'" name="post" placeholder="post" value="'.$row["post"].'">
                                                                     </div>
                                                                 </div>
+                                    
                                                                 <button type="submit" class="btn btn-primary" name="update_faculty">Update</button>
                                                             </form>
                                                         </div>

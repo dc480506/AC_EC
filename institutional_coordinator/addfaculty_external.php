@@ -18,7 +18,7 @@ include('../includes/header.php');
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
-                <h4 class="m-0 font-weight-bold text-primary">Faculty Records</h4>
+                <h4 class="m-0 font-weight-bold text-primary">External Faculty Records</h4>
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
