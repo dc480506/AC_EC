@@ -141,7 +141,7 @@ while($row2 = mysqli_fetch_array($result2))
                                                 // $_SESSION['year']=$key['year'];
                                             ?>
                                 <option class="dropdown-item" value="<?php echo $key['cid']; ?>">
-                                    <?php echo $key['cname']; ?></option>
+                                    <?php echo "{$key['cname']} ({$key['cid']})"; ?></option>
                                 <?php } ?>
                             </div>
                         </select>
@@ -169,10 +169,11 @@ $result5 = mysqli_query($conn,$sql5);
 $row5 = mysqli_fetch_array($result5);
 $c_name = array();
 for ($i=1; $i <=$row1['no_of_preferences'] ; $i++) {
-    $sql6="SELECT cname FROM audit_course WHERE cid='{$row5["pref".$i.""]}'";
+    $sql6="SELECT cname,cid FROM audit_course WHERE cid='{$row5["pref".$i.""]}'";
     $result6 = mysqli_query($conn,$sql6);
     $row6 = mysqli_fetch_array($result6);
     $c_name[$i]=$row6['cname'];
+    $c_id[$i]=$row6['cid'];
     # code...
 }
      ?>
@@ -195,7 +196,7 @@ for ($i=1; $i <=$row1['no_of_preferences'] ; $i++) {
                     <div class="row">
                         <?php echo "Preference ".$i."-"; ?>
                         <br>
-                        <p><?php echo $c_name[$i]; ?></p>
+                        <p><?php echo "{$c_name[$i]} ({$c_id[$i]})";?></p>
                     </div>
                     <?php  } ?>
                     <div class="modal-footer">
