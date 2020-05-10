@@ -222,10 +222,13 @@ include('../includes/header.php');
                                     <!-- </div> -->
                                 </div>
                                 <BR>
-                                <button type="button" class="add_prev" style="display: none;">Add More Previous Course</button>
-                                <button type="button" class="rem_prev" style="display: none;">Remove the Previous Course</button>
-                                <input type="hidden" value="0" id="total_prev" name="total_prev">
-
+                                <div class="form-group">
+                                    <div class="btn-group btn-group-md">
+                                        <button type="button" id="add_prev" class="btn btn-primary" style="display: none;">Add More Previous Course</button>
+                                        <!-- <button type="button" id="rem_prev" class="btn btn-primary" style="display: none;">Remove the Previous Course</button> -->
+                                        <input type="hidden" value="0" id="total_prev" name="total_prev">
+                                    </div>
+                                </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                     <button type="submit" class="btn btn-primary" name="add_course">Add</button>
@@ -451,12 +454,12 @@ include('../includes/header.php');
 
         if (checkBox.checked == true) {
             document.querySelector("#map_section").style.display = "block";
-            document.querySelector(".add_prev").style.display = "block";
-            document.querySelector(".rem_prev").style.display = "block";
+            document.querySelector("#add_prev").style.display = "block";
+            document.querySelector("#rem_prev").style.display = "block";
         } else {
             document.querySelector("#map_section").style.display = "none";
-            document.querySelector(".add_prev").style.display = "none";
-            document.querySelector(".rem_prev").style.display = "none";
+            document.querySelector("#add_prev").style.display = "none";
+            document.querySelector("#rem_prev").style.display = "none";
         }
     }
     dept_checkbox = document.querySelectorAll(".dept");
@@ -506,36 +509,79 @@ include('../includes/header.php');
 <script type="text/javascript">
 // previous course details
     // var new_prev_no=1;
-    $('.add_prev').on('click',add);
-    $('.rem_prev').on('click',rem);
-    
+    $('#add_prev').on('click',add);
+    // $('#rem_prev').on('click',rem);
+    var new_prev_no=1 
     function add(){
-        var new_prev_no = parseInt($('#total_prev').val()) + 1;
-        var new_input=`<div id="prev_`+new_prev_no+`">
+        var total=parseInt($('#total_prev').val())+1
+        // console.log("Value of total is "+total)
+        var new_input=`<div id="prev_`+new_prev_no+`" >
                             <br>
-                            <h5 class="modal-title">Previous Course `+new_prev_no+`</h5>
-                            <div class="form-group" id="previous_field1" style="display: block;">
+                            <input type="hidden" class='current_no' value='`+total+`'>
+                            <h5 class="modal-title">Previous Course `+total+`</h5>
+                            <div class="form-group" id="previous_field1_`+new_prev_no+`" style="display: block;">
                                 <label for="previous_field1"><b>Course ID</b></label>
-                                <input type="text" class="form-control" id="previous_id`+new_prev_no+`" name="prevcid`+new_prev_no+`" placeholder="Course Id">
+                                <input type="text" class="form-control prevcid"  required id="previous_id`+new_prev_no+`" name="prevcid`+total+`" placeholder="Course Id">
                             </div>
-                            <div class="form-group" id="previous_field2" style="display: block;">
+                            <div class="form-group" id="previous_field2_`+new_prev_no+`" style="display: block;">
                                 <label for="previous_field2"><b>Previous Semester</b></label>
-                                <input type="text" class="form-control" id="previous_sem`+new_prev_no+`" name="prevsem`+new_prev_no+`" placeholder="Previous Semester">
+                                <input type="text" class="form-control prevsem"  required id="previous_sem`+new_prev_no+`" name="prevsem`+total+`" placeholder="Previous Semester">
                             </div>
-                            <div class="form-group" id="previous_field3" style="display: block;">
+                            <div class="form-group" id="previous_field3_`+new_prev_no+`" style="display: block;">
                                 <label for="previous_field3"><b>Previous Year</b></label>
-                                <input type="text" class="form-control" id="previous_year`+new_prev_no+`" name="prevyear`+new_prev_no+`" placeholder="Previous Year">
+                                <input type="text" class="form-control prevyear"  required id="previous_year`+new_prev_no+`" name="prevyear`+total+`" placeholder="Previous Year">
                             </div>
+                            <button type="button" id="rem_prev`+new_prev_no+`" class="btn btn-primary">Remove the Previous Course</button>
+                            
                         </div>`;
         // alert(new_input);
         // var new_input = "<input type='text' id='new_" + new_prev_no + "'>";
-        $('#map_section').append(new_input);
+        // var new_input1=`<button type="button" id="rem_prev" class="btn btn-primary "style="display: none;">Remove the Previous Course</button>`;
+        // console.log("Add called!!");
+        // console.log('#rem_prev'+new_prev_no);
         
-        $('#total_prev').val(new_prev_no);
+        $('#map_section').append(new_input);
+        $("#rem_prev"+new_prev_no).click(function(){
+            // console.log("Here bro!!");
+        
+            // $('#total_prev').val(new_prev_no - 1);
+            // $('#map_section').remove(new_input); 
+            // alert("id is "+$(this).parent().attr('id'))
+            var rm_id=($(this).parent()).attr('id');
+            console.log(rm_id)
+            rm_id="#"+rm_id
+            // console.log("Here bro 3!!");
+            adjustDivs($(this).parent().nextAll())
+            $(rm_id).remove();
+            $('#total_prev').val($('#total_prev').val()- 1);
+        });
+        new_prev_no+=1;
+        $('#total_prev').val(parseInt($('#total_prev').val())+1);
+        console.log("Add exiting!!");
     }
+    function adjustDivs(nextDivs){
+        for(var i=0;i<nextDivs.length;i++){
+            // console.log(nextDivs[i]);
+           
+           var new_index=parseInt(nextDivs[i].querySelector('.current_no').value)-1
+           var header=nextDivs[i].querySelector('h5')
+           var prevcid=nextDivs[i].querySelector('.prevcid')
+           var prevsem=nextDivs[i].querySelector('.prevsem')
+           var prevyear=nextDivs[i].querySelector('.prevyear')
+           
+           nextDivs[i].querySelector('.current_no').value=new_index
+           header.innerText="Previous Course "+(new_index)
+           prevcid.setAttribute('name','prevcid'+new_index)
+           prevsem.setAttribute('name','prevsem'+new_index)
+           prevyear.setAttribute('name','prevyear'+new_index)
+            // console.log(header)
+            // console.log(curr_value)
+            // console.log("Bruh")
+        }
 
+    }
     function rem(){
-        var last_prev_no=$('#total_prev').val();
+        // var last_prev_no=$('#total_prev').val();
         if(last_prev_no > 0){
             $('#prev_' + last_prev_no).remove();
             $('#total_prev').val(last_prev_no - 1);
