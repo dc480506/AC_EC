@@ -325,83 +325,11 @@ include('../includes/header.php');
                             <td>
 
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter5' . $count . '">
+                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter5">
                                     <i class="fas fa-toolbox"></i>
                                 </button>
                     
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModalCenter5' . $count . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle5" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalCenterTitle5">Action</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <nav>
-                                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                        <a class="nav-item nav-link active" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate' . $count . '" role="tab" aria-controls="nav-allocate' . $count . '" aria-selected="false">Allocate</a>
-                                                    </div>
-                                                </nav>
-                                                <div class="tab-content" id="nav-tabContent">
-                                                    <!--Allocate-->
-                                                    <div class="tab-pane fade show active" id="nav-allocate' . $count . '" role="tabpanel" aria-labelledby="nav-allocate-tab">
-                                                        <form action="ic_queries/addcourse_queries.php" method="POST">
-                                                            <div class="form-row mt-4">
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="cname"><b>Name</b></label>
-                                                                    <input type="text" class="form-control" required="required" placeholder="New Course Name" name="coursename" value="' . $row['cname'] . '">
-                                                                    
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="courseid"><b>Course ID</b></label>
-                                                                    <input type="text" class="form-control" required="required" placeholder="00000" name="courseidnew" value="' . $row['cid'] . '">
-                                                                    <input type="hidden" class="form-control"  placeholder="00000" name="courseidold" value="' . $row['cid'] . '">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="semester"><b>Semester</b></label>
-                                                                    <input type="text" class="form-control" required="required" placeholder="Semester" name="semnew" value="' . $row['sem'] . '">
-                                                                    <input type="hidden" class="form-control" placeholder="Semester" name="semold" value="' . $row['sem'] . '">
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="year"><b>Year</b></label>
-                                                                    <input type="text" class="form-control"  name="year" disabled placeholder="year" value="' . $row['year'] . '">
-                                                                    <input type="hidden" class="form-control"  name="year" placeholder="year" value="' . $row['year'] . '">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="max"><b>Max</b></label>
-                                                                    <input type="number" class="form-control" required="required" name="max" placeholder="120" value="' . $row['max'] . '">
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="min"><b>Min</b></label>
-                                                                    <input type="number" class="form-control" required="required" name="min" placeholder="1" value="' . $row['min'] . '">
-                                                                </div>
-                                                            </div>
-                                                            <label for="branch"><b>Branches to opt for</b></label>
-                                                            <br>
-                                                            ' . $checkbox_div . '
-                                                            <br>
-                                                            <button type="submit" class="btn btn-primary" name="update_course">Update</button>
-                                                        </form>
-                                                        <br>
-                                                    </div>
-                                                    <!--Allocate end-->
-                                                </div>
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                    <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!-- Modal -->              
                             </td>
                             <td>
 
