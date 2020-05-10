@@ -4,13 +4,20 @@ include_once('verify.php');
 include('../includes/header.php');
 ?>
 
-<?php include('sidebar.php'); ?>
 
-<?php include('../includes/topbar.php'); ?>
+<?php include('../includes/topbar1.php'); ?>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <div class="card shadow mb-4">
+        <style type="text/css">
+        .card{    
+            position:absolute;
+            top:80px;
+            left:0px;
+            width:100%;
+        }
+        </style>
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
