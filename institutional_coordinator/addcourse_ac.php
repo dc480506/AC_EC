@@ -204,9 +204,9 @@ include('../includes/header.php');
                                     <label class="form-check-label" for="exampleCheck1">Similar previous course</label>
                                 </div>
                                 <div id="map_section" style="display: none;">
-                                <!-- <input type="hidden" value="0" id="total_prev" name="total_prev"> -->
+                                    <!-- <input type="hidden" value="0" id="total_prev" name="total_prev"> -->
                                     <!-- <div id="map_sec1" style="display :none;"> -->
-                                        <!-- <h5 class="modal-title">Previous Course 1</h5>
+                                    <!-- <h5 class="modal-title">Previous Course 1</h5>
                                         <div class="form-group" id="previous_field1" style="display: block;">
                                             <label for="previous_field1"><b>Course ID</b></label>
                                             <input type="text" class="form-control" id="previous_id1" name="prevcid1" placeholder="Course Id">
@@ -223,11 +223,11 @@ include('../includes/header.php');
                                 </div>
                                 <BR>
                                 <div class="form-group">
-                                    <div class="btn-group btn-group-md">
-                                        <button type="button" id="add_prev" class="btn btn-primary" style="display: none;">Add More Previous Course</button>
-                                        <!-- <button type="button" id="rem_prev" class="btn btn-primary" style="display: none;">Remove the Previous Course</button> -->
-                                        <input type="hidden" value="0" id="total_prev" name="total_prev">
-                                    </div>
+
+                                    <button type="button" id="add_prev" class="btn btn-primary" style="display: none;">Add</button>
+                                    <!-- <button type="button" id="rem_prev" class="btn btn-primary" style="display: none;">Remove the Previous Course</button> -->
+                                    <input type="hidden" value="0" id="total_prev" name="total_prev">
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
@@ -328,11 +328,77 @@ include('../includes/header.php');
                             <td>
 
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter5">
+                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter10">
                                     <i class="fas fa-toolbox"></i>
                                 </button>
                     
-                                <!-- Modal -->              
+                                <!-- Modal -->       
+                                <div class="modal fade" id="exampleModalCenter10" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle10" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle10">Action</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <nav>
+                                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                                <a class="nav-item nav-link active" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate" role="tab" aria-controls="nav-allocate" aria-selected="true">Allocation</a>
+                                                            </div>
+                                                        </nav>
+                                                        <div class="tab-content" id="nav-tabContent">
+                                                            <!--Allocation-->
+                                                            <div class="tab-pane fade show active" id="nav-allocate" role="tabpanel" aria-labelledby="nav-allocate-tab">
+                                                                <form action="">
+                                                                    <div class="form-group">
+                                                                        <label for="exampleFormControlSelect1"><b>Department</b>
+                                                                        </label>
+                                                                        <select class="form-control" id="exampleFormControlSelect1" name="department">
+                                                                            <option>1</option>
+                                                                            <option>2</option>
+                                                                            <option>3</option>
+                                                                            <option>4</option>
+                                                                            <option>5</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="exampleFormControlSelect1"><b>Course</b>
+                                                                        </label>
+                                                                        <select class="form-control" id="exampleFormControlSelect1" name="course">
+                                                                            <option>1</option>
+                                                                            <option>2</option>
+                                                                            <option>3</option>
+                                                                            <option>4</option>
+                                                                            <option>5</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group">
+                                                                        <label for="exampleFormControlSelect1"><b>Faculty ID</b>
+                                                                        </label>
+                                                                        <select class="form-control" id="exampleFormControlSelect1" name="course">
+                                                                            <option>1</option>
+                                                                            <option>2</option>
+                                                                            <option>3</option>
+                                                                            <option>4</option>
+                                                                            <option>5</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary">Allocate</button>
+                                                                </form>
+                                                            </div>
+                                                            <!--end Allocation-->
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                        <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>       
                             </td>
                             <td>
 
@@ -502,36 +568,35 @@ include('../includes/header.php');
             }
         }
     })
-
-
 </script>
 
 <script type="text/javascript">
-// previous course details
+    // previous course details
     // var new_prev_no=1;
-    $('#add_prev').on('click',add);
+    $('#add_prev').on('click', add);
     // $('#rem_prev').on('click',rem);
-    var new_prev_no=1 
-    function add(){
-        var total=parseInt($('#total_prev').val())+1
+    var new_prev_no = 1
+
+    function add() {
+        var total = parseInt($('#total_prev').val()) + 1
         // console.log("Value of total is "+total)
-        var new_input=`<div id="prev_`+new_prev_no+`" >
+        var new_input = `<div id="prev_` + new_prev_no + `" >
                             <br>
-                            <input type="hidden" class='current_no' value='`+total+`'>
-                            <h5 class="modal-title">Previous Course `+total+`</h5>
-                            <div class="form-group" id="previous_field1_`+new_prev_no+`" style="display: block;">
+                            <input type="hidden" class='current_no' value='` + total + `'>
+                            <h5 class="modal-title">Previous Course ` + total + `</h5>
+                            <div class="form-group" id="previous_field1_` + new_prev_no + `" style="display: block;">
                                 <label for="previous_field1"><b>Course ID</b></label>
-                                <input type="text" class="form-control prevcid"  required id="previous_id`+new_prev_no+`" name="prevcid`+total+`" placeholder="Course Id">
+                                <input type="text" class="form-control prevcid"  required id="previous_id` + new_prev_no + `" name="prevcid` + total + `" placeholder="Course Id">
                             </div>
-                            <div class="form-group" id="previous_field2_`+new_prev_no+`" style="display: block;">
+                            <div class="form-group" id="previous_field2_` + new_prev_no + `" style="display: block;">
                                 <label for="previous_field2"><b>Previous Semester</b></label>
-                                <input type="text" class="form-control prevsem"  required id="previous_sem`+new_prev_no+`" name="prevsem`+total+`" placeholder="Previous Semester">
+                                <input type="text" class="form-control prevsem"  required id="previous_sem` + new_prev_no + `" name="prevsem` + total + `" placeholder="Previous Semester">
                             </div>
-                            <div class="form-group" id="previous_field3_`+new_prev_no+`" style="display: block;">
+                            <div class="form-group" id="previous_field3_` + new_prev_no + `" style="display: block;">
                                 <label for="previous_field3"><b>Previous Year</b></label>
-                                <input type="text" class="form-control prevyear"  required id="previous_year`+new_prev_no+`" name="prevyear`+total+`" placeholder="Previous Year">
+                                <input type="text" class="form-control prevyear"  required id="previous_year` + new_prev_no + `" name="prevyear` + total + `" placeholder="Previous Year">
                             </div>
-                            <button type="button" id="rem_prev`+new_prev_no+`" class="btn btn-primary">Remove the Previous Course</button>
+                            <button type="button" id="rem_prev` + new_prev_no + `" class="btn btn-primary">Remove</button>
                             
                         </div>`;
         // alert(new_input);
@@ -539,50 +604,52 @@ include('../includes/header.php');
         // var new_input1=`<button type="button" id="rem_prev" class="btn btn-primary "style="display: none;">Remove the Previous Course</button>`;
         // console.log("Add called!!");
         // console.log('#rem_prev'+new_prev_no);
-        
+
         $('#map_section').append(new_input);
-        $("#rem_prev"+new_prev_no).click(function(){
+        $("#rem_prev" + new_prev_no).click(function() {
             // console.log("Here bro!!");
-        
+
             // $('#total_prev').val(new_prev_no - 1);
             // $('#map_section').remove(new_input); 
             // alert("id is "+$(this).parent().attr('id'))
-            var rm_id=($(this).parent()).attr('id');
+            var rm_id = ($(this).parent()).attr('id');
             console.log(rm_id)
-            rm_id="#"+rm_id
+            rm_id = "#" + rm_id
             // console.log("Here bro 3!!");
             adjustDivs($(this).parent().nextAll())
             $(rm_id).remove();
-            $('#total_prev').val($('#total_prev').val()- 1);
+            $('#total_prev').val($('#total_prev').val() - 1);
         });
-        new_prev_no+=1;
-        $('#total_prev').val(parseInt($('#total_prev').val())+1);
+        new_prev_no += 1;
+        $('#total_prev').val(parseInt($('#total_prev').val()) + 1);
         console.log("Add exiting!!");
     }
-    function adjustDivs(nextDivs){
-        for(var i=0;i<nextDivs.length;i++){
+
+    function adjustDivs(nextDivs) {
+        for (var i = 0; i < nextDivs.length; i++) {
             // console.log(nextDivs[i]);
-           
-           var new_index=parseInt(nextDivs[i].querySelector('.current_no').value)-1
-           var header=nextDivs[i].querySelector('h5')
-           var prevcid=nextDivs[i].querySelector('.prevcid')
-           var prevsem=nextDivs[i].querySelector('.prevsem')
-           var prevyear=nextDivs[i].querySelector('.prevyear')
-           
-           nextDivs[i].querySelector('.current_no').value=new_index
-           header.innerText="Previous Course "+(new_index)
-           prevcid.setAttribute('name','prevcid'+new_index)
-           prevsem.setAttribute('name','prevsem'+new_index)
-           prevyear.setAttribute('name','prevyear'+new_index)
+
+            var new_index = parseInt(nextDivs[i].querySelector('.current_no').value) - 1
+            var header = nextDivs[i].querySelector('h5')
+            var prevcid = nextDivs[i].querySelector('.prevcid')
+            var prevsem = nextDivs[i].querySelector('.prevsem')
+            var prevyear = nextDivs[i].querySelector('.prevyear')
+
+            nextDivs[i].querySelector('.current_no').value = new_index
+            header.innerText = "Previous Course " + (new_index)
+            prevcid.setAttribute('name', 'prevcid' + new_index)
+            prevsem.setAttribute('name', 'prevsem' + new_index)
+            prevyear.setAttribute('name', 'prevyear' + new_index)
             // console.log(header)
             // console.log(curr_value)
             // console.log("Bruh")
         }
 
     }
-    function rem(){
+
+    function rem() {
         // var last_prev_no=$('#total_prev').val();
-        if(last_prev_no > 0){
+        if (last_prev_no > 0) {
             $('#prev_' + last_prev_no).remove();
             $('#total_prev').val(last_prev_no - 1);
         }

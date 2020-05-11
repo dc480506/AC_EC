@@ -109,8 +109,12 @@ session_start();
                             <th>Name</th>
                             <th>Email</th>
                             <th>Department</th>
-                            <th>Accomplishment</th>
                             <th>Post</th>
+                            <th>Semester</th>
+                            <th>Year</th>
+                            <th>Course Name</th>
+                            <th>Course ID</th>
+                            <th>No of Students</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -118,17 +122,25 @@ session_start();
                             <th>Name</th>
                             <th>Email</th>
                             <th>Department</th>
-                            <th>Accomplishment</th>
                             <th>Post</th>
+                            <th>Semester</th>
+                            <th>Year</th>
+                            <th>Course Name</th>
+                            <th>Course ID</th>
+                            <th>No of Students</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         <tr>
                             <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td>61</td>
-                            <td>2011/04/25</td>
+                            <td>tiger.n@gmail.com</>
+                            <td>Computer</td>
+                            <td>Faculty</td>
+                            <td>6</td>
+                            <td>2020</td>
+                            <td>Python</td>
+                            <td>UCH103</td>
+                            <td>75</td>
                         </tr>
                     </tbody>
                 </table>
