@@ -23,10 +23,17 @@
   <hr class="sidebar-divider">
   <!-- Nav Item - Pages Collapse Menu -->
 
-  <li class="nav-item ">
-    <a class="nav-link" href="facultyrecord.php">
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <i class="fas fa-chalkboard-teacher"></i>
-      <span>Faculty Records</span></a>
+      <span>Faculty Records</span>
+    </a>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="facultyrecord_internal.php">Internal faculty</a>
+        <a class="collapse-item" href="facultyrecord_external.php">External faculty</a>
+      </div>
+    </div>
   </li>
 
   <hr class="sidebar-divider">

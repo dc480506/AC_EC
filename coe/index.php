@@ -1,4 +1,4 @@
-<?php 
+<?php
 include('../config.php');
 include('../includes/header.php');
 ?>
@@ -79,8 +79,8 @@ include('../includes/header.php');
                         <th>Semester</th>
                         <th>Year</th>
                         <th>Department</th>
-                        <th>Max</th>
-                        <th>Min</th>
+                        <th>No of Students</th>
+                        <th>Faculty</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -90,19 +90,19 @@ include('../includes/header.php');
                         <th>Semester</th>
                         <th>Year</th>
                         <th>Department</th>
-                        <th>Max</th>
-                        <th>Min</th>
+                        <th>No of Students</th>
+                        <th>Faculty</th>
                     </tr>
                 </tfoot>
                 <tbody>
                     <tr>
-                        <td>Tiger Nixon</td>
-                        <td>System Architect</td>
-                        <td>Edinburgh</td>
-                        <td>61</td>
-                        <td>2011/04/25</td>
-                        <td>61</td>
-                        <td>61</td>
+                        <td>Python</td>
+                        <td>UCH103</td>
+                        <td>6</td>
+                        <td>2020</td>
+                        <td>Computer</td>
+                        <td>75</td>
+                        <td>Sachin Jogendra</td>
                     </tr>
                 </tbody>
             </table>
