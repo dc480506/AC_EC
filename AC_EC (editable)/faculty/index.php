@@ -1,4 +1,4 @@
-<?php 
+<?php
 include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
@@ -16,26 +16,26 @@ include('../includes/header.php');
                 <div class="card-body">
                     <h4 class="card-title text-info mb-4">My Profile</h4>
                     <?php
-                        $email = $_SESSION['email'];
-                        $fname = 'fname';
-                        $lname = 'lname';
-                        $department = 'department';
-                        $mobile = '9876543201';
-                        $image = "../vendor/img/person1.jpg";
-                        $query = "SELECT fname, lname, dept_id FROM faculty WHERE email_id = '$email'";
-                        if($result = mysqli_query($conn, $query)){
-                            $rowcount = mysqli_num_rows($result);
-                            if($rowcount == 1){
-                                $row = mysqli_fetch_assoc($result);
-                                $fname = $row['fname'];
-                                $lname = $row['lname'];
-                                $dept_id = $row['dept_id'];
-                                $query = "SELECT dept_name FROM department WHERE dept_id = '$dept_id'";
-                                $result = mysqli_query($conn, $query);
-                                $row = mysqli_fetch_assoc($result);
-                                $department = $row['dept_name'];
-                            }
+                    $email = $_SESSION['email'];
+                    $fname = 'fname';
+                    $lname = 'lname';
+                    $department = 'department';
+                    $mobile = '9876543201';
+                    $image = "../vendor/img/person1.jpg";
+                    $query = "SELECT fname, lname, dept_id FROM faculty WHERE email_id = '$email'";
+                    if ($result = mysqli_query($conn, $query)) {
+                        $rowcount = mysqli_num_rows($result);
+                        if ($rowcount == 1) {
+                            $row = mysqli_fetch_assoc($result);
+                            $fname = $row['fname'];
+                            $lname = $row['lname'];
+                            $dept_id = $row['dept_id'];
+                            $query = "SELECT dept_name FROM department WHERE dept_id = '$dept_id'";
+                            $result = mysqli_query($conn, $query);
+                            $row = mysqli_fetch_assoc($result);
+                            $department = $row['dept_name'];
                         }
+                    }
                     ?>
                     <div class="row">
                         <div class="col-md-4">
@@ -44,7 +44,7 @@ include('../includes/header.php');
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo $fname.' '.$lname; ?></p>
+                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo $fname . ' ' . $lname; ?></p>
                                     <p class="text-dark"> <span><b>Email : </b></span><?php echo $email; ?></p>
                                 </div>
                                 <div class="col-md-6">
@@ -72,115 +72,184 @@ include('../includes/header.php');
         <div class="col-md-12 grid-margin stretch-card mt-2 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <form class="forms-sample mt-4" action="">
-                        <p class="card-description">
-                            <h5><strong> Audit Course </strong></h5>
-                        </p>
-                        
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputCourseName"><b>Course Name</b></label>
-                                    <br>
-                                    <?php
-                                        $email = $_SESSION['email'];
-                                        $department = 'department';
-                                        $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
-                                        if($result = mysqli_query($conn, $query)){
-                                          $rowcount = mysqli_num_rows($result);
-                                          while($row = mysqli_fetch_array($result)){
-                                              $cid = $row['cid'];
-                                              $query1 = "SELECT cname FROM audit_course WHERE cid = '$cid'";
-                                              $result1 = mysqli_query($conn, $query1);
-                                              $row1= mysqli_fetch_assoc($result1);
-                                              $cname = $row1['cname'];
-                                              echo '
-                                                      <span>'.$cname.'<span>
-                                                      <br>
-                                                    ';
-                                          }
-                                        }
-                                    ?>
-                                </div>
-                            </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Semester</th>
+                                    <th>Year</th>
+                                    <th>Course Strength</th>
+                                    <th>Upload</th>
+                                    <th>Deletion</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Semester</th>
+                                    <th>Year</th>
+                                    <th>Course Strength</th>
+                                    <th>Upload</th>
+                                    <th>Deletion</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Tiger Nixon</td>
+                                    <td>System Architect</td>
+                                    <td>Edinburgh</td>
+                                    <td>6</td>
+                                    <td>30</td>
+                                    <td>
 
-                            <div class=" col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputSemester"><b>Semester</b></label>
-                                    <br>
-                                    <?php
-                                        $email = $_SESSION['email'];
-                                        $department = 'department';
-                                        $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
-                                        if($result = mysqli_query($conn, $query)){
-                                          $rowcount = mysqli_num_rows($result);
-                                          while($row = mysqli_fetch_array($result)){
-                                              $cid = $row['cid'];
-                                              $query1 = "SELECT sem FROM audit_course WHERE cid = '$cid'";
-                                              $result1 = mysqli_query($conn, $query1);
-                                              $row1= mysqli_fetch_assoc($result1);
-                                              $sem = $row1['sem'];
-                                              echo '
-                                                      <span>'.$sem.'<span>
-                                                      <br>
-                                                    ';
-                                          }
-                                        }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputStatus"><b>Course Status</b></label>
-                                    <br>
-                                    <?php
-                                        $email = $_SESSION['email'];
-                                        $department = 'department';
-                                        $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
-                                        if($result = mysqli_query($conn, $query)){
-                                          $rowcount = mysqli_num_rows($result);
-                                          while($row = mysqli_fetch_array($result)){
-                                              $cid = $row['cid'];
-                                              $query1 = "SELECT no_of_allocated FROM audit_course WHERE cid = '$cid'";
-                                              $result1 = mysqli_query($conn, $query1);
-                                              $row1= mysqli_fetch_assoc($result1);
-                                              $no_of_allocated = $row1['no_of_allocated'];
-                                              echo '
-                                                      <span>'.$no_of_allocated.'<span>
-                                                      <br>
-                                                    ';
-                                          }
-                                        }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputStrength"><b>Course Strength</b></label>
-                                    <br>
-                                    <?php
-                                        $email = $_SESSION['email'];
-                                        $department = 'department';
-                                        $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
-                                        if($result = mysqli_query($conn, $query)){
-                                          $rowcount = mysqli_num_rows($result);
-                                          while($row = mysqli_fetch_array($result)){
-                                              $cid = $row['cid'];
-                                              $query1 = "SELECT max FROM audit_course WHERE cid = '$cid'";
-                                              $result1 = mysqli_query($conn, $query1);
-                                              $row1= mysqli_fetch_assoc($result1);
-                                              $max = $row1['max'];
-                                              echo '
-                                                      <span>'.$max.'<span>
-                                                      <br>
-                                                    ';
-                                          }
-                                        }
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter1">
+                                            <i class="fas fa-upload"></i>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle1">Upload Your File </h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="container">
+                                                            <form method="post" action="#" id="#">
+                                                                <div class="form-group files color">
+                                                                    <input type="file" class="form-control" multiple="">
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <style type="text/css">
+                                                        .files input {
+                                                            outline: 2px dashed #92b0b3;
+                                                            outline-offset: -10px;
+                                                            -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                            transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                            padding: 120px 0px 85px 35%;
+                                                            text-align: center !important;
+                                                            margin: 0;
+                                                            width: 100% !important;
+                                                        }
+
+                                                        .files input:focus {
+                                                            outline: 2px dashed #92b0b3;
+                                                            outline-offset: -10px;
+                                                            -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                            transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                            border: 1px solid #92b0b3;
+                                                        }
+
+                                                        .files {
+                                                            position: relative
+                                                        }
+
+                                                        .files:after {
+                                                            pointer-events: none;
+                                                            position: absolute;
+                                                            top: 60px;
+                                                            left: 0;
+                                                            width: 50px;
+                                                            right: 0;
+                                                            height: 56px;
+                                                            content: "";
+                                                            background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+                                                            display: block;
+                                                            margin: 0 auto;
+                                                            background-size: 100%;
+                                                            background-repeat: no-repeat;
+                                                        }
+
+                                                        .color input {
+                                                            background-color: #f1f1f1;
+                                                        }
+
+                                                        .files:before {
+                                                            position: absolute;
+                                                            bottom: 10px;
+                                                            left: 0;
+                                                            pointer-events: none;
+                                                            width: 100%;
+                                                            right: 0;
+                                                            height: 57px;
+                                                            display: block;
+                                                            margin: 0 auto;
+                                                            color: #2ea591;
+                                                            font-weight: 600;
+                                                            text-transform: capitalize;
+                                                            text-align: center;
+                                                        }
+                                                    </style>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                        <button type="button" class="btn btn-primary" name="save_changes">Upload</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    <td>
+
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter2">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle2">Action</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <nav>
+                                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                                <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
+                                                            </div>
+                                                        </nav>
+                                                        <div class="tab-content" id="nav-tabContent">
+                                                            <!--Deletion-->
+                                                            <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
+                                                                <form action="">
+                                                                    <div class="form-group">
+                                                                        <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
+                                                                        </label>
+                                                                        <br>
+                                                                        <button type="submit" class="btn btn-primary" name="yes">Yes</button>
+                                                                        <button type="submit" class="btn btn-secondary" name="no">No</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <!--end Deletion-->
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                            <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
