@@ -12,18 +12,22 @@ include('../includes/header.php');
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <div class="row align-items-center">
+        <div class="row align-items-center">
                 <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Student Records(Non KT)</h4>
-                    <div class="col text-right">
-                        <button type="button" class="btn btn-primary" name="filter" data-toggle="modal" data-target="#exampleModalCenter2">
-                            <i class="fas fa-filter"></i>
-                        </button>
-                    </div>
-                    <br>
+                    <h4 class="font-weight-bold text-primary mb-0">Audit Course Records</h4>
                 </div>
-            </div>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                </div>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
+                        <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course
+                    </button>
+                </div>
 
+            </div>
             <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">

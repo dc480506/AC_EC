@@ -5,7 +5,7 @@ include_once('verify.php');
 
 <?php include('sidebar.php'); ?>
 
-<?php include('../includes/topbar.php'); ?>
+<?php include('../includes/topbar_student.php'); ?>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">

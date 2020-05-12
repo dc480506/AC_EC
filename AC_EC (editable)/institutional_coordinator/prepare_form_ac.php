@@ -57,6 +57,18 @@ include('../includes/header.php');
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <select class="browser-default custom-select lg-3">
+                                        <option selected>Allocation Method</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary align-center" name="createForm">Create Form</button>
                         </div>
@@ -68,7 +80,7 @@ include('../includes/header.php');
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
+                    <thead>
                         <tr>
                             <th>Floating Sem</th>
                             <th>Year</th>
@@ -109,25 +121,25 @@ include('../includes/header.php');
                             while ($row = mysqli_fetch_assoc($result)) {
                                 $status = "Not opened yet";
                                 date_default_timezone_set('Asia/Kolkata');
-                                $timestamp=date("Y-m-d H:i");
+                                $timestamp = date("Y-m-d H:i");
                                 $start_timestamp = $row['start_timestamp'];
                                 $end_timestamp = $row['end_timestamp'];
-                                $show_allocate=false;
-                                $color='table-warning';
-                                $tabs= '<a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
+                                $show_allocate = false;
+                                $color = 'table-warning';
+                                $tabs = '<a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
                                 <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update' . $count . '" role="tab" aria-controls="nav-update' . $count . '" aria-selected="false">Update</a>';
-                                if($timestamp>=$start_timestamp){
-                                    if($timestamp<$end_timestamp){
-                                        $status="Open";
-                                        $color='table-success';
-                                    }else{
-                                        $status="Closed";
-                                        $tabs.='<a class="nav-item nav-link" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate' . $count . '" role="tab" aria-controls="nav-allocate' . $count . '" aria-selected="false">Allocate</a>';
-                                        $color='table-danger';
-                                        $show_allocate=true;
-                                        if($row['allocate_status']==1){
-                                            $status='Already Allocated';
-                                            $color='table-secondary';
+                                if ($timestamp >= $start_timestamp) {
+                                    if ($timestamp < $end_timestamp) {
+                                        $status = "Open";
+                                        $color = 'table-success';
+                                    } else {
+                                        $status = "Closed";
+                                        $tabs .= '<a class="nav-item nav-link" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate' . $count . '" role="tab" aria-controls="nav-allocate' . $count . '" aria-selected="false">Allocate</a>';
+                                        $color = 'table-danger';
+                                        $show_allocate = true;
+                                        if ($row['allocate_status'] == 1) {
+                                            $status = 'Already Allocated';
+                                            $color = 'table-secondary';
                                         }
                                     }
                                 }
@@ -138,7 +150,7 @@ include('../includes/header.php');
                                 $end_date = $eArr[0];
                                 $end_time = $eArr[1];
                                 echo '
-                        <tr class="'.$color.'"">
+                        <tr class="' . $color . '"">
                             <td>' . $row['sem'] . '</td>
                             <td>' . $row['year'] . '</td>
                             <td>' . $row['curr_sem'] . '</td>
@@ -148,8 +160,8 @@ include('../includes/header.php');
                             <td>' . $end_time . '</td>
                             <td>' . $row['no_of_preferences'] . '</td>
                             <td>' . $status . '</td>';
-                            if($status!='Already Allocated'){
-                                echo'
+                                if ($status != 'Already Allocated') {
+                                    echo '
                             <td>
 
                                 <!-- Button trigger modal -->
@@ -171,7 +183,7 @@ include('../includes/header.php');
                                             <div class="modal-body">
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                        '.$tabs.'
+                                                        ' . $tabs . '
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">
@@ -241,12 +253,12 @@ include('../includes/header.php');
                                                     </div>
                                                     <!--Update end-->
                                                 ';
-                                                if($show_allocate){
-                                                    echo'
+                                    if ($show_allocate) {
+                                        echo '
                                                     <div class="tab-pane fade" id="nav-allocate' . $count . '" role="tabpanel" aria-labelledby="nav-allocate-tab">
                                                         <form action="ic_queries/allocate_audit.php" method="POST">
                                                             <div class="form-group">
-                                                                <label for="exampleFormControlSelect3"><b>Are you sure you want to Allocate courses for Semester '.$row['sem'].' and Academic Year '.$row['year'].' ?</b>
+                                                                <label for="exampleFormControlSelect3"><b>Are you sure you want to Allocate courses for Semester ' . $row['sem'] . ' and Academic Year ' . $row['year'] . ' ?</b>
                                                                 </label>
                                                                 <br>
                                                                 <input type="hidden" name="sem" value="' . $row['sem'] . '">
@@ -262,8 +274,8 @@ include('../includes/header.php');
                                                         </form>
                                                     </div>
                                                     ';
-                                                }
-                                               echo '
+                                    }
+                                    echo '
                                                </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
@@ -274,8 +286,8 @@ include('../includes/header.php');
                                     </div>
                                 </div>
                             </td>';
-                            }else{
-                            echo' 
+                                } else {
+                                    echo ' 
                             <td>
 
                                 <!-- Button trigger modal -->
@@ -285,10 +297,10 @@ include('../includes/header.php');
                                 </button>
                             </td>
                                 ';
-                            }
-                        echo '</tr>';
-                        
-                                            
+                                }
+                                echo '</tr>';
+
+
                                 $count++;
                             }
                         }
@@ -302,18 +314,18 @@ include('../includes/header.php');
 
     <!-- /.container-fluid -->
     <script>
-      function defaultOpenSemVal(){
-        newval=document.querySelector("#exampleInputSem").value-1;
-        if(newval<0)
-          document.querySelector("#exampleInputCurrSem").value="";
-        else
-          document.querySelector("#exampleInputCurrSem").value=newval;
-      }
+        function defaultOpenSemVal() {
+            newval = document.querySelector("#exampleInputSem").value - 1;
+            if (newval < 0)
+                document.querySelector("#exampleInputCurrSem").value = "";
+            else
+                document.querySelector("#exampleInputCurrSem").value = newval;
+        }
     </script>
     <?php include('../includes/footer.php');
     include('../includes/scripts.php');
     ?>
-<!-- class="table-danger" -- red
+    <!-- class="table-danger" -- red
     class="table-success" --green
     class="table-secondary" --grey
     class="table-warning" --yellow -->
