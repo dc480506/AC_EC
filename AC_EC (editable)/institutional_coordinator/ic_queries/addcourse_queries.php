@@ -136,8 +136,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
             // $result=mysqli_query($conn,$sql);
             // $row=mysqli_fetch_assoc($result);
         }
-
-        header("Location: ../addcourse_ac.php");
+        // header("Location: ../addcourse_ac.php");
     }
 }
 ?>
