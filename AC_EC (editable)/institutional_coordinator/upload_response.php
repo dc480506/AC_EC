@@ -89,6 +89,18 @@ include('../includes/header.php');
                                         <label for="npre"><b>Number of valid Preferences</b></label>
                                         <input type="number" class="form-control" id="npre" placeholder=" Column Number" name="npre">
                                     </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
+                                        <label class="form-check-label" for="exampleCheck">Add preference column number</label>
+                                    <!-- </div> -->
+                                        <div id="map_section" style="display: none;">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" id="add_pref" class="btn btn-primary" style="display: none;">Add</button>
+                                            <!-- <button type="reset" value="reset">reset</button> -->
+                                            <input type="hidden" value="0" id="total_pref" name="total_pref">
+                                        </div>
+                                    </div>
                                 </div>
                                 <br>
                                 <div class="form-group files color">
@@ -290,6 +302,95 @@ include('../includes/header.php');
         </div>
     </div>
 </div>
+
+<script>
+    function showMapSection() {
+        var checkBox = document.getElementById("map_cbox");
+
+        if (checkBox.checked == true) {
+            document.querySelector("#map_section").style.display = "block";
+            document.querySelector("#add_pref").style.display = "block";
+            document.querySelector("#rem_pref").style.display = "block";
+        } else {
+            document.querySelector("#map_section").style.display = "none";
+            document.querySelector("#add_pref").style.display = "none";
+            document.querySelector("#rem_pref").style.display = "none";
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    // previous course details
+    // var new_prev_no=1;
+    $('#add_pref').on('click', add);
+    // $('#rem_prev').on('click',rem);
+    var new_pref_no = 1
+
+    function add() {
+        var total = parseInt($('#total_pref').val()) + 1
+        // console.log("Value of total is "+total)
+        var new_input = `<div id="pref_` + new_pref_no + `" >
+                            <br>
+                            <input type="hidden" class='current_no' value='` + total + `'>
+                            <h5 class="modal-title">Preference Number ` + total + `</h5>
+                            <div class="form-group" id="pref_field1_` + new_pref_no + `" style="display: block;">
+                                <label for="pref_field1"><b>Preference Number</b></label>
+                                <input type="number" class="form-control prefid"  required id="pref_id` + new_pref_no + `" name="prefid` + total + `" placeholder="Enter the column number of preference number`+new_pref_no+`">
+                            </div>
+                            <button type="button" id="rem_pref` + new_pref_no + `" class="btn btn-primary">Remove</button>
+                        </div>`;
+        // alert(new_input);
+        // var new_input = "<input type='text' id='new_" + new_prev_no + "'>";
+        // var new_input1=`<button type="button" id="rem_prev" class="btn btn-primary "style="display: none;">Remove the Previous Course</button>`;
+        // console.log("Add called!!");
+        // console.log('#rem_prev'+new_prev_no);
+
+        $('#map_section').append(new_input);
+        $("#rem_pref" + new_pref_no).click(function() {
+            // console.log("Here bro!!");
+
+            // $('#total_prev').val(new_prev_no - 1);
+            // $('#map_section').remove(new_input); 
+            // alert("id is "+$(this).parent().attr('id'))
+            var rm_id = ($(this).parent()).attr('id');
+            console.log(rm_id)
+            rm_id = "#" + rm_id
+            console.log("Here bro 3!!");
+            adjustDivs($(this).parent().nextAll())
+            $(rm_id).remove();
+            $('#total_pref').val($('#total_pref').val() - 1);
+        });
+        new_pref_no += 1;
+        $('#total_pref').val(parseInt($('#total_pref').val()) + 1);
+        console.log("Add exiting!!");
+    }
+
+    function adjustDivs(nextDivs) {
+        for (var i = 0; i < nextDivs.length; i++) {
+            // console.log(nextDivs[i]);
+
+            var new_index = parseInt(nextDivs[i].querySelector('.current_no').value) - 1
+            var header = nextDivs[i].querySelector('h5')
+            var prefid = nextDivs[i].querySelector('.prefid')
+
+            nextDivs[i].querySelector('.current_no').value = new_index
+            header.innerText = "Preference Number " + (new_index)
+            prefid.setAttribute('name', 'prefid' + new_index)
+            // console.log(header)
+            // console.log(curr_value)
+            // console.log("Bruh")
+        }
+
+    }
+
+    function rem() {
+        // var last_prev_no=$('#total_pref').val();
+        if (last_pref_no > 0) {
+            $('#pref_' + last_pref_no).remove();
+            $('#total_pref').val(last_pref_no - 1);
+        }
+    }
+</script>
 <!-- /.container-fluid -->
 
 <?php include('../includes/footer.php');
