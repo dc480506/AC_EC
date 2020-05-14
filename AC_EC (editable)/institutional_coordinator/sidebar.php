@@ -6,7 +6,7 @@
     <div class="sidebar-brand-icon ">
       <i class="far fa-user"></i>
     </div>
-    <div class="sidebar-brand-text mx-3">Institutional Faculty Coordinator</div>
+    <div class="sidebar-brand-text mx-3">Institute Coordinator</div>
   </a>
 
   <!-- Divider -->
@@ -26,10 +26,11 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <i class="fas fa-chalkboard-teacher"></i>
-      <span>Add Faculty</span>
+      <span>Add User</span>
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="addstudent.php">Student</a>
         <a class="collapse-item" href="addfaculty_internal.php">Internal faculty</a>
         <a class="collapse-item" href="addfaculty_external.php">External faculty</a>
       </div>
@@ -39,7 +40,7 @@
   <hr class="sidebar-divider">
 
   <!-- Nav Item - Utilities Collapse Menu -->
-  
+
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages4" aria-expanded="true" aria-controls="collapseUtilities">
       <i class="fas fa-fw fa-wrench"></i>
@@ -75,9 +76,17 @@
         <a class="collapse-item" href="prepare_form_idc.php">Interdisciplinary Course</a>
         <a class="collapse-item" href="prepare_form_cec.php">Close Elective Course</a>
         <a class="collapse-item" href="prepare_form_oec.php">Open Elective Course</a>
-        
+
       </div>
     </div>
+  </li>
+
+  <hr class="sidebar-divider">
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="upload_response.php">
+      <i class="fa fa-upload" aria-hidden="true"></i>
+      <span>Upload Responses</span></a>
   </li>
 
   <!-- Divider -->
@@ -87,6 +96,7 @@
   <div class="text-center d-none d-md-inline">
     <button class="rounded-circle border-0" id="sidebarToggle"></button>
   </div>
+
 
 </ul>
 <!-- End of Sidebar -->

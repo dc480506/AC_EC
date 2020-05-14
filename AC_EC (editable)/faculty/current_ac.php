@@ -228,8 +228,7 @@ include('../includes/header.php');
       </div>
       <div class="card shadow mb-4">
         <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered table-responsive" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>First Name</th>
@@ -309,104 +308,114 @@ include('../includes/header.php');
                                     <td>' . $attendance . '</td>
                                     <td>' . $rollno . '</td>
                                     <td>
-                                          <!-- Button trigger modal -->
-                                          <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter10">
-                                              <i class="fas fa-tools"></i>
-                                          </button>
 
-                                          <!-- Modal -->
-                                          <div class="modal fade" id="exampleModalCenter10" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle10" aria-hidden="true">
-                                              <div class="modal-dialog modal-dialog-centered" role="document">
-                                                  <div class="modal-content">
-                                                      <div class="modal-header">
-                                                          <h5 class="modal-title" id="exampleModalCenterTitle10">Action</h5>
-                                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                              <span aria-hidden="true">&times;</span>
-                                                          </button>
-                                                      </div>
-                                                      <div class="modal-body">
-                                                          <nav>
-                                                              <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                                  <a class="nav-item nav-link active" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
-                                                              </div>
-                                                          </nav>
-                                                          <div class="tab-content" id="nav-tabContent">
-                                                              <!--Update-->
-                                                              <div class="tab-pane fade active" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
-                                                                  <form action="">
-                                                                      <div class="form-row mt-4">
-                                                                          <div class="form-group col-md-6">
-                                                                              <label for="cname"><b>Name</b></label>
-                                                                              <input type="text" class="form-control" id="cname" placeholder="name" name="name">
-                                                                          </div>
-                                                                          <div class="form-group col-md-6">
-                                                                              <label for="courseid"><b>Course ID</b></label>
-                                                                              <input type="text" class="form-control" id="courseid" placeholder="00000" name="courseid">
-                                                                          </div>
-                                                                      </div>
-                                                                      <div class="form-row">
-                                                                          <div class="form-group col-md-6">
-                                                                              <label for="semester"><b>Semester</b></label>
-                                                                              <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester">
-                                                                          </div>
-                                                                          <div class="form-group col-md-6">
-                                                                              <label for="year"><b>Year</b></label>
-                                                                              <input type="text" class="form-control" id="year" name="year" placeholder="year">
-                                                                          </div>
-                                                                      </div>
-                                                                      <div class="form-row">
-                                                                          <div class="form-group col-md-6">
-                                                                              <label for="max"><b>Max</b></label>
-                                                                              <input type="number" class="form-control" id="max" name="max" placeholder="120">
-                                                                          </div>
-                                                                          <div class="form-group col-md-6">
-                                                                              <label for="min"><b>Min</b></label>
-                                                                              <input type="number" class="form-control" id="min" name="min" placeholder="1">
-                                                                          </div>
-                                                                      </div>
-                                                                      <label for="branch"><b>Branches to opt for</b></label>
-                                                                      <br>
-                                                                      <div class="custom-control custom-checkbox custom-control-inline">
-                                                                          <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                                          <label class="custom-control-label" for="customCheck1">All</label>
-                                                                      </div>
-                                                                      <div class="custom-control custom-checkbox custom-control-inline">
-                                                                          <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                                                          <label class="custom-control-label" for="customCheck2">COMP</label>
-                                                                      </div>
-                                                                      <div class="custom-control custom-checkbox custom-control-inline">
-                                                                          <input type="checkbox" class="custom-control-input" id="customCheck3">
-                                                                          <label class="custom-control-label" for="customCheck3">IT</label>
-                                                                      </div>
-                                                                      <div class="custom-control custom-checkbox custom-control-inline">
-                                                                          <input type="checkbox" class="custom-control-input" id="customCheck4">
-                                                                          <label class="custom-control-label" for="customCheck4">MECH</label>
-                                                                      </div>
-                                                                      <div class="custom-control custom-checkbox custom-control-inline">
-                                                                          <input type="checkbox" class="custom-control-input" id="customCheck5">
-                                                                          <label class="custom-control-label" for="customCheck5">EXTC</label>
-                                                                      </div>
-                                                                      <div class="custom-control custom-checkbox custom-control-inline">
-                                                                          <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                          <label class="custom-control-label" for="customCheck6">ETRX</label>
-                                                                      </div>
-                                                                      <br>
-                                                                      <button type="submit" class="btn btn-primary" name="update">Update</button>
-                                                                  </form>
-                                                                  <br>
-                                                              </div>
-                                                              <!--Update end-->
-                                                          </div>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter2">
+                                            <i class="fas fa-tools"></i>
+                                        </button>
 
-                                                          <div class="modal-footer">
-                                                              <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                              <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </td>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle2">Action</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <nav>
+                                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                                <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
+                                                                <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
+                                                            </div>
+                                                        </nav>
+                                                        <div class="tab-content" id="nav-tabContent">
+                                                            <!--Deletion-->
+                                                            <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
+                                                                <form action="">
+                                                                    <div class="form-group">
+                                                                        <label for="exampleFormControlSelect1"><b>Are you sure you want to remove the student from the course?</b>
+                                                                        </label>
+                                                                        <br>
+                                                                        <button type="submit" class="btn btn-primary" name="yes">Yes</button>
+                                                                        <button type="submit" class="btn btn-secondary" name="no">No</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <!--end Deletion-->
+                                                            <!--Update-->
+                                                            <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
+                                                                <form action="">
+                                                                    <div class="form-row mt-4">
+                                                                        <div class="form-group col-md-4">
+                                                                            <label for="cname"><b>First Name</b></label>
+                                                                            <input type="text" class="form-control" id="fname" placeholder="First" name="fname">
+                                                                        </div>
+                                                                        <div class="form-group col-md-4">
+                                                                            <label for="cname"><b>Middle Name</b></label>
+                                                                            <input type="text" class="form-control" id="fname" placeholder="Middle" name="mname">
+                                                                        </div>
+                                                                        <div class="form-group col-md-4">
+                                                                            <label for="cname"><b>Last Name</b></label>
+                                                                            <input type="text" class="form-control" id="lname" placeholder=" Name" name="fname">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="semester"><b>Semester</b></label>
+                                                                            <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester">
+                                                                        </div>
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="year"><b>Year</b></label>
+                                                                            <input type="text" class="form-control" id="year" name="year" placeholder="year">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="department"><b>Department</b></label>
+                                                                            <input type="text" class="form-control" id="department" name="department" placeholder="Department">
+                                                                        </div>
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="email"><b>Email</b></label>
+                                                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-12">
+                                                                            <label for="cname"><b>Course Name</b></label>
+                                                                            <input type="text" class="form-control" id="cname" name="cname" placeholder="Course Name">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="attendance"><b>Attendance</b></label>
+                                                                            <input type="text" class="form-control" id="attendance" name="attendance" placeholder="Attendance">
+                                                                        </div>
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="marks"><b>Marks</b></label>
+                                                                            <input type="number" class="form-control" id="marks" name="marks" placeholder="Marks">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <br>
+                                                                    <button type="submit" class="btn btn-primary" name="update">Update</button>
+                                                                </form>
+                                                                <br>
+                                                            </div>
+                                                            <!--Update end-->
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                            <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                   </tr>
                                   ';
                       }
@@ -416,7 +425,7 @@ include('../includes/header.php');
                 ?>
               </tbody>
             </table>
-          </div>
+          
         </div>
       </div>
     </div>

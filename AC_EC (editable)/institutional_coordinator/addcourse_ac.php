@@ -178,54 +178,17 @@ include('../includes/header.php');
                                     $c++;
                                 }
                                 ?>
-                                <!-- <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck8">
-                                    <label class="custom-control-label" for="customCheck8">COMP</label>
-                                </div>
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck9">
-                                    <label class="custom-control-label" for="customCheck9">IT</label>
-                                </div>
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck10">
-                                    <label class="custom-control-label" for="customCheck10">MECH</label>
-                                </div>
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                    <label class="custom-control-label" for="customCheck11">EXTC</label>
-                                </div>
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                    <label class="custom-control-label" for="customCheck12">ETRX</label>
-                                </div> -->
                                 <br>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
                                     <label class="form-check-label" for="exampleCheck1">Similar previous course</label>
                                 </div>
                                 <div id="map_section" style="display: none;">
-                                    <!-- <input type="hidden" value="0" id="total_prev" name="total_prev"> -->
-                                    <!-- <div id="map_sec1" style="display :none;"> -->
-                                    <!-- <h5 class="modal-title">Previous Course 1</h5>
-                                        <div class="form-group" id="previous_field1" style="display: block;">
-                                            <label for="previous_field1"><b>Course ID</b></label>
-                                            <input type="text" class="form-control" id="previous_id1" name="prevcid1" placeholder="Course Id">
-                                        </div>
-                                        <div class="form-group" id="previous_field2" style="display: block;">
-                                            <label for="previous_field2"><b>Previous Semester</b></label>
-                                            <input type="text" class="form-control" id="previous_sem1" name="prevsem1" placeholder="Previous Semester">
-                                        </div>
-                                        <div class="form-group" id="previous_field3" style="display: block;">
-                                            <label for="previous_field3"><b>Previous Year</b></label>
-                                            <input type="text" class="form-control" id="previous_year1" name="prevyear1" placeholder="Previous Year">
-                                        </div> -->
-                                    <!-- </div> -->
                                 </div>
                                 <BR>
                                 <div class="form-group">
 
                                     <button type="button" id="add_prev" class="btn btn-primary" style="display: none;">Add</button>
-                                    <!-- <button type="button" id="rem_prev" class="btn btn-primary" style="display: none;">Remove the Previous Course</button> -->
                                     <input type="hidden" value="0" id="total_prev" name="total_prev">
 
                                 </div>
@@ -253,103 +216,177 @@ include('../includes/header.php');
                     <!--Current-->
                     <div class="tab-pane fade show active" id="nav-current" role="tabpanel" aria-labelledby="nav-current-tab">
                         <br>
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Course Name</th>
-                                        <th>Course ID</th>
-                                        <th>Sem</th>
-                                        <th>Academic Year</th>
-                                        <th>Floating Department</th>
-                                        <th>Departments Applicable</th>
-                                        <th>Max</th>
-                                        <th>Min</th>
-                                        <th>Students Allocated</th>
-                                        <th>Allocate faculty</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Course Name</th>
-                                        <th>Course ID</th>
-                                        <th>Sem</th>
-                                        <th>Academic Year</th>
-                                        <th>Floating Department</th>
-                                        <th>Departments Applicable</th>
-                                        <th>Max</th>
-                                        <th>Min</th>
-                                        <th>Students Allocated</th>
-                                        <th>Allocate faculty</th>
-                                        <th>Action</th>
+                        <table class="table table-bordered table-responsive" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Sem</th>
+                                    <th>Academic Year</th>
+                                    <th>Floating Department</th>
+                                    <th>Departments Applicable</th>
+                                    <th>Max</th>
+                                    <th>Min</th>
+                                    <th>Students Allocated</th>
+                                    <th>Allocate faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Sem</th>
+                                    <th>Academic Year</th>
+                                    <th>Floating Department</th>
+                                    <th>Departments Applicable</th>
+                                    <th>Max</th>
+                                    <th>Min</th>
+                                    <th>Students Allocated</th>
+                                    <th>Allocate faculty</th>
+                                    <th>Action</th>
 
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <?php
-                                    $sql3 = "SELECT * FROM department";
-                                    $dept_list = array();
-                                    $result3 = mysqli_query($conn, $sql3);
-                                    while ($row = mysqli_fetch_assoc($result3)) {
-                                        array_push($dept_list, $row['dept_id'], $row['dept_name']);
-                                    }
-                                    $sql = "SELECT cname,cid,sem,year,dept_name,max,min,no_of_allocated FROM audit_course NATURAL JOIN department";
-                                    $result = mysqli_query($conn, $sql);
-                                    if (mysqli_num_rows($result) > 0) {
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <?php
+                                $sql3 = "SELECT * FROM department";
+                                $dept_list = array();
+                                $result3 = mysqli_query($conn, $sql3);
+                                while ($row = mysqli_fetch_assoc($result3)) {
+                                    array_push($dept_list, $row['dept_id'], $row['dept_name']);
+                                }
+                                $sql = "SELECT cname,cid,sem,year,dept_name,max,min,no_of_allocated FROM audit_course NATURAL JOIN department";
+                                $result = mysqli_query($conn, $sql);
+                                if (mysqli_num_rows($result) > 0) {
 
-                                        $count = 500;
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            $checkbox_div = "";
-                                            $cid = $row['cid'];
-                                            $sem = $row['sem'];
-                                            $year = $row['year'];
-                                            $checked_dept = array();
-                                            $applicable_dept = "";
-                                            $sql2 = "SELECT dept_id,dept_name FROM audit_course_applicable_dept NATURAL JOIN department WHERE cid='$cid' AND sem='$sem' AND year='$year'";
-                                            $result2 = mysqli_query($conn, $sql2);
-                                            while ($row2 = mysqli_fetch_assoc($result2)) {
-                                                array_push($checked_dept, $row2['dept_id']);
-                                                $applicable_dept .= $row2['dept_name'] . " , ";
-                                            }
-                                            $applicable_dept = substr($applicable_dept, 0, strlen($applicable_dept) - 2);
-                                            for ($i = 0; $i < count($dept_list) - 1; $i = $i + 2) {
-                                                $checkbox_div .= '
+                                    $count = 500;
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        $checkbox_div = "";
+                                        $cid = $row['cid'];
+                                        $sem = $row['sem'];
+                                        $year = $row['year'];
+                                        $checked_dept = array();
+                                        $applicable_dept = "";
+                                        $sql2 = "SELECT dept_id,dept_name FROM audit_course_applicable_dept NATURAL JOIN department WHERE cid='$cid' AND sem='$sem' AND year='$year'";
+                                        $result2 = mysqli_query($conn, $sql2);
+                                        while ($row2 = mysqli_fetch_assoc($result2)) {
+                                            array_push($checked_dept, $row2['dept_id']);
+                                            $applicable_dept .= $row2['dept_name'] . " , ";
+                                        }
+                                        $applicable_dept = substr($applicable_dept, 0, strlen($applicable_dept) - 2);
+                                        for ($i = 0; $i < count($dept_list) - 1; $i = $i + 2) {
+                                            $checkbox_div .= '
                                     <div class="custom-control custom-checkbox custom-control-inline">
                                         <input type="checkbox" class="custom-control-input" id="customCheck' . ($i + 100 * $count) . '" name="check_dept[]" value="' . $dept_list[$i] . '"';
-                                                if (in_array($dept_list[$i], $checked_dept)) {
-                                                    $checkbox_div .= " checked";
-                                                }
-                                                $checkbox_div .= '>
+                                            if (in_array($dept_list[$i], $checked_dept)) {
+                                                $checkbox_div .= " checked";
+                                            }
+                                            $checkbox_div .= '>
                                         <label class="custom-control-label" for="customCheck' . ($i + 100 * $count) . '">' . $dept_list[$i + 1] . '</label>
                                     </div>
                                     ';
-                                            }
-                                            echo '
+                                        }
+                                        echo '
                                 <tr>
-                            <td>' . $row['cname'] . '</td>
-                            <td>' . $row['cid'] . '</td>
-                            <td>' . $row['sem'] . '</td>
-                            <td>' . $row['year'] . '</td>
-                            <td>' . $row['dept_name'] . '</td>
-                            <td>' . $applicable_dept . '</td>
-                            <td>' . $row['max'] . '</td>
-                            <td>' . $row['min'] . '</td>
-                            <td>' . $row['no_of_allocated'] . '</td>
-                            
-                            <td>
+                                    <td>' . $row['cname'] . '</td>
+                                    <td>' . $row['cid'] . '</td>
+                                    <td>' . $row['sem'] . '</td>
+                                    <td>' . $row['year'] . '</td>
+                                    <td>' . $row['dept_name'] . '</td>
+                                    <td>' . $applicable_dept . '</td>
+                                    <td>' . $row['max'] . '</td>
+                                    <td>' . $row['min'] . '</td>
+                                    <td>' . $row['no_of_allocated'] . '</td>
+                                    
+                                    <td>
 
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter10">
-                                    <i class="fas fa-toolbox"></i>
-                                </button>
-                    
-                                <!-- Modal -->       
-                                <div class="modal fade" id="exampleModalCenter10" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle10" aria-hidden="true">
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter10">
+                                            <i class="fas fa-toolbox"></i>
+                                        </button>
+                            
+                                        <!-- Modal -->       
+                                        <div class="modal fade" id="exampleModalCenter10" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle10" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalCenterTitle10">Action</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <nav>
+                                                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                                        <a class="nav-item nav-link active" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate" role="tab" aria-controls="nav-allocate" aria-selected="true">Allocation</a>
+                                                                    </div>
+                                                                </nav>
+                                                                <div class="tab-content" id="nav-tabContent">
+                                                                    <!--Allocation-->
+                                                                    <div class="tab-pane fade show active" id="nav-allocate" role="tabpanel" aria-labelledby="nav-allocate-tab">
+                                                                        <form action="">
+                                                                            <div class="form-group">
+                                                                                <label for="exampleFormControlSelect1"><b>Department</b>
+                                                                                </label>
+                                                                                <select class="form-control" id="exampleFormControlSelect1" name="department">
+                                                                                    <option>1</option>
+                                                                                    <option>2</option>
+                                                                                    <option>3</option>
+                                                                                    <option>4</option>
+                                                                                    <option>5</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="exampleFormControlSelect1"><b>Course</b>
+                                                                                </label>
+                                                                                <select class="form-control" id="exampleFormControlSelect1" name="course">
+                                                                                    <option>1</option>
+                                                                                    <option>2</option>
+                                                                                    <option>3</option>
+                                                                                    <option>4</option>
+                                                                                    <option>5</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            
+                                                                            <div class="form-group">
+                                                                                <label for="exampleFormControlSelect1"><b>Faculty ID</b>
+                                                                                </label>
+                                                                                <select class="form-control" id="exampleFormControlSelect1" name="course">
+                                                                                    <option>1</option>
+                                                                                    <option>2</option>
+                                                                                    <option>3</option>
+                                                                                    <option>4</option>
+                                                                                    <option>5</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <button type="submit" class="btn btn-primary">Allocate</button>
+                                                                        </form>
+                                                                    </div>
+                                                                    <!--end Allocation-->
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                                <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>       
+                                    </td>
+                                    <td>
+
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
+                                            <i class="fas fa-tools"></i>
+                                        </button>
+                            
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalCenter' . $count . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalCenterTitle10">Action</h5>
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle1">Action</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -357,249 +394,172 @@ include('../includes/header.php');
                                                     <div class="modal-body">
                                                         <nav>
                                                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                                <a class="nav-item nav-link active" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate" role="tab" aria-controls="nav-allocate" aria-selected="true">Allocation</a>
+                                                                <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
+                                                                <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update' . $count . '" role="tab" aria-controls="nav-update' . $count . '" aria-selected="false">Update</a>
                                                             </div>
                                                         </nav>
                                                         <div class="tab-content" id="nav-tabContent">
-                                                            <!--Allocation-->
-                                                            <div class="tab-pane fade show active" id="nav-allocate" role="tabpanel" aria-labelledby="nav-allocate-tab">
-                                                                <form action="">
+                                                            <!--Deletion-->
+                                                            <div class="tab-pane fade show active" id="nav-delete' . $count . '" role="tabpanel" aria-labelledby="nav-delete-tab">
+                                                                <form action="ic_queries/addcourse_queries.php" method="POST">
                                                                     <div class="form-group">
-                                                                        <label for="exampleFormControlSelect1"><b>Department</b>
+                                                                        <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
                                                                         </label>
-                                                                        <select class="form-control" id="exampleFormControlSelect1" name="department">
-                                                                            <option>1</option>
-                                                                            <option>2</option>
-                                                                            <option>3</option>
-                                                                            <option>4</option>
-                                                                            <option>5</option>
-                                                                        </select>
+                                                                        <br>
+                                                                        <input type="hidden" name="cid" value="' . $row['cid'] . '">
+                                                                        <input type="hidden" name="sem" value="' . $row['sem'] . '">
+                                                                        <input type="hidden" name="year" value="' . $row['year'] . '">
+                                                                        <button type="submit" class="btn btn-primary" name="delete_course">Yes</button>
+                                                                        <button type="button" class="btn btn-secondary" name="no">No</button>
                                                                     </div>
-                                                                    <div class="form-group">
-                                                                        <label for="exampleFormControlSelect1"><b>Course</b>
-                                                                        </label>
-                                                                        <select class="form-control" id="exampleFormControlSelect1" name="course">
-                                                                            <option>1</option>
-                                                                            <option>2</option>
-                                                                            <option>3</option>
-                                                                            <option>4</option>
-                                                                            <option>5</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    
-                                                                    <div class="form-group">
-                                                                        <label for="exampleFormControlSelect1"><b>Faculty ID</b>
-                                                                        </label>
-                                                                        <select class="form-control" id="exampleFormControlSelect1" name="course">
-                                                                            <option>1</option>
-                                                                            <option>2</option>
-                                                                            <option>3</option>
-                                                                            <option>4</option>
-                                                                            <option>5</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <button type="submit" class="btn btn-primary">Allocate</button>
                                                                 </form>
                                                             </div>
-                                                            <!--end Allocation-->
+                                                            <!--end Deletion-->
+                                                            <!--Update-->
+                                                            <div class="tab-pane fade" id="nav-update' . $count . '" role="tabpanel" aria-labelledby="nav-update-tab">
+                                                                <form action="ic_queries/addcourse_queries.php" method="POST">
+                                                                    <div class="form-row mt-4">
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="cname"><b>Name</b></label>
+                                                                            <input type="text" class="form-control" required="required" placeholder="New Course Name" name="coursename" value="' . $row['cname'] . '">
+                                                                            
+                                                                        </div>
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="courseid"><b>Course ID</b></label>
+                                                                            <input type="text" class="form-control" required="required" placeholder="00000" name="courseidnew" value="' . $row['cid'] . '">
+                                                                            <input type="hidden" class="form-control"  placeholder="00000" name="courseidold" value="' . $row['cid'] . '">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="semester"><b>Semester</b></label>
+                                                                            <input type="text" class="form-control" required="required" placeholder="Semester" name="semnew" value="' . $row['sem'] . '">
+                                                                            <input type="hidden" class="form-control" placeholder="Semester" name="semold" value="' . $row['sem'] . '">
+                                                                        </div>
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="year"><b>Year</b></label>
+                                                                            <input type="text" class="form-control"  name="year" disabled placeholder="year" value="' . $row['year'] . '">
+                                                                            <input type="hidden" class="form-control"  name="year" placeholder="year" value="' . $row['year'] . '">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="max"><b>Max</b></label>
+                                                                            <input type="number" class="form-control" required="required" name="max" placeholder="120" value="' . $row['max'] . '">
+                                                                        </div>
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="min"><b>Min</b></label>
+                                                                            <input type="number" class="form-control" required="required" name="min" placeholder="1" value="' . $row['min'] . '">
+                                                                        </div>
+                                                                    </div>
+                                                                    <label for="branch"><b>Branches to opt for</b></label>
+                                                                    <br>
+                                                                    ' . $checkbox_div . '
+                                                                    <br>
+                                                                    <button type="submit" class="btn btn-primary" name="update_course">Update</button>
+                                                                </form>
+                                                                <br>
+                                                            </div>
+                                                            <!--Update end-->
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                            <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                        <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>       
-                            </td>
-                            <td>
-
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
-                                    <i class="fas fa-tools"></i>
-                                </button>
-                    
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModalCenter' . $count . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalCenterTitle1">Action</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <nav>
-                                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                        <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
-                                                        <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update' . $count . '" role="tab" aria-controls="nav-update' . $count . '" aria-selected="false">Update</a>
-                                                    </div>
-                                                </nav>
-                                                <div class="tab-content" id="nav-tabContent">
-                                                    <!--Deletion-->
-                                                    <div class="tab-pane fade show active" id="nav-delete' . $count . '" role="tabpanel" aria-labelledby="nav-delete-tab">
-                                                        <form action="ic_queries/addcourse_queries.php" method="POST">
-                                                            <div class="form-group">
-                                                                <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
-                                                                </label>
-                                                                <br>
-                                                                <input type="hidden" name="cid" value="' . $row['cid'] . '">
-                                                                <input type="hidden" name="sem" value="' . $row['sem'] . '">
-                                                                <input type="hidden" name="year" value="' . $row['year'] . '">
-                                                                <button type="submit" class="btn btn-primary" name="delete_course">Yes</button>
-                                                                <button type="button" class="btn btn-secondary" name="no">No</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <!--end Deletion-->
-                                                    <!--Update-->
-                                                    <div class="tab-pane fade" id="nav-update' . $count . '" role="tabpanel" aria-labelledby="nav-update-tab">
-                                                        <form action="ic_queries/addcourse_queries.php" method="POST">
-                                                            <div class="form-row mt-4">
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="cname"><b>Name</b></label>
-                                                                    <input type="text" class="form-control" required="required" placeholder="New Course Name" name="coursename" value="' . $row['cname'] . '">
-                                                                    
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="courseid"><b>Course ID</b></label>
-                                                                    <input type="text" class="form-control" required="required" placeholder="00000" name="courseidnew" value="' . $row['cid'] . '">
-                                                                    <input type="hidden" class="form-control"  placeholder="00000" name="courseidold" value="' . $row['cid'] . '">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="semester"><b>Semester</b></label>
-                                                                    <input type="text" class="form-control" required="required" placeholder="Semester" name="semnew" value="' . $row['sem'] . '">
-                                                                    <input type="hidden" class="form-control" placeholder="Semester" name="semold" value="' . $row['sem'] . '">
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="year"><b>Year</b></label>
-                                                                    <input type="text" class="form-control"  name="year" disabled placeholder="year" value="' . $row['year'] . '">
-                                                                    <input type="hidden" class="form-control"  name="year" placeholder="year" value="' . $row['year'] . '">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="max"><b>Max</b></label>
-                                                                    <input type="number" class="form-control" required="required" name="max" placeholder="120" value="' . $row['max'] . '">
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="min"><b>Min</b></label>
-                                                                    <input type="number" class="form-control" required="required" name="min" placeholder="1" value="' . $row['min'] . '">
-                                                                </div>
-                                                            </div>
-                                                            <label for="branch"><b>Branches to opt for</b></label>
-                                                            <br>
-                                                            ' . $checkbox_div . '
-                                                            <br>
-                                                            <button type="submit" class="btn btn-primary" name="update_course">Update</button>
-                                                        </form>
-                                                        <br>
-                                                    </div>
-                                                    <!--Update end-->
-                                                </div>
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                    <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>';
+                                    </td>
+                                </tr>';
 
 
-                                            $count++;
-                                        }
+                                        $count++;
                                     }
+                                }
 
-                                    ?>
+                                ?>
 
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                     <!--end Current-->
                     <!--Upcoming-->
                     <div class="tab-pane fade" id="nav-upcoming" role="tabpanel" aria-labelledby="nav-upcoming-tab">
                         <br>
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Course Name</th>
-                                        <th>Course ID</th>
-                                        <th>Sem</th>
-                                        <th>Academic Year</th>
-                                        <th>Floating Department</th>
-                                        <th>Departments Applicable</th>
-                                        <th>Max</th>
-                                        <th>Min</th>
-                                        <th>Students Allocated</th>
-                                        <th>Allocate faculty</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Course Name</th>
-                                        <th>Course ID</th>
-                                        <th>Sem</th>
-                                        <th>Academic Year</th>
-                                        <th>Floating Department</th>
-                                        <th>Departments Applicable</th>
-                                        <th>Max</th>
-                                        <th>Min</th>
-                                        <th>Students Allocated</th>
-                                        <th>Allocate faculty</th>
-                                        <th>Action</th>
+                        <table class="table table-bordered table-responsive" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Sem</th>
+                                    <th>Academic Year</th>
+                                    <th>Floating Department</th>
+                                    <th>Departments Applicable</th>
+                                    <th>Max</th>
+                                    <th>Min</th>
+                                    <th>Students Allocated</th>
+                                    <th>Allocate faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Sem</th>
+                                    <th>Academic Year</th>
+                                    <th>Floating Department</th>
+                                    <th>Departments Applicable</th>
+                                    <th>Max</th>
+                                    <th>Min</th>
+                                    <th>Students Allocated</th>
+                                    <th>Allocate faculty</th>
+                                    <th>Action</th>
 
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <?php
-                                    $sql3 = "SELECT * FROM department";
-                                    $dept_list = array();
-                                    $result3 = mysqli_query($conn, $sql3);
-                                    while ($row = mysqli_fetch_assoc($result3)) {
-                                        array_push($dept_list, $row['dept_id'], $row['dept_name']);
-                                    }
-                                    $sql = "SELECT cname,cid,sem,year,dept_name,max,min,no_of_allocated FROM audit_course NATURAL JOIN department";
-                                    $result = mysqli_query($conn, $sql);
-                                    if (mysqli_num_rows($result) > 0) {
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <?php
+                                $sql3 = "SELECT * FROM department";
+                                $dept_list = array();
+                                $result3 = mysqli_query($conn, $sql3);
+                                while ($row = mysqli_fetch_assoc($result3)) {
+                                    array_push($dept_list, $row['dept_id'], $row['dept_name']);
+                                }
+                                $sql = "SELECT cname,cid,sem,year,dept_name,max,min,no_of_allocated FROM audit_course NATURAL JOIN department";
+                                $result = mysqli_query($conn, $sql);
+                                if (mysqli_num_rows($result) > 0) {
 
-                                        $count = 500;
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            $checkbox_div = "";
-                                            $cid = $row['cid'];
-                                            $sem = $row['sem'];
-                                            $year = $row['year'];
-                                            $checked_dept = array();
-                                            $applicable_dept = "";
-                                            $sql2 = "SELECT dept_id,dept_name FROM audit_course_applicable_dept NATURAL JOIN department WHERE cid='$cid' AND sem='$sem' AND year='$year'";
-                                            $result2 = mysqli_query($conn, $sql2);
-                                            while ($row2 = mysqli_fetch_assoc($result2)) {
-                                                array_push($checked_dept, $row2['dept_id']);
-                                                $applicable_dept .= $row2['dept_name'] . " , ";
-                                            }
-                                            $applicable_dept = substr($applicable_dept, 0, strlen($applicable_dept) - 2);
-                                            for ($i = 0; $i < count($dept_list) - 1; $i = $i + 2) {
-                                                $checkbox_div .= '
+                                    $count = 500;
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        $checkbox_div = "";
+                                        $cid = $row['cid'];
+                                        $sem = $row['sem'];
+                                        $year = $row['year'];
+                                        $checked_dept = array();
+                                        $applicable_dept = "";
+                                        $sql2 = "SELECT dept_id,dept_name FROM audit_course_applicable_dept NATURAL JOIN department WHERE cid='$cid' AND sem='$sem' AND year='$year'";
+                                        $result2 = mysqli_query($conn, $sql2);
+                                        while ($row2 = mysqli_fetch_assoc($result2)) {
+                                            array_push($checked_dept, $row2['dept_id']);
+                                            $applicable_dept .= $row2['dept_name'] . " , ";
+                                        }
+                                        $applicable_dept = substr($applicable_dept, 0, strlen($applicable_dept) - 2);
+                                        for ($i = 0; $i < count($dept_list) - 1; $i = $i + 2) {
+                                            $checkbox_div .= '
                                     <div class="custom-control custom-checkbox custom-control-inline">
                                         <input type="checkbox" class="custom-control-input" id="customCheck' . ($i + 100 * $count) . '" name="check_dept[]" value="' . $dept_list[$i] . '"';
-                                                if (in_array($dept_list[$i], $checked_dept)) {
-                                                    $checkbox_div .= " checked";
-                                                }
-                                                $checkbox_div .= '>
+                                            if (in_array($dept_list[$i], $checked_dept)) {
+                                                $checkbox_div .= " checked";
+                                            }
+                                            $checkbox_div .= '>
                                         <label class="custom-control-label" for="customCheck' . ($i + 100 * $count) . '">' . $dept_list[$i + 1] . '</label>
                                     </div>
                                     ';
-                                            }
-                                            echo '
+                                        }
+                                        echo '
                                 <tr>
                             <td>' . $row['cname'] . '</td>
                             <td>' . $row['cid'] . '</td>
@@ -787,92 +747,90 @@ include('../includes/header.php');
                         </tr>';
 
 
-                                            $count++;
-                                        }
+                                        $count++;
                                     }
+                                }
 
-                                    ?>
+                                ?>
 
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                     <!--Upcoming end-->
                     <div class="tab-pane fade" id="nav-previous" role="tabpanel" aria-labelledby="nav-previous-tab">
                         <br>
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Course Name</th>
-                                        <th>Course ID</th>
-                                        <th>Sem</th>
-                                        <th>Academic Year</th>
-                                        <th>Floating Department</th>
-                                        <th>Departments Applicable</th>
-                                        <th>Max</th>
-                                        <th>Min</th>
-                                        <th>Students Allocated</th>
-                                        <th>Allocate faculty</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Course Name</th>
-                                        <th>Course ID</th>
-                                        <th>Sem</th>
-                                        <th>Academic Year</th>
-                                        <th>Floating Department</th>
-                                        <th>Departments Applicable</th>
-                                        <th>Max</th>
-                                        <th>Min</th>
-                                        <th>Students Allocated</th>
-                                        <th>Allocate faculty</th>
-                                        <th>Action</th>
+                        <table class="table table-bordered table-responsive" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Sem</th>
+                                    <th>Academic Year</th>
+                                    <th>Floating Department</th>
+                                    <th>Departments Applicable</th>
+                                    <th>Max</th>
+                                    <th>Min</th>
+                                    <th>Students Allocated</th>
+                                    <th>Allocate faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Sem</th>
+                                    <th>Academic Year</th>
+                                    <th>Floating Department</th>
+                                    <th>Departments Applicable</th>
+                                    <th>Max</th>
+                                    <th>Min</th>
+                                    <th>Students Allocated</th>
+                                    <th>Allocate faculty</th>
+                                    <th>Action</th>
 
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <?php
-                                    $sql3 = "SELECT * FROM department";
-                                    $dept_list = array();
-                                    $result3 = mysqli_query($conn, $sql3);
-                                    while ($row = mysqli_fetch_assoc($result3)) {
-                                        array_push($dept_list, $row['dept_id'], $row['dept_name']);
-                                    }
-                                    $sql = "SELECT cname,cid,sem,year,dept_name,max,min,no_of_allocated FROM audit_course NATURAL JOIN department";
-                                    $result = mysqli_query($conn, $sql);
-                                    if (mysqli_num_rows($result) > 0) {
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <?php
+                                $sql3 = "SELECT * FROM department";
+                                $dept_list = array();
+                                $result3 = mysqli_query($conn, $sql3);
+                                while ($row = mysqli_fetch_assoc($result3)) {
+                                    array_push($dept_list, $row['dept_id'], $row['dept_name']);
+                                }
+                                $sql = "SELECT cname,cid,sem,year,dept_name,max,min,no_of_allocated FROM audit_course NATURAL JOIN department";
+                                $result = mysqli_query($conn, $sql);
+                                if (mysqli_num_rows($result) > 0) {
 
-                                        $count = 500;
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            $checkbox_div = "";
-                                            $cid = $row['cid'];
-                                            $sem = $row['sem'];
-                                            $year = $row['year'];
-                                            $checked_dept = array();
-                                            $applicable_dept = "";
-                                            $sql2 = "SELECT dept_id,dept_name FROM audit_course_applicable_dept NATURAL JOIN department WHERE cid='$cid' AND sem='$sem' AND year='$year'";
-                                            $result2 = mysqli_query($conn, $sql2);
-                                            while ($row2 = mysqli_fetch_assoc($result2)) {
-                                                array_push($checked_dept, $row2['dept_id']);
-                                                $applicable_dept .= $row2['dept_name'] . " , ";
-                                            }
-                                            $applicable_dept = substr($applicable_dept, 0, strlen($applicable_dept) - 2);
-                                            for ($i = 0; $i < count($dept_list) - 1; $i = $i + 2) {
-                                                $checkbox_div .= '
+                                    $count = 500;
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        $checkbox_div = "";
+                                        $cid = $row['cid'];
+                                        $sem = $row['sem'];
+                                        $year = $row['year'];
+                                        $checked_dept = array();
+                                        $applicable_dept = "";
+                                        $sql2 = "SELECT dept_id,dept_name FROM audit_course_applicable_dept NATURAL JOIN department WHERE cid='$cid' AND sem='$sem' AND year='$year'";
+                                        $result2 = mysqli_query($conn, $sql2);
+                                        while ($row2 = mysqli_fetch_assoc($result2)) {
+                                            array_push($checked_dept, $row2['dept_id']);
+                                            $applicable_dept .= $row2['dept_name'] . " , ";
+                                        }
+                                        $applicable_dept = substr($applicable_dept, 0, strlen($applicable_dept) - 2);
+                                        for ($i = 0; $i < count($dept_list) - 1; $i = $i + 2) {
+                                            $checkbox_div .= '
                                     <div class="custom-control custom-checkbox custom-control-inline">
                                         <input type="checkbox" class="custom-control-input" id="customCheck' . ($i + 100 * $count) . '" name="check_dept[]" value="' . $dept_list[$i] . '"';
-                                                if (in_array($dept_list[$i], $checked_dept)) {
-                                                    $checkbox_div .= " checked";
-                                                }
-                                                $checkbox_div .= '>
+                                            if (in_array($dept_list[$i], $checked_dept)) {
+                                                $checkbox_div .= " checked";
+                                            }
+                                            $checkbox_div .= '>
                                         <label class="custom-control-label" for="customCheck' . ($i + 100 * $count) . '">' . $dept_list[$i + 1] . '</label>
                                     </div>
                                     ';
-                                            }
-                                            echo '
+                                        }
+                                        echo '
                                 <tr>
                             <td>' . $row['cname'] . '</td>
                             <td>' . $row['cid'] . '</td>
@@ -1060,15 +1018,15 @@ include('../includes/header.php');
                         </tr>';
 
 
-                                            $count++;
-                                        }
+                                        $count++;
                                     }
+                                }
 
-                                    ?>
+                                ?>
 
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
+
                     </div>
                     <!--Update end-->
                 </div>
