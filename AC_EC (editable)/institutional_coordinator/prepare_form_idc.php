@@ -14,7 +14,7 @@ include('../includes/header.php');
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <div class="row align-items-center">
-                        <h1 class="h3 mb-4 text-gray-800">Prepare IDC Form</h1>
+                        <h1 class="h3 mb-4 text-gray-800">Prepare Interdisciplinary Course Form</h1>
                     </div>
                 </div>
                 <div class="card-body">
@@ -91,66 +91,74 @@ include('../includes/header.php');
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Floating Sem</th>
-                            <th>Year</th>
-                            <th>Opening Sem</th>
-                            <th>Start Date</th>
-                            <th>Start Time</th>
-                            <th>End Date</th>
-                            <th>End Time</th>
-                            <th>No of Preferences</th>
-                            <th>Form Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Floating Sem</th>
-                            <th>Year</th>
-                            <th>Opening Sem</th>
-                            <th>Start Date</th>
-                            <th>Start Time</th>
-                            <th>End Date</th>
-                            <th>End Time</th>
-                            <th>No of Preferences</th>
-                            <th>Form Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="font-weight-bold text-primary mb-0">Form Records</h4>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Floating Sem</th>
+                                    <th>Year</th>
+                                    <th>Opening Sem</th>
+                                    <th>Start Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Date</th>
+                                    <th>End Time</th>
+                                    <th>No of Preferences</th>
+                                    <th>Form Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Floating Sem</th>
+                                    <th>Year</th>
+                                    <th>Opening Sem</th>
+                                    <th>Start Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Date</th>
+                                    <th>End Time</th>
+                                    <th>No of Preferences</th>
+                                    <th>Form Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
 
-                        <?php
-                        include_once('../config.php');
-                        $sql = "SELECT sem,year,curr_sem,start_timestamp,end_timestamp,no_of_preferences FROM form WHERE form_type='idc'";
+                                <?php
+                                include_once('../config.php');
+                                $sql = "SELECT sem,year,curr_sem,start_timestamp,end_timestamp,no_of_preferences FROM form WHERE form_type='idc'";
 
-                        $result = mysqli_query($conn, $sql);
-                        if (mysqli_num_rows($result) > 0) {
-                            $count = 500;
+                                $result = mysqli_query($conn, $sql);
+                                if (mysqli_num_rows($result) > 0) {
+                                    $count = 500;
 
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $status = "Not opened yet";
-                                date_default_timezone_set('Asia/Kolkata');
-                                $timestamp=date("Y-m-d H:i");
-                                $start_timestamp = $row['start_timestamp'];
-                                $end_timestamp = $row['end_timestamp'];
-                                if($timestamp>=$start_timestamp){
-                                    if($timestamp<$end_timestamp){
-                                        $status="Open";
-                                    }else{
-                                        $status="Closed";
-                                    }
-                                }
-                                $sArr = explode(" ", $start_timestamp);
-                                $start_date = $sArr[0];
-                                $start_time = $sArr[1];
-                                $eArr = explode(" ", $end_timestamp);
-                                $end_date = $eArr[0];
-                                $end_time = $eArr[1];
-                                echo '
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        $status = "Not opened yet";
+                                        date_default_timezone_set('Asia/Kolkata');
+                                        $timestamp = date("Y-m-d H:i");
+                                        $start_timestamp = $row['start_timestamp'];
+                                        $end_timestamp = $row['end_timestamp'];
+                                        if ($timestamp >= $start_timestamp) {
+                                            if ($timestamp < $end_timestamp) {
+                                                $status = "Open";
+                                            } else {
+                                                $status = "Closed";
+                                            }
+                                        }
+                                        $sArr = explode(" ", $start_timestamp);
+                                        $start_date = $sArr[0];
+                                        $start_time = $sArr[1];
+                                        $eArr = explode(" ", $end_timestamp);
+                                        $end_date = $eArr[0];
+                                        $end_time = $eArr[1];
+                                        echo '
                             <tr>
                             <td>' . $row['sem'] . '</td>
                             <td>' . $row['year'] . '</td>
@@ -288,26 +296,28 @@ include('../includes/header.php');
                             </td>
                         </tr>
                             ';
-                                $count++;
-                            }
-                        }
-                        ?>
+                                        $count++;
+                                    }
+                                }
+                                ?>
 
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- /.container-fluid -->
     <script>
-      function defaultOpenSemVal(){
-        newval=document.querySelector("#exampleInputSem").value-1;
-        if(newval<0)
-          document.querySelector("#exampleInputCurrSem").value="";
-        else
-          document.querySelector("#exampleInputCurrSem").value=newval;
-      }
+        function defaultOpenSemVal() {
+            newval = document.querySelector("#exampleInputSem").value - 1;
+            if (newval < 0)
+                document.querySelector("#exampleInputCurrSem").value = "";
+            else
+                document.querySelector("#exampleInputCurrSem").value = newval;
+        }
     </script>
     <?php include('../includes/footer.php');
     include('../includes/scripts.php');

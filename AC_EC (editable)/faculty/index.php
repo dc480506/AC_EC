@@ -73,7 +73,7 @@ include('../includes/header.php');
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-stripped" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>Course Name</th>
@@ -81,8 +81,8 @@ include('../includes/header.php');
                                     <th>Semester</th>
                                     <th>Year</th>
                                     <th>Course Strength</th>
-                                    <th>Upload</th>
-                                    <th>Deletion</th>
+                                    <th>Student Data</th>
+                                    <th>Erasure</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -92,8 +92,8 @@ include('../includes/header.php');
                                     <th>Semester</th>
                                     <th>Year</th>
                                     <th>Course Strength</th>
-                                    <th>Upload</th>
-                                    <th>Deletion</th>
+                                    <th>Student Data</th>
+                                    <th>Erasure</th>
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -226,7 +226,7 @@ include('../includes/header.php');
                                                             <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
                                                                 <form action="">
                                                                     <div class="form-group">
-                                                                        <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
+                                                                        <label for="exampleFormControlSelect1"><b>Are you sure you want to erase the uploaded data?</b>
                                                                         </label>
                                                                         <br>
                                                                         <button type="submit" class="btn btn-primary" name="yes">Yes</button>

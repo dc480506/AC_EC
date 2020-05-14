@@ -26,12 +26,12 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <i class="fas fa-chalkboard-teacher"></i>
-      <span>Faculty</span>
+      <span>Add User</span>
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="addfaculty.php">Add faculty</a>
-        <a class="collapse-item" href="facultyallocation.php">Allocation</a>
+        <a class="collapse-item" href="addstudent.php">Student</a>
+        <a class="collapse-item" href="addfaculty_internal.php">Internal faculty</a>
       </div>
     </div>
   </li>
@@ -74,7 +74,13 @@
     </div>
   </li>
 
-
+  <hr class="sidebar-divider">
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="upload_response.php">
+      <i class="fa fa-upload" aria-hidden="true"></i>
+      <span>Upload Responses</span></a>
+  </li>
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
 

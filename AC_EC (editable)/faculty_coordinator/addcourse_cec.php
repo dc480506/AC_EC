@@ -2,7 +2,6 @@
 include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
-session_start();
 ?>
 
 <?php include('sidebar.php'); ?>
@@ -86,7 +85,7 @@ session_start();
                                         <option>5</option>
                                     </select>
                                 </div>
-                                <!-- <div class="form-check">
+                                <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
                                     <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
                                     <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
@@ -96,7 +95,7 @@ session_start();
                                         <option>4</option>
                                         <option>5</option>
                                     </select>
-                                </div> -->
+                                </div>
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
@@ -140,8 +139,7 @@ session_start();
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputDepartment"><b>Department</b></label>
-                                    <p><?php echo $_SESSION['dept_name']; ?></p>
-                                    <!-- <input type="text" class="form-control" id="exampleInputDepartment" name="department" placeholder="Department"> -->
+                                    <input type="text" class="form-control" id="exampleInputDepartment" name="department" placeholder="Department">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputMax"><b>Max</b></label>
@@ -151,7 +149,7 @@ session_start();
                                     <label for="exampleInputMin"><b>Min</b></label>
                                     <input type="number" class="form-control" id="exampleInputMin" name="min" placeholder="Minimum number of students">
                                 </div>
-                                <!-- <label for="branch"><b>Branches to opt for</b></label>
+                                <label for="branch"><b>Branches to opt for</b></label>
                                 <br>
                                 <div class="custom-control custom-checkbox custom-control-inline">
                                     <input type="checkbox" class="custom-control-input" id="customCheck7">
@@ -176,7 +174,7 @@ session_start();
                                 <div class="custom-control custom-checkbox custom-control-inline">
                                     <input type="checkbox" class="custom-control-input" id="customCheck12">
                                     <label class="custom-control-label" for="customCheck12">ETRX</label>
-                                </div> -->
+                                </div>
                                 <br>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
@@ -315,7 +313,7 @@ session_start();
                                                                     <input type="number" class="form-control" id="min" name="min" placeholder="1">
                                                                 </div>
                                                             </div>
-                                                            <!-- <label for="branch"><b>Branches to opt for</b></label>
+                                                            <label for="branch"><b>Branches to opt for</b></label>
                                                             <br>
                                                             <div class="custom-control custom-checkbox custom-control-inline">
                                                                 <input type="checkbox" class="custom-control-input" id="customCheck1">
@@ -340,7 +338,7 @@ session_start();
                                                             <div class="custom-control custom-checkbox custom-control-inline">
                                                                 <input type="checkbox" class="custom-control-input" id="customCheck6">
                                                                 <label class="custom-control-label" for="customCheck6">ETRX</label>
-                                                            </div> -->
+                                                            </div>
                                                             <br>
                                                             <button type="submit" class="btn btn-primary" name="update">Update</button>
                                                         </form>

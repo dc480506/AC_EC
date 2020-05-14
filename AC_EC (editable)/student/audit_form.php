@@ -120,7 +120,7 @@ while($row2 = mysqli_fetch_array($result2))
                         <h1 class="h3 mb-4 text-gray-800">Form</h1>
                     </div>
                     <div class="row align-items-center">
-                        <h6 class="card-description"> Audit/Elective/InterDisciplinary Courses </h6>
+                        <h6 class="card-description"> Audit Courses </h6>
                     </div>
                 </div>
                 <div class="card-body">
@@ -188,7 +188,7 @@ for ($i=1; $i <=$row1['no_of_preferences'] ; $i++) {
                         <h1 class="h3 mb-4 text-gray-800">Form</h1>
                     </div>
                     <div class="row align-items-center">
-                        <h6 class="card-description"> Audit/Elective/InterDisciplinary Courses </h6>
+                        <h6 class="card-description"> Audit Courses </h6>
                     </div>
                 </div>
                 <div class="card-body">

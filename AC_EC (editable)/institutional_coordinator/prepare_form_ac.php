@@ -14,7 +14,7 @@ include('../includes/header.php');
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <div class="row align-items-center">
-                        <h1 class="h3 mb-4 text-gray-800">Prepare Audit Form</h1>
+                        <h1 class="h3 mb-4 text-gray-800">Prepare Audit Course Form</h1>
                     </div>
                 </div>
                 <div class="card-body">
@@ -57,18 +57,6 @@ include('../includes/header.php');
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <select class="browser-default custom-select lg-3">
-                                        <option selected>Allocation Method</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary align-center" name="createForm">Create Form</button>
                         </div>
@@ -78,78 +66,86 @@ include('../includes/header.php');
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Floating Sem</th>
-                            <th>Year</th>
-                            <th>Current Sem</th>
-                            <th>Start Date</th>
-                            <th>Start Time</th>
-                            <th>End Date</th>
-                            <th>End Time</th>
-                            <th>No of Preferences</th>
-                            <th>Form Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Floating Sem</th>
-                            <th>Year</th>
-                            <th>Current Sem</th>
-                            <th>Start Date</th>
-                            <th>Start Time</th>
-                            <th>End Date</th>
-                            <th>End Time</th>
-                            <th>No of Preferences</th>
-                            <th>Form Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="font-weight-bold text-primary mb-0">Form Records</h4>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Floating Sem</th>
+                                    <th>Year</th>
+                                    <th>Current Sem</th>
+                                    <th>Start Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Date</th>
+                                    <th>End Time</th>
+                                    <th>No of Preferences</th>
+                                    <th>Form Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Floating Sem</th>
+                                    <th>Year</th>
+                                    <th>Current Sem</th>
+                                    <th>Start Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Date</th>
+                                    <th>End Time</th>
+                                    <th>No of Preferences</th>
+                                    <th>Form Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
 
-                        <?php
-                        include_once('../config.php');
-                        $sql = "SELECT sem,year,curr_sem,start_timestamp,end_timestamp,no_of_preferences,allocate_status FROM form WHERE form_type='audit'";
+                                <?php
+                                include_once('../config.php');
+                                $sql = "SELECT sem,year,curr_sem,start_timestamp,end_timestamp,no_of_preferences,allocate_status FROM form WHERE form_type='audit'";
 
-                        $result = mysqli_query($conn, $sql);
-                        if (mysqli_num_rows($result) > 0) {
-                            $count = 500;
+                                $result = mysqli_query($conn, $sql);
+                                if (mysqli_num_rows($result) > 0) {
+                                    $count = 500;
 
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $status = "Not opened yet";
-                                date_default_timezone_set('Asia/Kolkata');
-                                $timestamp = date("Y-m-d H:i");
-                                $start_timestamp = $row['start_timestamp'];
-                                $end_timestamp = $row['end_timestamp'];
-                                $show_allocate = false;
-                                $color = 'table-warning';
-                                $tabs = '<a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        $status = "Not opened yet";
+                                        date_default_timezone_set('Asia/Kolkata');
+                                        $timestamp = date("Y-m-d H:i");
+                                        $start_timestamp = $row['start_timestamp'];
+                                        $end_timestamp = $row['end_timestamp'];
+                                        $show_allocate = false;
+                                        $color = 'table-warning';
+                                        $tabs = '<a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete' . $count . '" role="tab" aria-controls="nav-delete' . $count . '" aria-selected="true">Deletion</a>
                                 <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update' . $count . '" role="tab" aria-controls="nav-update' . $count . '" aria-selected="false">Update</a>';
-                                if ($timestamp >= $start_timestamp) {
-                                    if ($timestamp < $end_timestamp) {
-                                        $status = "Open";
-                                        $color = 'table-success';
-                                    } else {
-                                        $status = "Closed";
-                                        $tabs .= '<a class="nav-item nav-link" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate' . $count . '" role="tab" aria-controls="nav-allocate' . $count . '" aria-selected="false">Allocate</a>';
-                                        $color = 'table-danger';
-                                        $show_allocate = true;
-                                        if ($row['allocate_status'] == 1) {
-                                            $status = 'Already Allocated';
-                                            $color = 'table-secondary';
+                                        if ($timestamp >= $start_timestamp) {
+                                            if ($timestamp < $end_timestamp) {
+                                                $status = "Open";
+                                                $color = 'table-success';
+                                            } else {
+                                                $status = "Closed";
+                                                $tabs .= '<a class="nav-item nav-link" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate' . $count . '" role="tab" aria-controls="nav-allocate' . $count . '" aria-selected="false">Allocate</a>';
+                                                $color = 'table-danger';
+                                                $show_allocate = true;
+                                                if ($row['allocate_status'] == 1) {
+                                                    $status = 'Already Allocated';
+                                                    $color = 'table-secondary';
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                                $sArr = explode(" ", $start_timestamp);
-                                $start_date = $sArr[0];
-                                $start_time = $sArr[1];
-                                $eArr = explode(" ", $end_timestamp);
-                                $end_date = $eArr[0];
-                                $end_time = $eArr[1];
-                                echo '
+                                        $sArr = explode(" ", $start_timestamp);
+                                        $start_date = $sArr[0];
+                                        $start_time = $sArr[1];
+                                        $eArr = explode(" ", $end_timestamp);
+                                        $end_date = $eArr[0];
+                                        $end_time = $eArr[1];
+                                        echo '
                         <tr class="' . $color . '"">
                             <td>' . $row['sem'] . '</td>
                             <td>' . $row['year'] . '</td>
@@ -160,8 +156,8 @@ include('../includes/header.php');
                             <td>' . $end_time . '</td>
                             <td>' . $row['no_of_preferences'] . '</td>
                             <td>' . $status . '</td>';
-                                if ($status != 'Already Allocated') {
-                                    echo '
+                                        if ($status != 'Already Allocated') {
+                                            echo '
                             <td>
 
                                 <!-- Button trigger modal -->
@@ -253,8 +249,8 @@ include('../includes/header.php');
                                                     </div>
                                                     <!--Update end-->
                                                 ';
-                                    if ($show_allocate) {
-                                        echo '
+                                            if ($show_allocate) {
+                                                echo '
                                                     <div class="tab-pane fade" id="nav-allocate' . $count . '" role="tabpanel" aria-labelledby="nav-allocate-tab">
                                                         <form action="ic_queries/allocate_audit.php" method="POST">
                                                             <div class="form-group">
@@ -265,17 +261,14 @@ include('../includes/header.php');
                                                                 <input type="hidden" name="year" value="' . $row['year'] . '">
                                                                 <input type="hidden" name="nop" value="' . $row['no_of_preferences'] . '">
                                                                 <a class="btn btn-primary" href="allocate.php" role="button" name="allocate">Yes</a>
-                                                                <a class="btn btn-primary" href="prepare_form_ac.php" role="button" name="no">No</a>
+                                                                <a class="btn btn-secondary" href="prepare_form_ac.php" role="button" name="no">No</a>
                                                                 <br>
-                                        
-                                                                <button type="submit" class="btn btn-primary" name="deleteForm">Yes</button>
-                                                                <button type="button" class="btn btn-secondary" name="no">No</button>
                                                             </div>
                                                         </form>
                                                     </div>
                                                     ';
-                                    }
-                                    echo '
+                                            }
+                                            echo '
                                                </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
@@ -286,8 +279,8 @@ include('../includes/header.php');
                                     </div>
                                 </div>
                             </td>';
-                                } else {
-                                    echo ' 
+                                        } else {
+                                            echo ' 
                             <td>
 
                                 <!-- Button trigger modal -->
@@ -297,35 +290,37 @@ include('../includes/header.php');
                                 </button>
                             </td>
                                 ';
+                                        }
+                                        echo '</tr>';
+
+
+                                        $count++;
+                                    }
                                 }
-                                echo '</tr>';
+                                ?>
 
-
-                                $count++;
-                            }
-                        }
-                        ?>
-
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+            </>
         </div>
-    </div>
 
-    <!-- /.container-fluid -->
-    <script>
-        function defaultOpenSemVal() {
-            newval = document.querySelector("#exampleInputSem").value - 1;
-            if (newval < 0)
-                document.querySelector("#exampleInputCurrSem").value = "";
-            else
-                document.querySelector("#exampleInputCurrSem").value = newval;
-        }
-    </script>
-    <?php include('../includes/footer.php');
-    include('../includes/scripts.php');
-    ?>
-    <!-- class="table-danger" -- red
+        <!-- /.container-fluid -->
+        <script>
+            function defaultOpenSemVal() {
+                newval = document.querySelector("#exampleInputSem").value - 1;
+                if (newval < 0)
+                    document.querySelector("#exampleInputCurrSem").value = "";
+                else
+                    document.querySelector("#exampleInputCurrSem").value = newval;
+            }
+        </script>
+        <?php include('../includes/footer.php');
+        include('../includes/scripts.php');
+        ?>
+        <!-- class="table-danger" -- red
     class="table-success" --green
     class="table-secondary" --grey
     class="table-warning" --yellow -->
