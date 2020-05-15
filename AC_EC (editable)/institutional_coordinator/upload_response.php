@@ -38,7 +38,7 @@ include('../includes/header.php');
                 <div class="tab-pane fade show active" id="nav-upload-method" role="tabpanel" aria-labelledby="nav-upload-method-tab">
                     <div class="modal-body">
                         <div class="container">
-                            <form method="post" action="#" id="#">
+                        <form method="post" method="POST" enctype="multipart/form-data" action="ic_queries/upload_response_queries.php" id="#">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="semester"><b>Semester</b></label>
@@ -46,52 +46,52 @@ include('../includes/header.php');
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="year"><b>Year</b></label>
-                                        <input type="number" class="form-control" id="year" name="year" placeholder="Year">
+                                        <input type="text" class="form-control" id="year" name="year" placeholder="Year">
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                     <label for="ctype"><b>Course Type</b></label>
-                                        <select class="browser-default custom-select">
+                                        <select class="browser-default custom-select" name='course_type'>
                                             <option selected></option>
-                                            <option value="1">Audit Course</option>
-                                            <option value="2">interdisciplinary Course</option>
-                                            <option value="3">Open Elective Course</option>
-                                            <option value="4">Close Elective Course</option>
+                                            <option value="audit">Audit Course</option>
+                                            <option value="idc">interdisciplinary Course</option>
+                                            <option value="oec">Open Elective Course</option>
+                                            <option value="cec">Close Elective Course</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="rno"><b>Roll Number</b></label>
-                                        <input type="number" class="form-control" id="rno" name="rno" placeholder="Column Number">
+                                        <input type="text" class="form-control" id="rno" name="rno" placeholder="Column name of Roll Number">
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="department"><b>Department</b></label>
-                                        <input type="number" class="form-control" id="department" name="department" placeholder="Column Number">
+                                        <input type="text" class="form-control" id="department" name="department" placeholder="Column name of Department">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="email"><b>Email</b></label>
-                                        <input type="number" class="form-control" id="email" name="email" placeholder="Column Number">
+                                        <input type="text" class="form-control" id="email" name="email" placeholder="Column name of Email">
                                     </div>
                                 </div>
                                 
                                 <div class="form-row mt-4">
                                     <div class="form-group col-md-4">
                                         <label for="tstamp"><b>Time Stamp</b></label>
-                                        <input type="number" class="form-control" id="tstamp" placeholder="Column Number" name="tstamp">
+                                        <input type="text" class="form-control" id="tstamp" placeholder="Column name of Time Stamp" name="tstamp">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="status"><b>Allocate Status</b></label>
-                                        <input type="number" class="form-control" id="status" placeholder="Column Number" name="status">
+                                        <input type="number" class="form-control" id="status" placeholder="0 for unallocated 1 for allocated" name="status">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="npre"><b>Number of valid Preferences</b></label>
-                                        <input type="number" class="form-control" id="npre" placeholder=" Column Number" name="npre">
+                                        <input type="number" class="form-control" id="npre" placeholder="No. of valid Preferences" name="npre">
                                     </div>
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
-                                        <label class="form-check-label" for="exampleCheck">Add preference column number</label>
+                                        <label class="form-check-label" for="exampleCheck">Add preference column name</label>
                                     <!-- </div> -->
                                         <div id="map_section" style="display: none;">
                                         </div>
@@ -104,11 +104,30 @@ include('../includes/header.php');
                                 </div>
                                 <br>
                                 <div class="form-group files color">
-                                    <input type="file" class="form-control" multiple="">
+                                        <script type="text/javascript" language="javascript">
+                                                function checkfile(sender) {
+                                                    var validExts = new Array(".xlsx", ".xls");
+                                                    var fileExt = sender.value;
+                                                    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+                                                    if (validExts.indexOf(fileExt) < 0) {
+                                                    alert("Invalid file selected, valid files are of " +
+                                                            validExts.toString() + " types.");
+                                                    return false;
+                                                    }
+                                                    else return true;
+                                                }
+                                        </script>
+                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                                        <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                    <button type="submit" class="btn btn-primary" name="save_changes">Next</button>
                                 </div>
                             </form>
                         </div>
                     </div>
+                </div>
                     <style type="text/css">
                         .files input {
                             outline: 2px dashed #92b0b3;
@@ -169,11 +188,6 @@ include('../includes/header.php');
                             text-align: center;
                         }
                     </style>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                        <button type="button" class="btn btn-primary" name="save_changes">Next</button>
-                    </div>
-                </div>
                 <!--end Allocation Method-->
                 <!--Result Analysis-->
                 <div class="tab-pane fade" id="nav-result" role="tabpanel" aria-labelledby="nav-result-tab">
@@ -184,7 +198,7 @@ include('../includes/header.php');
                                 <th>Email Address</th>
                                 <th>Roll Number</th>
                                 <th>Year</th>
-                                <th>Department</th>
+                                <!-- <th>Department</th> -->
                                 <th>Semester</th>
                                 <th>Time Stamp</th>
                                 <th>Allocate Status</th>
@@ -193,17 +207,27 @@ include('../includes/header.php');
                                 <th>Action</th>
                             </tr>
                         </thead>
+                        <?php 
+                        $sql="SELECT * FROM student_preference_audit;";
+                        $result=mysqli_query($conn,$sql);
+                        while($row=mysqli_fetch_array($result))
+                        {
+                        ?>
                         <tbody>
                             <tr>
-                                <td>emailID</td>
-                                <td>rollno</td>
-                                <td>year</td>
-                                <td>department</td>
-                                <td>Sem</td>
-                                <td>timestamp</td>
-                                <td>status</td>
-                                <td>no_preference</td>
-                                <td>preferences</td>
+                                <td><?php echo $row['email_id']; ?></td>
+                                <td><?php echo $row['rollno']; ?></td>
+                                <td><?php echo $row['year']; ?></td>
+                                <!-- <td></td> -->
+                                <td><?php echo $row['sem']; ?></td>
+                                <td><?php echo $row['timestamp']; ?></td>
+                                <td><?php echo $row['allocate_status']; ?></td>
+                                <td><?php echo $row['no_of_valid_preferences']; ?></td>
+                                <td><?php 
+                                for ($i=1; $i <= $row['no_of_valid_preferences']; $i++) { 
+                                    # code...
+                                 ?>
+                                <?php echo $row['pref'.$i]; }?></td>
                                 <td>
 
                                     <!-- Button trigger modal -->
@@ -289,6 +313,7 @@ include('../includes/header.php');
                                     </div>
                                 </td>
                             </tr>
+                        <?php } ?>
                         </tbody>
                     </table>
                     <br>
@@ -335,7 +360,7 @@ include('../includes/header.php');
                             <h5 class="modal-title">Preference Number ` + total + `</h5>
                             <div class="form-group" id="pref_field1_` + new_pref_no + `" style="display: block;">
                                 <label for="pref_field1"><b>Preference Number</b></label>
-                                <input type="number" class="form-control prefid"  required id="pref_id` + new_pref_no + `" name="prefid` + total + `" placeholder="Enter the column number of preference number`+new_pref_no+`">
+                                <input type="text" class="form-control prefid"  required id="pref_id` + new_pref_no + `" name="prefid` + total + `" placeholder="Enter the column name of preference number`+new_pref_no+`">
                             </div>
                             <button type="button" id="rem_pref` + new_pref_no + `" class="btn btn-primary">Remove</button>
                         </div>`;
