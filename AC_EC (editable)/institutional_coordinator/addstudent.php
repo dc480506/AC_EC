@@ -41,7 +41,8 @@ include('../includes/header.php');
                         </div>
                         <div class="modal-body">
                             <div class="container">
-                                <form method="post" action="#" id="#">
+                                <form method="post" method="POST" enctype="multipart/form-data" action="ic_queries/addstudent_queries.php" id="#">
+                                    <label for=""><h6>Information for mapping Data from excel sheet to Database</h6></label>
                                     <div class="form-row mt-4">
                                         <div class="form-group col-md-4">
                                             <label for="cname"><b>First Name</b></label>
@@ -49,11 +50,11 @@ include('../includes/header.php');
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="cname"><b>Middle Name</b></label>
-                                            <input type="text" class="form-control" id="fname" placeholder="Middle" name="mname">
+                                            <input type="text" class="form-control" id="mname" placeholder="Middle" name="mname">
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="cname"><b>Last Name</b></label>
-                                            <input type="text" class="form-control" id="lname" placeholder=" Name" name="fname">
+                                            <input type="text" class="form-control" id="lname" placeholder="Last" name="lname">
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -73,7 +74,7 @@ include('../includes/header.php');
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="email"><b>Email</b></label>
-                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                                            <input type="text" class="form-control" id="email" name="email" placeholder="Email">
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -84,7 +85,26 @@ include('../includes/header.php');
                                     </div>
                                     <br>
                                     <div class="form-group files color">
-                                        <input type="file" class="form-control" multiple="">
+                                        <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
+                                        <script type="text/javascript" language="javascript">
+                                        function checkfile(sender) {
+                                            var validExts = new Array(".xlsx", ".xls");
+                                            var fileExt = sender.value;
+                                            fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+                                            if (validExts.indexOf(fileExt) < 0) {
+                                            alert("Invalid file selected, valid files are of " +
+                                                    validExts.toString() + " types.");
+                                            return false;
+                                            }
+                                            else return true;
+                                        }
+                                        </script>
+                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                                        <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                        <button type="submit" class="btn btn-primary" name="save_changes">Upload</button>
                                     </div>
                                 </form>
                             </div>
@@ -149,10 +169,6 @@ include('../includes/header.php');
                                 text-align: center;
                             }
                         </style>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                            <button type="button" class="btn btn-primary" name="save_changes">Upload</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -247,16 +263,16 @@ include('../includes/header.php');
                                     </select>
                                 </div>
                                 <!-- <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
-                                    <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div> -->
+                  <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
+                  <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
+                  <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div> -->
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
@@ -269,149 +285,168 @@ include('../includes/header.php');
             </div>
             <div class="card shadow mb-4">
                 <div class="card-body">
-                    <table class="table table-bordered table-responsive" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>First Name</th>
-                                <th>Middle Name</th>
-                                <th>Last Name</th>
-                                <th>Roll Number</th>
-                                <th>Year Admitted</th>
-                                <th>Email Address</th>
-                                <th>Semester</th>
-                                <th>Department</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>First Name</th>
-                                <th>Middle Name</th>
-                                <th>Last Name</th>
-                                <th>Roll Number</th>
-                                <th>Year Admitted</th>
-                                <th>Email Address</th>
-                                <th>Semester</th>
-                                <th>Department</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            <tr>
-                                <td>fname</td>
-                                <td>mname</td>
-                                <td>lname</td>
-                                <td>rollno</td>
-                                <td>year</td>
-                                <td>email_id</td>
-                                <td>sem</td>
-                                <td>dept_name</td>
-                                <td>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th>Roll Number</th>
+                                    <th>Year Admitted</th>
+                                    <th>Email Address</th>
+                                    <th>Semester</th>
+                                    <th>Department</th>
+                                    
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th>Roll Number</th>
+                                    <th>Year Admitted</th>
+                                    <th>Email Address</th>
+                                    <th>Semester</th>
+                                    <th>Department</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <?php
+                            $dept_name=array();
+                            $index=1; 
+                            $department="SELECT * FROM department;";
+                            $depart_result=mysqli_query($conn,$department);
+                            while($depart_row=mysqli_fetch_array($depart_result))
+                            {
+                                $dept_name[$index]=$depart_row['dept_name'];
+                                $index++;
+                            }
 
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter2">
-                                        <i class="fas fa-tools"></i>
-                                    </button>
+                            $sql="SELECT * FROM student;";
+                            $result=mysqli_query($conn,$sql);
+                            while($row=mysqli_fetch_array($result))
+                            {
+                            ?>
+                            <tbody>
+                                <tr>
+                                    <td><?php echo $row['fname'];?></td>
+                                    <td><?php echo $row['mname']; ?></td>
+                                    <td><?php echo $row['lname']; ?></td>
+                                    <td><?php echo $row['rollno'];?></td>
+                                    <td><?php echo $row['year_of_admission']; ?></td>
+                                    <td><?php echo $row['email_id']; ?></td>
+                                    <td><?php echo $row['current_sem']; ?></td>
+                                    <td><?php echo $dept_name[$row['dept_id']]; ?></td>
+                                    <td>
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalCenterTitle2">Action</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <nav>
-                                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                            <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
-                                                            <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
-                                                        </div>
-                                                    </nav>
-                                                    <div class="tab-content" id="nav-tabContent">
-                                                        <!--Deletion-->
-                                                        <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
-                                                            <form action="">
-                                                                <div class="form-group">
-                                                                    <label for="exampleFormControlSelect1"><b>Are you sure you want to remove the student from the course?</b>
-                                                                    </label>
-                                                                    <br>
-                                                                    <button type="submit" class="btn btn-primary" name="yes">Yes</button>
-                                                                    <button type="submit" class="btn btn-secondary" name="no">No</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <!--end Deletion-->
-                                                        <!--Update-->
-                                                        <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
-                                                            <form action="">
-                                                                <div class="form-row mt-4">
-                                                                    <div class="form-group col-md-4">
-                                                                        <label for="cname"><b>First Name</b></label>
-                                                                        <input type="text" class="form-control" id="fname" placeholder="First" name="fname">
-                                                                    </div>
-                                                                    <div class="form-group col-md-4">
-                                                                        <label for="cname"><b>Middle Name</b></label>
-                                                                        <input type="text" class="form-control" id="fname" placeholder="Middle" name="mname">
-                                                                    </div>
-                                                                    <div class="form-group col-md-4">
-                                                                        <label for="cname"><b>Last Name</b></label>
-                                                                        <input type="text" class="form-control" id="lname" placeholder=" Name" name="fname">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-12">
-                                                                        <label for="rno"><b>Roll Number</b></label>
-                                                                        <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll Number">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="semester"><b>Semester</b></label>
-                                                                        <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester">
-                                                                    </div>
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="year"><b>Year</b></label>
-                                                                        <input type="text" class="form-control" id="year" name="year" placeholder="year">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="department"><b>Department</b></label>
-                                                                        <input type="text" class="form-control" id="department" name="department" placeholder="Department">
-                                                                    </div>
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="email"><b>Email</b></label>
-                                                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <button type="submit" class="btn btn-primary" name="update">Update</button>
-                                                            </form>
-                                                            <br>
-                                                        </div>
-                                                        <!--Update end-->
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter2">
+                                            <i class="fas fa-tools"></i>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle2">Action</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
                                                     </div>
+                                                    <div class="modal-body">
+                                                        <nav>
+                                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                                <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
+                                                                <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
+                                                            </div>
+                                                        </nav>
+                                                        <div class="tab-content" id="nav-tabContent">
+                                                            <!--Deletion-->
+                                                            <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
+                                                                <form action="">
+                                                                    <div class="form-group">
+                                                                        <label for="exampleFormControlSelect1"><b>Are you sure you want to remove the student from the course?</b>
+                                                                        </label>
+                                                                        <br>
+                                                                        <button type="submit" class="btn btn-primary" name="yes">Yes</button>
+                                                                        <button type="submit" class="btn btn-secondary" name="no">No</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <!--end Deletion-->
+                                                            <!--Update-->
+                                                            <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
+                                                                <form action="">
+                                                                    <div class="form-row mt-4">
+                                                                        <div class="form-group col-md-4">
+                                                                            <label for="cname"><b>First Name</b></label>
+                                                                            <input type="text" class="form-control" id="fname" placeholder="First" name="fname">
+                                                                        </div>
+                                                                        <div class="form-group col-md-4">
+                                                                            <label for="cname"><b>Middle Name</b></label>
+                                                                            <input type="text" class="form-control" id="fname" placeholder="Middle" name="mname">
+                                                                        </div>
+                                                                        <div class="form-group col-md-4">
+                                                                            <label for="cname"><b>Last Name</b></label>
+                                                                            <input type="text" class="form-control" id="lname" placeholder=" Name" name="fname">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-12">
+                                                                            <label for="rno"><b>Roll Number</b></label>
+                                                                            <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll Number">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="semester"><b>Semester</b></label>
+                                                                            <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester">
+                                                                        </div>
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="year"><b>Year</b></label>
+                                                                            <input type="text" class="form-control" id="year" name="year" placeholder="year">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="department"><b>Department</b></label>
+                                                                            <input type="text" class="form-control" id="department" name="department" placeholder="Department">
+                                                                        </div>
+                                                                        <div class="form-group col-md-6">
+                                                                            <label for="email"><b>Email</b></label>
+                                                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+                                                                    <button type="submit" class="btn btn-primary" name="update">Update</button>
+                                                                </form>
+                                                                <br>
+                                                            </div>
+                                                            <!--Update end-->
+                                                        </div>
 
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                        <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                            <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    </td>
+                                </tr>
+                            <?php }?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
     <!-- /.container-fluid -->
     <?php include('../includes/footer.php');
     include('../includes/scripts.php');
