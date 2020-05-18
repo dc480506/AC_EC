@@ -21,7 +21,8 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $year=mysqli_escape_string($conn,$_POST['year']);
         $min=mysqli_escape_string($conn,$_POST['min']);
         $max=mysqli_escape_string($conn,$_POST['max']);
-        $sql="UPDATE audit_course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
+        $dept_id=mysqli_escape_string($conn,$_POST['dept_id']);
+        $sql="UPDATE audit_course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max',dept_id='$dept_id' WHERE cid='$cidold' 
         AND sem='$semold' AND year='$year'";
         mysqli_query($conn,$sql);
         $sql="SELECT dept_id FROM audit_course_applicable_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year'";
@@ -76,7 +77,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
         }
         
-        header("Location: ../addcourse_ac.php");
+        // header("Location: ../addcourse_ac.php");
         exit();
     }else if(isset($_POST['add_course'])){
         $cname=mysqli_escape_string($conn,$_POST['cname']);
