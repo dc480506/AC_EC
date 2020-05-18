@@ -71,7 +71,7 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "allocate_faculty"=>'<button type="button" class="btn btn-primary icon-btn">
                                 <i class="fas fa-toolbox"></i>
                            </button>',
-      "action"=>'<button type="button" class="btn btn-primary icon-btn">
+      "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn">
                     <i class="fas fa-tools"></i>
                 </button>',
    );

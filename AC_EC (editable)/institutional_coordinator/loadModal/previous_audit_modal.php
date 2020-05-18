@@ -4,17 +4,18 @@ session_start();
 if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     // echo 'Hi';
     include_once('../../config.php');
-    $data = json_decode(file_get_contents("php://input"),true); 
+    $data = json_decode(file_get_contents("php://input"),true);
     $cid=mysqli_escape_string($conn,$data['cid']);
     $cname=mysqli_escape_string($conn,$data['cname']);
     $sem=mysqli_escape_string($conn,$data['sem']);
     $max=mysqli_escape_string($conn,$data['max']);
     $min=mysqli_escape_string($conn,$data['min']);
+    $year=mysqli_escape_string($conn,$data['year']);
     $dept_applicable=mysqli_escape_string($conn,$data['dept_applicable']);
     $floating_dept=mysqli_escape_string($conn,$data['dept_name']);
-    $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
-    $row=mysqli_fetch_assoc($result);
-    $year=$row['academic_year'];
+    // $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
+    // $row=mysqli_fetch_assoc($result);
+    // $year=$row['academic_year'];
     $dept_div='';
     $checkbox_div='';
     $sql3 = "SELECT * FROM department";
@@ -77,7 +78,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                           <input type="hidden" name="cid" value="' . $cid . '">
                           <input type="hidden" name="sem" value="' . $sem . '">
                           <input type="hidden" name="year" value="' . $year . '">
-                          <button type="submit" class="btn btn-primary" id="delete_course_btn" name="delete_course">Yes</button>
+                          <button type="submit" class="btn btn-primary" id="delete_course_btn" name="delete_course_log">Yes</button>
                           <button type="button" class="btn btn-secondary" name="no">No</button>
                         </div>
                       </form>
@@ -127,7 +128,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                           <br>
                           ' . $checkbox_div . '
                           <br>
-                          <button type="submit" class="btn btn-primary" id="update_course_btn" name="update_course">Update</button>
+                          <button type="submit" class="btn btn-primary" id="update_course_btn" name="update_course_log">Update</button>
                         </form>
                         <br>
                       </div>
