@@ -526,8 +526,9 @@ include('../includes/header.php');
         }
     }
 $(document).ready(function(){
-loadCurrent();
+    loadCurrent();
 });
+
 function loadCurrent(){
     document.querySelector("#addCoursebtn").style.display="none"
     $('#dataTable-current').DataTable({
@@ -540,78 +541,7 @@ function loadCurrent(){
           'url':'loadInfo/current_audit.php'
       },
       fnDrawCallback:function(){
-          $(".action-btn").on('click',function(){
-            var target_row = $(this).closest("tr"); // this line did the trick
-              console.log(target_row)
-            var aPos = $("#dataTable-current").dataTable().fnGetPosition(target_row.get(0)); 
-            var courseData=$('#dataTable-current').DataTable().row(aPos).data()
-            // delete courseData.action
-            // delete courseData.allocate_faculty
-            var json_courseData=JSON.stringify(courseData)
-            console.log(json_courseData)
-            $.ajax({
-                type: "POST",
-                url: "loadModal/current_audit_modal.php",
-                // data: form_serialize, 
-                // dataType: "json",
-                data: json_courseData,
-                success: function(output)
-                {
-                    // $("#"+x).text("Deleted Successfully");
-                    target_row.append(output);
-                    $('#update-del-modal').modal('show')
-                        $(document).on('hidden.bs.modal', '#update-del-modal', function () {
-                            $("#update-del-modal").remove(); 
-                        });
-                    $('#delete_course_form').submit(function(e){
-                        e.preventDefault();
-                        var form = $(this);
-                        var form_serialize=form.serializeArray();// serializes the form's elements.
-                        form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
-                        $("#delete_course_btn").text("Deleting...");
-                        $("#delete_course_btn").attr("disabled",true);
-                        $.ajax({
-                            type: "POST",
-                            url: "ic_queries/addcourse_queries.php",
-                            data: form_serialize, 
-                            success: function(data)
-                            {
-                                //    alert(data); // show response from the php script.
-                                $("#delete_course_btn").text("Deleted Successfully");
-                                var row=$("#update-del-modal").closest('tr');
-                                var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0)); 
-                                $('#update-del-modal').modal('hide');
-                                $('body').removeClass('modal-open');
-                                $('.modal-backdrop').remove();
-                                // row.remove();
-                                $("#dataTable-current").DataTable().row(aPos).remove().draw(false);
-                                // console.log(aPos);
-                                // console.log(row)
-                            }
-                            });
-                    });
-                    $('#update_course_form').submit(function(e){
-                        e.preventDefault();
-                        var form = $(this);
-                        var form_serialize=form.serializeArray();// serializes the form's elements.
-                        form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
-                        $("#update_course_btn").text("Updating...");
-                        $("#update_course_btn").attr("disabled",true);
-                        $.ajax({
-                            type: "POST",
-                            url: "ic_queries/addcourse_queries.php",
-                            data: form_serialize, 
-                            success: function(data)
-                            {
-                                //    alert(data); // show response from the php script.
-                                $("#update_course_btn").text("Updated Successfully");
-
-                            }
-                            });
-                    });
-                }
-            });
-          })
+          $(".action-btn").on('click',loadModalCurrent)
       },
       columns: [
          { data: 'cname' },
@@ -628,21 +558,133 @@ function loadCurrent(){
       columnDefs: [ {
         targets: [4,8,9], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
-     }]
+     },
+        // { className: "cname", "targets": [ 0 ] },
+        // { className: "cid", "targets": [ 1 ] },
+        // { className: "sem", "targets": [ 2 ] },
+        // { className: "dept_name", "targets": [ 3 ] },
+        // { className: "dept_applicable", "targets": [ 4 ] },
+        // { className: "max", "targets": [ 5 ] },
+        // { className: "min", "targets": [ 6 ] }
+     ],
    });  
+}
+
+function loadModalCurrent(){
+    var target_row = $(this).closest("tr"); // this line did the trick
+        console.log(target_row)
+    // var btn=$(this);
+    var aPos = $("#dataTable-current").dataTable().fnGetPosition(target_row.get(0)); 
+    var courseData=$('#dataTable-current').DataTable().row(aPos).data()
+    // delete courseData.action
+    // delete courseData.allocate_faculty
+    var json_courseData=JSON.stringify(courseData)
+    console.log(json_courseData)
+    $.ajax({
+        type: "POST",
+        url: "loadModal/current_audit_modal.php",
+        // data: form_serialize, 
+        // dataType: "json",
+        data: json_courseData,
+        success: function(output)
+        {
+            // $("#"+x).text("Deleted Successfully");
+            target_row.append(output);
+            $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
+                    $("#update-del-modal").remove(); 
+                });
+            $('#delete_course_form').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
+                $("#delete_course_btn").text("Deleting...");
+                $("#delete_course_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addcourse_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        //    alert(data); // show response from the php script.
+                        $("#delete_course_btn").text("Deleted Successfully");
+                        var row=$("#update-del-modal").closest('tr');
+                        var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0)); 
+                        $('#update-del-modal').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        // row.remove();
+                        $("#dataTable-current").DataTable().row(aPos).remove().draw(false);
+                        // console.log(aPos);
+                        // console.log(row)
+                    }
+                    });
+            });
+            $('#update_course_form').submit(function(e){
+                update_course_form_current(e);
+                $('#update-del-modal').modal('hide');
+            });
+        }
+    });
+}
+function update_course_form_current(e){
+    e.preventDefault();
+    var form = $('#update_course_form');
+    var form_serialize=form.serializeArray();// serializes the form's elements.
+    console.log(form_serialize)
+    form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
+    $("#update_course_btn").text("Updating...");
+    $("#update_course_btn").attr("disabled",true);
+    $.ajax({
+    type: "POST",
+    url: "ic_queries/addcourse_queries.php",
+    data: form_serialize, 
+    success: function(data)
+    {
+        //    alert(data); // show response from the php script.
+        $("#update_course_btn").text("Updated Successfully");
+        var row=$("#update-del-modal").closest('tr');
+        var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0));
+        var temp = $("#dataTable-current").DataTable().row(aPos).data();
+        console.log(temp)
+        console.log(form_serialize)
+        temp['cname'] = form_serialize[0].value;
+        temp['cid']=form_serialize[1].value;
+        temp['sem']=form_serialize[3].value;
+        temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
+        var x="";
+        for (i = 9; i < form_serialize.length - 1; i++) { 
+            x = x.concat(id_to_name_convertor_dept(form_serialize[i].value));
+            x = x.concat(", ");
+        }
+        x = x.substr(0, x.length - 2);
+        temp['dept_applicable']=x;
+        temp['max']=form_serialize[7].value;
+        temp['min']=form_serialize[8].value;
+        console.log(temp)
+        $('#dataTable-current').dataTable().fnUpdate(temp,aPos,undefined,false);
+        $('.action-btn').off('click')
+        $('.action-btn').on('click',loadModalCurrent)
+        // $("#dataTable-current").DataTable().row(aPos).draw(false);
+    }
+    });
 }
 function loadUpcoming(){
     document.querySelector("#addCoursebtn").style.display="block"
     $('#dataTable-upcoming').DataTable({
-      'processing': true,
-      'serverSide': true,
-      'destroy':true,
-      'serverMethod': 'post',
-      'aaSorting':[],
-      'ajax': {
+      processing: true,
+      serverSide: true,
+      destroy:true,
+      serverMethod: 'post',
+      aaSorting:[],
+      ajax: {
           'url':'loadInfo/upcoming_audit.php'
       },
-      'columns': [
+      fnDrawCallback:function(){
+          $(".action-btn").on('click',loadModalUpcoming)
+      },
+      columns: [
          { data: 'cname' },
          { data: 'cid' },
          { data: 'sem' },
@@ -654,26 +696,129 @@ function loadUpcoming(){
          { data: 'allocate_faculty' },
          { data: 'action' },
       ],
-      'columnDefs': [ {
-        'targets': [5,8,9], // column index (start from 0)
-        'orderable': false, // set orderable false for selected columns
+      columnDefs: [ {
+        targets: [5,8,9], // column index (start from 0)
+        orderable: false, // set orderable false for selected columns
      }]
    });
+}
+function loadModalUpcoming(){
+    var target_row = $(this).closest("tr"); // this line did the trick
+        console.log(target_row)
+    // var btn=$(this);
+    var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(target_row.get(0)); 
+    var courseData=$('#dataTable-upcoming').DataTable().row(aPos).data()
+    // delete courseData.action
+    // delete courseData.allocate_faculty
+    var json_courseData=JSON.stringify(courseData)
+    console.log(json_courseData)
+    $.ajax({
+        type: "POST",
+        url: "loadModal/upcoming_audit_modal.php",
+        // data: form_serialize, 
+        // dataType: "json",
+        data: json_courseData,
+        success: function(output)
+        {
+            // $("#"+x).text("Deleted Successfully");
+            target_row.append(output);
+            $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
+                    $("#update-del-modal").remove(); 
+                });
+            $('#delete_course_form').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
+                $("#delete_course_btn").text("Deleting...");
+                $("#delete_course_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addcourse_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        //    alert(data); // show response from the php script.
+                        $("#delete_course_btn").text("Deleted Successfully");
+                        var row=$("#update-del-modal").closest('tr');
+                        var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(row.get(0)); 
+                        $('#update-del-modal').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        // row.remove();
+                        $("#dataTable-upcoming").DataTable().row(aPos).remove().draw(false);
+                        // console.log(aPos);
+                        // console.log(row)
+                    }
+                    });
+            });
+            $('#update_course_form').submit(function(e){
+                update_course_form_upcoming(e);
+                $('#update-del-modal').modal('hide');
+                });
+        }
+    });
+}
+
+function update_course_form_upcoming(e){
+    e.preventDefault();
+    var form = $('#update_course_form');
+    var form_serialize=form.serializeArray();// serializes the form's elements.
+    console.log(form_serialize)
+    form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
+    $("#update_course_btn").text("Updating...");
+    $("#update_course_btn").attr("disabled",true);
+    $.ajax({
+    type: "POST",
+    url: "ic_queries/addcourse_queries.php",
+    data: form_serialize, 
+    success: function(data)
+    {
+        //    alert(data); // show response from the php script.
+        $("#update_course_btn").text("Updated Successfully");
+        var row=$("#update-del-modal").closest('tr');
+        var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(row.get(0));
+        var temp = $("#dataTable-upcoming").DataTable().row(aPos).data();
+        console.log(temp)
+        console.log(form_serialize)
+        temp['cname'] = form_serialize[0].value;
+        temp['cid']=form_serialize[1].value;
+        temp['sem']=form_serialize[3].value;
+        temp['year']=form_serialize[5].value;
+        temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
+        var x="";
+        for (i = 9; i < form_serialize.length - 1; i++) { 
+            x = x.concat(id_to_name_convertor_dept(form_serialize[i].value));
+            x = x.concat(", ");
+        }
+        x = x.substr(0, x.length - 2);
+        temp['dept_applicable']=x;
+        temp['max']=form_serialize[7].value;
+        temp['min']=form_serialize[8].value;
+        console.log(temp)
+        $('#dataTable-upcoming').dataTable().fnUpdate(temp,aPos,undefined,false);
+        $('.action-btn').off('click')
+        $('.action-btn').on('click',loadModalUpcoming)
+        // $("#dataTable-current").DataTable().row(aPos).draw(false);
+    }
+    });
 }
 function loadPrevious(){
     document.querySelector("#addCoursebtn").style.display="none"
     $('#dataTable-previous').DataTable({
-      'processing': true,
-      'serverSide': true,
-      'destroy':true,
-      'serverMethod': 'post',
-      'aaSorting':[],
-    //   'responsive':true,
-      'ajax': {
+      processing: true,
+      serverSide: true,
+      destroy:true,
+      serverMethod: 'post',
+      aaSorting:[],
+      ajax: {
           'url':'loadInfo/previous_audit.php'
       },
-      
-      'columns': [
+      fnDrawCallback:function(){
+          $(".action-btn").on('click',loadModalPrevious)
+      },
+      columns: [
          { data: 'cname' },
          { data: 'cid' },
          { data: 'sem' },
@@ -686,12 +831,121 @@ function loadPrevious(){
          { data: 'allocate_faculty' },
          { data: 'action' },
       ],
-      'columnDefs': [ {
-        'targets': [4,8,9], // column index (start from 0)
-        'orderable': false, // set orderable false for selected columns
+      columnDefs: [ {
+        targets: [4,8,9], // column index (start from 0)
+        orderable: false, // set orderable false for selected columns
      }]
    });
 }
+function loadModalPrevious(){
+    var target_row = $(this).closest("tr"); // this line did the trick
+        console.log(target_row)
+    var aPos = $("#dataTable-previous").dataTable().fnGetPosition(target_row.get(0)); 
+    var courseData=$('#dataTable-previous').DataTable().row(aPos).data()
+    // delete courseData.action
+    // delete courseData.allocate_faculty
+    var json_courseData=JSON.stringify(courseData)
+    console.log(json_courseData)
+    $.ajax({
+        type: "POST",
+        url: "loadModal/previous_audit_modal.php",
+        // data: form_serialize, 
+        // dataType: "json",
+        data: json_courseData,
+        success: function(output)
+        {
+            // $("#"+x).text("Deleted Successfully");
+            target_row.append(output);
+            $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
+                    $("#update-del-modal").remove(); 
+                });
+            $('#delete_course_form').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
+                $("#delete_course_btn").text("Deleting...");
+                $("#delete_course_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addcourse_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        //    alert(data); // show response from the php script.
+                        $("#delete_course_btn").text("Deleted Successfully");
+                        var row=$("#update-del-modal").closest('tr');
+                        var aPos = $("#dataTable-previous").dataTable().fnGetPosition(row.get(0)); 
+                        $('#update-del-modal').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        // row.remove();
+                        $("#dataTable-previous").DataTable().row(aPos).remove().draw(false);
+                        // console.log(aPos);
+                        // console.log(row)
+                    }
+                    });
+            });
+            $('#update_course_form').submit(function(e){
+                update_course_form_previous(e);
+                $('#update-del-modal').modal('hide');
+                });
+
+        }
+    });
+}
+function update_course_form_previous(e){
+    e.preventDefault();
+    var form = $('#update_course_form');
+    var form_serialize=form.serializeArray();// serializes the form's elements.
+    console.log(form_serialize)
+    form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
+    $("#update_course_btn").text("Updating...");
+    $("#update_course_btn").attr("disabled",true);
+    $.ajax({
+    type: "POST",
+    url: "ic_queries/addcourse_queries.php",
+    data: form_serialize, 
+    success: function(data)
+    {
+        //    alert(data); // show response from the php script.
+        $("#update_course_btn").text("Updated Successfully");
+        var row=$("#update-del-modal").closest('tr');
+        var aPos = $("#dataTable-previous").dataTable().fnGetPosition(row.get(0));
+        var temp = $("#dataTable-previous").DataTable().row(aPos).data();
+        console.log(temp)
+        console.log(form_serialize)
+        temp['cname'] = form_serialize[0].value;
+        temp['cid']=form_serialize[1].value;
+        temp['sem']=form_serialize[3].value;
+        temp['year']=form_serialize[5].value;
+        temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
+        var x="";
+        for (i = 9; i < form_serialize.length - 1; i++) { 
+            x = x.concat(id_to_name_convertor_dept(form_serialize[i].value));
+            x = x.concat(", ");
+        }
+        x = x.substr(0, x.length - 2);
+        temp['dept_applicable']=x;
+        temp['max']=form_serialize[7].value;
+        temp['min']=form_serialize[8].value;
+        console.log(temp)
+        $('#dataTable-previous').dataTable().fnUpdate(temp,aPos,undefined,false);
+        $('.action-btn').off('click')
+        $('.action-btn').on('click',loadModalPrevious)
+        // $("#dataTable-current").DataTable().row(aPos).draw(false);
+    }
+    });
+}
+function id_to_name_convertor_dept(id) {
+        if(id == "1") return "Comp";
+        if(id == "2") return "IT";
+        if(id == "3") return "EXTC";
+        if(id == "4") return "ETRX";
+        if(id == "5") return "MECH";
+    }
+
 $('#nav-tab').on("click", "a", function (event) {         
   var activeTab = $(this).attr('id').split('-')[1];
   console.log(activeTab)
