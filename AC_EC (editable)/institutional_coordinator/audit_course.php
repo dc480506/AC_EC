@@ -384,6 +384,13 @@ include('../includes/header.php');
 </div>
 <!-- /.container-fluid -->
 <script>
+    function id_to_name_convertor_dept(id) {
+        if(id == "1") return "Comp";
+        if(id == "2") return "IT";
+        if(id == "3") return "EXTC";
+        if(id == "4") return "ETRX";
+        if(id == "5") return "MECH";
+    }
     function showMapSection() {
         var checkBox = document.getElementById("map_cbox");
 
@@ -595,6 +602,7 @@ function loadCurrent(){
                         var form = $(this);
                         var form_serialize=form.serializeArray();// serializes the form's elements.
                         form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
+                        // alert(form_serialize[10].value);
                         $("#update_course_btn").text("Updating...");
                         $("#update_course_btn").attr("disabled",true);
                         $.ajax({
@@ -603,15 +611,33 @@ function loadCurrent(){
                             data: form_serialize, 
                             success: function(data)
                             {
+                                
                                 //    alert(data); // show response from the php script.
                                 $("#update_course_btn").text("Updated Successfully");
                                 var row=$("#update-del-modal").closest('tr');
-                                var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0));
+                                row.children('.cname').text(form_serialize[0].value);
+                                row.children('.cid').text(form_serialize[1].value);
+                                row.children('.sem').text(form_serialize[3].value);
+                                row.children('.dept_name').text(id_to_name_convertor_dept(form_serialize[6].value));
+                                row.children('.max').text(form_serialize[7].value);
+                                row.children('.min').text(form_serialize[8].value);
+                                
+                                var x = "";
+                                var i;
+                                for (i = 9; i < form_serialize.length - 1; i++) { 
+                                    x = x.concat(id_to_name_convertor_dept(form_serialize[i].value));
+                                    x = x.concat(", ");
+                                }
+                                x = x.substr(0, x.length - 2);
+                                row.children('.dept_applicable').text(x);
+
+                                
+                                // var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0));
                                 $('#update-del-modal').modal('hide');
                                 $('body').removeClass('modal-open');
                                 $('.modal-backdrop').remove();
                                 // row.remove();
-                                $("#dataTable-current").DataTable().row(aPos).draw(false);
+                                // $("#dataTable-current").DataTable().row(aPos).draw(false);
                             }
                             });
                     });
@@ -634,7 +660,18 @@ function loadCurrent(){
       columnDefs: [ {
         targets: [4,8,9], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
-     }]
+     },
+     { className: "cname", "targets": [ 0 ] },
+     { className: "cid", "targets": [ 1 ] },
+     { className: "sem", "targets": [ 2 ] },
+     { className: "dept_name", "targets": [ 3 ] },
+     { className: "dept_applicable", "targets": [ 4 ] },
+     { className: "max", "targets": [ 5 ] },
+     { className: "min", "targets": [ 6 ] },
+     { className: "no_of_allocated", "targets": [ 7 ] },
+     { className: "allocate_faculty", "targets": [ 8 ] },
+     { className: "action", "targets": [ 9 ] }
+     ]
    });  
 }
 function loadUpcoming(){
