@@ -46,41 +46,41 @@ include('../includes/header.php');
                                     <div class="form-row mt-4">
                                         <div class="form-group col-md-4">
                                             <label for="cname"><b>First Name</b></label>
-                                            <input type="text" class="form-control" id="fname" placeholder="First" name="fname">
+                                            <input type="text" class="form-control" id="fname" placeholder="First" name="fname" required>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="cname"><b>Middle Name</b></label>
-                                            <input type="text" class="form-control" id="mname" placeholder="Middle" name="mname">
+                                            <input type="text" class="form-control" id="mname" placeholder="Middle" name="mname" required>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="cname"><b>Last Name</b></label>
-                                            <input type="text" class="form-control" id="lname" placeholder="Last" name="lname">
+                                            <input type="text" class="form-control" id="lname" placeholder="Last" name="lname" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="semester"><b>Semester</b></label>
-                                            <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester">
+                                            <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="year"><b>Year Admitted</b></label>
-                                            <input type="text" class="form-control" id="year" name="year" placeholder="year">
+                                            <input type="text" class="form-control" id="year" name="year" placeholder="year" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="department"><b>Department</b></label>
-                                            <input type="text" class="form-control" id="department" name="department" placeholder="Department">
+                                            <input type="text" class="form-control" id="department" name="department" placeholder="Department" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="email"><b>Email</b></label>
-                                            <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+                                            <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
                                             <label for="rno"><b>Roll Number</b></label>
-                                            <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll no">
+                                            <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll no" required>
                                         </div>
                                     </div>
                                     <br>
@@ -99,7 +99,7 @@ include('../includes/header.php');
                                             else return true;
                                         }
                                         </script>
-                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required/>
                                         <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
                                     </div>
                                     <div class="modal-footer">
