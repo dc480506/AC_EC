@@ -85,12 +85,6 @@ include('../includes/header.php');
                             </div>
 
                             <div class="form-row mt-4">
-
-                                <!--<div class="form-group col-md-4">
-                                    <label for="department"><b>Department</b></label>
-                                    <input type="text" class="form-control" id="department" name="department" placeholder="Column name of Department" required>
-                                </div>-->
-
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
                                     <label class="form-check-label" for="exampleCheck">Add preference column name</label>

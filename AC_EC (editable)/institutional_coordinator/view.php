@@ -56,7 +56,7 @@ include('../includes/header.php');
                                 for ($i = 1; $i <= $row['no_of_valid_preferences']; $i++) {
                                     # code...
                                 ?>
-                                <?php echo $row['pref' . $i];
+                                <?php echo "{$i}.{$row['pref' . $i]}";
                                 } ?></td>
                             <td>
 
