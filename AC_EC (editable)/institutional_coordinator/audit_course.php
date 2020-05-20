@@ -267,7 +267,7 @@ include('../includes/header.php');
                         <br>
                         <!-- <div class="table-responsive"> -->
                         <div class="col text-right" id ="delete_selected_current_div">
-                            <button type="button" class="btn btn-primary" id="delete_selected_current_btn" style="background-color:#eb3b5a" name="delete_selected_current">
+                            <button type="button" class="btn btn-danger" id="delete_selected_current_btn" name="delete_selected_current">
                                 <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
                             </button>
                         </div>    
@@ -317,7 +317,7 @@ include('../includes/header.php');
                     <div class="tab-pane fade" id="nav-upcoming" role="tabpanel" aria-labelledby="nav-upcoming-tab">
                         <br>
                         <div class="col text-right" id ="delete_selected_upcoming_div">
-                            <button type="button" class="btn btn-primary" id="delete_selected_upcoming_btn" style="background-color:#eb3b5a" name="delete_selected_current">
+                            <button type="button" class="btn btn-danger" id="delete_selected_upcoming_btn"  name="delete_selected_current">
                                 <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
                             </button>
                         </div>
