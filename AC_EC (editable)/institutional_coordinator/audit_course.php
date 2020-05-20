@@ -316,10 +316,22 @@ include('../includes/header.php');
                     <!--Upcoming-->
                     <div class="tab-pane fade" id="nav-upcoming" role="tabpanel" aria-labelledby="nav-upcoming-tab">
                         <br>
+                        <div class="col text-right" id ="delete_selected_upcoming_div">
+                            <button type="button" class="btn btn-primary" id="delete_selected_upcoming_btn" style="background-color:#eb3b5a" name="delete_selected_current">
+                                <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                            </button>
+                        </div>
+                        <br>
                         <!-- <div class="table-responsive"> -->
                             <table class="table table-bordered table-responsive" id="dataTable-upcoming" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="select_all_upcoming_page">
+                                                <label class="custom-control-label" for="select_all_upcoming_page"></label>
+                                            </div>
+                                        </th>
                                         <th>Course Name</th>
                                         <th>Course ID</th>
                                         <th>Sem</th>
@@ -334,6 +346,7 @@ include('../includes/header.php');
                                 </thead>
                                 <tfoot>
                                     <tr>
+                                        <th></th>
                                         <th>Course Name</th>
                                         <th>Course ID</th>
                                         <th>Sem</th>
@@ -623,7 +636,7 @@ function loadCurrent(){
          { data: 'action' },
       ],
       columnDefs: [ {
-        targets: [0,4,8,9], // column index (start from 0)
+        targets: [0,5,8,9,10], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
      },
      {className:"selectbox_current_td",targets:[0]}
@@ -740,6 +753,47 @@ function update_course_form_current(e){
     }
     });
 }
+
+
+$("#select_all_upcoming_page").click(function(e){
+            //   var row=$(this).closest('tr')
+    if($(this).is(":checked")){    
+        $("#dataTable-upcoming tbody tr").addClass("selected table-secondary");
+        $(".selectrow_upcoming").attr("checked",true);
+    }else{
+        $(".selectrow_upcoming").attr("checked",false);
+        $("#dataTable-upcoming tbody tr").removeClass("selected table-secondary");
+    }
+            //   row.toggleClass('selected table-secondary')
+})
+$("#delete_selected_upcoming_btn").click(function(e){
+    alert("You have selected "+$("#dataTable-upcoming tbody tr.selected").length+" record(s) for deletion");
+    var delete_rows=$("#dataTable-upcoming").DataTable().rows('.selected').data()
+    var delete_data={}
+    for(var i=0;i<delete_rows.length;i++){
+        baseData={}
+        baseData['cid']=delete_rows[i].cid
+        baseData['sem']=delete_rows[i].sem
+        baseData['year']=delete_rows[i].year
+        delete_data[i]=baseData
+        // console.log(baseData);
+    }
+    var actual_data={}
+    actual_data['type']='upcoming'
+    actual_data['delete_data']=delete_data
+    actual_delete_data_json=JSON.stringify(actual_data)
+    console.log(actual_delete_data_json)
+    $.ajax({
+        type: "POST",
+        url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
+        data: actual_delete_data_json, 
+        success: function(data)
+        {
+            // console.log(data)
+            $("#dataTable-upcoming").DataTable().draw(false);
+        }
+    })
+})
 function loadUpcoming(){
     document.querySelector("#addCoursebtn").style.display="block"
     $('#dataTable-upcoming').DataTable({
@@ -753,8 +807,25 @@ function loadUpcoming(){
       },
       fnDrawCallback:function(){
           $(".action-btn").on('click',loadModalUpcoming)
+          $(".selectrow_upcoming").attr("disabled",true);
+          $("th").removeClass('selectbox_upcoming_td');
+          $(".selectbox_upcoming_td").click(function(e){
+              var row=$(this).closest('tr')
+              var checkbox = $(this).find('input');
+              checkbox.attr("checked", !checkbox.attr("checked"));
+              row.toggleClass('selected table-secondary')
+              if($("#dataTable-upcoming tbody tr.selected").length!=$("#dataTable-upcoming tbody tr").length){
+                $("#select_all_upcoming_page").prop("checked",true)
+                $("#select_all_upcoming_page").prop("checked",false)
+              }else{
+                $("#select_all_upcoming_page").prop("checked",false)
+                $("#select_all_upcoming_page").prop("checked",true)
+              }
+          })
+
       },
       columns: [
+         { data: 'select-cbox'},
          { data: 'cname' },
          { data: 'cid' },
          { data: 'sem' },
@@ -767,9 +838,11 @@ function loadUpcoming(){
          { data: 'action' },
       ],
       columnDefs: [ {
-        targets: [5,8,9], // column index (start from 0)
+        targets: [0,6,9,10], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
-     }]
+     },
+     {className:"selectbox_upcoming_td",targets:[0]}
+     ]
    });
 }
 function loadModalUpcoming(){
@@ -870,6 +943,7 @@ function update_course_form_upcoming(e){
         $('#dataTable-upcoming').dataTable().fnUpdate(temp,aPos,undefined,false);
         $('.action-btn').off('click')
         $('.action-btn').on('click',loadModalUpcoming)
+        $(".selectrow_upcoming").attr("disabled",true);
         // $("#dataTable-current").DataTable().row(aPos).draw(false);
     }
     });

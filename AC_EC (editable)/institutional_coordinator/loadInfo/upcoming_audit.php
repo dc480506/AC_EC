@@ -57,9 +57,13 @@ $sql="select cname,cid,sem,dept_name,max,min,year,
         .$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
-
+$count=0;
 while ($row = mysqli_fetch_assoc($courseRecords)) {
    $data[] = array( 
+      "select-cbox"=>'<div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input selectrow_upcoming" id="selectrow_upcoming'.$count.'">
+                        <label class="custom-control-label" for="selectrow_upcoming'.$count.'"></label>
+                     </div>',
       "cname"=>$row['cname'],
       "cid"=>$row['cid'],
       "sem"=>$row['sem'],
@@ -75,6 +79,7 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
                     <i class="fas fa-tools"></i>
                 </button>',
    );
+   $count++;
 }
 
 ## Response
