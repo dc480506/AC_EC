@@ -57,9 +57,13 @@ $sql="select cname,cid,sem,dept_name,max,min,year,no_of_allocated,
       .$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
-
+$count=0;
 while ($row = mysqli_fetch_assoc($courseRecords)) {
    $data[] = array( 
+      "select-cbox"=>'<div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input selectrow_previous" id="selectrow_previous'.$count.'">
+                        <label class="custom-control-label" for="selectrow_previous'.$count.'"></label>
+                     </div>',
       "cname"=>$row['cname'],
       "cid"=>$row['cid'],
       "sem"=>$row['sem'],
@@ -70,12 +74,13 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "min"=>$row['min'],
       "no_of_allocated"=> $row['no_of_allocated'],
       "allocate_faculty"=>'<button type="button" class="btn btn-primary icon-btn">
-                                <i class="fas fa-toolbox"></i>
+                                <i class="fas fa-chalkboard-teacher"></i>
                            </button>',
       "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn">
                     <i class="fas fa-tools"></i>
                 </button>',
    );
+   $count++;
 }
 
 ## Response
