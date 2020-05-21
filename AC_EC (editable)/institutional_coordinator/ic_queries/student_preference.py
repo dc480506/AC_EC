@@ -8,6 +8,15 @@ percent=''
 pm="PM GMT+5:30"
 am="AM GMT+5:30"
 tp=[]
+def sameprefrem(list1):
+	cid=''
+	for x in range(len(list1)):
+		if 'same' not in list1[x]: 
+			cid=list1[x]
+			for y in range((x+1),len(list1)):
+				if list1[y] == cid:
+					list1[y]='same as pref '+str(x+1)
+	return list1
 def convert24am(str1):        
     # first element is 12 
     dt=[]
@@ -47,6 +56,7 @@ type_of_form=str(sys.argv[3])
 insertform="""INSERT into student_preference_"""+type_of_form+"""(email_id,sem,year,rollno,timestamp,allocate_status,no_of_valid_preferences,"""+preferences+""") VALUES(%s,%s,%s,%s,%s,%s,%s,"""+percent+""");"""
 print(insertform)
 for x in range (1,data.nrows):
+	prefer=[]
 	email=data.cell(x,header_id[sys.argv[7].lower()]).value
 	rollno=data.cell(x,header_id[sys.argv[6].lower()]).value
 	#ole automation to normal date time format script
@@ -75,7 +85,10 @@ for x in range (1,data.nrows):
 	print(time)
 	values=[email,sem,year,rollno,time,allocate_status,no_of_valid_preferences]
 	for z in range(1,int(no_of_valid_preferences)+1):
-		values.append(data.cell(x,header_id[sys.argv[(8+z)].lower()]).value)
+		prefer.append(data.cell(x,header_id[sys.argv[(8+z)].lower()]).value)
+	prefer=sameprefrem(prefer)
+	for val in range(0,len(prefer)):
+		values.append(prefer[val])
 	print(values)
 	choice=[]
 	#execution of query

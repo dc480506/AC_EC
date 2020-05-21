@@ -55,9 +55,9 @@ include('../includes/header.php');
                             <td><?php
                                 for ($i = 1; $i <= $row['no_of_valid_preferences']; $i++) {
                                     # code...
-                                ?>
-                                <?php echo "{$i}.{$row['pref' . $i]}";
-                                } ?></td>
+                                echo "{$i}.{$row['pref' . $i]}";
+                                echo "</br>";
+                                }?></td>
                             <td>
 
                                 <!-- Button trigger modal -->
