@@ -22,12 +22,6 @@ include('../includes/header.php');
                         <i class="fas fa-filter"></i>
                     </button>
                 </div>
-                <div class="col text-right" id ="addCoursebtn" style="display: none">
-                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
-                        <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course
-                    </button>
-                </div>
-
             </div>
             <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -108,148 +102,6 @@ include('../includes/header.php');
                 </div>
             </div>
             <!-- Modal -->
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">Add New Course</h5>
-                            <button type="button" class="close" id="close_add_form_cross" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Table -->
-
-                            <!-- <form class="forms-sample" method="POST" action="ic_queries/addcourse_queries.php"> -->
-                            <form class="forms-sample" id='add_course_form'>
-
-                                <div class="form-group">
-                                    <label for="exampleInputName1"><b>Name</b></label>
-                                    <input type="text" class="form-control" required id="exampleInputName1" name="cname" placeholder="Name">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="exampleInputCourseid"><b>Course ID</b></label>
-                                    <input type="text" class="form-control" required id="exampleInputCourseid" name="courseid" placeholder="Course ID">
-                                </div>
-                                <?php
-                                        include_once("../config.php");
-                                        $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
-                                        $result = mysqli_query($conn, $sql);
-                                        $row=mysqli_fetch_assoc($result);
-                                        $sem_dropdown="";
-                                        // while ($row = mysqli_fetch_assoc($result)) {
-                                        if($row['sem_type']=='EVEN'){
-                                            for($sem_start=1;$sem_start<=8;$sem_start+=2){
-                                                $sem_dropdown.= "<option>" . $sem_start . "</option>";
-                                            }
-                                          $temp=explode('-',$row['academic_year'])[0];
-                                          $temp+=1;
-                                          $temp2="".($temp+1);
-                                          $year_val=$temp."-".substr($temp2,2);
-                                        }else{
-                                            for($sem_start=2;$sem_start<=8;$sem_start+=2){
-                                                $sem_dropdown.= "<option>" . $sem_start . "</option>";
-                                            }
-                                            $year_val=$row['academic_year'];
-                                        }
-                                echo '
-                                <div class="form-group">
-                                    <label for="exampleInputSemester"><b>Semester</b></label>
-                                    <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
-                                    <select class="form-control" required id="exampleInputSemester" name="sem">
-                                    '.$sem_dropdown.'
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputYear"><b>Year</b></label>
-                                    <input type="text" class="form-control" required id="exampleInputYear" name="year" placeholder="Year" value="'.$year_val.'" disabled>
-                                    <input type="hidden" class="form-control" required id="exampleInputYear_submit" name="year" value="'.$year_val.'">
-                                </div>';
-                                ?>
-
-                                <div class="form-group">
-                                    <label for="exampleInputDepartment"><b>Department</b></label>
-                                    <select class="form-control" required name="dept">
-                                        <?php
-                                        include_once("../config.php");
-                                        $sql = "SELECT dept_name FROM department";
-                                        $result = mysqli_query($conn, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<option>" . $row['dept_name'] . "</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputMax"><b>Max</b></label>
-                                    <input type="number" class="form-control" required id="exampleInputMax" name="max" placeholder="Maximum number of students">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputMin"><b>Min</b></label>
-                                    <input type="number" class="form-control" required id="exampleInputMin" name="min" placeholder="Minimum number of students">
-                                </div>
-                                <label for="branch"><b>Branches to opt for</b></label>
-                                <br>
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck7" checked>
-                                    <label class="custom-control-label" for="customCheck7">All</label>
-                                </div>
-                                <?php
-                                include_once('../config.php');
-                                $sql = "SELECT * FROM department";
-                                $result = mysqli_query($conn, $sql);
-                                $c = 8;
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    echo '
-                              <div class="custom-control custom-checkbox custom-control-inline">
-                              <input type="checkbox" class="custom-control-input dept" id="customCheck' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
-                              <label class="custom-control-label" for="customCheck' . $c . '">' . $row['dept_name'] . '</label>
-                             </div>
-                              ';
-                                    $c++;
-                                }
-                                ?>
-                                <br>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
-                                    <label class="form-check-label" for="exampleCheck1">Similar previous course</label>
-                                </div>
-                                <div id="map_section" style="display: none;">
-                                    <!-- <input type="hidden" value="0" id="total_prev" name="total_prev"> -->
-                                    <!-- <div id="map_sec1" style="display :none;"> -->
-                                    <!-- <h5 class="modal-title">Previous Course 1</h5>
-                                        <div class="form-group" id="previous_field1" style="display: block;">
-                                            <label for="previous_field1"><b>Course ID</b></label>
-                                            <input type="text" class="form-control" id="previous_id1" name="prevcid1" placeholder="Course Id">
-                                        </div>
-                                        <div class="form-group" id="previous_field2" style="display: block;">
-                                            <label for="previous_field2"><b>Previous Semester</b></label>
-                                            <input type="text" class="form-control" id="previous_sem1" name="prevsem1" placeholder="Previous Semester">
-                                        </div>
-                                        <div class="form-group" id="previous_field3" style="display: block;">
-                                            <label for="previous_field3"><b>Previous Year</b></label>
-                                            <input type="text" class="form-control" id="previous_year1" name="prevyear1" placeholder="Previous Year">
-                                        </div> -->
-                                    <!-- </div> -->
-                                </div>
-                                <BR>
-                                <div class="form-group">
-
-                                    <button type="button" id="add_prev" class="btn btn-primary" style="display: none;">Add</button>
-                                    <!-- <button type="button" id="rem_prev" class="btn btn-primary" style="display: none;">Remove the Previous Course</button> -->
-                                    <input type="hidden" value="0" id="total_prev" name="total_prev">
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" id="close_add_course_form" data-dismiss="modal" name="close">Close</button>
-                                    <button type="submit" id="add_course_btn" class="btn btn-primary" name="add_course">Add</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="card-body">
@@ -266,11 +118,16 @@ include('../includes/header.php');
                     <div class="tab-pane fade show active" id="nav-current" role="tabpanel" aria-labelledby="nav-current-tab">
                         <br>
                         <!-- <div class="table-responsive"> -->
-                        <div class="col text-right" id ="delete_selected_current_div">
-                            <button type="button" class="btn btn-danger" id="delete_selected_current_btn" name="delete_selected_current">
-                                <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
-                            </button>
-                        </div>    
+                        <div class="card-header py-3">
+                             <div class="row align-items-center">
+                                
+                                <div class="col text-right" id ="delete_selected_current_div">
+                                    <button type="button" class="btn btn-danger" id="delete_selected_current_btn" name="delete_selected_current">
+                                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                                    </button>
+                                </div>    
+                             </div>
+                        </div>
                         <br>
                         <table class="table table-bordered table-responsive" id="dataTable-current" width="100%" cellspacing="0">
                             <thead>
@@ -316,10 +173,311 @@ include('../includes/header.php');
                     <!--Upcoming-->
                     <div class="tab-pane fade" id="nav-upcoming" role="tabpanel" aria-labelledby="nav-upcoming-tab">
                         <br>
-                        <div class="col text-right" id ="delete_selected_upcoming_div">
-                            <button type="button" class="btn btn-danger" id="delete_selected_upcoming_btn"  name="delete_selected_current">
-                                <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
-                            </button>
+                        <div class="card-header py-3">
+                            <div class="row align-items-center">
+                                <!-- Add course -->
+                                <div class="col text-right" id ="addCurrentCoursebtn" style="display:block">
+                                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#addCurrentCourse">
+                                        <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="addCurrentCourse" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalCenterTitle">Add New Course</h5>
+                                                <button type="button" class="close" id="close_add_form_cross" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Table -->
+
+                                                <!-- <form class="forms-sample" method="POST" action="ic_queries/addcourse_queries.php"> -->
+                                                <form class="forms-sample" id='add_course_form'>
+
+                                                    <div class="form-group">
+                                                        <label for="exampleInputName1"><b>Name</b></label>
+                                                        <input type="text" class="form-control" required id="exampleInputName1" name="cname" placeholder="Name">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="exampleInputCourseid"><b>Course ID</b></label>
+                                                        <input type="text" class="form-control" required id="exampleInputCourseid" name="courseid" placeholder="Course ID">
+                                                    </div>
+                                                    <?php
+                                                            include_once("../config.php");
+                                                            $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+                                                            $result = mysqli_query($conn, $sql);
+                                                            $row=mysqli_fetch_assoc($result);
+                                                            $sem_dropdown="";
+                                                            // while ($row = mysqli_fetch_assoc($result)) {
+                                                            if($row['sem_type']=='EVEN'){
+                                                                for($sem_start=1;$sem_start<=8;$sem_start+=2){
+                                                                    $sem_dropdown.= "<option>" . $sem_start . "</option>";
+                                                                }
+                                                            $temp=explode('-',$row['academic_year'])[0];
+                                                            $temp+=1;
+                                                            $temp2="".($temp+1);
+                                                            $year_val=$temp."-".substr($temp2,2);
+                                                            }else{
+                                                                for($sem_start=2;$sem_start<=8;$sem_start+=2){
+                                                                    $sem_dropdown.= "<option>" . $sem_start . "</option>";
+                                                                }
+                                                                $year_val=$row['academic_year'];
+                                                            }
+                                                    echo '
+                                                    <div class="form-group">
+                                                        <label for="exampleInputSemester"><b>Semester</b></label>
+                                                        <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
+                                                        <select class="form-control" required id="exampleInputSemester" name="sem">
+                                                        '.$sem_dropdown.'
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="exampleInputYear"><b>Year</b></label>
+                                                        <input type="text" class="form-control" required id="exampleInputYear" name="year" placeholder="Year" value="'.$year_val.'" disabled>
+                                                        <input type="hidden" class="form-control" required id="exampleInputYear_submit" name="year" value="'.$year_val.'">
+                                                    </div>';
+                                                    ?>
+
+                                                    <div class="form-group">
+                                                        <label for="exampleInputDepartment"><b>Department</b></label>
+                                                        <select class="form-control" required name="dept">
+                                                            <?php
+                                                            include_once("../config.php");
+                                                            $sql = "SELECT dept_name FROM department";
+                                                            $result = mysqli_query($conn, $sql);
+                                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                                echo "<option>" . $row['dept_name'] . "</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="exampleInputMax"><b>Max</b></label>
+                                                        <input type="number" class="form-control" required id="exampleInputMax" name="max" placeholder="Maximum number of students">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="exampleInputMin"><b>Min</b></label>
+                                                        <input type="number" class="form-control" required id="exampleInputMin" name="min" placeholder="Minimum number of students">
+                                                    </div>
+                                                    <label for="branch"><b>Branches to opt for</b></label>
+                                                    <br>
+                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck7" checked>
+                                                        <label class="custom-control-label" for="customCheck7">All</label>
+                                                    </div>
+                                                    <?php
+                                                    include_once('../config.php');
+                                                    $sql = "SELECT * FROM department";
+                                                    $result = mysqli_query($conn, $sql);
+                                                    $c = 8;
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                        echo '
+                                                <div class="custom-control custom-checkbox custom-control-inline">
+                                                <input type="checkbox" class="custom-control-input dept" id="customCheck' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
+                                                <label class="custom-control-label" for="customCheck' . $c . '">' . $row['dept_name'] . '</label>
+                                                </div>
+                                                ';
+                                                        $c++;
+                                                    }
+                                                    ?>
+                                                    <br>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
+                                                        <label class="form-check-label" for="exampleCheck1">Similar previous course</label>
+                                                    </div>
+                                                    <div id="map_section" style="display: none;">
+                                                        <!-- <input type="hidden" value="0" id="total_prev" name="total_prev"> -->
+                                                        <!-- <div id="map_sec1" style="display :none;"> -->
+                                                        <!-- <h5 class="modal-title">Previous Course 1</h5>
+                                                            <div class="form-group" id="previous_field1" style="display: block;">
+                                                                <label for="previous_field1"><b>Course ID</b></label>
+                                                                <input type="text" class="form-control" id="previous_id1" name="prevcid1" placeholder="Course Id">
+                                                            </div>
+                                                            <div class="form-group" id="previous_field2" style="display: block;">
+                                                                <label for="previous_field2"><b>Previous Semester</b></label>
+                                                                <input type="text" class="form-control" id="previous_sem1" name="prevsem1" placeholder="Previous Semester">
+                                                            </div>
+                                                            <div class="form-group" id="previous_field3" style="display: block;">
+                                                                <label for="previous_field3"><b>Previous Year</b></label>
+                                                                <input type="text" class="form-control" id="previous_year1" name="prevyear1" placeholder="Previous Year">
+                                                            </div> -->
+                                                        <!-- </div> -->
+                                                    </div>
+                                                    <BR>
+                                                    <div class="form-group">
+
+                                                        <button type="button" id="add_prev" class="btn btn-primary" style="display: none;">Add</button>
+                                                        <!-- <button type="button" id="rem_prev" class="btn btn-primary" style="display: none;">Remove the Previous Course</button> -->
+                                                        <input type="hidden" value="0" id="total_prev" name="total_prev">
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" id="close_add_course_form" data-dismiss="modal" name="close">Close</button>
+                                                        <button type="submit" id="add_course_btn" class="btn btn-primary" name="add_course">Add</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Bulk addition-->
+                                <div class="col text-right">
+                                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
+                                        <i class="fas fa-upload"></i>
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalCenterTitle">Upload Your File </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="container">
+                                                    <form method="post" method="POST" enctype="multipart/form-data" action="ic_queries/addstudent_queries.php" id="#">
+                                                        <label for=""><h6>Information for mapping Data from excel sheet to Database</h6></label>
+                                                        <div class="form-row mt-4">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="cname"><b>First Name</b></label>
+                                                                <input type="text" class="form-control" id="fname" placeholder="First" name="fname" required>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="cname"><b>Middle Name</b></label>
+                                                                <input type="text" class="form-control" id="mname" placeholder="Middle" name="mname" required>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="cname"><b>Last Name</b></label>
+                                                                <input type="text" class="form-control" id="lname" placeholder="Last" name="lname" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                <label for="semester"><b>Semester</b></label>
+                                                                <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester" required>
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label for="year"><b>Year Admitted</b></label>
+                                                                <input type="text" class="form-control" id="year" name="year" placeholder="year" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                <label for="department"><b>Department</b></label>
+                                                                <input type="text" class="form-control" id="department" name="department" placeholder="Department" required>
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label for="email"><b>Email</b></label>
+                                                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12">
+                                                                <label for="rno"><b>Roll Number</b></label>
+                                                                <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll no" required>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group files color">
+                                                            <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
+                                                            <script type="text/javascript" language="javascript">
+                                                            function checkfile(sender) {
+                                                                var validExts = new Array(".xlsx", ".xls");
+                                                                var fileExt = sender.value;
+                                                                fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+                                                                if (validExts.indexOf(fileExt) < 0) {
+                                                                alert("Invalid file selected, valid files are of " +
+                                                                        validExts.toString() + " types.");
+                                                                return false;
+                                                                }
+                                                                else return true;
+                                                            }
+                                                            </script>
+                                                            <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required/>
+                                                            <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                            <button type="submit" class="btn btn-primary" name="save_changes">Upload</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <style type="text/css">
+                                                .files input {
+                                                    outline: 2px dashed #92b0b3;
+                                                    outline-offset: -10px;
+                                                    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    padding: 120px 0px 85px 35%;
+                                                    text-align: center !important;
+                                                    margin: 0;
+                                                    width: 100% !important;
+                                                }
+
+                                                .files input:focus {
+                                                    outline: 2px dashed #92b0b3;
+                                                    outline-offset: -10px;
+                                                    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    border: 1px solid #92b0b3;
+                                                }
+
+                                                .files {
+                                                    position: relative
+                                                }
+
+                                                .files:after {
+                                                    pointer-events: none;
+                                                    position: absolute;
+                                                    top: 60px;
+                                                    left: 0;
+                                                    width: 50px;
+                                                    right: 0;
+                                                    height: 56px;
+                                                    content: "";
+                                                    background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+                                                    display: block;
+                                                    margin: 0 auto;
+                                                    background-size: 100%;
+                                                    background-repeat: no-repeat;
+                                                }
+
+                                                .color input {
+                                                    background-color: #f1f1f1;
+                                                }
+
+                                                .files:before {
+                                                    position: absolute;
+                                                    bottom: 10px;
+                                                    left: 0;
+                                                    pointer-events: none;
+                                                    width: 100%;
+                                                    right: 0;
+                                                    height: 57px;
+                                                    display: block;
+                                                    margin: 0 auto;
+                                                    color: #2ea591;
+                                                    font-weight: 600;
+                                                    text-transform: capitalize;
+                                                    text-align: center;
+                                                }
+                                            </style>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Multiple deletion-->
+                                <div class="col text-right" id ="delete_selected_upcoming_div">
+                                    <button type="button" class="btn btn-danger" id="delete_selected_upcoming_btn"  name="delete_selected_current">
+                                         <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                                     </button>
+                                </div>
+                            </div>
                         </div>
                         <br>
                         <!-- <div class="table-responsive"> -->
@@ -366,10 +524,22 @@ include('../includes/header.php');
                     <!--Upcoming end-->
                     <div class="tab-pane fade" id="nav-previous" role="tabpanel" aria-labelledby="nav-previous-tab">
                         <br>
+                        <div class="col text-right" id ="delete_selected_previous_div">
+                            <button type="button" class="btn btn-danger" id="delete_selected_previous_btn"  name="delete_selected_previous">
+                                <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                            </button>
+                        </div>
+                        <br>
                         <!-- <div class="table-responsive"> -->
                             <table class="table table-bordered table-responsive" id="dataTable-previous" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="select_all_previous_page">
+                                                <label class="custom-control-label" for="select_all_previous_page"></label>
+                                            </div>
+                                        </th>
                                         <th>Course Name</th>
                                         <th>Course ID</th>
                                         <th>Sem</th>
@@ -385,6 +555,7 @@ include('../includes/header.php');
                                 </thead>
                                 <tfoot>
                                     <tr>
+                                        <th></th>
                                         <th>Course Name</th>
                                         <th>Course ID</th>
                                         <th>Sem</th>
@@ -555,6 +726,8 @@ $(document).ready(function(){
     loadCurrent();
 });
 
+// ************Current Course Section**************
+
 $("#select_all_current_page").click(function(e){
             //   var row=$(this).closest('tr')
     if($(this).is(":checked")){    
@@ -594,7 +767,7 @@ $("#delete_selected_current_btn").click(function(e){
     })
 })
 function loadCurrent(){
-    document.querySelector("#addCoursebtn").style.display="none"
+    // document.querySelector("#addCoursebtn").style.display="none"
     $('#dataTable-current').DataTable({
       processing: true,
       serverSide: true,
@@ -639,8 +812,8 @@ function loadCurrent(){
         targets: [0,5,8,9,10], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
      },
-     {className:"selectbox_current_td",targets:[0]}
-        // { className: "cname", "targets": [ 0 ] },
+     {className:"selectbox_current_td",targets:[0]},
+     { className: "cname", "targets": [ 1 ] },
         // { className: "cid", "targets": [ 1 ] },
         // { className: "sem", "targets": [ 2 ] },
         // { className: "dept_name", "targets": [ 3 ] },
@@ -753,7 +926,38 @@ function update_course_form_current(e){
     }
     });
 }
+$("#dataTable-current").on('click','td.cname',function(){
+    var tr = $(this).closest('tr');
+        var row = $("#dataTable-current").DataTable().row( tr );
+ 
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown table-warning');
+        }
+        else {
+            // Open this row
+            var data={}
+            data['cid']=row.data()['cid'];
+            data['sem']=row.data()['sem'];
+            data['type']='current'
+            data_json=JSON.stringify(data)
+            console.log(data_json)
+            $.ajax({
+                type: "POST",
+                url: "loadAdditionalInfo/additional_info_audit_course.php",
+                data: data_json, 
+                success: function(response)
+                {
+                row.child(response).show();
+                tr.addClass('shown table-warning');
+                }
+            });
+            // row.child("<b>Hello</b>").show();
+        }
+})
 
+// ***********Upcoming course Section************
 
 $("#select_all_upcoming_page").click(function(e){
             //   var row=$(this).closest('tr')
@@ -795,7 +999,7 @@ $("#delete_selected_upcoming_btn").click(function(e){
     })
 })
 function loadUpcoming(){
-    document.querySelector("#addCoursebtn").style.display="block"
+    // document.querySelector("#addCoursebtn").style.display="block"
     $('#dataTable-upcoming').DataTable({
       processing: true,
       serverSide: true,
@@ -841,7 +1045,8 @@ function loadUpcoming(){
         targets: [0,6,9,10], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
      },
-     {className:"selectbox_upcoming_td",targets:[0]}
+     {className:"selectbox_upcoming_td",targets:[0]},
+     { className: "cname", "targets": [ 1 ] },
      ]
    });
 }
@@ -948,8 +1153,80 @@ function update_course_form_upcoming(e){
     }
     });
 }
+$("#dataTable-upcoming").on('click','td.cname',function(){
+    var tr = $(this).closest('tr');
+        var row = $("#dataTable-upcoming").DataTable().row( tr );
+ 
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown table-warning');
+        }
+        else {
+            // Open this row
+            var data={}
+            data['cid']=row.data()['cid'];
+            data['sem']=row.data()['sem'];
+            data['year']=row.data()['year'];
+            data['type']='upcoming'
+            data_json=JSON.stringify(data)
+            console.log(data_json)
+            $.ajax({
+                type: "POST",
+                url: "loadAdditionalInfo/additional_info_audit_course.php",
+                data: data_json, 
+                success: function(response)
+                {
+                row.child(response).show();
+                tr.addClass('shown table-warning');
+                }
+            });
+            // row.child("<b>Hello</b>").show();
+        }
+})
+
+// ***************Previous Course Section**************
+$("#select_all_previous_page").click(function(e){
+            //   var row=$(this).closest('tr')
+    if($(this).is(":checked")){    
+        $("#dataTable-previous tbody tr").addClass("selected table-secondary");
+        $(".selectrow_previous").attr("checked",true);
+    }else{
+        $(".selectrow_previous").attr("checked",false);
+        $("#dataTable-previous tbody tr").removeClass("selected table-secondary");
+    }
+            //   row.toggleClass('selected table-secondary')
+})
+$("#delete_selected_previous_btn").click(function(e){
+    alert("You have selected "+$("#dataTable-previous tbody tr.selected").length+" record(s) for deletion");
+    var delete_rows=$("#dataTable-previous").DataTable().rows('.selected').data()
+    var delete_data={}
+    for(var i=0;i<delete_rows.length;i++){
+        baseData={}
+        baseData['cid']=delete_rows[i].cid
+        baseData['sem']=delete_rows[i].sem
+        baseData['year']=delete_rows[i].year
+        delete_data[i]=baseData
+        // console.log(baseData);
+    }
+    var actual_data={}
+    actual_data['type']='previous'
+    actual_data['delete_data']=delete_data
+    actual_delete_data_json=JSON.stringify(actual_data)
+    console.log(actual_delete_data_json)
+    $.ajax({
+        type: "POST",
+        url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
+        data: actual_delete_data_json, 
+        success: function(data)
+        {
+            // console.log(data)
+            $("#dataTable-previous").DataTable().draw(false);
+        }
+    })
+})
 function loadPrevious(){
-    document.querySelector("#addCoursebtn").style.display="none"
+    // document.querySelector("#addCoursebtn").style.display="none"
     $('#dataTable-previous').DataTable({
       processing: true,
       serverSide: true,
@@ -961,8 +1238,24 @@ function loadPrevious(){
       },
       fnDrawCallback:function(){
           $(".action-btn").on('click',loadModalPrevious)
+          $(".selectrow_previous").attr("disabled",true);
+          $("th").removeClass('selectbox_previous_td');
+          $(".selectbox_previous_td").click(function(e){
+              var row=$(this).closest('tr')
+              var checkbox = $(this).find('input');
+              checkbox.attr("checked", !checkbox.attr("checked"));
+              row.toggleClass('selected table-secondary')
+              if($("#dataTable-previous tbody tr.selected").length!=$("#dataTable-previous tbody tr").length){
+                $("#select_all_previous_page").prop("checked",true)
+                $("#select_all_previous_page").prop("checked",false)
+              }else{
+                $("#select_all_previous_page").prop("checked",false)
+                $("#select_all_previous_page").prop("checked",true)
+              }
+          })
       },
       columns: [
+         { data: 'select-cbox'},
          { data: 'cname' },
          { data: 'cid' },
          { data: 'sem' },
@@ -976,9 +1269,12 @@ function loadPrevious(){
          { data: 'action' },
       ],
       columnDefs: [ {
-        targets: [4,8,9], // column index (start from 0)
+        targets: [0,6,10,11], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
-     }]
+     },
+     {className:"selectbox_previous_td",targets:[0]},
+     { className: "cname", "targets": [ 1 ] },
+     ]
    });
 }
 function loadModalPrevious(){
@@ -1078,17 +1374,49 @@ function update_course_form_previous(e){
         $('#dataTable-previous').dataTable().fnUpdate(temp,aPos,undefined,false);
         $('.action-btn').off('click')
         $('.action-btn').on('click',loadModalPrevious)
+        $(".selectrow_previous").attr("disabled",true);
         // $("#dataTable-current").DataTable().row(aPos).draw(false);
     }
     });
 }
+$("#dataTable-previous").on('click','td.cname',function(){
+    var tr = $(this).closest('tr');
+        var row = $("#dataTable-previous").DataTable().row( tr );
+ 
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown table-warning');
+        }
+        else {
+            // Open this row
+            var data={}
+            data['cid']=row.data()['cid'];
+            data['sem']=row.data()['sem'];
+            data['year']=row.data()['year'];
+            data['type']='previous'
+            data_json=JSON.stringify(data)
+            console.log(data_json)
+            $.ajax({
+                type: "POST",
+                url: "loadAdditionalInfo/additional_info_audit_course.php",
+                data: data_json, 
+                success: function(response)
+                {
+                row.child(response).show();
+                tr.addClass('shown table-warning');
+                }
+            });
+            // row.child("<b>Hello</b>").show();
+        }
+})
 function id_to_name_convertor_dept(id) {
         if(id == "1") return "Comp";
         if(id == "2") return "IT";
         if(id == "3") return "EXTC";
         if(id == "4") return "ETRX";
         if(id == "5") return "MECH";
-    }
+}
 
 $('#nav-tab').on("click", "a", function (event) {         
   var activeTab = $(this).attr('id').split('-')[1];
