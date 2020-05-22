@@ -107,14 +107,27 @@ include('../includes/header.php');
             <div class="modal-body">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-current-tab" data-toggle="tab" href="#nav-current" role="tab" aria-controls="nav-current" aria-selected="true">Currently Allocated</a>
-                        <a class="nav-item nav-link" id="nav-upcoming-tab" data-toggle="tab" href="#nav-upcoming" role="tab" aria-controls="nav-upcoming" aria-selected="false">Currently Unallocated</a>
-                        <a class="nav-item nav-link" id="nav-previous-tab" data-toggle="tab" href="#nav-previous" role="tab" aria-controls="nav-previous" aria-selected="false">Previously Allocated</a>
+                        <a class="nav-item nav-link active" id="nav-current-tab" data-toggle="tab" href="#nav-current" role="tab" aria-controls="nav-current" aria-selected="true">Current</a>
+                        <a class="nav-item nav-link" id="nav-upcoming-tab" data-toggle="tab" href="#nav-upcoming" role="tab" aria-controls="nav-upcoming" aria-selected="false">Upcoming</a>
+                        <a class="nav-item nav-link" id="nav-previous-tab" data-toggle="tab" href="#nav-previous" role="tab" aria-controls="nav-previous" aria-selected="false">Previous</a>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <!--Current-->
                     <div class="tab-pane fade show active" id="nav-current" role="tabpanel" aria-labelledby="nav-current-tab">
+                        <br>
+                        <!-- Default inline 1-->
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="defaultInline1" name="inlineDefaultRadiosExample">
+                            <label class="custom-control-label" for="defaultInline1">Allocated</label>
+                        </div>
+
+                        <!-- Default inline 2-->
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="defaultInline2" name="inlineDefaultRadiosExample">
+                            <label class="custom-control-label" for="defaultInline2">Unallocated</label>
+                        </div>
+                        <br>
                         <br>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -267,6 +280,20 @@ include('../includes/header.php');
                     <!--end Current-->
                     <!--Upcoming-->
                     <div class="tab-pane fade" id="nav-upcoming" role="tabpanel" aria-labelledby="nav-upcoming-tab">
+                        <br>
+
+                        <!-- Default inline 1-->
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="defaultInline1" name="inlineDefaultRadiosExample">
+                            <label class="custom-control-label" for="defaultInline1">Allocated</label>
+                        </div>
+
+                        <!-- Default inline 2-->
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="defaultInline2" name="inlineDefaultRadiosExample">
+                            <label class="custom-control-label" for="defaultInline2">Unallocated</label>
+                        </div>
+                        <br>
                         <br>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
