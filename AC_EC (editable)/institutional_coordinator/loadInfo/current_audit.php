@@ -57,7 +57,6 @@ $sql="select cname,cid,sem,dept_name,max,min,no_of_allocated,
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;
-
 while ($row = mysqli_fetch_assoc($courseRecords)) {
    $data[] = array( 
       // "select-cbox"=>'<input type="checkbox">',
@@ -75,7 +74,7 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "no_of_allocated"=>$row['no_of_allocated'],
       "allocate_faculty"=>'<!-- Button trigger modal -->
       <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter'.$count.'">
-          <i class="fas fa-chalkboard-teacher"></i>
+          <i class="fas fa-toolbox"></i>
       </button>
 
       <!-- Modal -->       
