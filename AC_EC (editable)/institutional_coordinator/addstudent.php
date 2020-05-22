@@ -286,69 +286,47 @@ include('../includes/header.php');
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>First Name</th>
-                                    <th>Middle Name</th>
-                                    <th>Last Name</th>
-                                    <th>Roll Number</th>
-                                    <th>Year Admitted</th>
-                                    <th>Email Address</th>
-                                    <th>Semester</th>
-                                    <th>Department</th>
-                                    
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>First Name</th>
-                                    <th>Middle Name</th>
-                                    <th>Last Name</th>
-                                    <th>Roll Number</th>
-                                    <th>Year Admitted</th>
-                                    <th>Email Address</th>
-                                    <th>Semester</th>
-                                    <th>Department</th>
-                                    <th>Action</th>
-                                </tr>
-                            </tfoot>
-                            <?php
-                            $dept_name=array();
-                            $index=1; 
-                            $department="SELECT * FROM department;";
-                            $depart_result=mysqli_query($conn,$department);
-                            while($depart_row=mysqli_fetch_array($depart_result))
-                            {
-                                $dept_name[$index]=$depart_row['dept_name'];
-                                $index++;
-                            }
-
-                            $sql="SELECT * FROM student;";
-                            $result=mysqli_query($conn,$sql);
-                            while($row=mysqli_fetch_array($result))
-                            {
-                            ?>
-                            <tbody>
-                                <tr>
-                                    <td><?php echo $row['fname'];?></td>
-                                    <td><?php echo $row['mname']; ?></td>
-                                    <td><?php echo $row['lname']; ?></td>
-                                    <td><?php echo $row['rollno'];?></td>
-                                    <td><?php echo $row['year_of_admission']; ?></td>
-                                    <td><?php echo $row['email_id']; ?></td>
-                                    <td><?php echo $row['current_sem']; ?></td>
-                                    <td><?php echo $dept_name[$row['dept_id']]; ?></td>
-                                    <td>
-
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter2">
-                                            <i class="fas fa-tools"></i>
-                                        </button>
+                        <table class="table table-bordered table-responsive" id="dataTable-student" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="select_all">
+                                                <label class="custom-control-label" for="select_all"></label>
+                                            </div>
+                                        </th>
+                                        <th>Email Id</th>
+                                        <th>Roll No.</th>
+                                        <th>First Name</th>
+                                        <th>Middle Name</th>
+                                        <th>Last Name</th>
+                                        <th>Department</th>
+                                        <th>Year of Admission</th>
+                                        <th>Semester</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th>Email Id</th>
+                                        <th>Roll No.</th>
+                                        <th>First Name</th>
+                                        <th>Middle Name</th>
+                                        <th>Last Name</th>
+                                        <th>Department</th>
+                                        <th>Year of Admission</th>
+                                        <th>Semester</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        <!-- </div> -->
+                    </div>
+                                                     
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+                                        <!-- <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -364,9 +342,9 @@ include('../includes/header.php');
                                                                 <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
                                                             </div>
                                                         </nav>
-                                                        <div class="tab-content" id="nav-tabContent">
+                                                        <div class="tab-content" id="nav-tabContent"> -->
                                                             <!--Deletion-->
-                                                            <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
+                                                            <!-- <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
                                                                 <form action="">
                                                                     <div class="form-group">
                                                                         <label for="exampleFormControlSelect1"><b>Are you sure you want to remove the student from the course?</b>
@@ -376,10 +354,10 @@ include('../includes/header.php');
                                                                         <button type="submit" class="btn btn-secondary" name="no">No</button>
                                                                     </div>
                                                                 </form>
-                                                            </div>
+                                                            </div> -->
                                                             <!--end Deletion-->
                                                             <!--Update-->
-                                                            <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
+                                                            <!-- <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
                                                                 <form action="">
                                                                     <div class="form-row mt-4">
                                                                         <div class="form-group col-md-4">
@@ -425,9 +403,9 @@ include('../includes/header.php');
                                                                     <button type="submit" class="btn btn-primary" name="update">Update</button>
                                                                 </form>
                                                                 <br>
-                                                            </div>
+                                                            </div> -->
                                                             <!--Update end-->
-                                                        </div>
+                                                        <!-- </div>
 
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
@@ -438,16 +416,90 @@ include('../includes/header.php');
                                             </div>
                                         </div>
                                     </td>
-                                </tr>
-                            <?php }?>
-                            </tbody>
-                        </table>
+                                </tr> -->
+                                <!-- </tbody>
+                        </table> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- /.container-fluid -->
+<script type="text/javascript">
+$(function loadCurrent(){
+    // document.querySelector("#addCoursebtn").style.display="none"
+    $('#dataTable-student').DataTable({
+      processing: true,
+      serverSide: true,
+      destroy:true,
+      serverMethod: 'post',
+      aaSorting:[],
+      ajax: {
+          'url':'loadInfo/add_student.php'
+      },
+      fnDrawCallback:function(){
+          $(".action-btn").on('click',loadModalCurrent)
+          $(".selectrow").attr("disabled",true);
+          $("th").removeClass('selectbox');
+          $(".selectbox").click(function(e){
+              var row=$(this).closest('tr')
+              var checkbox = $(this).find('input');
+              console.log(checkbox);
+              checkbox.attr("checked", !checkbox.attr("checked"));
+              row.toggleClass('selected table-secondary')
+              if($("#dataTable-student tbody tr.selected").length!=$("#dataTable-student tbody tr").length){
+                $("#select_all").prop("checked",true)
+                $("#select_all").prop("checked",false)
+              }else{
+                $("#select_all").prop("checked",false)
+                $("#select_all").prop("checked",true)
+              }
+          })
+      },
+      columns: [
+         { data: 'select-cbox'},
+         { data: 'email_id' },
+         { data: 'rollno' },
+         { data: 'fname' },
+         { data: 'mname' },
+         { data: 'lname' },
+         { data: 'dept_name' },
+         { data: 'year_of_admission' },
+         { data: 'current_sem' },
+         { data: 'action' },
+      ],
+      columnDefs: [ {
+        targets: [0,9], // column index (start from 0)
+        orderable: false, // set orderable false for selected columns
+     },
+     {className:"selectbox",targets:[0]},
+     { className: "email", "targets": [ 1 ] },
+        // { className: "cid", "targets": [ 1 ] },
+        // { className: "sem", "targets": [ 2 ] },
+        // { className: "dept_name", "targets": [ 3 ] },
+        // { className: "dept_applicable", "targets": [ 4 ] },
+        // { className: "max", "targets": [ 5 ] },
+        // { className: "min", "targets": [ 6 ] }
+     ],
+   });
+});
+$("#select_all").click(function(e){
+            //   var row=$(this).closest('tr')
+    if($(this).is(":checked")){    
+        $("#dataTable-student tbody tr").addClass("selected table-secondary");
+        $(".selectrow").attr("checked",true);
+    }else{
+        $(".selectrow").attr("checked",false);
+        $("#dataTable-student tbody tr").removeClass("selected table-secondary");
+    }
+            //   row.toggleClass('selected table-secondary')
+})
+function loadModalCurrent()
+{
+    var count=5;
+    console.log(count);
+}
+</script>
     <?php include('../includes/footer.php');
     include('../includes/scripts.php');
     ?>
