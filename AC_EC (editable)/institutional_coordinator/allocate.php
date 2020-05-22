@@ -37,6 +37,7 @@ include('../includes/header.php');
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active" id="nav-allocate-method-tab" data-toggle="tab" href="#nav-allocate-method" role="tab" aria-controls="nav-allocate-method" aria-selected="true">Allocation Method</a>
+                    <a class="nav-item nav-link" id="nav-course-tab" data-toggle="tab" href="#nav-course" role="tab" aria-controls="nav-course" aria-selected="true">Course Selection</a>
                     <a class="nav-item nav-link" id="nav-result-tab" data-toggle="tab" href="#nav-result" role="tab" aria-controls="nav-result" aria-selected="false">Allocation Analysis</a>
                     <a class="nav-item nav-link" id="nav-final-allocate-tab" data-toggle="tab" href="#nav-final-allocate" role="tab" aria-controls="nav-final-allocate" aria-selected="false">Final Allocation</a>
                 </div>
@@ -69,12 +70,46 @@ include('../includes/header.php');
                             </div>
                             <br>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary align-center" name="allocate">Allocate</button>
+                                <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
                             </div>
                         </div>
                     </form>
                 </div>
                 <!--end Allocation Method-->
+                <div class="tab-pane fade" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab">
+                    <form class="forms-sample" method="POST" action="">
+                        <div class="form-row mt-4">
+                            <div class="form-group col-md-3">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                    <label class="custom-control-label font-weight-bold text-primary text-uppercase mb-1" for="customSwitch1">All Courses</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                    <label class="custom-control-label font-weight-bold text-primary text-uppercase mb-1" for="customSwitch1">Introduction to Python for Data Science</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                    <label class="custom-control-label font-weight-bold text-primary text-uppercase mb-1" for="customSwitch1">Introduction to Python for Data Science</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                    <label class="custom-control-label font-weight-bold text-primary text-uppercase mb-1" for="customSwitch1">Introduction to Python for Data Science</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
+                            <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
+                        </div>
+                    </form>
+                </div>
                 <!--Result Analysis-->
                 <div class="tab-pane fade" id="nav-result" role="tabpanel" aria-labelledby="nav-result-tab">
                     <div class="table-responsive">
@@ -201,7 +236,9 @@ include('../includes/header.php');
                         </table>
                         <br>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary align-center" name="allocate">Allocate</button>
+                            
+                            <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
+                            <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
                         </div>
                     </div>
                     <!--Update end-->
@@ -368,6 +405,8 @@ include('../includes/header.php');
 
                     <br>
                     <div class="modal-footer">
+                        
+                        <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
                         <button type="submit" class="btn btn-primary align-center" name="Complete">Complete</button>
                     </div>
                 </div>

@@ -83,15 +83,25 @@
   </li>
 
   <hr class="sidebar-divider">
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="upload.php">
+      <i class="fa fa-upload" aria-hidden="true"></i>
+      <span>Upload Responses</span></a>
+  </li>
+
+  <hr class="sidebar-divider">
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true" aria-controls="collapseUtilities">
-      <i class="fas fa-fw fa-upload"></i>
-      <span>Responses</span>
+      <i class="fa fa-eye" aria-hidden="true"></i>
+      <span>View Responses</span>
     </a>
     <div id="collapsePages2" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="upload.php">Upload</a>
-        <a class="collapse-item" href="view.php">View</a>
+        <a class="collapse-item" href="audit_view.php">Audit Course</a>
+        <a class="collapse-item" href="idc_view.php">Interdisciplinary Course</a>
+        <a class="collapse-item" href="cec_view.php">Close Elective Course</a>
+        <a class="collapse-item" href="oce_view.php">Open Elective Course</a>
       </div>
     </div>
   </li>
