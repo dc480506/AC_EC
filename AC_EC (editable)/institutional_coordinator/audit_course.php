@@ -120,6 +120,209 @@ include('../includes/header.php');
                         <!-- <div class="table-responsive"> -->
                         <div class="card-header py-3">
                              <div class="row align-items-center">
+                                <div class="col text-right">
+                                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadCurrent">
+                                        <i class="fas fa-upload"></i>
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="uploadCurrent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><b>Import Current Audit Courses</b></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <nav>
+                                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                        <a class="nav-item nav-link active" id="nav-current-instructions-tab" data-toggle="tab" href="#nav-current-instructions" role="tab" aria-controls="nav-current-instructions" aria-selected="true">Instructions</a>
+                                                        <a class="nav-item nav-link" id="nav-current-upload-tab" data-toggle="tab" href="#nav-current-upload" role="tab" aria-controls="nav-current-upload" aria-selected="false">Upload</a>                                                    
+                                                    </div>
+                                                </nav>
+                                                <div class="tab-content" id="nav-tabContent">
+                                                <!--Instructions Current-->
+                                                    <div class="tab-pane fade show active" id="nav-current-instructions" role="tabpanel" aria-labelledby="nav-current-instructions">
+                                                          
+                                                    </div>
+                                                <!--end Instructions Current-->
+                                                <!--Upload Current-->
+                                                    <div class="tab-pane fade" id="nav-current-upload" role="tabpanel" aria-labelledby="nav-current-upload">
+                                                        <div class="container">
+                                                            <form method="post"  enctype="multipart/form-data" id="bulkUploadCurrent">
+                                                                <br>
+                                                                <div class="form-row"> 
+                                                                <?php
+                                                                    include_once("../config.php");
+                                                                    $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+                                                                    $result = mysqli_query($conn, $sql);
+                                                                    $row=mysqli_fetch_assoc($result);
+                                                                    $sem_dropdown="";
+                                                                    // while ($row = mysqli_fetch_assoc($result)) {
+                                                                    if($row['sem_type']=='EVEN'){
+                                                                        for($sem_start=2;$sem_start<=8;$sem_start+=2){
+                                                                            $sem_dropdown.= "<option>" . $sem_start . "</option>";
+                                                                        }
+                                                                    $temp=explode('-',$row['academic_year'])[0];
+                                                                    $temp+=1;
+                                                                    $temp2="".($temp+1);
+                                                                    }else{
+                                                                        for($sem_start=1;$sem_start<=8;$sem_start+=2){
+                                                                            $sem_dropdown.= "<option>" . $sem_start . "</option>";
+                                                                        }
+                                                                    }
+                                                                    $year_val=$row['academic_year'];
+                                                                    echo '
+                                                                    <div class="form-group col-md-6">
+                                                                        <label for="sem_current"><b>Semester</b></label>
+                                                                        <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
+                                                                        <select class="form-control" required id="sem_current" name="sem">
+                                                                        '.$sem_dropdown.'
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label for="year_current"><b>Year</b></label>
+                                                                        <input type="text" class="form-control" required id="year_current" name="year_disabled" placeholder="Year" value="'.$year_val.'" disabled>
+                                                                        <input type="hidden" class="form-control" name="year" value="'.$year_val.'">
+                                                                    </div>';
+                                                                ?>
+                                                                </div>
+                                                                <div id="bulk_current_fields">
+                                                                    <label for=""><h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6></label>
+                                                                    <label for=""><small><b>Note:</b>The following fields should be column names in excel sheet</small></label>
+                                                                    <div class="card-header py-3">
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="cname_current"><b>Course Name</b></label>
+                                                                                <input type="text" class="form-control" id="cname_current" placeholder="" name="cname" required>
+                                                                            </div>
+                                                                        </div>   
+                                                                        <div class="form-row"> 
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="cid_current"><b>Course ID</b></label>
+                                                                                <input type="text" class="form-control" id="cid_current" placeholder="" name="cid" required>
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="floating_dept_current"><b>Floating Department</b></label>
+                                                                                <input type="text" class="form-control" id="floating_dept_current" placeholder="" name="floating_dept" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="min_current"><b>Min</b></label>
+                                                                                <input type="text" class="form-control" id="min_current" placeholder="" name="min" required>
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="max_current"><b>Max</b></label>
+                                                                                <input type="text" class="form-control" id="max_current" name="max" placeholder="" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="applicable_dept_current"><b>Applicable Departments</b></label>
+                                                                                <input type="text" class="form-control" id="applicable_dept_current" name="applicable_department" placeholder="" required>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="form-group files color">
+                                                                        <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
+                                                                        <script type="text/javascript" language="javascript">
+                                                                        function checkfile(sender) {
+                                                                            var validExts = new Array(".xlsx", ".xls");
+                                                                            var fileExt = sender.value;
+                                                                            fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+                                                                            if (validExts.indexOf(fileExt) < 0) {
+                                                                            alert("Invalid file selected, valid files are of " +
+                                                                                    validExts.toString() + " types.");
+                                                                            return false;
+                                                                            }
+                                                                            else return true;
+                                                                        }
+                                                                        </script>
+                                                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required/>
+                                                                        <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                                                    </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                                    <button type="submit" class="btn btn-primary" id="upload_current" name="save_changes">Upload</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                <!--end Upload Current-->
+                                                
+                                                    <!-- <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                        <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                            <style type="text/css">
+                                                .files input {
+                                                    outline: 2px dashed #92b0b3;
+                                                    outline-offset: -10px;
+                                                    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    padding: 120px 0px 85px 35%;
+                                                    text-align: center !important;
+                                                    margin: 0;
+                                                    width: 100% !important;
+                                                }
+
+                                                .files input:focus {
+                                                    outline: 2px dashed #92b0b3;
+                                                    outline-offset: -10px;
+                                                    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    border: 1px solid #92b0b3;
+                                                }
+
+                                                .files {
+                                                    position: relative
+                                                }
+
+                                                .files:after {
+                                                    pointer-events: none;
+                                                    position: absolute;
+                                                    top: 60px;
+                                                    left: 0;
+                                                    width: 50px;
+                                                    right: 0;
+                                                    height: 56px;
+                                                    content: "";
+                                                    background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+                                                    display: block;
+                                                    margin: 0 auto;
+                                                    background-size: 100%;
+                                                    background-repeat: no-repeat;
+                                                }
+
+                                                .color input {
+                                                    background-color: #f1f1f1;
+                                                }
+
+                                                .files:before {
+                                                    position: absolute;
+                                                    bottom: 10px;
+                                                    left: 0;
+                                                    pointer-events: none;
+                                                    width: 100%;
+                                                    right: 0;
+                                                    height: 57px;
+                                                    display: block;
+                                                    margin: 0 auto;
+                                                    color: #2ea591;
+                                                    font-weight: 600;
+                                                    text-transform: capitalize;
+                                                    text-align: center;
+                                                }
+                                            </style>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="col text-right" id ="delete_selected_current_div">
                                     <button type="button" class="btn btn-danger" id="delete_selected_current_btn" name="delete_selected_current">
@@ -325,87 +528,144 @@ include('../includes/header.php');
                                 </div>
                                 <!--Bulk addition-->
                                 <div class="col text-right">
-                                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
+                                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadUpcoming">
                                         <i class="fas fa-upload"></i>
                                     </button>
                                 </div>
-                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal fade" id="uploadUpcoming" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalCenterTitle">Upload Your File </h5>
+                                                <h5 class="modal-title"><b>Import Upcoming Audit Courses</b></h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="container">
-                                                    <form method="post" method="POST" enctype="multipart/form-data" action="ic_queries/addstudent_queries.php" id="#">
-                                                        <label for=""><h6>Information for mapping Data from excel sheet to Database</h6></label>
-                                                        <div class="form-row mt-4">
-                                                            <div class="form-group col-md-4">
-                                                                <label for="cname"><b>First Name</b></label>
-                                                                <input type="text" class="form-control" id="fname" placeholder="First" name="fname" required>
-                                                            </div>
-                                                            <div class="form-group col-md-4">
-                                                                <label for="cname"><b>Middle Name</b></label>
-                                                                <input type="text" class="form-control" id="mname" placeholder="Middle" name="mname" required>
-                                                            </div>
-                                                            <div class="form-group col-md-4">
-                                                                <label for="cname"><b>Last Name</b></label>
-                                                                <input type="text" class="form-control" id="lname" placeholder="Last" name="lname" required>
-                                                            </div>
+                                                <nav>
+                                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                        <a class="nav-item nav-link active" id="nav-upcoming-instructions-tab" data-toggle="tab" href="#nav-upcoming-instructions" role="tab" aria-controls="nav-upcoming-instructions" aria-selected="true">Instructions</a>
+                                                        <a class="nav-item nav-link" id="nav-upcoming-upload-tab" data-toggle="tab" href="#nav-upcoming-upload" role="tab" aria-controls="nav-upcoming-upload" aria-selected="false">Upload</a>                                                    
+                                                    </div>
+                                                </nav>
+                                                <div class="tab-content" id="nav-tabContent">
+                                                <!--Instructions Upcoming-->
+                                                    <div class="tab-pane fade show active" id="nav-upcoming-instructions" role="tabpanel" aria-labelledby="nav-upcoming-instructions">
+                                                          
+                                                    </div>
+                                                <!--end Instructions Upcoming-->
+                                                <!--Upload Upcoming-->
+                                                    <div class="tab-pane fade" id="nav-upcoming-upload" role="tabpanel" aria-labelledby="nav-upcoming-upload">
+                                                        <div class="container">
+                                                            <form method="post" method="POST" enctype="multipart/form-data" id="bulkUploadUpcoming">
+                                                                <br>
+                                                                <div class="form-row"> 
+                                                                <?php
+                                                                    include_once("../config.php");
+                                                                    $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+                                                                    $result = mysqli_query($conn, $sql);
+                                                                    $row=mysqli_fetch_assoc($result);
+                                                                    $sem_dropdown="";
+                                                                    // while ($row = mysqli_fetch_assoc($result)) {
+                                                                    if($row['sem_type']=='EVEN'){
+                                                                        for($sem_start=1;$sem_start<=8;$sem_start+=2){
+                                                                            $sem_dropdown.= "<option>" . $sem_start . "</option>";
+                                                                        }
+                                                                    $temp=explode('-',$row['academic_year'])[0];
+                                                                    $temp+=1;
+                                                                    $temp2="".($temp+1);
+                                                                    $year_val=$temp."-".substr($temp2,2);
+                                                                    }else{
+                                                                        for($sem_start=2;$sem_start<=8;$sem_start+=2){
+                                                                            $sem_dropdown.= "<option>" . $sem_start . "</option>";
+                                                                        }
+                                                                        $year_val=$row['academic_year'];
+                                                                    }
+                                                                    echo '
+                                                                    <div class="form-group col-md-6">
+                                                                        <label for="sem_upcoming"><b>Semester</b></label>
+                                                                        <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
+                                                                        <select class="form-control" required id="sem_upcoming" name="sem">
+                                                                        '.$sem_dropdown.'
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label for="year_upcoming"><b>Year</b></label>
+                                                                        <input type="text" class="form-control" required id="year_upcoming" name="year_disabled" placeholder="Year" value="'.$year_val.'" disabled>
+                                                                        <input type="hidden" class="form-control" name="year" value="'.$year_val.'">
+                                                                    </div>';
+                                                                ?>
+                                                                </div>
+                                                                <div id="bulk_upcoming_fields">
+                                                                    <label for=""><h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6></label>
+                                                                    <label for=""><small><b>Note:</b>The following fields should be column names in excel sheet</small></label>
+                                                                    <div class="card-header py-3">
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="cname_upcoming"><b>Course Name</b></label>
+                                                                                <input type="text" class="form-control" id="cname_upcoming" placeholder="" name="cname" required>
+                                                                            </div>
+                                                                        </div>   
+                                                                        <div class="form-row"> 
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="cid_upcoming"><b>Course ID</b></label>
+                                                                                <input type="text" class="form-control" id="cid_upcoming" placeholder="" name="cid" required>
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="floating_dept_upcoming"><b>Floating Department</b></label>
+                                                                                <input type="text" class="form-control" id="floating_dept_upcoming" placeholder="" name="floating_dept" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="min_upcoming"><b>Min</b></label>
+                                                                                <input type="text" class="form-control" id="min_upcoming" placeholder="" name="min" required>
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="max_upcoming"><b>Max</b></label>
+                                                                                <input type="text" class="form-control" id="max_upcoming" name="max" placeholder="" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="applicable_dept_upcoming"><b>Applicable Departments</b></label>
+                                                                                <input type="text" class="form-control" id="applicable_dept_upcoming" name="applicable_department" placeholder="" required>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="form-group files color">
+                                                                        <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
+                                                                        <script type="text/javascript" language="javascript">
+                                                                        function checkfile(sender) {
+                                                                            var validExts = new Array(".xlsx", ".xls");
+                                                                            var fileExt = sender.value;
+                                                                            fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+                                                                            if (validExts.indexOf(fileExt) < 0) {
+                                                                            alert("Invalid file selected, valid files are of " +
+                                                                                    validExts.toString() + " types.");
+                                                                            return false;
+                                                                            }
+                                                                            else return true;
+                                                                        }
+                                                                        </script>
+                                                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required/>
+                                                                        <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                                                    </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"  data-dismiss="modal" name="close">Close</button>
+                                                                    <button type="submit" class="btn btn-primary" id="upload_upcoming" name="save_changes">Upload</button>
+                                                                </div>
+                                                            </form>
                                                         </div>
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6">
-                                                                <label for="semester"><b>Semester</b></label>
-                                                                <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester" required>
-                                                            </div>
-                                                            <div class="form-group col-md-6">
-                                                                <label for="year"><b>Year Admitted</b></label>
-                                                                <input type="text" class="form-control" id="year" name="year" placeholder="year" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6">
-                                                                <label for="department"><b>Department</b></label>
-                                                                <input type="text" class="form-control" id="department" name="department" placeholder="Department" required>
-                                                            </div>
-                                                            <div class="form-group col-md-6">
-                                                                <label for="email"><b>Email</b></label>
-                                                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-12">
-                                                                <label for="rno"><b>Roll Number</b></label>
-                                                                <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll no" required>
-                                                            </div>
-                                                        </div>
-                                                        <br>
-                                                        <div class="form-group files color">
-                                                            <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
-                                                            <script type="text/javascript" language="javascript">
-                                                            function checkfile(sender) {
-                                                                var validExts = new Array(".xlsx", ".xls");
-                                                                var fileExt = sender.value;
-                                                                fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
-                                                                if (validExts.indexOf(fileExt) < 0) {
-                                                                alert("Invalid file selected, valid files are of " +
-                                                                        validExts.toString() + " types.");
-                                                                return false;
-                                                                }
-                                                                else return true;
-                                                            }
-                                                            </script>
-                                                            <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required/>
-                                                            <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                            <button type="submit" class="btn btn-primary" name="save_changes">Upload</button>
-                                                        </div>
-                                                    </form>
+                                                    </div>
+                                                <!--end Upload Upcoming-->
+                                                
+                                                    <!-- <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                        <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                             <style type="text/css">
@@ -524,10 +784,218 @@ include('../includes/header.php');
                     <!--Upcoming end-->
                     <div class="tab-pane fade" id="nav-previous" role="tabpanel" aria-labelledby="nav-previous-tab">
                         <br>
-                        <div class="col text-right" id ="delete_selected_previous_div">
-                            <button type="button" class="btn btn-danger" id="delete_selected_previous_btn"  name="delete_selected_previous">
-                                <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
-                            </button>
+                        <div class="card-header py-3">
+                            <div class="row align-items-center">
+                                <div class="col text-right">
+                                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadPrevious">
+                                        <i class="fas fa-upload"></i>
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="uploadPrevious" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><b>Import Previous Audit Courses</b></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <nav>
+                                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                        <a class="nav-item nav-link active" id="nav-previous-instructions-tab" data-toggle="tab" href="#nav-previous-instructions" role="tab" aria-controls="nav-previous-instructions" aria-selected="true">Instructions</a>
+                                                        <a class="nav-item nav-link" id="nav-previous-upload-tab" data-toggle="tab" href="#nav-previous-upload" role="tab" aria-controls="nav-previous-upload" aria-selected="false">Upload</a>                                                    
+                                                    </div>
+                                                </nav>
+                                                <div class="tab-content" id="nav-tabContent">
+                                                <!--Instructions previous-->
+                                                    <div class="tab-pane fade show active" id="nav-previous-instructions" role="tabpanel" aria-labelledby="nav-previous-instructions">
+                                                          
+                                                    </div>
+                                                <!--end Instructions previous-->
+                                                <!--Upload previous-->
+                                                    <div class="tab-pane fade" id="nav-previous-upload" role="tabpanel" aria-labelledby="nav-previous-upload">
+                                                        <div class="container">
+                                                            <form method="post" method="POST" enctype="multipart/form-data" id="bulkUploadprevious">
+                                                                <br>
+                                                                <div class="form-row"> 
+                                                                    <div class="form-group col-md-6">
+                                                                        <label for="sem_previous"><b>Semester</b></label>
+                                                                        <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
+                                                                        <select class="form-control" required id="sem_previous" name="sem">
+                                                                            <option>1</option>
+                                                                            <option>2</option>
+                                                                            <option>3</option>
+                                                                            <option>4</option>
+                                                                            <option>5</option>
+                                                                            <option>6</option>
+                                                                            <option>7</option>
+                                                                            <option>8</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label for="year_previous"><b>Year</b></label>
+                                                                        <select class="form-control" name="year" id="year_previous">
+                                                                        <?php
+                                                                            $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row=mysqli_fetch_assoc($result);
+                                                                            $year=$row['academic_year'];
+                                                                            for($i=0;$i<4;$i++){
+                                                                                echo '<option>'.$year.'</option>';
+                                                                                $temp=explode('-',$year)[0];
+                                                                                $temp-=1;
+                                                                                $temp2="".($temp+1);
+                                                                                $year=$temp."-".substr($temp2,2);
+                                                                            }
+                                                                        ?>
+                                                                        </select>
+                                                                        <!-- <input type="text" class="form-control" required id="year_previous" name="year_disabled" placeholder="Year" value="'.$year_val.'" disabled>
+                                                                        <input type="hidden" class="form-control" name="year" value="'.$year_val.'"> -->
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                                <div id="bulk_previous_fields">
+                                                                    <label for=""><h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6></label>
+                                                                    <label for=""><small><b>Note:</b>The following fields should be column names in excel sheet</small></label>
+                                                                    <div class="card-header py-3">
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="cname_previous"><b>Course Name</b></label>
+                                                                                <input type="text" class="form-control" id="cname_previous" placeholder="" name="cname" required>
+                                                                            </div>
+                                                                        </div>   
+                                                                        <div class="form-row"> 
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="cid_previous"><b>Course ID</b></label>
+                                                                                <input type="text" class="form-control" id="cid_previous" placeholder="" name="cid" required>
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="floating_dept_previous"><b>Floating Department</b></label>
+                                                                                <input type="text" class="form-control" id="floating_dept_previous" placeholder="" name="floating_dept" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="min_previous"><b>Min</b></label>
+                                                                                <input type="text" class="form-control" id="min_previous" placeholder="" name="min" required>
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label for="max_previous"><b>Max</b></label>
+                                                                                <input type="text" class="form-control" id="max_previous" name="max" placeholder="" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="applicable_dept_previous"><b>Applicable Departments</b></label>
+                                                                                <input type="text" class="form-control" id="applicable_dept_previous" name="applicable_department" placeholder="" required>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="form-group files color">
+                                                                        <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
+                                                                        <script type="text/javascript" language="javascript">
+                                                                        function checkfile(sender) {
+                                                                            var validExts = new Array(".xlsx", ".xls");
+                                                                            var fileExt = sender.value;
+                                                                            fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+                                                                            if (validExts.indexOf(fileExt) < 0) {
+                                                                            alert("Invalid file selected, valid files are of " +
+                                                                                    validExts.toString() + " types.");
+                                                                            return false;
+                                                                            }
+                                                                            else return true;
+                                                                        }
+                                                                        </script>
+                                                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required/>
+                                                                        <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                                                    </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                                    <button type="submit" class="btn btn-primary" name="save_changes">Upload</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                <!--end Upload previous-->
+                                                
+                                                    <!-- <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                        <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                            <style type="text/css">
+                                                .files input {
+                                                    outline: 2px dashed #92b0b3;
+                                                    outline-offset: -10px;
+                                                    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    padding: 120px 0px 85px 35%;
+                                                    text-align: center !important;
+                                                    margin: 0;
+                                                    width: 100% !important;
+                                                }
+
+                                                .files input:focus {
+                                                    outline: 2px dashed #92b0b3;
+                                                    outline-offset: -10px;
+                                                    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                                    border: 1px solid #92b0b3;
+                                                }
+
+                                                .files {
+                                                    position: relative
+                                                }
+
+                                                .files:after {
+                                                    pointer-events: none;
+                                                    position: absolute;
+                                                    top: 60px;
+                                                    left: 0;
+                                                    width: 50px;
+                                                    right: 0;
+                                                    height: 56px;
+                                                    content: "";
+                                                    background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+                                                    display: block;
+                                                    margin: 0 auto;
+                                                    background-size: 100%;
+                                                    background-repeat: no-repeat;
+                                                }
+
+                                                .color input {
+                                                    background-color: #f1f1f1;
+                                                }
+
+                                                .files:before {
+                                                    position: absolute;
+                                                    bottom: 10px;
+                                                    left: 0;
+                                                    pointer-events: none;
+                                                    width: 100%;
+                                                    right: 0;
+                                                    height: 57px;
+                                                    display: block;
+                                                    margin: 0 auto;
+                                                    color: #2ea591;
+                                                    font-weight: 600;
+                                                    text-transform: capitalize;
+                                                    text-align: center;
+                                                }
+                                            </style>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col text-right" id ="delete_selected_previous_div">
+                                    <button type="button" class="btn btn-danger" id="delete_selected_previous_btn"  name="delete_selected_previous">
+                                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <br>
                         <!-- <div class="table-responsive"> -->
@@ -724,10 +1192,45 @@ include('../includes/header.php');
     }
 $(document).ready(function(){
     loadCurrent();
+    $('#uploadCurrent').on('hidden.bs.modal',function (e) {
+        document.querySelector("#bulkUploadCurrent").reset();
+        $("#upload_current").text("Upload")
+        $("#upload_current").attr("disabled",false);
+    });
+    $('#uploadUpcoming').on('hidden.bs.modal',function (e) {
+        document.querySelector("#bulkUploadUpcoming").reset();
+        $("#upload_upcoming").text("Upload")
+        $("#upload_upcoming").attr("disabled",false);
+    });
 });
 
 // ************Current Course Section**************
 
+$("#bulkUploadCurrent").submit(function(e) {
+    e.preventDefault();  
+    form=this;  
+    var formData = new FormData(this);
+    $("#upload_current").attr("disabled",true);
+    $("#upload_current").text("Uploading...")
+    $.ajax({
+        url: "audit_course/bulkUpload/current_audit_upload.php",
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            if($.trim(data)=="Successful"){
+                $("#upload_current").text("Uploaded Successfully")
+                loadCurrent();
+            }else{
+                $("#upload_current").text("Upload Failed")
+                alert(data);
+            }
+            // form.reset();
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+})
 $("#select_all_current_page").click(function(e){
             //   var row=$(this).closest('tr')
     if($(this).is(":checked")){    
@@ -775,7 +1278,7 @@ function loadCurrent(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'loadInfo/current_audit.php'
+          'url':'audit_course/loadInfo/current_audit.php'
       },
       fnDrawCallback:function(){
           $(".action-btn").on('click',loadModalCurrent)
@@ -836,7 +1339,7 @@ function loadModalCurrent(){
     console.log(json_courseData)
     $.ajax({
         type: "POST",
-        url: "loadModal/current_audit_modal.php",
+        url: "audit_course/loadModal/current_audit_modal.php",
         // data: form_serialize, 
         // dataType: "json",
         data: json_courseData,
@@ -958,7 +1461,31 @@ $("#dataTable-current").on('click','td.cname',function(){
 })
 
 // ***********Upcoming course Section************
-
+$("#bulkUploadUpcoming").submit(function(e) {
+    e.preventDefault();  
+    form=this;  
+    var formData = new FormData(this);
+    $("#upload_upcoming").attr("disabled",true);
+    $("#upload_upcoming").text("Uploading...")
+    $.ajax({
+        url: "audit_course/bulkUpload/upcoming_audit_upload.php",
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            if($.trim(data)=="Successful"){
+                $("#upload_upcoming").text("Uploaded Successfully")
+                loadUpcoming();
+            }else{
+                $("#upload_upcoming").text("Upload Failed")
+                alert(data);
+            }
+            // form.reset();
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+})
 $("#select_all_upcoming_page").click(function(e){
             //   var row=$(this).closest('tr')
     if($(this).is(":checked")){    
@@ -1007,7 +1534,7 @@ function loadUpcoming(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'loadInfo/upcoming_audit.php'
+          'url':'audit_course/loadInfo/upcoming_audit.php'
       },
       fnDrawCallback:function(){
           $(".action-btn").on('click',loadModalUpcoming)
@@ -1062,7 +1589,7 @@ function loadModalUpcoming(){
     console.log(json_courseData)
     $.ajax({
         type: "POST",
-        url: "loadModal/upcoming_audit_modal.php",
+        url: "audit_course/loadModal/upcoming_audit_modal.php",
         // data: form_serialize, 
         // dataType: "json",
         data: json_courseData,
@@ -1234,7 +1761,7 @@ function loadPrevious(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'loadInfo/previous_audit.php'
+          'url':'audit_course/loadInfo/previous_audit.php'
       },
       fnDrawCallback:function(){
           $(".action-btn").on('click',loadModalPrevious)
@@ -1288,7 +1815,7 @@ function loadModalPrevious(){
     console.log(json_courseData)
     $.ajax({
         type: "POST",
-        url: "loadModal/previous_audit_modal.php",
+        url: "audit_course/loadModal/previous_audit_modal.php",
         // data: form_serialize, 
         // dataType: "json",
         data: json_courseData,
