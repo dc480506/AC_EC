@@ -1939,9 +1939,9 @@ $("#dataTable-previous").on('click','td.cname',function(){
 })
 function id_to_name_convertor_dept(id) {
         if(id == "1") return "Comp";
-        if(id == "2") return "IT";
+        if(id == "2") return "ETRX";
         if(id == "3") return "EXTC";
-        if(id == "4") return "ETRX";
+        if(id == "4") return "IT";
         if(id == "5") return "MECH";
 }
 
