@@ -1,6 +1,6 @@
 <?php
-include_once('../verify.php');
-include_once('../../config.php');
+include_once('../../verify.php');
+include_once('../../../config.php');
 $draw = $_POST['draw'];
 $row = $_POST['start'];
 $rowperpage = $_POST['length']; // Rows display per page
@@ -12,7 +12,7 @@ if(isset($_POST['order'])){
 }else{
    // $columnName='sem';
    // $columnSortOrder='asc';
-   $orderQuery=' order by email_id asc ';
+   $orderQuery=' order by current_sem,rollno asc ';
 }
 $searchValue = $_POST['search']['value']; // Search value
 
@@ -51,7 +51,12 @@ $sql="select email_id,rollno,current_sem,dept_name,fname,mname,lname,year_of_adm
 $studentRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;
+$fullname="";
 while ($row = mysqli_fetch_assoc($studentRecords)) {
+  if($row['mname']!='')
+   {$fullname=$row['fname']." ".$row['mname']." ".$row['lname'];}
+  else 
+    {$fullname=$row['fname']." ".$row['lname'];}
    $data[] = array( 
       // "select-cbox"=>'<input type="checkbox">',
       "select-cbox"=>'<div class="custom-control custom-checkbox">
@@ -60,9 +65,7 @@ while ($row = mysqli_fetch_assoc($studentRecords)) {
                      </div>',
       "email_id"=>$row['email_id'],
       "rollno"=>$row['rollno'],
-      "fname"=>$row['fname'],
-      "mname"=>$row['mname'],
-      "lname"=>$row['lname'],
+      "fname"=>$fullname,
       "current_sem"=>$row['current_sem'],
       "dept_name"=>$row['dept_name'],
       "year_of_admission"=>$row['year_of_admission'],

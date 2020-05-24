@@ -41,7 +41,7 @@ include('../includes/header.php');
                         </div>
                         <div class="modal-body">
                             <div class="container">
-                                <form method="post" method="POST" enctype="multipart/form-data" action="ic_queries/addstudent_queries.php" id="#">
+                                <form method="POST" enctype="multipart/form-data" id="bulkUploadstudent">
                                     <label for=""><h6>Information for mapping Data from excel sheet to Database</h6></label>
                                     <div class="form-row mt-4">
                                         <div class="form-group col-md-4">
@@ -104,7 +104,7 @@ include('../includes/header.php');
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                        <button type="submit" class="btn btn-primary" name="save_changes">Upload</button>
+                                        <button type="submit" class="btn btn-primary" name="save_changes" id="upload_student">Upload</button>
                                     </div>
                                 </form>
                             </div>
@@ -297,9 +297,7 @@ include('../includes/header.php');
                                         </th>
                                         <th>Email Id</th>
                                         <th>Roll No.</th>
-                                        <th>First Name</th>
-                                        <th>Middle Name</th>
-                                        <th>Last Name</th>
+                                        <th>Full Name</th>
                                         <th>Department</th>
                                         <th>Year of Admission</th>
                                         <th>Semester</th>
@@ -311,9 +309,7 @@ include('../includes/header.php');
                                         <th></th>
                                         <th>Email Id</th>
                                         <th>Roll No.</th>
-                                        <th>First Name</th>
-                                        <th>Middle Name</th>
-                                        <th>Last Name</th>
+                                        <th>Full Name</th>
                                         <th>Department</th>
                                         <th>Year of Admission</th>
                                         <th>Semester</th>
@@ -435,7 +431,7 @@ $(function loadCurrent(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'loadInfo/add_student.php'
+          'url':'adduser/loadInfo/add_student.php'
       },
       fnDrawCallback:function(){
           $(".action-btn").on('click',loadModalCurrent)
@@ -461,15 +457,13 @@ $(function loadCurrent(){
          { data: 'email_id' },
          { data: 'rollno' },
          { data: 'fname' },
-         { data: 'mname' },
-         { data: 'lname' },
          { data: 'dept_name' },
          { data: 'year_of_admission' },
          { data: 'current_sem' },
          { data: 'action' },
       ],
       columnDefs: [ {
-        targets: [0,9], // column index (start from 0)
+        targets: [0,7], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
      },
      {className:"selectbox",targets:[0]},
@@ -493,6 +487,32 @@ $("#select_all").click(function(e){
         $("#dataTable-student tbody tr").removeClass("selected table-secondary");
     }
             //   row.toggleClass('selected table-secondary')
+})
+//Bulk Upload 
+$("#bulkUploadstudent").submit(function(e) {
+    e.preventDefault();  
+    form=this;  
+    var formData = new FormData(this);
+    $("#upload_student").attr("disabled",true);
+    $("#upload_student").text("Uploading...")
+    $.ajax({
+        url: "adduser/bulkUpload/addstudent_queries.php",
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            if($.trim(data)=="Successful"){
+                $("#upload_student").text("Uploaded Successfully")
+                loadCurrent();
+            }else{
+                $("#upload_student").text("Upload Failed")
+                alert(data);
+            }
+            // form.reset();
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
 })
 function loadModalCurrent()
 {
