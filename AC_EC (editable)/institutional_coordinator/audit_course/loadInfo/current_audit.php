@@ -73,82 +73,9 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "max"=>$row['max'],
       "min"=>$row['min'],
       "no_of_allocated"=>$row['no_of_allocated'],
-      "allocate_faculty"=>'<!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter'.$count.'">
-          <i class="fas fa-chalkboard-teacher"></i>
-      </button>
-
-      <!-- Modal -->       
-      <div class="modal fade" id="exampleModalCenter'.$count.'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle'.$count.'" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalCenterTitle'.$count.'">Action</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                              </button>
-                          </div>
-                          <div class="modal-body">
-                              <nav>
-                                  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                      <a class="nav-item nav-link active" id="nav-allocate-tab" data-toggle="tab" href="#nav-allocate" role="tab" aria-controls="nav-allocate" aria-selected="true">Allocation</a>
-                                  </div>
-                              </nav>
-                              <div class="tab-content" id="nav-tabContent">
-                                  <!--Allocation-->
-                                  <div class="tab-pane fade show active" id="nav-allocate" role="tabpanel" aria-labelledby="nav-allocate-tab">
-                                      <form action="">
-                                          <div class="form-group">
-                                              <label for="cname"><b>Course Name : </b>
-                                              </label>
-                                              <span>'.$row['cname'].'</span>
-                                          </div>
-                                          <div class="form-group">
-                                              <label for="cid"><b>Course ID : </b>
-                                              </label>
-                                              <span>'.$row['cid'].'</span>
-                                          </div>
-                                          <div class="form-group">
-                                              <label for="sem"><b>Semester : </b>
-                                              </label>
-                                              <span>'.$row['sem'].'</span>
-                                          </div>
-                                          <hr class="my-4" />
-                                          <h6><b>Faculty Allocated</b></h6>
-                                              <label for="sem"><b>Faculty 1 : </b>
-                                              </label>
-                                              <span>ROB</span>
-                                              <br>
-                                              <label for="sem"><b>Faculty 2 : </b>
-                                              </label>
-                                              <span>ZSK</span>
-                                              <hr class="my-4" />
-                                              <h6><b>Allocate new Faculty</b></h6>
-                                          <div class="form-group">
-                                              <label for="facid"><b>Faculty ID</b>
-                                              </label>
-                                              <select class="form-control" id="facid" name="course">
-                                                  <option selected></option>
-                                                  <option>AEX</option>
-                                                  <option>BAS</option>
-                                                  <option>ASK</option>
-                                                  <option>HAR</option>
-                                                  <option>DEV</option>
-                                              </select>
-                                          </div>
-                                          <button type="submit" class="btn btn-primary">Allocate</button>
-                                      </form>
-                                  </div>
-                                  <!--end Allocation-->
-                              </div>
-                          </div>
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                              <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>       ',
+      "allocate_faculty"=>'<button type="button" class="btn btn-primary icon-btn allocate-btn">
+                              <i class="fas fa-chalkboard-teacher"></i>
+                          </button>',
       "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn">
                     <i class="fas fa-tools"></i>
                 </button>',
