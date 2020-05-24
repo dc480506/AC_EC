@@ -47,38 +47,50 @@ include('../includes/header.php');
                         </div>
                         <div class="modal-body">
                             <div class="container">
-                                <form method="post" method="POST" enctype="multipart/form-data" action="ic_queries/addstudent_queries.php" id="#">
+                                <form method="POST" enctype="multipart/form-data" id="bulkUploadInternal">
                                     <label for="">
-                                        <h6>Information for mapping Data from excel sheet to Database</h6>
+                                        <h6>Information for mapping Data from excel sheet columns to database columns </h6>
                                     </label>
+                                     <label for=""><small><b>Note:</b> The following fields should be column names in excel sheet</small>
+                                     </label>
                                     <div class="form-row mt-4">
                                         <div class="form-group col-md-6">
                                             <label for="fcode"><b>Faculty Code</b></label>
-                                            <input type="text" class="form-control" id="fcode" placeholder="Faculty Code" name="fcode" required>
+                                            <input type="text" class="form-control" id="fcode" placeholder="Column name of Faculty Code" name="fcode" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="eid"><b>Employee ID</b></label>
-                                            <input type="text" class="form-control" id="eid" placeholder="Employee ID" name="eid" required>
+                                            <input type="text" class="form-control" id="eid" placeholder="Column name of Employee ID" name="eid" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="name"><b>Name</b></label>
-                                            <input type="text" class="form-control" id="name" placeholder="Name" name="name" required>
+                                            <label for="name"><b>First Name</b></label>
+                                            <input type="text" class="form-control" id="fname" placeholder="Column name of First Name" name="fname" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="emailid"><b>Middle Name</b></label>
+                                            <input type="text" class="form-control" id="mname" name="mname" placeholder="Column name of Middle Name" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="name"><b>Last Name</b></label>
+                                            <input type="text" class="form-control" id="lname" placeholder="Column name of Last Name" name="lname" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="emailid"><b>Email ID</b></label>
-                                            <input type="text" class="form-control" id="emailid" name="emailid" placeholder="Email ID" required>
+                                            <input type="text" class="form-control" id="emailid" name="emailid" placeholder="Column name of Email ID" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="department"><b>Department</b></label>
-                                            <input type="text" class="form-control" id="department" name="department" placeholder="Department" required>
+                                            <input type="text" class="form-control" id="department" name="department" placeholder="Column name of Department" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="post"><b>Post</b></label>
-                                            <input type="text" class="form-control" id="post" name="post" placeholder="Post" required>
+                                            <input type="text" class="form-control" id="post" name="post" placeholder="Column name of Post" required>
                                         </div>
                                     </div>
                                     <br>
@@ -101,7 +113,7 @@ include('../includes/header.php');
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                        <button type="submit" class="btn btn-primary" name="save_changes">Upload</button>
+                                        <button type="submit" class="btn btn-primary" name="save_changes" id="upload_internal">Upload</button>
                                     </div>
                                 </form>
                             </div>
@@ -314,61 +326,43 @@ include('../includes/header.php');
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Faculty Code</th>
-                            <th>Employee Id</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Department</th>
-                            <th>Post</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Faculty Code</th>
-                            <th>Employee ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Department</th>
-                            <th>Post</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
+            <table class="table table-bordered table-responsive" id="dataTable-internal" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="select_all">
+                                                <label class="custom-control-label" for="select_all"></label>
+                                            </div>
+                                        </th>
+                                        <th>Faculty Code</th>
+                                        <th>Employee Id</th>
+                                        <th>Full Name</th>
+                                        <th>Email Id</th>
+                                        <th>Department</th>
+                                        <th>Post</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th>Faculty Code</th>
+                                        <th>Employee Id</th>
+                                        <th>Full Name</th>
+                                        <th>Email Id</th>
+                                        <th>Department</th>
+                                        <th>Post</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+            </table>
+                        <!-- </div> -->
+        </div>
+
                         <!-- tr starts-->
-                        <?php
-                        include '../config.php';
-                        if (isset($_SESSION['email'])) {
-                            $sql = "SELECT f.email_id,f.fname,f.lname,f.mname,d.dept_name,f.faculty_code,f.employee_id,f.post,f.dept_id FROM `faculty` as f INNER JOIN `department` as d on f.dept_id = d.dept_id ";
-                            $result = mysqli_query($conn, $sql);
-                            $output = '';
-                            $sql1 = "SELECT dept_id,dept_name FROM department";
-                            $result1 = mysqli_query($conn, $sql1);
-                            $count = 500;
-                            $dept_dropdown = '';
-                            while ($row1 = mysqli_fetch_assoc($result1)) {
-                                $dept_dropdown .= '<option value="' . $row1["dept_id"] . '">' . $row1['dept_name'] . '</option>';
-                            }
-                            while ($row = mysqli_fetch_array($result)) {
-                                //$name=$row["fname"]+" "+$row["mname"]+" "+$row["lname"];
-                                $output .= '<tr>
-                                <td>' . $row["faculty_code"] . '</td>
-                                <td>' . $row["employee_id"] . '</td>
-                                <td>' . $row["fname"] . " " . $row["mname"] . " " . $row["lname"] . '</td>
-                                <td>' . $row["email_id"] . '</td>
-                                <td>' . $row["dept_name"] . '</td>
-                                <td>' . $row["post"] . '</td>
-                                <td>
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
-                                        <i class="fas fa-tools"></i>
-                                    </button>
                                     <!-- Modal -->
-                                    <div class="modal fade" id="exampleModalCenter' . $count . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                                    <!-- <div class="modal fade" id="exampleModalCenter' . $count . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -384,9 +378,9 @@ include('../includes/header.php');
                                                             <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update' . $count . '" role="tab" aria-controls="nav-update' . $count . '" aria-selected="false">Update</a>
                                                         </div>
                                                     </nav>
-                                                    <div class="tab-content" id="nav-tabContent">
+                                                    <div class="tab-content" id="nav-tabContent"> -->
                                                         <!--Deletion-->
-                                                        <div class="tab-pane fade show active" id="nav-delete' . $count . '" role="tabpanel" aria-labelledby="nav-delete-tab">
+                                                        <!-- <div class="tab-pane fade show active" id="nav-delete' . $count . '" role="tabpanel" aria-labelledby="nav-delete-tab">
                                                             <form action="ic_queries/addfaculty_queries.php" method="POST">
                                                                 <div class="form-group">
                                                                     <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
@@ -398,29 +392,29 @@ include('../includes/header.php');
                                                                 </div>
                                                             </form>
                                                         </div>
-                                                        <!--end Deletion-->
+                                                         --><!--end Deletion-->
                                                         <!--Update-->
-                                                        <div class="tab-pane fade" id="nav-update' . $count . '" role="tabpanel" aria-labelledby="nav-update-tab">
+                                                        <!-- <div class="tab-pane fade" id="nav-update' . $count . '" role="tabpanel" aria-labelledby="nav-update-tab">
                                                             <form action="ic_queries/addfaculty_queries.php" method="POST">
                                                                 <div class="form-row mt-4">
                                                                     <div class="form-group col-md-6">
                                                                         <label for="name"><b>Name</b></label>
-                                                                        <input type="text" class="form-control" id="name' . $count . '" name="name" placeholder="name" value="' . $row["fname"] . " " . $row["mname"] . " " . $row["lname"] . '">
+                                                                        <input type="text" class="form-control" id="name" name="name" placeholder="name" value="">
                                                                     </div>
                                                                     <div class="form-group col-md-6">
                                                                         <label for="emailid"><b>Email Address</b></label>
-                                                                        <input type="email" class="form-control" id="emailid' . $count . '" name="newemail" placeholder="email@gmail.com" value="' . $row["email_id"] . '">
-                                                                        <input type="hidden" class="form-control"  name="oldemail"  value="' . $row["email_id"] . '">
+                                                                        <input type="email" class="form-control" id="email" name="newemail" placeholder="email@gmail.com" value="">
+                                                                        <input type="hidden" class="form-control"  name="oldemail"  value="">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row mt-4">
                                                                     <div class="form-group col-md-6">
                                                                         <label for="faculty_code"><b>Faculty Code</b></label>
-                                                                        <input type="text" class="form-control" id="faculty_code' . $count . '" name="faculty_code" placeholder="" value="' . $row["faculty_code"] . '">
+                                                                        <input type="text" class="form-control" id="faculty_code" name="faculty_code" placeholder="" value="">
                                                                     </div>
                                                                     <div class="form-group col-md-6">
                                                                         <label for="eid"><b>Employee ID</b></label>
-                                                                        <input type="text" class="form-control" id="eid' . $count . '" name="eid" placeholder="" value="' . $row["employee_id"] . '">
+                                                                        <input type="text" class="form-control" id="eid" name="eid" placeholder="" value="">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
@@ -428,24 +422,20 @@ include('../includes/header.php');
                                                                         <label for="department"><b>Department</b></label>
                                                                         <select class="form-control" required name="dept">';
 
-                                //include_once("../config.php");
-
-                                $output .= $dept_dropdown;
-
-                                $output .= '</select> 
+                                                                        </select> --> 
                                                                         <!-- <input type="text" class="form-control" id="department" name="department" placeholder="department"> -->
-                                                                    </div>
+                                                                    <!-- </div>
                                                                     <div class="form-group col-md-6">
                                                                         <label for="post"><b>Post</b></label>
-                                                                        <input type="text" class="form-control" id="post' . $count . '" name="post" placeholder="post" value="' . $row["post"] . '">
+                                                                        <input type="text" class="form-control" id="post" name="post" placeholder="post" value="">
                                                                     </div>
                                                                 </div>
                                     
                                                                 <button type="submit" class="btn btn-primary" name="update_faculty">Update</button>
                                                             </form>
-                                                        </div>
+                                                        </div> -->
                                                         <!--Update end-->
-                                                    </div>
+                                                    <!-- </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
@@ -455,21 +445,119 @@ include('../includes/header.php');
                                         </div>
                                     </div>
                                 </td>
-                            </tr>';
-                                $count++;
-                            }
-                            echo $output;
-                        }
-                        ?>
-                        <!-- tr ends -->
+                            </tr>
                     </tbody>
-                </table>
+                </table> -->
             </div>
         </div>
     </div>
 </div>
 <!-- /.container-fluid -->
-
+<script type="text/javascript">
+    //DATATABLE CREATE
+$(function loadCurrent(){
+    var count=5;
+    console.log(count);
+    // document.querySelector("#addCoursebtn").style.display="none"
+    $('#dataTable-internal').DataTable({
+      processing: true,
+      serverSide: true,
+      destroy:true,
+      serverMethod: 'post',
+      aaSorting:[],
+      ajax: {
+          'url':'adduser/loadInfo/add_internalfaculty.php'
+      },
+      fnDrawCallback:function(){
+          $(".action-btn").on('click',loadModalCurrent)
+          $(".selectrow").attr("disabled",true);
+          $("th").removeClass('selectbox');
+          $(".selectbox").click(function(e){
+              var row=$(this).closest('tr')
+              var checkbox = $(this).find('input');
+              console.log(checkbox);
+              checkbox.attr("checked", !checkbox.attr("checked"));
+              row.toggleClass('selected table-secondary')
+              if($("#dataTable-internal tbody tr.selected").length!=$("#dataTable-internal tbody tr").length){
+                $("#select_all").prop("checked",true)
+                $("#select_all").prop("checked",false)
+              }else{
+                $("#select_all").prop("checked",false)
+                $("#select_all").prop("checked",true)
+              }
+          })
+      },
+      columns: [
+         { data: 'select-cbox'},
+         { data: 'faculty_code' },
+         { data: 'employee_id' },
+         { data: 'fname' },
+         { data: 'email_id'},
+         { data: 'dept_name' },
+         { data: 'post' },
+         { data: 'action' },
+      ],
+      columnDefs: [ {
+        targets: [0,7], // column index (start from 0)
+        orderable: false, // set orderable false for selected columns
+     },
+     {className:"selectbox",targets:[0]},
+     { className: "faculty_code", "targets": [ 1 ] },
+        // { className: "cid", "targets": [ 1 ] },
+        // { className: "sem", "targets": [ 2 ] },
+        // { className: "dept_name", "targets": [ 3 ] },
+        // { className: "dept_applicable", "targets": [ 4 ] },
+        // { className: "max", "targets": [ 5 ] },
+        // { className: "min", "targets": [ 6 ] }
+     ],
+   });
+});
+//SELECT CHECKALL
+$("#select_all").click(function(e){
+            //   var row=$(this).closest('tr')
+    if($(this).is(":checked")){    
+        $("#dataTable-internal tbody tr").addClass("selected table-secondary");
+        $(".selectrow").attr("checked",true);
+    }else{
+        $(".selectrow").attr("checked",false);
+        $("#dataTable-internal tbody tr").removeClass("selected table-secondary");
+    }
+            //   row.toggleClass('selected table-secondary')
+})
+//Bulk Upload 
+$("#bulkUploadInternal").submit(function(e) {
+    e.preventDefault();  
+    form=this;  
+    var formData = new FormData(this);
+    $("#upload_internal").attr("disabled",true);
+    $("#upload_internal").text("Uploading...")
+    $.ajax({
+        url: "adduser/bulkUpload/add_internalfaculty.php",
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            if($.trim(data)=="Successful"){
+                $("#upload_internal").text("Uploaded Successfully")
+                loadCurrent();
+            }else{
+                $("#upload_internal").text("Upload Failed")
+                alert(data);
+            }
+            // form.reset();
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+})
+//action modal part
+function loadModalCurrent()
+{
+    var count=5;
+    console.log(count);
+}
+</script>
+  
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');
 ?>
