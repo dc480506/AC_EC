@@ -16,8 +16,8 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     // $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
     // $row=mysqli_fetch_assoc($result);
     // $year=$row['academic_year'];
-    $dept_div='';
     $checkbox_div='';
+    $floating_checkbox_div='';
     $sql3 = "SELECT * FROM department";
     $dept_list = array();
     $result3 = mysqli_query($conn, $sql3);
@@ -25,30 +25,44 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
       array_push($dept_list, $row['dept_id'], $row['dept_name']);
     }
     $str_arr = explode (", ", $dept_applicable);
+    $str_arr2= explode (", ", $floating_dept);
     for ($i = 1; $i < count($dept_list); $i = $i + 2) {
+      // For applicable dept
+      if($dept_list[$i-1]!=$exclude_dept){
         $checkbox_div .= '
         <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" class="custom-control-input" id="mycustomCheck' . $i . '" name="check_dept[]" value="' . $dept_list[$i - 1] . '"';
+            <input type="checkbox" class="custom-control-input" id="applicableDeptCheck' . $i . '" name="check_dept[]" value="' . $dept_list[$i - 1] . '"';
         if (in_array($dept_list[$i], $str_arr)) {
             $checkbox_div .= " checked";
         }
         $checkbox_div .= '>
-            <label class="custom-control-label" for="mycustomCheck' . $i   . '">' . $dept_list[$i] . '</label>
+            <label class="custom-control-label" for="applicableDeptCheck' . $i   . '"><small>' . $dept_list[$i] . '</small></label>
         </div>
         ';
-
+      }
+      // For floating dept
+        $floating_checkbox_div .= '
+        <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" class="custom-control-input" id="floatingDeptCheck' . $i . '" name="floating_check_dept[]" value="' . $dept_list[$i - 1] . '"';
+        if (in_array($dept_list[$i], $str_arr2)) {
+            $floating_checkbox_div .= " checked";
+        }
+        $floating_checkbox_div .= '>
+            <label class="custom-control-label" for="floatingDeptCheck' . $i   . '"><small>' . $dept_list[$i] . '</small></label>
+        </div>
+        ';
     }
-    $dept_div .= '<div class="form-group">
-                    <label for="exampleInputDepartment"><b>Floating Department</b></label>
-                    <select class="form-control" required name="dept_id">';
-    for ($i = 1; $i < count($dept_list); $i = $i + 2) {
-      $dept_div .= '<option';
-      if($floating_dept == $dept_list[$i])
-        $dept_div .= ' selected';
-      $dept_div .= ' value="' . $dept_list[$i - 1] . '">' . $dept_list[$i] . '';
-      $dept_div .= '</option>';
-    }
-    $dept_div .= '</select></div>';
+    // $dept_div .= '<div class="form-group">
+    //                 <label for="exampleInputDepartment"><b>Floating Department</b></label>
+    //                 <select class="form-control" required name="dept_id">';
+    // for ($i = 1; $i < count($dept_list); $i = $i + 2) {
+    //   $dept_div .= '<option';
+    //   if($floating_dept == $dept_list[$i])
+    //     $dept_div .= ' selected';
+    //   $dept_div .= ' value="' . $dept_list[$i - 1] . '">' . $dept_list[$i] . '';
+    //   $dept_div .= '</option>';
+    // }
+    // $dept_div .= '</select></div>';
     echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -62,9 +76,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                           <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
-                          <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
-                          <a class="nav-item nav-link" id="nav-moreinfo-tab" data-toggle="tab" href="#nav-moreinfo" role="tab" aria-controls="nav-moreinfo" aria-selected="false">More Info</a>
-                        
+                          <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>                        
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -72,7 +84,10 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                         <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
                         <form id="delete_course_form">
                         <div class="form-group">
-                          <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
+                          <label for="exampleFormControlSelect1"><i class="text-danger">*This will delete all the information related to the course including
+                           students and faculties associated with it if there are any.</i><br>Are you sure you want to delete the course 
+                           with Course ID <i><small><b>'.$cid.'</small></b></i> ,Semester <i><small><b>'.$sem.'</b></small></i> and
+                            Academic Year <i><small><b>'.$year.'</b></small></i>?
                           </label>
                           <br>
                           <input type="hidden" name="cid" value="' . $cid . '">
@@ -111,8 +126,10 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                 <input type="hidden" class="form-control" placeholder="Year" name="year" value="' . $year . '">
                             </div>        
                           </div>
+                          <label for="floatingdept"><b>Floating Department</b></label>
                           <br>
-                          ' . $dept_div . '
+                          ' . $floating_checkbox_div . '
+                          <br>
                           <br>
                           <div class="form-row">
                               <div class="form-group col-md-6">
@@ -133,16 +150,6 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                         <br>
                       </div>
                       <!--end Update-->
-                      <!--MoreInfo-->
-                      <div class="tab-pane fade show" id="nav-moreinfo" role="tabpanel" aria-labelledby="nav-moreinfo-tab">
-                      <form id="">
-                      <div class="form-group">
-                        <label for=""><b>More Info</b>
-                        </label>
-                      </div>
-                    </form>
-                      </div>
-                      <!--end MoreInfo-->
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                           <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>

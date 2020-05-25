@@ -430,59 +430,71 @@ include('../includes/header.php');
                                                                 $year_val=$row['academic_year'];
                                                             }
                                                     echo '
-                                                    <div class="form-group">
-                                                        <label for="exampleInputSemester"><b>Semester</b></label>
-                                                        <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
-                                                        <select class="form-control" required id="exampleInputSemester" name="sem">
-                                                        '.$sem_dropdown.'
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleInputYear"><b>Year</b></label>
-                                                        <input type="text" class="form-control" required id="exampleInputYear" name="year" placeholder="Year" value="'.$year_val.'" disabled>
-                                                        <input type="hidden" class="form-control" required id="exampleInputYear_submit" name="year" value="'.$year_val.'">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label for="exampleInputSemester"><b>Semester</b></label>
+                                                            <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
+                                                            <select class="form-control" required id="exampleInputSemester" name="sem">
+                                                            '.$sem_dropdown.'
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="exampleInputYear"><b>Year</b></label>
+                                                            <input type="text" class="form-control" required id="exampleInputYear" name="year" placeholder="Year" value="'.$year_val.'" disabled>
+                                                            <input type="hidden" class="form-control" required id="exampleInputYear_submit" name="year" value="'.$year_val.'">
+                                                        </div>
                                                     </div>';
                                                     ?>
 
                                                     <div class="form-group">
-                                                        <label for="exampleInputDepartment"><b>Department</b></label>
-                                                        <select class="form-control" required name="dept">
-                                                            <?php
-                                                            include_once("../config.php");
-                                                            $sql = "SELECT dept_name FROM department";
-                                                            $result = mysqli_query($conn, $sql);
-                                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                                echo "<option>" . $row['dept_name'] . "</option>";
-                                                            }
-                                                            ?>
-                                                        </select>
+                                                        <label for=""><b>Department</b></label>
+                                                        <br>
+                                                        <!-- <select class="form-control" required name="dept">-->
+                                                        <?php
+                                                        include_once('../config.php');
+                                                        $sql = "SELECT * FROM department";
+                                                        $result = mysqli_query($conn, $sql);
+                                                        $c = 8;
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                            echo '
+                                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
+                                                            <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                        </div>
+                                                        ';
+                                                        $c++;
+                                                    }
+                                                    ?>
+                                                       <!-- </select> -->
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleInputMax"><b>Max</b></label>
-                                                        <input type="number" class="form-control" required id="exampleInputMax" name="max" placeholder="Maximum number of students">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleInputMin"><b>Min</b></label>
-                                                        <input type="number" class="form-control" required id="exampleInputMin" name="min" placeholder="Minimum number of students">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label for="exampleInputMax"><b>Max</b></label>
+                                                            <input type="number" class="form-control" required id="exampleInputMax" name="max" placeholder="Maximum no. of students">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="exampleInputMin"><b>Min</b></label>
+                                                            <input type="number" class="form-control" required id="exampleInputMin" name="min" placeholder="Minimum no. of students">
+                                                        </div>
                                                     </div>
                                                     <label for="branch"><b>Branches to opt for</b></label>
                                                     <br>
                                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck7" checked>
-                                                        <label class="custom-control-label" for="customCheck7">All</label>
+                                                        <input type="checkbox" class="custom-control-input" id="applicable_dept_upcoming_cb7" checked>
+                                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb7"><small>All</small></label>
                                                     </div>
                                                     <?php
                                                     include_once('../config.php');
-                                                    $sql = "SELECT * FROM department";
+                                                    $sql = "SELECT * FROM department WHERE dept_id NOT IN (".$exclude_dept.")";
                                                     $result = mysqli_query($conn, $sql);
                                                     $c = 8;
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                         echo '
-                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                <input type="checkbox" class="custom-control-input dept" id="customCheck' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
-                                                <label class="custom-control-label" for="customCheck' . $c . '">' . $row['dept_name'] . '</label>
-                                                </div>
-                                                ';
+                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
+                                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                    </div>
+                                                    ';
                                                         $c++;
                                                     }
                                                     ?>
@@ -1066,12 +1078,12 @@ include('../includes/header.php');
     }
     dept_checkbox = document.querySelectorAll(".dept");
 
-    if (document.querySelector("#customCheck7").checked) {
+    if (document.querySelector("#applicable_dept_upcoming_cb7").checked) {
         for (i = 0; i < dept_checkbox.length; i++) {
             dept_checkbox[i].checked = true;
         }
     }
-    all_cbox = document.querySelector("#customCheck7")
+    all_cbox = document.querySelector("#applicable_dept_upcoming_cb7")
     for (i = 0; i < dept_checkbox.length; i++) {
         dept_checkbox[i].addEventListener("click", function() {
             if (!this.checked && all_cbox.checked) {
@@ -1203,7 +1215,15 @@ $(document).ready(function(){
         $("#upload_upcoming").attr("disabled",false);
     });
 });
-
+function findByAttr(array,attr_name,value){
+    var list_index_attr_val=[]
+    for(var i = 0; i < array.length; i += 1) {
+        if(array[i][attr_name] === value) {
+            list_index_attr_val.push(i)
+        }
+    }
+    return list_index_attr_val
+}
 // ************Current Course Section**************
 
 $("#bulkUploadCurrent").submit(function(e) {
@@ -1336,7 +1356,7 @@ function loadAllocateModalCurrent(){
     // delete courseData.action
     // delete courseData.allocate_faculty
     var json_courseData=JSON.stringify(courseData)
-    console.log(json_courseData)
+    // console.log(json_courseData)
     $.ajax({
         type: "POST",
         url: "audit_course/loadModal/current_audit_allocate_modal.php",
@@ -1474,7 +1494,7 @@ function loadModalCurrent(){
     // delete courseData.action
     // delete courseData.allocate_faculty
     var json_courseData=JSON.stringify(courseData)
-    console.log(json_courseData)
+    // console.log(json_courseData)
     $.ajax({
         type: "POST",
         url: "audit_course/loadModal/current_audit_modal.php",
@@ -1527,7 +1547,7 @@ function update_course_form_current(e){
     e.preventDefault();
     var form = $('#update_course_form');
     var form_serialize=form.serializeArray();// serializes the form's elements.
-    console.log(form_serialize)
+    // console.log(form_serialize)
     form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
     $("#update_course_btn").text("Updating...");
     $("#update_course_btn").attr("disabled",true);
@@ -1542,15 +1562,25 @@ function update_course_form_current(e){
         var row=$("#update-del-modal").closest('tr');
         var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0));
         var temp = $("#dataTable-current").DataTable().row(aPos).data();
-        console.log(temp)
-        console.log(form_serialize)
+        // console.log(temp)
+        // console.log(form_serialize)
         temp['cname'] = form_serialize[0].value;
         temp['cid']=form_serialize[1].value;
         temp['sem']=form_serialize[3].value;
-        temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
+        // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
         var x="";
-        for (i = 9; i < form_serialize.length - 1; i++) { 
-            x = x.concat(id_to_name_convertor_dept(form_serialize[i].value));
+        var index;
+        var floatingDeptIndex=findByAttr(form_serialize,'name','floating_check_dept[]')
+        for(index of floatingDeptIndex){
+            x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+            x = x.concat(", ");
+        }
+        x = x.substr(0, x.length - 2);
+        temp['dept_name']=x;
+        x="";
+        var deptApplicableIndex=findByAttr(form_serialize,'name','check_dept[]')
+        for(index of deptApplicableIndex){
+            x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
             x = x.concat(", ");
         }
         x = x.substr(0, x.length - 2);
@@ -1726,7 +1756,7 @@ function loadModalUpcoming(){
     // delete courseData.action
     // delete courseData.allocate_faculty
     var json_courseData=JSON.stringify(courseData)
-    console.log(json_courseData)
+    // console.log(json_courseData)
     $.ajax({
         type: "POST",
         url: "audit_course/loadModal/upcoming_audit_modal.php",
@@ -1780,7 +1810,7 @@ function update_course_form_upcoming(e){
     e.preventDefault();
     var form = $('#update_course_form');
     var form_serialize=form.serializeArray();// serializes the form's elements.
-    console.log(form_serialize)
+    // console.log(form_serialize)
     form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
     $("#update_course_btn").text("Updating...");
     $("#update_course_btn").attr("disabled",true);
@@ -1795,16 +1825,26 @@ function update_course_form_upcoming(e){
         var row=$("#update-del-modal").closest('tr');
         var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(row.get(0));
         var temp = $("#dataTable-upcoming").DataTable().row(aPos).data();
-        console.log(temp)
-        console.log(form_serialize)
+        // console.log(temp)
+        // console.log(form_serialize)
         temp['cname'] = form_serialize[0].value;
         temp['cid']=form_serialize[1].value;
         temp['sem']=form_serialize[3].value;
         temp['year']=form_serialize[5].value;
-        temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
+        // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
         var x="";
-        for (i = 9; i < form_serialize.length - 1; i++) { 
-            x = x.concat(id_to_name_convertor_dept(form_serialize[i].value));
+        var index;
+        var floatingDeptIndex=findByAttr(form_serialize,'name','floating_check_dept[]')
+        for(index of floatingDeptIndex){
+            x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+            x = x.concat(", ");
+        }
+        x = x.substr(0, x.length - 2);
+        temp['dept_name']=x;
+        x="";
+        var deptApplicableIndex=findByAttr(form_serialize,'name','check_dept[]')
+        for(index of deptApplicableIndex){
+            x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
             x = x.concat(", ");
         }
         x = x.substr(0, x.length - 2);
@@ -1952,7 +1992,7 @@ function loadModalPrevious(){
     // delete courseData.action
     // delete courseData.allocate_faculty
     var json_courseData=JSON.stringify(courseData)
-    console.log(json_courseData)
+    // console.log(json_courseData)
     $.ajax({
         type: "POST",
         url: "audit_course/loadModal/previous_audit_modal.php",
@@ -2006,7 +2046,7 @@ function update_course_form_previous(e){
     e.preventDefault();
     var form = $('#update_course_form');
     var form_serialize=form.serializeArray();// serializes the form's elements.
-    console.log(form_serialize)
+    // console.log(form_serialize)
     form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
     $("#update_course_btn").text("Updating...");
     $("#update_course_btn").attr("disabled",true);
@@ -2021,16 +2061,26 @@ function update_course_form_previous(e){
         var row=$("#update-del-modal").closest('tr');
         var aPos = $("#dataTable-previous").dataTable().fnGetPosition(row.get(0));
         var temp = $("#dataTable-previous").DataTable().row(aPos).data();
-        console.log(temp)
-        console.log(form_serialize)
+        // console.log(temp)
+        // console.log(form_serialize)
         temp['cname'] = form_serialize[0].value;
         temp['cid']=form_serialize[1].value;
         temp['sem']=form_serialize[3].value;
         temp['year']=form_serialize[5].value;
-        temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
+        // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
         var x="";
-        for (i = 9; i < form_serialize.length - 1; i++) { 
-            x = x.concat(id_to_name_convertor_dept(form_serialize[i].value));
+        var index;
+        var floatingDeptIndex=findByAttr(form_serialize,'name','floating_check_dept[]')
+        for(index of floatingDeptIndex){
+            x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+            x = x.concat(", ");
+        }
+        x = x.substr(0, x.length - 2);
+        temp['dept_name']=x;
+        x="";
+        var deptApplicableIndex=findByAttr(form_serialize,'name','check_dept[]')
+        for(index of deptApplicableIndex){
+            x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
             x = x.concat(", ");
         }
         x = x.substr(0, x.length - 2);
