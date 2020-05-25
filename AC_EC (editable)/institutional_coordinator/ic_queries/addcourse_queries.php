@@ -25,15 +25,16 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $year=mysqli_escape_string($conn,$_POST['year']);
         $min=mysqli_escape_string($conn,$_POST['min']);
         $max=mysqli_escape_string($conn,$_POST['max']);
-        $dept_id=mysqli_escape_string($conn,$_POST['dept_id']);
+        // $dept_id=mysqli_escape_string($conn,$_POST['dept_id']);
         if(isset($_POST['update_course'])){
-            $sql="UPDATE audit_course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max',dept_id='$dept_id' WHERE cid='$cidold' 
-        AND sem='$semold' AND year='$year'";
+            $sql="UPDATE audit_course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
+                  AND sem='$semold' AND year='$year'";
         } else if(isset($_POST['update_course_log'])){
-            $sql="UPDATE audit_course_log SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max',dept_id='$dept_id' WHERE cid='$cidold' 
-        AND sem='$semold' AND year='$year'";
+            $sql="UPDATE audit_course_log SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
+                  AND sem='$semold' AND year='$year'";
         }
         mysqli_query($conn,$sql);
+        //Department applicable updation start
         if(isset($_POST['update_course'])){
             $sql="SELECT dept_id FROM audit_course_applicable_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year'";
         } else if(isset($_POST['update_course_log'])){
@@ -71,9 +72,9 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         //     echo 'Insert <p>'.$d.'</p>';
         // }
         // echo '<br>';
-        foreach($delete_dept as $r){
-            echo $r;
-        }
+        // foreach($delete_dept as $r){
+        //     echo $r;
+        // }
         
         if(!empty($delete_dept)){
             $s="(";
@@ -102,7 +103,79 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
             }
             mysqli_query($conn,$sql) or die(mysqli_error($conn));
         }
+        //Department applicable updation end
+
+        //Floating department updation start
+        echo "Floating dept ".var_dump($_POST['floating_check_dept']);
+        if(isset($_POST['update_course'])){
+            $sql="SELECT dept_id FROM audit_course_floating_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year'";
+        } else if(isset($_POST['update_course_log'])){
+            $sql="SELECT dept_id FROM audit_course_floating_dept_log WHERE cid='$cidnew' AND sem='$semnew' AND year='$year'";
+        }
+        $result=mysqli_query($conn,$sql);
+        $delete_dept=array();
+        $insert_dept=array();
+        $row_dept=array();
         
+        while($row=mysqli_fetch_assoc($result)){
+            // if(!in_array($row['dept_id'],$_POST['check_dept'])){
+            //     array_push($delete_dept,$row['dept_id']);
+            // }
+            array_push($row_dept,$row['dept_id']);
+        }
+        // foreach($row_dept as $d){
+        //     echo'<p>'.$d.'</p>';
+        // }
+        foreach($row_dept as $r){
+            if(!in_array($r,$_POST['floating_check_dept'])){
+                array_push($delete_dept,$r);
+            }
+        }
+        // foreach($delete_dept as $d){
+        //     echo 'Delete<p>'.$d.'</p>';
+        // }
+        // echo '<br>';
+        foreach($_POST['floating_check_dept'] as $r){
+            if(!in_array($r,$row_dept)){
+                array_push($insert_dept,$r);
+            }
+        }
+        // foreach($insert_dept as $d){
+        //     echo 'Insert <p>'.$d.'</p>';
+        // }
+        // echo '<br>';
+        // foreach($delete_dept as $r){
+        //     echo $r;
+        // }
+        
+        if(!empty($delete_dept)){
+            $s="(";
+            foreach($delete_dept as $r){
+                $s.="$r,";
+            }
+            $s=substr($s,0,strlen($s)-1);
+            $s.=")";
+            if(isset($_POST['update_course'])){
+                $sql="DELETE FROM audit_course_floating_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year' AND dept_id IN $s";
+                echo $sql;
+            } else if(isset($_POST['update_course_log'])){
+                $sql="DELETE FROM audit_course_floating_dept_log WHERE cid='$cidnew' AND sem='$semnew' AND year='$year' AND dept_id IN $s";
+            }
+            mysqli_query($conn,$sql);
+        }
+        if(!empty($insert_dept)){
+            $Values="";
+            foreach($insert_dept as $u){
+            $Values.="('$cidnew','$semnew','$year','$u'),";
+            }
+            if(isset($_POST['update_course'])){
+                $sql="INSERT INTO audit_course_floating_dept VALUES ".substr($Values,0,strlen($Values)-1);
+            } else if(isset($_POST['update_course_log'])){
+                $sql="INSERT INTO audit_course_floating_dept_log VALUES ".substr($Values,0,strlen($Values)-1);
+            }
+            mysqli_query($conn,$sql) or die(mysqli_error($conn));
+        }
+        //Floating department updation end
         // header("Location: ../addcourse_ac.php");
         exit();
     }else if(isset($_POST['add_course'])){
@@ -123,15 +196,17 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         // echo $prevcid."<br>";
         // echo $prevsem."<br>";
         // echo $prevyear."<br>";
-        $sql="SELECT dept_id FROM department WHERE dept_name='$dept_name'";
-        $result=mysqli_query($conn,$sql);
-        $row=mysqli_fetch_assoc($result);
-        $dept_id=$row['dept_id'];
         // echo $dept_id;
         $email=$_SESSION['email'];
         date_default_timezone_set('Asia/Kolkata');
         $timestamp=date("Y-m-d H:i:s");
-        $sql="INSERT INTO audit_course(`cid`,`sem`,`year`,`cname`,`dept_id`,`min`,`max`,`email_id`,`timestamp`) VALUES('$cid','$sem','$year','$cname','$dept_id','$min','$max','$email','$timestamp')";
+        $sql="INSERT INTO audit_course(`cid`,`sem`,`year`,`cname`,`min`,`max`,`email_id`,`timestamp`) VALUES('$cid','$sem','$year','$cname','$min','$max','$email','$timestamp')";
+        mysqli_query($conn,$sql) or die(mysqli_error($conn));
+        $Values="";
+        foreach($_POST['floating_check_dept'] as $u){
+            $Values.="('$cid','$sem','$year','$u'),";
+        }
+        $sql="INSERT INTO audit_course_floating_dept VALUES ".substr($Values,0,strlen($Values)-1);
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
         $Values="";
         foreach($_POST['check_dept'] as $u){
@@ -141,11 +216,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
         if(isset($_POST['map_cbox'])){
-            // $prevcid=mysqli_escape_string($conn,$_POST['prevcid']);
-            // $prevsem=mysqli_escape_string($conn,$_POST['prevsem']);
-            // $prevyear=mysqli_escape_string($conn,$_POST['prevyear']);
             $total_prev=mysqli_escape_string($conn,$_POST['total_prev']);
-            // echo $total_prev;
             $temp=1;
             $tuples="";
             for($i=0;$i<$total_prev;$i++){
@@ -158,12 +229,8 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
             }
             $sql="INSERT into audit_map VALUES ".substr($tuples,0,strlen($tuples)-1);
             $result=mysqli_query($conn,$sql);
-            // $row=mysqli_fetch_assoc($result);
-            // $sql="INSERT into audit_map VALUES('$cid','$sem','$year','$prevcid','$prevsem','$prevyear')";
-            // $result=mysqli_query($conn,$sql);
-            // $row=mysqli_fetch_assoc($result);
+
         }
-        // header("Location: ../addcourse_ac.php");
     }
 }
 ?>

@@ -39,8 +39,9 @@ connection = pymysql.connect(host=args[mapper['host']],
                             passwd=args[mapper['password_db']],
                             database=args[mapper['dbname']])
 cursor = connection.cursor()
-insert_audit="""INSERT INTO audit_course(cid,sem,year,cname,dept_id,min,max,email_id,timestamp,currently_active) VALUES """    
+insert_audit="""INSERT INTO audit_course(cid,sem,year,cname,min,max,email_id,timestamp,currently_active) VALUES """    
 # print(header_id)
+insert_audit_floating="""INSERT INTO audit_course_floating_dept VALUES """
 insert_audit_applicable="""INSERT INTO audit_course_applicable_dept VALUES """
 sem=args[mapper['sem']]
 # print(sem)
@@ -57,15 +58,21 @@ try:
         # print(cid)
         cname=data.cell(x,header_id[args[mapper['cname_col']].lower()]).value
         # print(cname)
-        dept_id=data.cell(x,header_id[args[mapper['floating_dept_col']].lower()]).value
-        # print(dept_id)
         min=data.cell(x,header_id[args[mapper['min_col']].lower()]).value
         # print(min)
         max=data.cell(x,header_id[args[mapper['max_col']].lower()]).value
         # print(max)
-        values=(cid,sem,year,cname,dept_id,min,max,email_id,timestamp,1)
+        values=(cid,sem,year,cname,min,max,email_id,timestamp,1)
         audit_table_query=insert_audit + str(values)
-        applicable_dept=list(map(str.strip,data.cell(x,header_id[args[mapper['applicable_dept_col']].lower()]).value.split(",")))
+        #**********Floating dept**********
+        floating_dept=list(map(str.strip,str(data.cell(x,header_id[args[mapper['floating_dept_col']].lower()]).value).split(",")))
+        values=""
+        for i in range(len(floating_dept)):
+            values+="('{}','{}','{}','{}'),".format(cid,sem,year,floating_dept[i])
+        values=values[0:len(values)-1]
+        audit_floating_table_query=insert_audit_floating +str(values)
+         #**********Applicable dept**********
+        applicable_dept=list(map(str.strip,str(data.cell(x,header_id[args[mapper['applicable_dept_col']].lower()]).value).split(",")))
         values=""
         for i in range(len(applicable_dept)):
             values+="('{}','{}','{}','{}'),".format(cid,sem,year,applicable_dept[i])
@@ -75,6 +82,7 @@ try:
         # print(audit_applicable_table_query)
         # print(values)
         cursor.execute(audit_table_query)
+        cursor.execute(audit_floating_table_query)
         cursor.execute(audit_applicable_table_query)
 except Exception as e:
     print(str(e))

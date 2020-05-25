@@ -20,10 +20,14 @@ $searchValue = $_POST['search']['value']; // Search value
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
+   // $searchQuery = " and (cid like '%".$searchValue."%' or 
+   //      sem like '%".$searchValue."%' or year like '%".$searchValue."%' or
+   //      cname like'%".$searchValue."%' or dept_name like '%".$searchValue."%'
+   //      ) ";
    $searchQuery = " and (cid like '%".$searchValue."%' or 
-        sem like '%".$searchValue."%' or year like '%".$searchValue."%' or
-        cname like'%".$searchValue."%' or dept_name like '%".$searchValue."%'
-        ) ";
+   sem like '%".$searchValue."%' or year like '%".$searchValue."%' or
+   cname like'%".$searchValue."%'
+   ) ";
 }
 
 ## Total number of records without filtering
@@ -32,29 +36,29 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
 ## Total number of record with filtering
-$sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=0 ".$searchQuery);
+// $sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=0 ".$searchQuery);
+$sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course WHERE currently_active=0 ".$searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
 ## Fetch records
-// $sql = "select cname,cid,sem,dept_name,max,min,no_of_allocated from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 ".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
-// $sql="select cname,cid,sem,dept_name,max,min,no_of_allocated,
-//      (SELECT GROUP_CONCAT(aad.dept_id SEPARATOR ',') FROM audit_course_applicable_dept aad 
-//      WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year GROUP BY 'all') as app 
-//      from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 "
-//      .$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
 // $sql="select cname,cid,sem,dept_name,max,min,year, 
-//       (SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_applicable_dept aad 
-//        INNER JOIN department ad ON aad.dept_id=ad.dept_id WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year
-//        GROUP BY 'all') as app 
-//        from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=0 "
-//        .$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
-$sql="select cname,cid,sem,dept_name,max,min,year, 
-       (SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_applicable_dept aad 
-        INNER JOIN department ad ON aad.dept_id=ad.dept_id WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year
-        GROUP BY 'all') as app 
-        from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=0 "
-        .$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
+//        (SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_applicable_dept aad 
+//         INNER JOIN department ad ON aad.dept_id=ad.dept_id WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year
+//         GROUP BY 'all') as app 
+//         from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=0 "
+//         .$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
+
+$sql="select cname,cid,sem,
+         (SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_floating_dept afd 
+         INNER JOIN department d2 ON afd.dept_id=d2.dept_id WHERE a.cid=afd.cid AND a.sem=afd.sem AND a.year=afd.year
+         GROUP BY 'all') as dept_name,
+         max,min,year, 
+         (SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_applicable_dept aad 
+         INNER JOIN department ad ON aad.dept_id=ad.dept_id WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year
+         GROUP BY 'all') as app 
+      from audit_course a WHERE currently_active=0 "
+.$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;
