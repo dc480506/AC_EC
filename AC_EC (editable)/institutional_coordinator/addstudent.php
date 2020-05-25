@@ -24,13 +24,13 @@ include('../includes/header.php');
                     </button>
                 </div>
                 <div class="col text-right">
-                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
+                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadstudent">
                         <i class="fas fa-upload"></i>
                     </button>
                 </div>
             </div>
             <br>
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal fade" id="uploadstudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -422,7 +422,15 @@ include('../includes/header.php');
     </div>
     <!-- /.container-fluid -->
 <script type="text/javascript">
-$(function loadCurrent(){
+    $(document).ready(function(){
+    loadCurrent();
+    $('#uploadstudent').on('hidden.bs.modal',function (e) {
+        document.querySelector("#bulkUploadstudent").reset();
+        $("#upload_student").text("Upload")
+        $("#upload_student").attr("disabled",false);
+    });
+});
+function loadCurrent(){
     // document.querySelector("#addCoursebtn").style.display="none"
     $('#dataTable-student').DataTable({
       processing: true,
@@ -476,7 +484,7 @@ $(function loadCurrent(){
         // { className: "min", "targets": [ 6 ] }
      ],
    });
-});
+}
 $("#select_all").click(function(e){
             //   var row=$(this).closest('tr')
     if($(this).is(":checked")){    

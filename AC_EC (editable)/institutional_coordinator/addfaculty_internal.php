@@ -26,7 +26,7 @@ include('../includes/header.php');
                     </button>
                 </div>
                 <div class="col text-right">
-                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter0">
+                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadinternal">
                         <i class="fas fa-upload"></i>
                     </button>
                 </div>
@@ -36,7 +36,7 @@ include('../includes/header.php');
                     </button>
                 </div>
             </div>
-            <div class="modal fade" id="exampleModalCenter0" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle0" aria-hidden="true">
+            <div class="modal fade" id="uploadinternal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle0" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -454,8 +454,16 @@ include('../includes/header.php');
 </div>
 <!-- /.container-fluid -->
 <script type="text/javascript">
+     $(document).ready(function(){
+    loadCurrent();
+    $('#uploadinternal').on('hidden.bs.modal',function (e) {
+        document.querySelector("#bulkUploadInternal").reset();
+        $("#upload_internal").text("Upload")
+        $("#upload_internal").attr("disabled",false);
+    });
+});
     //DATATABLE CREATE
-$(function loadCurrent(){
+function loadCurrent(){
     var count=5;
     console.log(count);
     // document.querySelector("#addCoursebtn").style.display="none"
@@ -511,7 +519,7 @@ $(function loadCurrent(){
         // { className: "min", "targets": [ 6 ] }
      ],
    });
-});
+}
 //SELECT CHECKALL
 $("#select_all").click(function(e){
             //   var row=$(this).closest('tr')

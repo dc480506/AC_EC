@@ -15,7 +15,7 @@ $target_location=$base_dir.$file_name;
 move_uploaded_file( $_FILES['Uploadfile']['tmp_name'], $target_location);
 date_default_timezone_set('Asia/Kolkata');
 $timestamp=date("Y-m-d H:i:s");
-$cmd='python internalfaculty.py "'.$_SESSION['email'].'" "'.$timestamp.'" "'.$fname.'" "'.$lname.'" "'.$mname.'" "'.$eid.'" "'.$fcode.'" "'.$emailid.'" "'.$department.'" "'.$post.'" "'.$servername.'" "'.$target_location.'" "'.$username.'" "'.$dbname.'" "'.$password.'"';
+$cmd='python internalfaculty.py "'.$_SESSION['email'].'" "'.$timestamp.'" "'.$fname.'" "'.$mname.'" "'.$lname.'" "'.$eid.'" "'.$fcode.'" "'.$emailid.'" "'.$department.'" "'.$post.'" "'.$servername.'" "'.$target_location.'" "'.$username.'" "'.$dbname.'" "'.$password.'"';
 //echo $cmd;
  $output = shell_exec($cmd);
         //echo $output;
