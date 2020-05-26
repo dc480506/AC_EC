@@ -39,7 +39,7 @@
         }else{
             $i=1;
             while($row=mysqli_fetch_assoc($result)){
-                $faculty_info.="<p><small>".$i.") ".$row['post'].". ".$row['fname']." ".$row['mname']." ".$row['lname']." (".$row['faculty_code'].")</small></p>";
+                $faculty_info.="<p><small>".$i.") ".$row['fname']." ".$row['mname']." ".$row['lname']." (".$row['faculty_code'].")</small></p>";
                 $i++;
             }
         }
@@ -109,7 +109,7 @@
         }else{
             $i=1;
             while($row=mysqli_fetch_assoc($result)){
-                $faculty_info.="<p><small>".$i.") ".$row['post'].". ".$row['fname']." ".$row['mname']." ".$row['lname']." (".$row['faculty_code'].")</small></p>";
+                $faculty_info.="<p><small>".$i.") ".$row['fname']." ".$row['mname']." ".$row['lname']." (".$row['faculty_code'].")</small></p>";
                 $i++;
             }
         }
@@ -168,7 +168,7 @@
                 $i++;
             }
         }
-        $sql="SELECT post,fname,mname,lname,faculty_code FROM faculty_audit fa INNER JOIN faculty f ON fa.cid='$cid' AND fa.sem='$sem' AND fa.year='$year' AND fa.email_id=f.email_id";
+        $sql="SELECT fname,mname,lname,faculty_code FROM faculty_audit_log fa INNER JOIN faculty f ON fa.cid='$cid' AND fa.sem='$sem' AND fa.year='$year' AND fa.email_id=f.email_id";
         $result=mysqli_query($conn,$sql);
         $faculty_info="";
         if(mysqli_num_rows($result)==0){
@@ -176,7 +176,7 @@
         }else{
             $i=1;
             while($row=mysqli_fetch_assoc($result)){
-                $faculty_info.="<p><small>".$i.") ".$row['post'].". ".$row['fname']." ".$row['mname']." ".$row['lname']." (".$row['faculty_code'].")</small></p>";
+                $faculty_info.="<p><small>".$i.") ".$row['fname']." ".$row['mname']." ".$row['lname']." (".$row['faculty_code'].")</small></p>";
                 $i++;
             }
         }

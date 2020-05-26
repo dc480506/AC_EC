@@ -2405,11 +2405,19 @@ $("#dataTable-previous").on('click','td.cname',function(){
         }
 })
 function id_to_name_convertor_dept(id) {
-        if(id == "1") return "Comp";
-        if(id == "2") return "ETRX";
-        if(id == "3") return "EXTC";
-        if(id == "4") return "IT";
-        if(id == "5") return "MECH";
+    <?php
+        include_once('../config.php');
+        $sql="SELECT * FROM department";
+        $result=mysqli_query($conn,$sql);
+        while($row=mysqli_fetch_assoc($result)){
+            echo 'if(id=="'.$row['dept_id'].'") return "'.$row['dept_name'].'";';
+        }
+    ?>
+        // if(id == "1") return "Comp";
+        // if(id == "2") return "ETRX";
+        // if(id == "3") return "EXTC";
+        // if(id == "4") return "IT";
+        // if(id == "5") return "MECH";
 }
 
 $('#nav-tab').on("click", "a", function (event) {         
