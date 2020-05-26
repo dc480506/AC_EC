@@ -1462,7 +1462,7 @@ function loadAllocateModalCurrent(){
                 } else {
                     $('#result').html('');
                     $.ajax({
-                        url: "audit_course/loadModal/fetch.php",
+                        url: "audit_course/loadModal/fetch_faculties.php",
                         method: "post",
                         data: {search:txt, allocated:txt2},
                         dataType: "text",
@@ -1706,7 +1706,7 @@ function loadUpcoming(){
       },
       fnDrawCallback:function(){
           $(".action-btn").on('click',loadModalUpcoming);
-          
+          $(".allocate-btn").on('click',loadAllocateModalUpcoming);
           $(".selectrow_upcoming").attr("disabled",true);
           $("th").removeClass('selectbox_upcoming_td');
           $(".selectbox_upcoming_td").click(function(e){
@@ -1745,6 +1745,144 @@ function loadUpcoming(){
      { className: "cname", "targets": [ 1 ] },
      ]
    });
+}
+
+function loadAllocateModalUpcoming(){
+    var target_row = $(this).closest("tr"); // this line did the trick
+        console.log(target_row)
+    // var btn=$(this);
+    var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(target_row.get(0)); 
+    var courseData=$('#dataTable-upcoming').DataTable().row(aPos).data()
+    // delete courseData.action
+    // delete courseData.allocate_faculty
+    var json_courseData=JSON.stringify(courseData)
+    // console.log(json_courseData)
+    $.ajax({
+        type: "POST",
+        url: "audit_course/loadModal/upcoming_audit_allocate_modal.php",
+        // data: form_serialize, 
+        // dataType: "json",
+        data: json_courseData,
+        success: function(output)
+        {
+            // $("#"+x).text("Deleted Successfully");
+            target_row.append(output);
+            $('#deleteFacultyModal').on('shown.bs.modal', function (e) {
+              // $("#allocate-modal").css({ backdrop-filter: none });
+            })
+
+            //when modal closes
+            $('#deleteFacultyModal').on('hidden.bs.modal', function (e) {
+              // $("#allocate-modal").css({ opacity: 1 });
+            })
+
+            $('#allocate-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#allocate-modal', function () {
+                    $("#allocate-modal").remove(); 
+                    $("#deleteFacultyModal").remove();
+                });
+
+            $('#allocate_faculty_audit').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#allocate_faculty_audit_btn").attr('name'), value: $("#allocate_faculty_audit_btn").attr('value') });
+                if(form_serialize[3].value != null) {
+                    $("#allocate_faculty_audit_btn").text("Allocating...");
+                    $("#allocate_faculty_audit_btn").attr("disabled",true);
+                    $.ajax({
+                        type: "POST",
+                        url: "ic_queries/allocate_faculty_queries.php",
+                        data: form_serialize, 
+                        success: function(data)
+                        {
+                            var z = data.split("+");
+                            $("#allocate_faculty_audit_btn").text("Allocated Successfully");
+                            $("#allocate_faculty_audit_btn").text("Allocate");
+                            $("#allocate_faculty_audit_btn").attr("disabled",false);
+                            $(".faculty_div").html(z[1]);
+                            $('#temp_allocated_faculty').val(z[0]);
+                            $('#hiddenemailid').val("null");
+                            $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                        }
+                        });
+                }
+            });
+
+            $('#deleteFacultyModal').on('show.bs.modal', function (event) {
+              let email_id = $(event.relatedTarget).data('email_id') 
+              $(this).find('.modal-body #email_id').val(email_id)
+              let cid = $(event.relatedTarget).data('cid') 
+              $(this).find('.modal-body #cid').val(cid)
+              let sem = $(event.relatedTarget).data('sem') 
+              $(this).find('.modal-body #sem').val(sem)
+              let year = $(event.relatedTarget).data('year') 
+              $(this).find('.modal-body #year').val(year)
+
+              $('#newModalUnallocate').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#faculty_unallocate_btn").attr('name'), value: $("#faculty_unallocate_btn").attr('value') });
+                $("#faculty_unallocate_btn").text("Deleting...");
+                $("#faculty_unallocate_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/allocate_faculty_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        var z = data.split("+");
+                        $('#deleteFacultyModal').modal('hide');
+                        $("#faculty_unallocate_btn").text("Delete");
+                        $("#faculty_unallocate_btn").attr("disabled",false);
+                        $(".faculty_div").html(z[1]);
+                        $('#temp_allocated_faculty').val(z[0]);
+                        $('#hiddenemailid').val("null");
+                        $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                    }
+                    });
+            });
+
+            });
+
+            $('.showtext').click(function(e) {
+                if(document.querySelector("#show").style.display=="none")
+                    document.querySelector("#show").style.display="inline"
+                else
+                    document.querySelector("#show").style.display="none"
+            });
+            $('#search_text').keyup(function() {
+                var txt = $(this).val();
+                var txt2 = $('#temp_allocated_faculty').val();
+                if(txt == '') {
+                    $('#result').html('');
+                } else {
+                    $('#result').html('');
+                    $.ajax({
+                        url: "audit_course/loadModal/fetch_faculties.php",
+                        method: "post",
+                        data: {search:txt, allocated:txt2},
+                        dataType: "text",
+                        success: function(data) {
+                            $('#result').html(data);
+                            $('.option-selected').click(function(e) {
+                                var x = $(this).val();
+                                var y = $(this).prev();
+                                $('#hiddenemailid').val(y.val());
+                                $('.showtext').html(x.concat(' <i class="fa fa-caret-down"></i>'));
+                                document.querySelector("#show").style.display="none";
+                                $('#search_text').val("");
+                                $('#result').html('');
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
 }
 
 function loadModalUpcoming(){
@@ -1944,7 +2082,8 @@ function loadPrevious(){
           'url':'audit_course/loadInfo/previous_audit.php'
       },
       fnDrawCallback:function(){
-          $(".action-btn").on('click',loadModalPrevious)
+          $(".action-btn").on('click',loadModalPrevious);
+          $(".allocate-btn").on('click',loadAllocateModalPrevious);
           $(".selectrow_previous").attr("disabled",true);
           $("th").removeClass('selectbox_previous_td');
           $(".selectbox_previous_td").click(function(e){
@@ -1984,6 +2123,144 @@ function loadPrevious(){
      ]
    });
 }
+
+function loadAllocateModalPrevious(){
+    var target_row = $(this).closest("tr"); // this line did the trick
+        console.log(target_row)
+    var aPos = $("#dataTable-previous").dataTable().fnGetPosition(target_row.get(0)); 
+    var courseData=$('#dataTable-previous').DataTable().row(aPos).data()
+    // delete courseData.action
+    // delete courseData.allocate_faculty
+    var json_courseData=JSON.stringify(courseData)
+    // console.log(json_courseData)
+    $.ajax({
+        type: "POST",
+        url: "audit_course/loadModal/previous_audit_allocate_modal.php",
+        // data: form_serialize, 
+        // dataType: "json",
+        data: json_courseData,
+        success: function(output)
+        {
+            // $("#"+x).text("Deleted Successfully");
+            target_row.append(output);
+            $('#deleteFacultyModal').on('shown.bs.modal', function (e) {
+              // $("#allocate-modal").css({ backdrop-filter: none });
+            })
+
+            //when modal closes
+            $('#deleteFacultyModal').on('hidden.bs.modal', function (e) {
+              // $("#allocate-modal").css({ opacity: 1 });
+            })
+
+            $('#allocate-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#allocate-modal', function () {
+                    $("#allocate-modal").remove(); 
+                    $("#deleteFacultyModal").remove();
+                });
+
+            $('#allocate_faculty_audit').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#allocate_faculty_audit_btn").attr('name'), value: $("#allocate_faculty_audit_btn").attr('value') });
+                if(form_serialize[3].value != null) {
+                    $("#allocate_faculty_audit_btn").text("Allocating...");
+                    $("#allocate_faculty_audit_btn").attr("disabled",true);
+                    $.ajax({
+                        type: "POST",
+                        url: "ic_queries/allocate_faculty_queries.php",
+                        data: form_serialize, 
+                        success: function(data)
+                        {
+                            var z = data.split("+");
+                            $("#allocate_faculty_audit_btn").text("Allocated Successfully");
+                            $("#allocate_faculty_audit_btn").text("Allocate");
+                            $("#allocate_faculty_audit_btn").attr("disabled",false);
+                            $(".faculty_div").html(z[1]);
+                            $('#temp_allocated_faculty').val(z[0]);
+                            $('#hiddenemailid').val("null");
+                            $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                        }
+                        });
+                }
+            });
+
+            $('#deleteFacultyModal').on('show.bs.modal', function (event) {
+              let email_id = $(event.relatedTarget).data('email_id') 
+              $(this).find('.modal-body #email_id').val(email_id)
+              let cid = $(event.relatedTarget).data('cid') 
+              $(this).find('.modal-body #cid').val(cid)
+              let sem = $(event.relatedTarget).data('sem') 
+              $(this).find('.modal-body #sem').val(sem)
+              let year = $(event.relatedTarget).data('year') 
+              $(this).find('.modal-body #year').val(year)
+
+              $('#newModalUnallocate').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#faculty_unallocate_btn").attr('name'), value: $("#faculty_unallocate_btn").attr('value') });
+                $("#faculty_unallocate_btn").text("Deleting...");
+                $("#faculty_unallocate_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/allocate_faculty_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        var z = data.split("+");
+                        $('#deleteFacultyModal').modal('hide');
+                        $("#faculty_unallocate_btn").text("Delete");
+                        $("#faculty_unallocate_btn").attr("disabled",false);
+                        $(".faculty_div").html(z[1]);
+                        $('#temp_allocated_faculty').val(z[0]);
+                        $('#hiddenemailid').val("null");
+                        $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                    }
+                    });
+            });
+
+            });
+
+            $('.showtext').click(function(e) {
+                if(document.querySelector("#show").style.display=="none")
+                    document.querySelector("#show").style.display="inline"
+                else
+                    document.querySelector("#show").style.display="none"
+            });
+            $('#search_text').keyup(function() {
+                var txt = $(this).val();
+                var txt2 = $('#temp_allocated_faculty').val();
+                if(txt == '') {
+                    $('#result').html('');
+                } else {
+                    $('#result').html('');
+                    $.ajax({
+                        url: "audit_course/loadModal/fetch_faculties.php",
+                        method: "post",
+                        data: {search:txt, allocated:txt2},
+                        dataType: "text",
+                        success: function(data) {
+                            $('#result').html(data);
+                            $('.option-selected').click(function(e) {
+                                var x = $(this).val();
+                                var y = $(this).prev();
+                                $('#hiddenemailid').val(y.val());
+                                $('.showtext').html(x.concat(' <i class="fa fa-caret-down"></i>'));
+                                document.querySelector("#show").style.display="none";
+                                $('#search_text').val("");
+                                $('#result').html('');
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
 function loadModalPrevious(){
     var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)

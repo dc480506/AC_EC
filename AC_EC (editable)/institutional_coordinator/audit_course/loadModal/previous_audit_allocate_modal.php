@@ -8,13 +8,11 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     $cid=mysqli_escape_string($conn,$data['cid']);
     $cname=mysqli_escape_string($conn,$data['cname']);
     $sem=mysqli_escape_string($conn,$data['sem']);
-    $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
-    $row=mysqli_fetch_assoc($result);
-    $year=$row['academic_year'];
+    $year=mysqli_escape_string($conn,$data['year']);
     $faculty_div = "";
     $faculties_allocated_temp = "(";
     $i = 1;
-    $sql = "SELECT email_id, faculty_code, fname FROM faculty_audit NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND currently_active='1'";
+    $sql = "SELECT email_id, faculty_code, fname FROM faculty_audit_log NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year'";
     $result = mysqli_query($conn, $sql);
     if(mysqli_num_rows($result) == 0) {
         $faculty_div .= 'No Faculty Allocated';
@@ -90,7 +88,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                           </div>
                                           <br>
                                           
-                                          <button type="submit" class="btn btn-primary" id="allocate_faculty_audit_btn" name="allocate_faculty_audit">Allocate</button>
+                                          <button type="submit" class="btn btn-primary" id="allocate_faculty_audit_btn" name="allocate_faculty_audit_log">Allocate</button>
                                           <br>
                                       </form>
                                   </div>
@@ -125,7 +123,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                       </div>
                       <div class="modal-footer">
                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                          <button class="btn btn-primary" type="submit" id="faculty_unallocate_btn" name="faculty_unallocate">Delete</button>
+                          <button class="btn btn-primary" type="submit" id="faculty_unallocate_btn" name="faculty_unallocate_log">Delete</button>
                       </div>
                   </form>
                 </div>
