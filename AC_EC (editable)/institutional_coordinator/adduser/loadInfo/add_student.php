@@ -69,10 +69,12 @@ while ($row = mysqli_fetch_assoc($studentRecords)) {
       "current_sem"=>$row['current_sem'],
       "dept_name"=>$row['dept_name'],
       "year_of_admission"=>$row['year_of_admission'],
-      "action"=>'<!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter'.$count.'">
-        <i class="fas fa-tools"></i>
-      </button>'
+      // "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn" data-toggle="modal" data-target="#exampleModalCenter'.$count.'">
+      //                <i class="fas fa-tools"></i>
+      //             </button>'
+      "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn">
+                     <i class="fas fa-tools"></i>
+                  </button>'
        );
    $count++;
 }

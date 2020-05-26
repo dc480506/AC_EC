@@ -475,7 +475,7 @@ function loadCurrent(){
         orderable: false, // set orderable false for selected columns
      },
      {className:"selectbox",targets:[0]},
-     { className: "email", "targets": [ 1 ] },
+     { className: "email_id", "targets": [ 1 ] },
         // { className: "cid", "targets": [ 1 ] },
         // { className: "sem", "targets": [ 2 ] },
         // { className: "dept_name", "targets": [ 3 ] },
@@ -522,11 +522,135 @@ $("#bulkUploadstudent").submit(function(e) {
         processData: false
     });
 })
+
 function loadModalCurrent()
 {
-    var count=5;
-    console.log(count);
+    var target_row = $(this).closest("tr"); // this line did the trick
+        console.log(target_row)
+    // var btn=$(this);
+    var aPos = $("#dataTable-student").dataTable().fnGetPosition(target_row.get(0)); 
+    var courseData=$('#dataTable-student').DataTable().row(aPos).data()
+    // delete courseData.action
+    // console.log(courseData)
+    // delete courseData.allocate_faculty
+    var json_courseData=JSON.stringify(courseData)
+    // console.log(json_courseData)
+    $.ajax({
+        type: "POST",
+        url: "adduser/loadModal/student_modal.php",
+        // data: form_serialize, 
+        // dataType: "json",
+        data: json_courseData,
+        success: function(output)
+        {
+            // $("#"+x).text("Deleted Successfully");
+            target_row.append(output);
+            $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
+                    $("#update-del-modal").remove(); 
+                });
+            $('#delete_student').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#delete_student_btn").attr('name'), value: $("#delete_student_btn").attr('value') });
+                $("#delete_student_btn").text("Deleting...");
+                $("#delete_student_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addstudent_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        //    alert(data); // show response from the php script.
+                        $("#delete_student_btn").text("Deleted Successfully");
+                        var row=$("#update-del-modal").closest('tr');
+                        var aPos = $("#dataTable-student").dataTable().fnGetPosition(row.get(0)); 
+                        $('#update-del-modal').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        // row.remove();
+                        $("#dataTable-student").DataTable().row(aPos).remove().draw(false);
+                        // console.log(aPos);
+                        // console.log(row)
+                    }
+                    });
+            });
+            $('#update_student').submit(function(e){
+                update_student(e);
+                // $('#update-del-modal').modal('hide');
+            });
+        }
+    });
 }
+function update_student(e){
+    e.preventDefault();
+    var form = $('#update_student');
+    var form_serialize=form.serializeArray();// serializes the form's elements.
+    // console.log(form_serialize)
+    form_serialize.push({ name: $("#update_student_btn").attr('name'), value: $("#update_student_btn").attr('value') });
+    $("#update_student_btn").text("Updating...");
+    $("#update_student_btn").attr("disabled",true);
+    $.ajax({
+    type: "POST",
+    url: "ic_queries/addstudent_queries.php",
+    data: form_serialize, 
+    success: function(data)
+    {
+        //    alert(data); // show response from the php script.
+        $("#update_student_btn").text("Updated Successfully");
+        var row=$("#update-del-modal").closest('tr');
+        var aPos = $("#dataTable-student").dataTable().fnGetPosition(row.get(0));
+        var temp = $("#dataTable-student").DataTable().row(aPos).data();
+        // console.log(temp)
+        // console.log(form_serialize)
+        temp['fname'] = form_serialize[0].value;    //new values
+        temp['email_id']=form_serialize[2].value;
+        temp['rollno']=form_serialize[4].value;
+        temp['dept_name']=form_serialize[6].value;
+        temp['current_sem']=form_serialize[8].value;
+        temp['year_of_admission']=form_serialize[10].value;
+        // console.log(temp)
+        $('#dataTable-student').dataTable().fnUpdate(temp,aPos,undefined,false);
+        $('.action-btn').off('click')
+        $('.action-btn').on('click',loadModalCurrent)
+        // $("#dataTable-student").DataTable().row(aPos).draw(false);
+        $(".selectrow_student").attr("disabled",true);
+    }
+    });
+}
+
+$("#dataTable-student").on('click','td.email_id',function(){
+    var tr = $(this).closest('tr');
+        var row = $("#dataTable-student").DataTable().row( tr );
+ 
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown table-warning');
+        }
+        else {
+            // Open this row
+            var data={}
+            data['email_id']=row.data()['email_id'];
+            data['type']='student'
+            data_json=JSON.stringify(data)
+            console.log(data_json)
+            $.ajax({
+                type: "POST",
+                url: "loadAdditionalInfo/additional_info_student.php",
+                data: data_json, 
+                success: function(response)
+                {
+                row.child(response).show();
+                tr.addClass('shown table-warning');
+                }
+            });
+            // row.child("<b>Hello</b>").show();
+        }
+})
+
+
 </script>
     <?php include('../includes/footer.php');
     include('../includes/scripts.php');
