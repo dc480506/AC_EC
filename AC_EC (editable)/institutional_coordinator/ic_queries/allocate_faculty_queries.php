@@ -21,11 +21,11 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
     }
 
     if(isset($_POST['faculty_unallocate'])) {
-      $sql = "SELECT email_id, faculty_code, fname FROM faculty_audit NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND currently_active='1'";
+      $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_audit NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND currently_active='1'";
     } else if(isset($_POST['faculty_unallocate_upcoming'])) {
-      $sql = "SELECT email_id, faculty_code, fname FROM faculty_audit NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND currently_active='0'";
+      $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_audit NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND currently_active='0'";
     } else if(isset($_POST['faculty_unallocate_log'])) {
-      $sql = "SELECT email_id, faculty_code, fname FROM faculty_audit_log NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year'";
+      $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_audit_log NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year'";
     }
 
     $result = mysqli_query($conn, $sql);
@@ -46,7 +46,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
                           </button>
                           <label for="sem"><b>Faculty ' . $i . ' : </b>
                           </label>
-                          <span> ' . $row['fname'] . '( ' . $row['faculty_code'] .' ) </span>
+                          <span> ' . $row['fname'] . ' '.$row['mname'].' '.$row['lname'].' ( ' . $row['faculty_code'] .' ) </span>
                           <br>';
                           $i = $i + 1;
         }
@@ -71,11 +71,11 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
       mysqli_query($conn,$sql);
 
       if(isset($_POST['allocate_faculty_audit'])) {
-        $sql = "SELECT email_id, faculty_code, fname FROM faculty_audit NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND currently_active='1'";
+        $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_audit NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND currently_active='1'";
       } else if(isset($_POST['allocate_faculty_audit_upcoming'])) {
-        $sql = "SELECT email_id, faculty_code, fname FROM faculty_audit NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND currently_active='0'";
+        $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_audit NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND currently_active='0'";
       } else if(isset($_POST['allocate_faculty_audit_log'])) {
-        $sql = "SELECT email_id, faculty_code, fname FROM faculty_audit_log NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year'";
+        $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_audit_log NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year'";
       }
 
       $result = mysqli_query($conn, $sql);
@@ -95,7 +95,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
                         </button>
                         <label for="sem"><b>Faculty ' . $i . ' : </b>
                         </label>
-                        <span> ' . $row['fname'] . '( ' . $row['faculty_code'] .' ) </span>
+                        <span> ' . $row['fname'] .' '.$row['mname']. ' '.$row['lname'].' ( ' . $row['faculty_code'] .' ) </span>
                         <br>';
                         $i = $i + 1;
       }

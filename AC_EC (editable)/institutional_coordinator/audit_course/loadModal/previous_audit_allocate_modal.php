@@ -12,7 +12,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     $faculty_div = "";
     $faculties_allocated_temp = "(";
     $i = 1;
-    $sql = "SELECT email_id, faculty_code, fname FROM faculty_audit_log NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year'";
+    $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_audit_log NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year'";
     $result = mysqli_query($conn, $sql);
     if(mysqli_num_rows($result) == 0) {
         $faculty_div .= 'No Faculty Allocated';
@@ -25,7 +25,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                       </button>
                       <label for="sem"><b>Faculty ' . $i . ' : </b>
                       </label>
-                      <span> ' . $row['fname'] . '( ' . $row['faculty_code'] .' ) </span>
+                      <span> ' . $row['fname'] .' '.$row['mname'].' '.$row['lname']. ' ( ' . $row['faculty_code'] .' ) </span>
                       <br>';
                       $i = $i + 1;
     }
