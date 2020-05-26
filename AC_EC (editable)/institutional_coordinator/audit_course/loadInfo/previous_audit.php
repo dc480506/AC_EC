@@ -88,9 +88,9 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "max"=>$row['max'],
       "min"=>$row['min'],
       "no_of_allocated"=> $row['no_of_allocated'],
-      "allocate_faculty"=>'<button type="button" class="btn btn-primary icon-btn">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                           </button>',
+      "allocate_faculty"=>'<button type="button" class="btn btn-primary icon-btn allocate-btn">
+                              <i class="fas fa-chalkboard-teacher"></i>
+                          </button>',
       "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn">
                     <i class="fas fa-tools"></i>
                 </button>',

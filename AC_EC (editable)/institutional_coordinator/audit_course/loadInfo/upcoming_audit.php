@@ -76,9 +76,9 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "dept_applicable"=>$row['app'],
       "max"=>$row['max'],
       "min"=>$row['min'],
-      "allocate_faculty"=>'<button type="button" class="btn btn-primary icon-btn">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                           </button>',
+      "allocate_faculty"=>'<button type="button" class="btn btn-primary icon-btn allocate-btn">
+                              <i class="fas fa-chalkboard-teacher"></i>
+                          </button>',
       "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn">
                     <i class="fas fa-tools"></i>
                 </button>',
