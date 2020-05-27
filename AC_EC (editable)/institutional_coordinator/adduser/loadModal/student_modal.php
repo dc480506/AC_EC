@@ -128,7 +128,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="dept_name"><b>dept_name</b></label>
-                                            <input type="text" class="form-control" required="required" name="dept_name_new" placeholder="120" value="' . $dept_name . '">
+                                            <input type="text" class="form-control" required="required" name="dept_name_new" placeholder="New Department Name" value="' . $dept_name . '">
                                             <input type="hidden" class="form-control"  name="dept_name_old" value="' . $dept_name. '">
                                         </div>
                                         <div class="form-group col-md-6">
