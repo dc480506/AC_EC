@@ -20,17 +20,22 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         }
 
         $file_name=$_FILES['Uploadfile']['name'];
-        $target_location="../../../uploads\\".$file_name;
+        $target_location=$base_dir.$file_name;
         move_uploaded_file( $_FILES['Uploadfile']['tmp_name'], $target_location);
-
-        $cmd='python student_preference.py "'.$sem.'" "'.$year.'" "'.$type.'" "'.$status.'" "'.$npre.'" "'.$rno.'" "'.$email.'" "'.$tstamp;
+        $args='["'.$target_location.'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'","'.$sem.'","'.$year.'","'.$type.'","'.$status.'","'.$npre.'","'.$rno.'","'.$email.'","'.$tstamp;
         for($i=1;$i<=$total_pref;$i++){
-            $cmd.='" "'.$npref[$i];
+            $args.='","'.$npref[$i];
         }
-        $cmd.='" "'.$target_location.'"';
+        $args.='"]';
         // $command = escapeshellcmd($cmd);
-        echo $cmd;
-        $output = shell_exec($cmd);
+        $cmd='python student_preference.py '.$args;
+        // echo $cmd;
+        $output = shell_exec($cmd." 2>&1");
+        if(strpos($output,"Duplicate entry")){
+    echo "Import Unsuccessful as adding caused duplicate entries";
+}else{
+    echo $output;
+}
 
         header("Location: ../upload.php");
         exit();

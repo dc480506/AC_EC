@@ -1,4 +1,4 @@
-import pymysql,xlrd,sys
+import pymysql,xlrd,sys,re
 mapper={
         "added":1,
         "timestamp":2,

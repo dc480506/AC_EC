@@ -1,6 +1,25 @@
-import pymysql,xlrd,sys
+import pymysql,xlrd,sys,re
 from datetime import timedelta, datetime
-n=len(sys.argv)
+mapper={
+		"file_location":0,
+		"host":1,
+        "username":2,
+        "password":3,
+        "dbname":4,
+        "sem":5,
+        "year":6,
+        "type_of_form":7,
+        "status":8,
+        "npref":9,
+        "rollno":10,
+        "email":11,
+        "timestamp":12,
+        "firstpref":13
+       }
+argument=list(map(str.strip, sys.argv[1].strip('[]').split(',')))
+n=len(argument)
+start_col=10
+no_of_valid_preferences=argument[mapper['npref']]
 header,choice=[],[]
 header_id={}
 preferences=''
@@ -35,66 +54,73 @@ def convert24pm(str1):
     	# add 12 to hours
 		return str(int(dt[0]) + 12) + ':' + dt[1] + ':' + dt[2] 
 #database connection
-connection = pymysql.connect(host="localhost", user="root", passwd="", database="ac_ec")
+connection = pymysql.connect(host=argument[mapper['host']], user=argument[mapper['username']], passwd=argument[mapper['password']] , database=argument[mapper['dbname']])
 cursor = connection.cursor()
-file=xlrd.open_workbook(sys.argv[-1])
+file=xlrd.open_workbook(argument[mapper['file_location']])
 data = file.sheet_by_index(0)
 for y in range(0,data.ncols):
 	header.append(data.cell(0,y).value.lower())
-for x in range(6,n-1):
-	header_id[sys.argv[x].lower()]=header.index(sys.argv[x].lower())
-allocate_status=sys.argv[4]
-no_of_valid_preferences=sys.argv[5]
-sem=sys.argv[1]
-year=sys.argv[2]
+try:
+	for x in range(start_col,n):
+		header_id[argument[x].lower()]=header.index(argument[x].lower())
+except Exception as e:
+    print(re.findall(r"'(.*?)'",str(e),)[0]+" is not a column in the uploaded sheet")
+    sys.exit(0)
+allocate_status=argument[mapper['status']]
+sem=argument[mapper['sem']]
+year=argument[mapper['year']]
 for z in range(1,int(no_of_valid_preferences)):
 	preferences=preferences+'pref'+str(z)+','
 	percent=percent+'%s,'
 preferences=preferences+'pref'+str(no_of_valid_preferences)
 percent=percent+'%s'
-type_of_form=str(sys.argv[3])
+type_of_form=str(argument[mapper['type_of_form']])
 insertform="""INSERT into student_preference_"""+type_of_form+"""(email_id,sem,year,rollno,timestamp,allocate_status,no_of_valid_preferences,"""+preferences+""") VALUES(%s,%s,%s,%s,%s,%s,%s,"""+percent+""");"""
-print(insertform)
-for x in range (1,data.nrows):
-	prefer=[]
-	email=data.cell(x,header_id[sys.argv[7].lower()]).value
-	rollno=data.cell(x,header_id[sys.argv[6].lower()]).value
-	#ole automation to normal date time format script
-	#d=timedelta(days=data.cell(x,header_id[sys.argv[8].lower()]).value)
-	# st=datetime(1899,12,30)
-	# date=d+st
-	time=data.cell(x,header_id[sys.argv[8].lower()]).value
-	if pm in time:
-		time=time.replace(pm,'')
-		tp=time.split(' ')
-		tp[1]=convert24pm(tp[1])
-		print(tp)
-		time=''
-		for q in tp:
-			time=time+q+" "
-		time=time.strip(' ')	
-	elif am in time:
-		time=time.replace(am,'')
-		tp=time.split(' ')
-		tp[1]=convert24am(tp[1])
-		print(tp)
-		time=''
-		for q in tp:
-			time=time+q+" "
-		time=time.strip(' ')	
-	print(time)
-	values=[email,sem,year,rollno,time,allocate_status,no_of_valid_preferences]
-	for z in range(1,int(no_of_valid_preferences)+1):
-		prefer.append(data.cell(x,header_id[sys.argv[(8+z)].lower()]).value)
-	prefer=sameprefrem(prefer)
-	for val in range(0,len(prefer)):
-		values.append(prefer[val])
-	print(values)
-	choice=[]
-	#execution of query
-	cursor.execute(insertform,values)
-print("executed query")
+# print(insertform)
+try:
+	for x in range (1,data.nrows):
+		prefer=[]
+		email=data.cell(x,header_id[argument[mapper['email']].lower()]).value
+		rollno=data.cell(x,header_id[argument[mapper['rollno']].lower()]).value
+		#ole automation to normal date time format script
+		#d=timedelta(days=data.cell(x,header_id[sys.argv[8].lower()]).value)
+		# st=datetime(1899,12,30)
+		# date=d+st
+		time=data.cell(x,header_id[argument[mapper['timestamp']].lower()]).value
+		if pm in time or 'pm' in time or 'PM' in time:
+			time=time.replace(pm,'')
+			tp=time.split(' ')
+			tp[1]=convert24pm(tp[1])
+			print(tp)
+			time=''
+			for q in tp:
+				time=time+q+" "
+			time=time.strip(' ')	
+		elif am in time or 'am' in time or 'AM' in time:
+			time=time.replace(am,'')
+			tp=time.split(' ')
+			tp[1]=convert24am(tp[1])
+			print(tp)
+			time=''
+			for q in tp:
+				time=time+q+" "
+			time=time.strip(' ')	
+		print(time)
+		values=[email,sem,year,rollno,time,allocate_status,no_of_valid_preferences]
+		for z in range(1,int(no_of_valid_preferences)+1):
+			prefer.append(data.cell(x,header_id[argument[(mapper['firstpref']+z-1)].lower()]).value)
+		prefer=sameprefrem(prefer)
+		for val in range(0,len(prefer)):
+			values.append(prefer[val])
+		print(values)
+		choice=[]
+		#execution of query
+		cursor.execute(insertform,values)
+except Exception as e:
+    print(str(e))
+    sys.exit(0)
 #commit the query into db
 connection.commit()
-print("query commited")
+print("Successful")
+# close the connection
 connection.close()
