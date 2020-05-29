@@ -45,16 +45,15 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
             $args.='","'.$npref[$i];
         }
         $args.='"]';
-        $command = escapeshellcmd($cmd);
         // echo $args;
         $cmd='python student_preference.py '.$args;
         // echo $cmd;
         $output = shell_exec($cmd." 2>&1");
-        if(strpos($output,"Duplicate entry")){
-            echo "Import Unsuccessful as adding caused duplicate entries";
-        }else{
-            echo $output;
-        }
+        // if(strpos($output,"Duplicate entry")){
+        //     echo "Import Unsuccessful as adding caused duplicate entries";
+        // }else{
+        //     echo $output;
+        // }
 
         header("Location: ../upload.php");
         exit();

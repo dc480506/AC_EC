@@ -16,20 +16,28 @@ include('../includes/header.php');
                 <div class="col">
                     <h4 class="font-weight-bold text-primary mb-0">View Responses</h4>
                 </div>
+                <div class="col text-right" id="delete_selected_response_div">
+                    <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
+                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="modal-body">
-            <!--Allocation method-->
-            <!--Result Analysis-->
-            <br>
-            <table class="table table-bordered table-responsive" id="dataTable" width="100%" cellspacing="0">
+        <div class="card-body">
+            <table class="table table-bordered table-responsive" id="dataTable-response" width="100%" cellspacing="0">
                 <thead>
                     <tr>
+                        <th>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="select_all">
+                                <label class="custom-control-label" for="select_all"></label>
+                            </div>
+                        </th>
                         <th>Email Address</th>
-                        <th>Roll Number</th>
-                        <th>Year</th>
-                        <!-- <th>Department</th> -->
                         <th>Semester</th>
+                        <th>Year</th>
+                        <th>Roll Number</th>
+                        <!-- <th>Department</th> -->
                         <th>Time Stamp</th>
                         <th>Allocate Status</th>
                         <th>No of Valid Preferences</th>
@@ -37,216 +45,246 @@ include('../includes/header.php');
                         <th>Action</th>
                     </tr>
                 </thead>
-                <?php
-                $sql = "SELECT * FROM student_preference_audit;";
-                $result = mysqli_query($conn, $sql);
-                while ($row = mysqli_fetch_array($result)) {
-                ?>
-                    <tbody>
-                        <tr>
-                            <td><?php echo $row['email_id']; ?></td>
-                            <td><?php echo $row['rollno']; ?></td>
-                            <td><?php echo $row['year']; ?></td>
-                            <!-- <td></td> -->
-                            <td><?php echo $row['sem']; ?></td>
-                            <td><?php echo $row['timestamp']; ?></td>
-                            <td><?php echo $row['allocate_status']; ?></td>
-                            <td><?php echo $row['no_of_valid_preferences']; ?></td>
-                            <td><?php
-                                for ($i = 1; $i <= $row['no_of_valid_preferences']; $i++) {
-                                    # code...
-                                echo "{$i}.{$row['pref' . $i]}";
-                                echo "</br>";
-                                }?></td>
-                            <td>
-
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter2">
-                                    <i class="fas fa-tools"></i>
-                                </button>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalCenterTitle2">Action</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <nav>
-                                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                        <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
-                                                        <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
-                                                    </div>
-                                                </nav>
-                                                <div class="tab-content" id="nav-tabContent">
-                                                    <!--Deletion-->
-                                                    <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
-                                                        <form action="">
-                                                            <div class="form-group">
-                                                                <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
-                                                                </label>
-                                                                <br>
-                                                                <button type="submit" class="btn btn-primary" name="yes">Yes</button>
-                                                                <button type="submit" class="btn btn-secondary" name="no">No</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <!--end Deletion-->
-                                                    <!--Update-->
-                                                    <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
-                                                        <form action="">
-                                                            <div class="form-row mt-4">
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="rno"><b>Roll Number</b></label>
-                                                                    <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll Number">
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="emailid"><b>Email Address</b></label>
-                                                                    <input type="email" class="form-control" id="emailid" name="emailid" placeholder="email@gmail.com">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="department"><b>Department</b></label>
-                                                                    <input type="text" class="form-control" id="department" name="department" placeholder="Department">
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="sem"><b>Semester</b></label>
-                                                                    <input type="text" class="form-control" id="sem" name="sem" placeholder="Semester">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-6">
-                                                                    <label for="year"><b>Year</b></label>
-                                                                    <input type="text" class="form-control" id="year" name="year" placeholder="Year">
-                                                                </div>
-                                                            </div>
-
-                                                            <button type="submit" class="btn btn-primary" name="update">Update</button>
-                                                        </form>
-                                                    </div>
-                                                    <!--Update end-->
-
-                                                </div>
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                    </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th>Email Address</th>
+                        <th>Semester</th>
+                        <th>Year</th>
+                        <th>Roll Number</th>
+                        <!-- <th>Department</th> -->
+                        <th>Time Stamp</th>
+                        <th>Allocate Status</th>
+                        <th>No of Valid Preferences</th>
+                        <th>Preference List</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
             </table>
-            <br>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary align-center" name="upload">upload</button>
-            </div>
-
-            <!--Update end-->
-
-
         </div>
     </div>
 </div>
-
-<script>
-    function showMapSection() {
-        var checkBox = document.getElementById("map_cbox");
-
-        if (checkBox.checked == true) {
-            document.querySelector("#map_section").style.display = "block";
-            document.querySelector("#add_pref").style.display = "block";
-            document.querySelector("#rem_pref").style.display = "block";
-        } else {
-            document.querySelector("#map_section").style.display = "none";
-            document.querySelector("#add_pref").style.display = "none";
-            document.querySelector("#rem_pref").style.display = "none";
-        }
-    }
-</script>
+<!-- /.container-fluid -->
 
 <script type="text/javascript">
-    // previous course details
-    // var new_prev_no=1;
-    $('#add_pref').on('click', add);
-    // $('#rem_prev').on('click',rem);
-    var new_pref_no = 1
+    $(document).ready(function() {
+        loadCurrent();
+    });
+    $("#delete_selected_response_btn").click(function(e) {
+        alert("You have selected " + $("#dataTable-response tbody tr.selected").length + " record(s) for deletion");
+        var delete_rows = $("#dataTable-response").DataTable().rows('.selected').data()
+        var delete_data = {}
+        for (var i = 0; i < delete_rows.length; i++) {
+            baseData = {}
+            baseData['email_id'] = delete_rows[i].email_id
+            baseData['sem'] = delete_rows[i].sem
+            baseData['rollno'] = delete_rows[i].rollno
+            delete_data[i] = baseData
+            // console.log(baseData);
+        }
+        var actual_data = {}
+        actual_data['type'] = 'current'
+        actual_data['delete_data'] = delete_data
+        actual_delete_data_json = JSON.stringify(actual_data)
+        console.log(actual_delete_data_json)
+        $.ajax({
+            type: "POST",
+            url: "ic_queries/multioperation_queries/delete_multiple_response.php",
+            data: actual_delete_data_json,
+            success: function(data) {
+                // console.log(data)
+                $("#dataTable-response").DataTable().draw(false);
+            }
+        })
+    })
 
-    function add() {
-        var total = parseInt($('#total_pref').val()) + 1
-        // console.log("Value of total is "+total)
-        var new_input = `<div id="pref_` + new_pref_no + `" >
-                            <br>
-                            <input type="hidden" class='current_no' value='` + total + `'>
-                            <h5 class="modal-title">Preference Number ` + total + `</h5>
-                            <div class="form-group" id="pref_field1_` + new_pref_no + `" style="display: block;">
-                                <label for="pref_field1"><b>Preference Number</b></label>
-                                <input type="text" class="form-control prefid"  required id="pref_id` + new_pref_no + `" name="prefid` + total + `" placeholder="Enter the column name of preference number` + new_pref_no + `">
-                            </div>
-                            <button type="button" id="rem_pref` + new_pref_no + `" class="btn btn-primary">Remove</button>
-                        </div>`;
-        // alert(new_input);
-        // var new_input = "<input type='text' id='new_" + new_prev_no + "'>";
-        // var new_input1=`<button type="button" id="rem_prev" class="btn btn-primary "style="display: none;">Remove the Previous Course</button>`;
-        // console.log("Add called!!");
-        // console.log('#rem_prev'+new_prev_no);
 
-        $('#map_section').append(new_input);
-        $("#rem_pref" + new_pref_no).click(function() {
-            // console.log("Here bro!!");
-
-            // $('#total_prev').val(new_prev_no - 1);
-            // $('#map_section').remove(new_input); 
-            // alert("id is "+$(this).parent().attr('id'))
-            var rm_id = ($(this).parent()).attr('id');
-            console.log(rm_id)
-            rm_id = "#" + rm_id
-            console.log("Here bro 3!!");
-            adjustDivs($(this).parent().nextAll())
-            $(rm_id).remove();
-            $('#total_pref').val($('#total_pref').val() - 1);
+    function loadCurrent() {
+        // document.querySelector("#addCoursebtn").style.display="none"
+        $('#dataTable-response').DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            serverMethod: 'post',
+            aaSorting: [],
+            ajax: {
+                'url': 'view_response/loadInfo/view_audit.php'
+            },
+            fnDrawCallback: function() {
+                $(".action-btn").on('click', loadModalCurrent)
+                $(".selectrow").attr("disabled", true);
+                $("th").removeClass('selectbox');
+                $(".selectbox").click(function(e) {
+                    var row = $(this).closest('tr')
+                    var checkbox = $(this).find('input');
+                    console.log(checkbox);
+                    checkbox.attr("checked", !checkbox.attr("checked"));
+                    row.toggleClass('selected table-secondary')
+                    if ($("#dataTable-response tbody tr.selected").length != $("#dataTable-response tbody tr").length) {
+                        $("#select_all").prop("checked", true)
+                        $("#select_all").prop("checked", false)
+                    } else {
+                        $("#select_all").prop("checked", false)
+                        $("#select_all").prop("checked", true)
+                    }
+                })
+            },
+            columns: [{
+                    data: 'select-cbox'
+                },
+                {
+                    data: 'email_id'
+                },
+                {
+                    data: 'sem'
+                },
+                {
+                    data: 'year'
+                },
+                {
+                    data: 'rollno'
+                },
+                {
+                    data: 'timestamp'
+                },
+                {
+                    data: 'allocate_status'
+                },
+                {
+                    data: 'no_of_valid_preferences'
+                },
+                {
+                    data: 'preference_list'
+                },
+                {
+                    data: 'action'
+                },
+            ],
+            columnDefs: [{
+                    targets: [0, 8, 9], // column index (start from 0)
+                    orderable: false, // set orderable false for selected columns
+                },
+                {
+                    className: "selectbox",
+                    targets: [0]
+                },
+                {
+                    className: "email_id",
+                    "targets": [1]
+                },
+            ],
         });
-        new_pref_no += 1;
-        $('#total_pref').val(parseInt($('#total_pref').val()) + 1);
-        console.log("Add exiting!!");
+    }
+    $("#select_all").click(function(e) {
+        //   var row=$(this).closest('tr')
+        if ($(this).is(":checked")) {
+            $("#dataTable-response tbody tr").addClass("selected table-secondary");
+            $(".selectrow").attr("checked", true);
+        } else {
+            $(".selectrow").attr("checked", false);
+            $("#dataTable-response tbody tr").removeClass("selected table-secondary");
+        }
+    })
+
+    function loadModalCurrent() {
+        var target_row = $(this).closest("tr"); // this line did the trick
+        console.log(target_row)
+        // var btn=$(this);
+        var aPos = $("#dataTable-response").dataTable().fnGetPosition(target_row.get(0));
+        var courseData = $('#dataTable-response').DataTable().row(aPos).data()
+        // delete courseData.action
+        // console.log(courseData)
+        // delete courseData.allocate_faculty
+        var json_courseData = JSON.stringify(courseData)
+        // console.log(json_courseData)
+        $.ajax({
+            type: "POST",
+            url: "view_response/loadModal/audit_response_modal.php",
+            // data: form_serialize, 
+            // dataType: "json",
+            data: json_courseData,
+            success: function(output) {
+                // $("#"+x).text("Deleted Successfully");
+                target_row.append(output);
+                $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function() {
+                    $("#update-del-modal").remove();
+                });
+                $('#delete_response').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#delete_response_btn").attr('name'),
+                        value: $("#delete_response_btn").attr('value')
+                    });
+                    $("#delete_response_btn").text("Deleting...");
+                    $("#delete_response_btn").attr("disabled", true);
+                    $.ajax({
+                        type: "POST",
+                        url: "ic_queries/audit_view_response_queries.php",
+                        data: form_serialize,
+                        success: function(data) {
+                            //    alert(data); // show response from the php script.
+                            $("#delete_response_btn").text("Deleted Successfully");
+                            var row = $("#update-del-modal").closest('tr');
+                            var aPos = $("#dataTable-response").dataTable().fnGetPosition(row.get(0));
+                            $('#update-del-modal').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            // row.remove();
+                            $("#dataTable-response").DataTable().row(aPos).remove().draw(false);
+                            // console.log(aPos);
+                            // console.log(row)
+                        }
+                    });
+                });
+                $('#update_response').submit(function(e) {
+                    update_response(e);
+                    // $('#update-del-modal').modal('hide');
+                });
+            }
+        });
     }
 
-    function adjustDivs(nextDivs) {
-        for (var i = 0; i < nextDivs.length; i++) {
-            // console.log(nextDivs[i]);
-
-            var new_index = parseInt(nextDivs[i].querySelector('.current_no').value) - 1
-            var header = nextDivs[i].querySelector('h5')
-            var prefid = nextDivs[i].querySelector('.prefid')
-
-            nextDivs[i].querySelector('.current_no').value = new_index
-            header.innerText = "Preference Number " + (new_index)
-            prefid.setAttribute('name', 'prefid' + new_index)
-            // console.log(header)
-            // console.log(curr_value)
-            // console.log("Bruh")
-        }
-
-    }
-
-    function rem() {
-        // var last_prev_no=$('#total_pref').val();
-        if (last_pref_no > 0) {
-            $('#pref_' + last_pref_no).remove();
-            $('#total_pref').val(last_pref_no - 1);
-        }
+    function update_response(e) {
+        e.preventDefault();
+        var form = $('#update_response');
+        var form_serialize = form.serializeArray(); // serializes the form's elements.
+        // console.log(form_serialize)
+        form_serialize.push({
+            name: $("#update_response_btn").attr('name'),
+            value: $("#update_response_btn").attr('value')
+        });
+        $("#update_response_btn").text("Updating...");
+        $("#update_response_btn").attr("disabled", true);
+        $.ajax({
+            type: "POST",
+            url: "ic_queries/audit_view_response_queries.php",
+            data: form_serialize,
+            success: function(data) {
+                //    alert(data); // show response from the php script.
+                $("#update_response_btn").text("Updated Successfully");
+                var row = $("#update-del-modal").closest('tr');
+                var aPos = $("#dataTable-response").dataTable().fnGetPosition(row.get(0));
+                var temp = $("#dataTable-response").DataTable().row(aPos).data();
+                // console.log(temp)
+                console.log(form_serialize)
+                temp['rollno'] = form_serialize[0].value; //new values
+                temp['allocate_status'] = form_serialize[2].value;
+                temp['sem'] = form_serialize[4].value;
+                temp['year'] = form_serialize[6].value;
+                console.log(temp)
+                $('#dataTable-response').dataTable().fnUpdate(temp, aPos, undefined, false);
+                $('.action-btn').off('click')
+                $('.action-btn').on('click', loadModalCurrent)
+                // $("#dataTable-response").DataTable().row(aPos).draw(false);
+                $(".selectrow_student").attr("disabled", true);
+            }
+        });
     }
 </script>
-<!-- /.container-fluid -->
+
 
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');
