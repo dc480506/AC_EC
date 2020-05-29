@@ -159,13 +159,11 @@ include('../includes/header.php');
                                         if ($status != 'Already Allocated') {
                                             echo '
                             <td>
-
                                 <!-- Button trigger modal -->
                                 <!-- Add disabled = "disabled" in button tag to disable the button -->
                                 <button type="button" class="btn btn-primary icon-btn"  data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
                                     <i class="fas fa-tools"></i>
                                 </button>
-
                                 <!-- Modal -->
                                 <div class="modal fade" id="exampleModalCenter' . $count . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -214,7 +212,6 @@ include('../includes/header.php');
                                                                 <label for="exampleInputYear"><b>Year</b></label>
                                                                 <input type="year" required class="form-control" name="year" value="' . $row['year'] . '">
                                                                 <input type="hidden" required class="form-control" name="oldyear" value="' . $row['year'] . '">
-
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInputCurrSem"><b>Opening Semester</b></label>
@@ -282,7 +279,6 @@ include('../includes/header.php');
                                         } else {
                                             echo ' 
                             <td>
-
                                 <!-- Button trigger modal -->
                                 <!-- Add disabled = "disabled" in button tag to disable the button -->
                                 <button type="button" class="btn btn-primary icon-btn" disabled="disabled" data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
@@ -304,7 +300,6 @@ include('../includes/header.php');
                     </div>
                 </div>
             </div>
-            </>
         </div>
 
         <!-- /.container-fluid -->
