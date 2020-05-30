@@ -5,19 +5,21 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     // echo 'Hi';
     include_once('../../../config.php');
     $data = json_decode(file_get_contents("php://input"),true); 
-    $email_id=mysqli_escape_string($conn,$data['email_id']);
     $name=mysqli_escape_string($conn,$data['name']);
+    $email_id=mysqli_escape_string($conn,$data['email_id']);
     $dept_name=mysqli_escape_string($conn,$data['dept_name']);
-    $result = mysqli_query($conn,"select rollno,fname,mname,lname,dept_id,year_of_admission,current_sem from student WHERE email_id='$email_id'");
+    // $post=mysqli_escape_string($conn,$data['post']);
+    $result = mysqli_query($conn,"select faculty_code,employee_id,fname,mname,lname,dept_id,post from faculty WHERE email_id='$email_id'");
     $row=mysqli_fetch_assoc($result);
-    $rollno=$row['rollno'];
+    $faculty_code=$row['faculty_code'];
+    $employee_id=$row['employee_id'];
     $fname=$row['fname'];
     $mname=$row['mname'];
     $lname=$row['lname'];
     $dept_id=$row['dept_id'];
-    $year_of_admission=$row['year_of_admission'];
-    $current_sem=$row['current_sem'];
-    
+    $post=$row['post'];
+    // $dept_applicable=mysqli_escape_string($conn,$data['dept_applicable']);
+    // $floating_dept=mysqli_escape_string($conn,$data['dept_name']);
     $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
     $row=mysqli_fetch_assoc($result);
     $year=$row['academic_year'];
@@ -88,16 +90,16 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                         <div class="tab-content" id="nav-tabContent">
                             <!--Deletion-->
                             <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
-                                <form id="delete_student">
+                                <form id="delete_internal_faculty">
                                     <div class="form-group">
-                                        <label for="exampleFormControlSelect1"><i class="text-danger">*This will delete all the information related to the students</i>
-                                            <br>Are you sure you want to delete the student with <br> name <i><small><b>'.$name.'</b></small></i>
-                                            ,Email ID <i><small><b>'.$email_id.'</small></b></i> ,rollno <i><small><b>'.$rollno.'</b></small></i>
-                                            And department <i><small><b>'.$dept_name.'</b></small></i>?
+                                        <label for="exampleFormControlSelect1"><i class="text-danger">*This will delete all the information related to the Faculty</i>
+                                            <br>Are you sure you want to delete the Faculty with <br> name <i><small><b>'.$name.'</b></small></i>
+                                            ,Email ID <i><small><b>'.$email_id.'</small></b></i> ,faculty_code <i><small><b>'.$faculty_code.'</b></small></i>
+                                            ,employee_id <i><small><b>'.$employee_id.'</b></small></i> And department <i><small><b>'.$dept_name.'</b></small></i>?
                                         </label>
                                         <br>
                                         <input type="hidden" name="email_id" value="' . $email_id . '">
-                                        <button type="submit" class="btn btn-primary" id="delete_student_btn" name="delete_student">Yes</button>
+                                        <button type="submit" class="btn btn-primary" id="delete_internal_faculty_btn" name="delete_internal_faculty">Yes</button>
                                         <button type="button" class="btn btn-secondary" name="no">No</button>
                                     </div>
                                 </form>
@@ -105,32 +107,36 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                             <!--end Deletion-->
                             <!--Update-->
                             <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
-                                <form method="POST" id="update_student">
-                                    <div class="form-row mt-4">
-                                        <div class="form-group col-md-6">
-                                            <label for="fname"><b>First Name</b></label> 
-                                            <input type="text" class="form-control"  placeholder="First Name" name="fname_new" value="' . $fname . '">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="mname"><b>Middle Name</b></label> 
-                                            <input type="text" class="form-control"  placeholder="Middle Name" name="mname_new" value="' . $mname . '">
-                                        </div><div class="form-group col-md-6">
-                                            <label for="lname"><b>Last Name</b></label> 
-                                            <input type="text" class="form-control"  placeholder="Last Name" name="lname_new" value="' . $lname . '">
-                                        </div>  
-                                        <div class="form-group col-md-6">
-                                            <label for="email_id"><b>Email ID</b></label>
-                                            <input type="text" class="form-control" required="required" placeholder="New Email Id" name="email_id_new" value="' . $email_id . '">
-                                            <input type="hidden" class="form-control"  name="email_id_old" value="' . $email_id. '">
-                                        </div>                                   
+                                <form method="POST" id="update_internal_faculty">
+                                <div class="form-row mt-4">
+                                    <div class="form-group col-md-6">
+                                        <label for="fname"><b>First Name</b></label> 
+                                        <input type="text" class="form-control"  placeholder="First Name" name="fname_new" value="' . $fname . '">
                                     </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="mname"><b>Middle Name</b></label> 
+                                        <input type="text" class="form-control"  placeholder="Middle Name" name="mname_new" value="' . $mname . '">
+                                    </div><div class="form-group col-md-6">
+                                        <label for="lname"><b>Last Name</b></label> 
+                                        <input type="text" class="form-control"  placeholder="Last Name" name="lname_new" value="' . $lname . '">
+                                    </div>  
+                                    <div class="form-group col-md-6">
+                                        <label for="email_id"><b>Email ID</b></label>
+                                        <input type="text" class="form-control" required="required" placeholder="New Email Id" name="email_id_new" value="' . $email_id . '">
+                                        <input type="hidden" class="form-control"  name="email_id_old" value="' . $email_id. '">
+                                    </div>                                   
+                                </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="rollno"><b>Roll No</b></label>
-                                            <input type="text" class="form-control" required="required" placeholder="New Roll no" name="rollno_new" value="' . $rollno . '">
-                                            <input type="hidden" class="form-control"  name="rollno_old" value="' . $rollno. '">
+                                            <label for="faculty_code"><b>Faculty Code</b></label>
+                                            <input type="text" class="form-control" required="required" placeholder="New Faculty Code" name="faculty_code_new" value="' . $faculty_code . '">
+                                            <input type="hidden" class="form-control"  name="faculty_code_old" value="' . $faculty_code. '">
                                         </div>
-                                            
+                                        <div class="form-group col-md-6">
+                                            <label for="employee_id"><b>Employee ID</b></label>
+                                            <input type="text" class="form-control" required="required" placeholder="New Employee ID" name="employee_id_new" value="' . $employee_id. '">
+                                            <input type="hidden" class="form-control"  name="employee_id_old" value="' . $employee_id. '">
+                                        </div>
                                     </div>
                                     <br>
                                     <div class="form-row">
@@ -149,16 +155,12 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                              </div> 
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="current_sem"><b>current_sem</b></label>
-                                            <input type="text" class="form-control" required="required" name="current_sem_new" placeholder="1" value="' . $current_sem . '">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="year_of_admission"><b>Year_of_Admission</b></label>
-                                            <input type="text" class="form-control" required="required" name="year_of_admission_new" value="' . $year_of_admission . '">
+                                            <label for="post"><b>post</b></label>
+                                            <input type="text" class="form-control" required="required" name="post_new" placeholder="New Post" value="' . $post . '">
                                         </div>
                                     </div>
                                     <br>
-                                    <button type="submit" class="btn btn-primary" id="update_student_btn" name="update_student">Update</button>
+                                    <button type="submit" class="btn btn-primary" id="update_internal_faculty_btn" name="update_internal_faculty">Update</button>
                                 </form>
                                 <br>
                             </div>
@@ -172,8 +174,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                     </div>
                 </div>
             </div>';
-            // $name=$fname.' '.$mname.' '.$lname;
-
                                 // echo 'Hi';
+
 }
 ?>
