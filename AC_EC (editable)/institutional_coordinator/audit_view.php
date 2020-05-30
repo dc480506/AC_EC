@@ -113,6 +113,7 @@ include('../includes/header.php');
                                                         <div class="form-group">
                                                             <!-- <button type="button" id="add_pref" class="btn btn-primary" style="display: none;">Add</button> -->
                                                             <!-- <button type="reset" value="reset">reset</button> -->
+                                                            <br>
                                                             <button type="button" id="add_pref" class="btn btn-success btn-icon-split" style="display: none;">
                                                                 <span class="icon text-white-50">
                                                                     <i class="fas fa-plus"></i>
@@ -325,20 +326,21 @@ include('../includes/header.php');
                             <br>
                             <input type="hidden" class='current_no' value='` + total + `'>
                             <h5 class="modal-title">Preference Number ` + total + `</h5>
-                            
                             <div class="form-group" id="pref_field1_` + new_pref_no + `" style="display: block;">
                                 <label for="pref_field1"><b>Preference Number</b></label>
                                 <input type="text" class="form-control prefid"  required id="pref_id` + new_pref_no + `" name="prefid` + total + `" placeholder="Enter the column name of preference number` + new_pref_no + `">
                                 <br>
-                                <button type="button" id="rem_pref` + new_pref_no + `" class="btn btn-secondary btn-icon-split">
+                            </div>
+                            <button type="button" id="rem_pref` + new_pref_no + `" class="btn btn-secondary btn-icon-split">
                                 <span class="icon text-white-50">
                                 <i class="fas fa-exclamation-triangle"></i>
                                 </span>
                                 <span class="text">Undo</span>
                             </button>
-                            </div>
-                            
+                            <br>
+                    
                         </div>`;
+
         // alert(new_input);
         // var new_input = "<input type='text' id='new_" + new_prev_no + "'>";
         // var new_input1=`<button type="button" id="rem_prev" class="btn btn-primary "style="display: none;">Remove the Previous Course</button>`;
@@ -355,7 +357,6 @@ include('../includes/header.php');
             var rm_id = ($(this).parent()).attr('id');
             console.log(rm_id)
             rm_id = "#" + rm_id
-            console.log("Here bro 3!!");
             adjustDivs($(this).parent().nextAll())
             $(rm_id).remove();
             $('#total_pref').val($('#total_pref').val() - 1);
