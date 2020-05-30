@@ -69,12 +69,12 @@ while ($row = mysqli_fetch_assoc($facultyRecords)) {
                      </div>',
       "faculty_code"=>$row['faculty_code'],
       "employee_id"=>$row['employee_id'],
-      "fname"=>$fullname,
+      "name"=>$fullname,
       "email_id"=>$row['email_id'],
       "dept_name"=>$row['dept_name'],
       "post"=>$row['post'],
       "action"=>'<!-- Button trigger modal -->
-                  <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter'.$count.'">
+                  <button type="button" class="btn btn-primary icon-btn action-btn" >
                     <i class="fas fa-tools"></i>
                   </button>',
    );

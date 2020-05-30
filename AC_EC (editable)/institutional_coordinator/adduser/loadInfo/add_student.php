@@ -65,7 +65,7 @@ while ($row = mysqli_fetch_assoc($studentRecords)) {
                      </div>',
       "email_id"=>$row['email_id'],
       "rollno"=>$row['rollno'],
-      "fname"=>$fullname,
+      "name"=>$fullname,
       "current_sem"=>$row['current_sem'],
       "dept_name"=>$row['dept_name'],
       "year_of_admission"=>$row['year_of_admission'],

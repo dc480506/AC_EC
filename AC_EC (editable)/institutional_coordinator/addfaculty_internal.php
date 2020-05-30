@@ -499,7 +499,7 @@ function loadCurrent(){
          { data: 'select-cbox'},
          { data: 'faculty_code' },
          { data: 'employee_id' },
-         { data: 'fname' },
+         { data: 'name' },
          { data: 'email_id'},
          { data: 'dept_name' },
          { data: 'post' },
@@ -561,9 +561,149 @@ $("#bulkUploadInternal").submit(function(e) {
 //action modal part
 function loadModalCurrent()
 {
-    var count=5;
-    console.log(count);
+    var target_row = $(this).closest("tr"); // this line did the trick
+        console.log(target_row)
+    // var btn=$(this);
+    var aPos = $("#dataTable-internal").dataTable().fnGetPosition(target_row.get(0)); 
+    var courseData=$('#dataTable-internal').DataTable().row(aPos).data()
+    // delete courseData.action
+    // console.log(courseData)
+    // delete courseData.allocate_faculty
+    var json_courseData=JSON.stringify(courseData)
+    // console.log(json_courseData)
+    $.ajax({
+        type: "POST",
+        url: "adduser/loadModal/internal_faculty_modal.php",
+        // data: form_serialize, 
+        // dataType: "json",
+        data: json_courseData,
+        success: function(output)
+        {
+            // $("#"+x).text("Deleted Successfully");
+            target_row.append(output);
+            $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
+                    $("#update-del-modal").remove(); 
+                });
+            $('#delete_internal_faculty').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#delete_internal_faculty_btn").attr('name'), value: $("#delete_internal_faculty_btn").attr('value') });
+                $("#delete_internal_faculty_btn").text("Deleting...");
+                $("#delete_internal_faculty_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addfaculty_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        //    alert(data); // show response from the php script.
+                        $("#delete_internal_faculty_btn").text("Deleted Successfully");
+                        var row=$("#update-del-modal").closest('tr');
+                        var aPos = $("#dataTable-internal").dataTable().fnGetPosition(row.get(0)); 
+                        $('#update-del-modal').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        // row.remove();
+                        $("#dataTable-internal").DataTable().row(aPos).remove().draw(false);
+                        // console.log(aPos);
+                        // console.log(row)
+                    }
+                    });
+            });
+            $('#update_internal_faculty').submit(function(e){
+                update_internal_faculty(e);
+                // $('#update-del-modal').modal('hide');
+            });
+        }
+    });
 }
+function update_internal_faculty(e){
+    e.preventDefault();
+    var form = $('#update_internal_faculty');
+    var form_serialize=form.serializeArray();// serializes the form's elements.
+    // console.log(form_serialize)
+    form_serialize.push({ name: $("#update_internal_faculty_btn").attr('name'), value: $("#update_internal_faculty_btn").attr('value') });
+    $("#update_internal_faculty_btn").text("Updating...");
+    $("#update_internal_faculty_btn").attr("disabled",true);
+    $.ajax({
+    type: "POST",
+    url: "ic_queries/addfaculty_queries.php",
+    data: form_serialize, 
+    success: function(data)
+    {
+        //    alert(data); // show response from the php script.
+        $("#update_internal_faculty_btn").text("Updated Successfully");
+        var row=$("#update-del-modal").closest('tr');
+        var aPos = $("#dataTable-internal").dataTable().fnGetPosition(row.get(0));
+        var temp = $("#dataTable-internal").DataTable().row(aPos).data();
+        // console.log(temp)
+        // console.log(form_serialize)
+        temp['fname'] = form_serialize[0].value;    //new values
+        temp['mname'] = form_serialize[1].value;    //new values
+        temp['lname'] = form_serialize[2].value;    //new values
+        temp['email_id']=form_serialize[3].value;
+        temp['faculty_code']=form_serialize[5].value;
+        temp['employee_id']=form_serialize[7].value;
+        temp['dept_name']=id_to_name_convertor_dept(form_serialize[9].value);
+        temp['post']=form_serialize[10].value;
+        // // console.log(temp)
+        $('#dataTable-internal').dataTable().fnUpdate(temp,aPos,undefined,false);
+        $('.action-btn').off('click')
+        $('.action-btn').on('click',loadModalCurrent)
+        // $("#dataTable-internal").DataTable().row(aPos).draw(false);
+        $(".selectrow_student").attr("disabled",true);
+    }
+    });
+}
+
+$("#dataTable-internal").on('click','td.faculty_code',function(){
+    var tr = $(this).closest('tr');
+        var row = $("#dataTable-internal").DataTable().row( tr );
+ 
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown table-warning');
+        }
+        else {
+            // Open this row
+            var data={}
+            data['faculty_code']=row.data()['faculty_code'];
+            data['type']='faculty'
+            data_json=JSON.stringify(data)
+            console.log(data_json)
+            $.ajax({
+                type: "POST",
+                url: "loadAdditionalInfo/additional_info_internal_faculty.php",
+                data: data_json, 
+                success: function(response)
+                {
+                row.child(response).show();
+                tr.addClass('shown table-warning');
+                }
+            });
+            // row.child("<b>Hello</b>").show();
+        }
+})
+
+function id_to_name_convertor_dept(id) {
+    <?php
+        include_once('../config.php');
+        $sql="SELECT * FROM department";
+        $result=mysqli_query($conn,$sql);
+        while($row=mysqli_fetch_assoc($result)){
+            echo 'if(id=="'.$row['dept_id'].'") return "'.$row['dept_name'].'";';
+        }
+    ?>
+        // if(id == "1") return "Comp";
+        // if(id == "2") return "ETRX";
+        // if(id == "3") return "EXTC";
+        // if(id == "4") return "IT";
+        // if(id == "5") return "MECH";
+}
+
 </script>
   
 <?php include('../includes/footer.php');
