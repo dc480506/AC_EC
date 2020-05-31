@@ -97,7 +97,13 @@
       </div>
     </div>
   </li>
-
+  <hr class="sidebar-divider">
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="upload_marks.php">
+      <i class="fa fa-eye" aria-hidden="true"></i>
+      <span>View Marks</span></a>
+  </li>
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
 
