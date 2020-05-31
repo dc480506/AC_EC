@@ -59,7 +59,7 @@ include('../includes/header.php');
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="semester"><b>Semester</b></label>
-                                                <input type="number" class="form-control" id="semester" placeholder="Semester" name="semester" required>
+                                                <input type="number" class="form-control" id="sem" placeholder="Semester" name="sem" required>
                                             </div>
                                         </div>
                                         <div id="bulk_current_fields">
@@ -216,7 +216,7 @@ include('../includes/header.php');
         $("#upload_current").attr("disabled", true);
         $("#upload_current").text("Uploading...")
         $.ajax({
-            url: "student_mark/bulkUpload/upload_response_queries.php",
+            url: "student_mark/bulkUpload/upload_mark_queries.php",
             type: 'POST',
             data: formData,
             success: function(data) {
@@ -317,7 +317,7 @@ include('../includes/header.php');
                     data: 'sem'
                 },
                 {
-                    data: 'marks'
+                    data: 'gpa'
                 },
             ],
             columnDefs: [{

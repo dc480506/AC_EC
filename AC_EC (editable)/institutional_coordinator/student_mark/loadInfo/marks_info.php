@@ -19,7 +19,7 @@ $searchValue = $_POST['search']['value']; // Search value
 ## Search 
 $searchQuery = "1";
 if($searchValue != ''){
-   $searchQuery = "email_id like '%".$searchValue."%' or sem like '%".$searchValue."%' or rollno like '%".$searchValue."%' or marks like '%".$searchValue."%' ";
+   $searchQuery = "gpa like '%".$searchValue."%' or sem like '%".$searchValue."%' or rollno like '%".$searchValue."%' or m.email_id like '%".$searchValue."%' ";
 }
 
 ## Total number of records without filtering
@@ -27,12 +27,12 @@ $sel = mysqli_query($conn,"select count(*) as totalcount from student_marks");
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
-$sel = mysqli_query($conn,"select count(*) as totalcountfilters from student_marks WHERE ".$searchQuery);
+$sel = mysqli_query($conn,"select count(*) as totalcountfilters from student_marks m INNER JOIN student s ON m.email_id=s.email_id WHERE ".$searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
 ##Fetch Record
-$sql="select m.email_id,rollno,sem,marks
+$sql="select m.email_id,rollno,sem,gpa
 from student_marks m INNER JOIN student s ON m.email_id=s.email_id WHERE "
        .$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 $studentRecords = mysqli_query($conn, $sql);
@@ -49,7 +49,7 @@ while ($row = mysqli_fetch_assoc($studentRecords)) {
       "email_id"=>$row['email_id'],
       "rollno"=>$row['rollno'],
       "sem"=>$row['sem'],
-      "marks"=>$row['marks'],
+      "gpa"=>$row['gpa'],
        );
    $count++;
 }
