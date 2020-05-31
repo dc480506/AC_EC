@@ -48,36 +48,128 @@
   ');
 ?>
 <div class="tab-pane fade show active" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab">
-    <form class="forms-sample" method="POST" action="">
-        <div class="form-row mt-4">
-            <div class="form-group col-md-3">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                    <label class="custom-control-label font-weight-bold text-primary text-uppercase mb-1" for="customSwitch1">All Courses</label>
-                </div>
-            </div>
-            <div class="form-group col-md-3">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                    <label class="custom-control-label font-weight-bold text-primary text-uppercase mb-1" for="customSwitch1">Introduction to Python for Data Science</label>
-                </div>
-            </div>
-            <div class="form-group col-md-3">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                    <label class="custom-control-label font-weight-bold text-primary text-uppercase mb-1" for="customSwitch1">Introduction to Python for Data Science</label>
-                </div>
-            </div>
-            <div class="form-group col-md-3">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                    <label class="custom-control-label font-weight-bold text-primary text-uppercase mb-1" for="customSwitch1">Introduction to Python for Data Science</label>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
-            <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
-        </div>
-    </form>
+    <table class="table table-bordered table-responsive" id="dataTable-course" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="select_all">
+                                            <label class="custom-control-label" for="select_all"></label>
+                                        </div>
+                                    </th>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>MIN Students</th>
+                                    <th>MAX Students</th>
+                                    <th>1st Preference %</th>
+                                    <th>1st Preference Count</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>MIN Students</th>
+                                    <th>MAX Students</th>
+                                    <th>1st Preference %</th>
+                                    <th>1st Preference Count</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
 </div>
+<script type="text/javascript">
+   $(document).ready(function() {
+        loadCurrent();
+    });
+   function loadCurrent() {
+        // document.querySelector("#addCoursebtn").style.display="none"
+        $('#dataTable-course').DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            serverMethod: 'post',
+            aaSorting: [],
+            ajax: {
+                'url': '../allocation/loadInfo/select_course.php'
+            },
+            fnDrawCallback: function() {
+                $(".action-btn").on('click', loadModalCurrent)
+                $(".selectrow").attr("disabled", true);
+                $("th").removeClass('selectbox');
+                $(".selectbox").click(function(e) {
+                    var row = $(this).closest('tr')
+                    var checkbox = $(this).find('input');
+                    console.log(checkbox);
+                    checkbox.attr("checked", !checkbox.attr("checked"));
+                    row.toggleClass('selected table-secondary')
+                    if ($("#dataTable-course tbody tr.selected").length != $("#dataTable-course tbody tr").length) {
+                        $("#select_all").prop("checked", true)
+                        $("#select_all").prop("checked", false)
+                    } else {
+                        $("#select_all").prop("checked", false)
+                        $("#select_all").prop("checked", true)
+                    }
+                })
+            },
+            columns: [{
+                    data: 'select-cbox'
+                },
+                {
+                    data: 'cname'
+                },
+                {
+                    data: 'cid'
+                },
+                {
+                    data: 'min'
+                },
+                {
+                    data: 'max'
+                },
+                {
+                    data: 'firstpercent'
+                },
+                {
+                    data: 'firstcount'
+                },
+                {
+                    data: 'action'
+                },
+            ],
+            columnDefs: [{
+                    targets: [0, 7], // column index (start from 0)
+                    orderable: false, // set orderable false for selected columns
+                },
+                {
+                    className: "selectbox",
+                    targets: [0]
+                },
+                {
+                    className: "cname",
+                    "targets": [1]
+                },
+                // { className: "cid", "targets": [ 1 ] },
+                // { className: "sem", "targets": [ 2 ] },
+                // { className: "dept_name", "targets": [ 3 ] },
+                // { className: "dept_applicable", "targets": [ 4 ] },
+                // { className: "max", "targets": [ 5 ] },
+                // { className: "min", "targets": [ 6 ] }
+            ],
+        });
+    }
+    $("#select_all").click(function(e) {
+        //   var row=$(this).closest('tr')
+        if ($(this).is(":checked")) {
+            $("#dataTable-course tbody tr").addClass("selected table-secondary");
+            $(".selectrow").attr("checked", true);
+        } else {
+            $(".selectrow").attr("checked", false);
+            $("#dataTable-course tbody tr").removeClass("selected table-secondary");
+        }
+        //   row.toggleClass('selected table-secondary')
+    })
+    function loadModalCurrent(){}
+</script>
