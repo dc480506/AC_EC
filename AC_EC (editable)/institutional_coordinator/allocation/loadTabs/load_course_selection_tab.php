@@ -48,6 +48,7 @@
   ');
 ?>
 <div class="tab-pane fade show active" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab">
+     <form class="forms-sample" method="POST" id='course_selection'>
     <table class="table table-bordered table-responsive" id="dataTable-course" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
@@ -79,6 +80,11 @@
                                 </tr>
                             </tfoot>
                         </table>
+                    </form>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
+    <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
 </div>
 <script type="text/javascript">
    $(document).ready(function() {
@@ -140,7 +146,7 @@
                 },
             ],
             columnDefs: [{
-                    targets: [0, 7], // column index (start from 0)
+                    targets: [0,7], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
@@ -171,5 +177,96 @@
         }
         //   row.toggleClass('selected table-secondary')
     })
-    function loadModalCurrent(){}
+    function loadModalCurrent(){
+        var target_row = $(this).closest("tr"); // this line did the trick
+        console.log(target_row)
+    // var btn=$(this);
+    var aPos = $("#dataTable-course").dataTable().fnGetPosition(target_row.get(0)); 
+    var courseData=$('#dataTable-course').DataTable().row(aPos).data()
+    // delete courseData.action
+    // console.log(courseData)
+    // delete courseData.allocate_faculty
+    var json_courseData=JSON.stringify(courseData)
+    $.ajax({
+        type: "POST",
+        url: "../allocation/loadModal/select_course_modal.php",
+        // data: form_serialize, 
+        // dataType: "json",
+        data: json_courseData,
+        success: function(output)
+        {
+            // $("#"+x).text("Deleted Successfully");
+            target_row.append(output);
+            $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
+                    $("#update-del-modal").remove(); 
+                });
+            $('#delete_course').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
+                $("#delete_course_btn").text("Deleting...");
+                $("#delete_course_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "../ic_queries/update_tempcourse_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        //    alert(data); // show response from the php script.
+                        $("#delete_course_btn").text("Deleted Successfully");
+                        var row=$("#update-del-modal").closest('tr');
+                        var aPos = $("#dataTable-course").dataTable().fnGetPosition(row.get(0)); 
+                        $('#update-del-modal').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        // row.remove();
+                        $("#dataTable-course").DataTable().row(aPos).remove().draw(false);
+                        // console.log(aPos);
+                        // console.log(row)
+                    }
+                    });
+            });
+            $('#update_course').submit(function(e){
+                update_course(e);
+                // $('#update-del-modal').modal('hide');
+            });
+        }
+    });
+    }
+    function update_course(e){
+    e.preventDefault();
+    var form = $('#update_course');
+    var form_serialize=form.serializeArray();// serializes the form's elements.
+    // console.log(form_serialize)
+    form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
+    console.log(form_serialize);
+    $("#update_course_btn").text("Updating...");
+    $("#update_course_btn").attr("disabled",true);
+    $.ajax({
+    type: "POST",
+    url: "../ic_queries/update_tempcourse_queries.php",
+    data: form_serialize, 
+    success: function(data)
+    {
+        //    alert(data); // show response from the php script.
+        $("#update_course_btn").text("Updated Successfully");
+        var row=$("#update-del-modal").closest('tr');
+        var aPos = $("#dataTable-course").dataTable().fnGetPosition(row.get(0));
+        var temp = $("#dataTable-course").DataTable().row(aPos).data();
+        //console.log(temp)
+        //console.log(form_serialize)
+        temp['cid'] = form_serialize[1].value;
+        temp['min'] = form_serialize[2].value;    //new values
+        temp['max'] = form_serialize[3].value;    //new values
+        //console.log(temp)
+        $('#dataTable-course').dataTable().fnUpdate(temp,aPos,undefined,false);
+        $('.action-btn').off('click')
+        $('.action-btn').on('click',loadModalCurrent)
+        // $("#dataTable-student").DataTable().row(aPos).draw(false);
+        $(".selectrow_course").attr("disabled",true);
+    }
+    });
+}
 </script>

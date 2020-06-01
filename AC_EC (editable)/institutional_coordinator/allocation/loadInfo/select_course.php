@@ -23,12 +23,12 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$sel = mysqli_query($conn,"select count(*) as totalcount from {$_SESSION['type']}_course WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}'");
+$sel = mysqli_query($conn,"select count(*) as totalcount from {$_SESSION['course_table']} WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}'");
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 $preedss=1/$totalRecords;
 ## Total number of record with filtering
-$sel = mysqli_query($conn,"select count(*) as totalcountfilters from {$_SESSION['type']}_course WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}'".$searchQuery);
+$sel = mysqli_query($conn,"select count(*) as totalcountfilters from {$_SESSION['course_table']} WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}'".$searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
@@ -49,15 +49,20 @@ $totalStudentCount=$res['totalStudentCount'];
 //        GROUP BY 'all') as app 
 //        from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 "
 //        .$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
-$sql="select cid,cname,max,min from {$_SESSION['type']}_course WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}'".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
+$sql="select cid,cname,max,min,
+(select count(*) as firstprefCount from student_preference_audit spa where ac.cid=spa.pref1) as firstcount,
+round((select count(*)/{$totalStudentCount}*100 as firstpercentCount from student_preference_audit spa where ac.cid=spa.pref1),2) as firstpercent 
+from {$_SESSION['course_table']} ac WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}'".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;
 $firstpercent=0.0;
 while ($row = mysqli_fetch_assoc($courseRecords)) {
-   $firstpref=mysqli_query($conn,"SELECT count(*) as firstcount FROM student_preference_{$_SESSION['type']} WHERE pref1='{$row['cid']}' and sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}'");
-   $firstcount=mysqli_fetch_assoc($firstpref);
-   $firstpercent=number_format(($firstcount['firstcount']/$totalStudentCount)*100.0,2);
+  // $color='text-success';
+  // if($row['max']<$row['firstcount'])
+  // {
+  //   $color='text-danger';
+  // }
    $data[] = array( 
       // "select-cbox"=>'<input type="checkbox">',
       "select-cbox"=>'<div class="custom-control custom-checkbox">
@@ -68,8 +73,8 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "cid"=>$row['cid'],
       "max"=>$row['max'],
       "min"=>$row['min'],
-      "firstpercent"=>$firstpercent,
-      "firstcount"=>$firstcount['firstcount'],
+      "firstpercent"=>$row['firstpercent'],
+      "firstcount"=>$row['firstcount'],
       // "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn" data-toggle="modal" data-target="#exampleModalCenter'.$count.'">
       //                <i class="fas fa-tools"></i>
       //             </button>'
