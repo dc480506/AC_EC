@@ -1,17 +1,18 @@
 import pymysql,xlrd,sys,re
 mapper={
 		"sem":0,
-		"email":1,
-        "marks":2,
-        "file_location":3,
-        "host":4,
-        "username":5,
-        "password":6,
-        "dbname":7,
+		"year":1,
+		"email":2,
+        "marks":3,
+        "file_location":4,
+        "host":5,
+        "username":6,
+        "password":7,
+        "dbname":8,
         }
 header=[]
 header_id={}
-start_col=1
+start_col=2
 argument=list(map(str.strip, sys.argv[1].strip('[]').split(',')))
 n=len(argument)
 # dept={'COMP':'1','IT':'2','EXTC':'3','ETRX':'4','MECH':'5'}
@@ -29,15 +30,16 @@ except Exception as e:
     print(re.findall(r"'(.*?)'",str(e),)[0]+" is not a column in the uploaded sheet")
     sys.exit(0)
 
-insert="""INSERT into student_marks(email_id,sem,gpa) VALUES(%s,%s,%s);"""
+insert="""INSERT into student_marks(email_id,sem,year,gpa) VALUES(%s,%s,%s,%s);"""
 sem=argument[mapper['sem']]
+year=argument[mapper['year']]
 try:
 	for x in range (1,data.nrows):
 		email=data.cell(x,header_id[argument[mapper['email']].lower()]).value
 		#print(email)
 		marks=data.cell(x,header_id[argument[mapper['marks']].lower()]).value
 		#print(rollno)
-		values=(email,sem,marks)
+		values=(email,sem,year,marks)
 		#executing query
 		cursor.execute(insert,values)
 except Exception as e:

@@ -9,7 +9,7 @@ include_once("../../verify.php");
         $file_name=$_FILES['Uploadfile']['name'];
         $target_location=$base_dir.$file_name;
         move_uploaded_file( $_FILES['Uploadfile']['tmp_name'], $target_location);
-        $args='["'.$sem.'","'.$email.'","'.$marks.'","'.$target_location.'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
+        $args='["'.$sem.'","'.$year.'","'.$email.'","'.$marks.'","'.$target_location.'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
         $cmd='python student_marks.py '.$args;
         // $command = escapeshellcmd($cmd);
         // echo $cmd;
