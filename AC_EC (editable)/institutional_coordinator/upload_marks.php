@@ -57,9 +57,13 @@ include('../includes/header.php');
                                     <form method="post" method="POST" enctype="multipart/form-data" id="bulkUploadCurrent">
                                         <br>
                                         <div class="form-row">
-                                            <div class="form-group col-md-12">
+                                            <div class="form-group col-md-6">
                                                 <label for="semester"><b>Semester</b></label>
-                                                <input type="number" class="form-control" id="sem" placeholder="Semester" name="sem" required>
+                                                <input type="number" class="form-control" id="sem" placeholder="Semester" name="sem" oninput="validity.valid||(value='');" min="1" max="8" required>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="year"><b>Year</b></label>
+                                                <input type="text" class="form-control" id="year" placeholder="Eg 2019-20" name="year" required>
                                             </div>
                                         </div>
                                         <div id="bulk_current_fields">
@@ -105,11 +109,7 @@ include('../includes/header.php');
                                 </div>
                             </div>
                             <!--end Upload Current-->
-
-                            <!-- <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                        <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
-                                                    </div> -->
+                            
                         </div>
                     </div>
                     <style type="text/css">
@@ -208,7 +208,6 @@ include('../includes/header.php');
 <!-- /.container-fluid -->
 
 <script type="text/javascript">
-
     $("#bulkUploadCurrent").submit(function(e) {
         e.preventDefault();
         form = this;

@@ -3,12 +3,12 @@ include_once("../../../config.php");
 include_once("../../verify.php");
         $sem=mysqli_escape_string($conn,$_POST['sem']);
         $email=mysqli_escape_string($conn,$_POST['email_id']);
-        $rno=mysqli_escape_string($conn,$_POST['marks']);
+        $marks=mysqli_escape_string($conn,$_POST['marks']);
 
         $file_name=$_FILES['Uploadfile']['name'];
         $target_location=$base_dir.$file_name;
         move_uploaded_file( $_FILES['Uploadfile']['tmp_name'], $target_location);
-        $args='["'.$sem.'","'.$email.'","'.$rno.'","'.$target_location.'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
+        $args='["'.$sem.'","'.$email.'","'.$marks.'","'.$target_location.'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
         $cmd='python student_marks.py '.$args;
         // $command = escapeshellcmd($cmd);
         // echo $cmd;

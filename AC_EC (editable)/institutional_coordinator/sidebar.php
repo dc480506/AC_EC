@@ -64,7 +64,7 @@
       <i class="fas fa-user-graduate"></i>
       <span>Student Allocation</span></a>
   </li>
-
+  
   <hr class="sidebar-divider">
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages1" aria-expanded="true" aria-controls="collapseUtilities">
@@ -101,8 +101,8 @@
   <!-- Nav Item - Pages Collapse Menu -->
   <li class="nav-item">
     <a class="nav-link" href="upload_marks.php">
-      <i class="fa fa-eye" aria-hidden="true"></i>
-      <span>View Marks</span></a>
+      <i class="fas fa-trophy"></i>
+      <span>Marks</span></a>
   </li>
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
