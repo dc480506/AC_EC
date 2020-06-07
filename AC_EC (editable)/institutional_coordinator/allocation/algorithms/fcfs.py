@@ -9,16 +9,31 @@ import pandas as pd
 import numpy as np
 import pymysql,sys
 
+mapper={
+		"sem":0,
+		"year":1,
+        "student_pref_table":2,
+        "student_course_table":3,
+        "course_allocate_info_table":4,
+        "course_table":5,
+        "no_of_preferences":6,
+        "host":7,
+        "username":8,
+        "password":9,
+        "dbname":10,
+        }
+argument=list(map(str.strip, sys.argv[1].strip('[]').split(',')))
+n=len(argument)
 mydb = pymysql.connect(
-  host="localhost",
-  user="root",
-  passwd="",
-  database="dummy"
+  host=argument[mapper['host']],
+  user=argument[mapper['username']],
+  passwd=argument[mapper['password']],
+  database=argument[mapper['dbname']]
 )
-
 mycursor = mydb.cursor()
 
-mycursor.execute("SELECT cid,min,max FROM audit_course")
+course_query="SELECT cid,min,max FROM "+argument[mapper['course_table']]+" WHERE sem='"+argument[mapper['sem']]+"' and year='"+argument[mapper['year']]+"'"
+mycursor.execute(course_query)
 
 myresult = mycursor.fetchall()
 courses={}
@@ -27,18 +42,24 @@ for x in myresult:
   courses[x[0]]=l
 
 
-	
-
-mycursor.execute("SELECT email_id,rollno,timestamp,pref1,pref2,pref3,pref4,pref5,pref6,pref7,pref8 FROM student_preference_audit")
-
+preferences=""
+for x in range(1,int(argument[mapper['no_of_preferences']])):
+	preferences+="pref"+str(x)+","
+preferences+="pref"+str(argument[mapper['no_of_preferences']])
+student_pref_query="SELECT email_id,rollno,timestamp,"+preferences+" FROM "+argument[mapper['student_pref_table']]+" WHERE sem='"+argument[mapper['sem']]+"' and year='"+argument[mapper['year']]+"'" 	
+mycursor.execute(student_pref_query)
 myresult = mycursor.fetchall()
 student=[]
 
 for res in myresult:
-	l=[res[0],res[1],res[2],res[3],res[4],res[5],res[6],res[7],res[8],res[9],res[10]]
+	l=[res[0],res[1],res[2]]
+	for x in range(0,int(argument[mapper['no_of_preferences']])):
+		l.append(res[(x+3)])
 	student.append(l)
 #print(student)	
-cols=['email_id','rollno','timestamp','pref1','pref2','pref3','pref4','pref5','pref6','pref7','pref8']
+cols=['email_id','rollno','timestamp']
+for x in range(1,int(argument[mapper['no_of_preferences']])+1):
+	cols.append("pref"+str(x))
 	
 data=pd.DataFrame(student,columns=cols)
 data['timestamp']=pd.to_datetime(data["timestamp"])
@@ -74,21 +95,27 @@ count1=0
 over=[]
 under=[]
 unallocated=[]
+total_allocated=0
 for k,v in student_pref_no.items():
 	if(v==-1):
 		#print(k)
 		count=count+1
 		unallocated.append(k)
+	else:
+		total_allocated=total_allocated+1
+		
 underflow_stu_list=[]
 
 print("After 1st iteration:")
 for k,v in courses.items():
 	if(len(stu_course[k])>v[1]):
 		over.append(k)
+		
 		count1=count1+1
 	if(len(stu_course[k])<v[0] and (len(stu_course[k])!=0)):
 		under.append(k)
 		underflow_stu_list.extend(x for x in stu_course[k])
+		
 		count2=count2+1
 		
 	print(str(len(stu_course[k]))+" are there in course "+k+" whose max is "+str(v[1])+" and min is "+str(v[0]))
@@ -97,6 +124,7 @@ for k,v in courses.items():
 print(str(count1) +" courses are overflow")
 print(str(count2) + " courses are underflow")
 print(str(count) + "are unallocated")
+print(str(total_allocated))
 
 underflow_stu_list.sort(key = lambda underflow_stu_list: underflow_stu_list[2])
 loop=0
@@ -117,6 +145,7 @@ while (len(underflow_stu_list)!=0):
 			del underflow_stu_list[o]
 			temp=stu_course[prefl[s[3]-1]]
 			temp=[k for k in temp if k[0]!=email]
+			student_pref_no[email]=-1
 			stu_course[prefl[s[3]-1]]=temp			
 		
 
@@ -133,6 +162,7 @@ while (len(underflow_stu_list)!=0):
 				del underflow_stu_list[o]
 				temp=stu_course[prefl[s[3]-1]]
 				temp=[k for k in temp if k[0]!=email]
+				student_pref_no[email]=-1
 				stu_course[prefl[s[3]-1]]=temp
 				print(email,"unallocated added")
 			else:
@@ -205,7 +235,7 @@ for k,v in courses.items():
 		
 print(str(count1) +" courses are overflow")
 print(str(count2) + " courses are underflow")
-print(str(count) + "are unallocated")	
+print(str(len(unallocated)) + "are unallocated")	
 
 count11=0
 count22=0
@@ -222,7 +252,17 @@ print(dict1)
 print(overlow_by)
 print(len(overlow_by))
 print(len(courses))
-
+count=0
+total_allocated=0
+for k,v in student_pref_no.items():
+	if(v==-1):
+		#print(k)
+		count=count+1
+		#unallocated.append(k)
+	else:
+		total_allocated=total_allocated+1
+print(total_allocated)
+print(count)
 # print('Unallocated',unallocated)
 # sql updations
 table_name_1='student_audit'
@@ -230,18 +270,18 @@ table_name_2='student_preference_audit'
 table_name_3='audit_course'
 sem=5
 year='2020-21'
-
 for course,student in stu_course.items():
-	query="UPDATE `"+table_name_3+"` SET no_of_allocated="+str(len(student))+" where cid='"+course+"' and year='"+year+"' and sem="+str(sem)
+	query="UPDATE `"+argument[mapper['course_table']]+"` SET no_of_allocated="+str(len(student))+" WHERE cid='"+course+"' and year='"+argument[mapper['year']]+"' and sem='"+argument[mapper['sem']]+"'"
 	# print(query)
 	mycursor.execute(query)
-	mydb.commit()
+	# mydb.commit()
 	for i in range(len(student)):	
-		query="INSERT INTO `"+table_name_1+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+str(sem)+",'"+year+"')"
+		query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+str(sem)+",'"+year+"')"
 		mycursor.execute(query)
-		mydb.commit()
-		query="UPDATE `"+table_name_2+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+year+"' and sem="+str(sem)
+		# mydb.commit()
+		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+year+"' and sem="+str(sem)
 		# print(query)
 		mycursor.execute(query)
-		mydb.commit()
 		# print("INSERT INTO `"+table_name+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+str(sem)+",'"+year+"')")
+mydb.commit()
+		

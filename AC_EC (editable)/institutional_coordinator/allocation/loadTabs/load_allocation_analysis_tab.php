@@ -9,6 +9,11 @@ $output=shell_exec($cmd." 2>&1");
 // echo $output;
 ?>
 <div class="tab-pane fade show active" id="nav-result" role="tabpanel" aria-labelledby="nav-result-tab">
+    <br>
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
+    </div>
+    <br>
      <form class="forms-sample" method="POST" id="course_analysis">
     <table class="table table-bordered table-responsive" id="dataTable-analysis" width="100%" cellspacing="0">
                             <thead>
@@ -45,10 +50,20 @@ $output=shell_exec($cmd." 2>&1");
                         </table>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
-                        <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
+                        <button type="submit" class="btn btn-primary align-center" name="allocate" id>Next</button>
                     </div>
                 </form>
             </div>
+            <div id="spinner" style="display: none;">
+                <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
+            </div>
+            <style type="text/css">
+                #spinner{
+                    position: fixed;
+                    top: 50%;
+                    left:50%;
+                }
+            </style>
             <button id="reallocate" class="btn btn-primary align-center"><span class="text" id="reallocate_text">Reallocate</span></button>
 <script type="text/javascript">
    $(document).ready(function() {
@@ -253,124 +268,31 @@ $output=shell_exec($cmd." 2>&1");
     }
     });
 }
+
+$("#course_analysis").submit(function(e){
+        e.preventDefault();
+        var form=$(this);
+        form_serialize=form.serializeArray();
+        console.log(form_serialize);
+        $("#nav-result-tab").removeClass("active")
+        $("#nav-result-tab").addClass("disabled")
+        $.ajax({
+            type:"POST",
+            url:"loadTabs/load_result_tab.php",
+            data:form_serialize,
+            beforeSend:function(){
+            //Loader daalna hai baadme
+            $('#spinner').show();
+            $('#next_btn').attr('disabled',true);
+            },
+            success:function(html){
+                $("#nav-final-allocate-tab").removeClass("disabled")
+                $("#nav-tabContent").html(html)
+                $("#nav-final-allocate-tab").addClass("active")
+            },
+            complete:function(){
+                $('#spinner').hide();
+            }
+        })
+    })
 </script>
-                    <!-- <div class="table-responsive">
-                        <br>
-                        <table class="table table-bordered" id="dataTable-analysis" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Course Name</th>
-                                    <th>Course ID</th>
-                                    <th>MIN Students</th>
-                                    <th>MAX Students</th>
-                                    <th>Department</th>
-                                    <th>Max</th>
-                                    <th>Min</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead> -->
-                            
-                                        <!-- Button trigger modal -->
-                                        <!-- <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter2">
-                                            <i class="fas fa-tools"></i>
-                                        </button>
- -->
-                                        <!-- Modal -->
-                                        <!-- <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalCenterTitle2">Action</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <nav>
-                                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                                <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
-                                                                <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
-                                                            </div>
-                                                        </nav>
-                                                        <div class="tab-content" id="nav-tabContent"> -->
-                                                            <!--Deletion-->
-                                                            <!-- <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
-                                                                <form action="">
-                                                                    <div class="form-group">
-                                                                        <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
-                                                                        </label>
-                                                                        <br>
-                                                                        <button type="submit" class="btn btn-primary" name="yes">Yes</button>
-                                                                        <button type="submit" class="btn btn-secondary" name="no">No</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div> -->
-                                                            <!--end Deletion-->
-                                                            <!--Update-->
-                                                            <!-- <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
-                                                                <form action="">
-                                                                    <div class="form-row mt-4">
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="cname"><b>Course Name</b></label>
-                                                                            <input type="text" class="form-control" id="cname" name="cname" placeholder="Course Name">
-                                                                        </div>
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="cid"><b>Course ID</b></label>
-                                                                            <input type="text" class="form-control" id="cid" name="cid" placeholder="Course ID">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-row">
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="year"><b>Year</b></label>
-                                                                            <input type="text" class="form-control" id="year" name="year" placeholder="Year">
-                                                                        </div>
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="semester"><b>Semester</b></label>
-                                                                            <input type="text" class="form-control" id="semester" name="semester" placeholder="Semester">
-                                                                        </div>
-
-                                                                    </div>
-                                                                    <div class="form-row">
-                                                                        <div class="form-group col-md-12">
-                                                                            <label for="department"><b>Department</b></label>
-                                                                            <input type="text" class="form-control" id="department" name="department" placeholder="department">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-row">
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="max"><b>Max</b></label>
-                                                                            <input type="number" class="form-control" id="max" name="max" placeholder="Max">
-                                                                        </div>
-                                                                        <div class="form-group col-md-6">
-                                                                            <label for="min"><b>Min</b></label>
-                                                                            <input type="number" class="form-control" id="min" name="min" placeholder="Min">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <button type="submit" class="btn btn-primary" name="update">Update</button>
-                                                                </form>
-                                                            </div> -->
-                                                            <!--Update end-->
-
-                                                        <!-- </div>
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                        <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <br>
-                        <div class="modal-footer">
-                            
-                            <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
-                            <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
-                        </div>
-                    </div> -->
-                    <!--Update end-->

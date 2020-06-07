@@ -72,6 +72,11 @@
   mysqli_query($conn,'INSERT INTO '.$_SESSION['student_pref'].'(`email_id`,`sem`,`year`,`rollno`,`timestamp`,`allocate_status`,`no_of_valid_preferences`,'.$pref.') SELECT email_id,sem,year,rollno,timestamp,allocate_status,no_of_valid_preferences,'.$pref.' FROM student_preference_'.$_SESSION['type'].' WHERE sem="'.$_SESSION['sem'].'" AND year="'.$_SESSION['year'].'"');
 ?>
 <div class="tab-pane fade show active" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab">
+    <br>
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%"></div>
+    </div>
+    <br>
      <form class="forms-sample" method="POST" id="course_selection">
     <table class="table table-bordered table-responsive" id="dataTable-course" width="100%" cellspacing="0">
                             <thead>
@@ -106,7 +111,7 @@
                         </table>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
-                        <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
+                        <button type="submit" class="btn btn-primary align-center" id="next_btn" name="allocate">Next</button>
                     </div>
                 </form>
             </div>
@@ -336,7 +341,8 @@ $("#course_selection").submit(function(e){
             data:form_serialize,
             beforeSend:function(){
             //Loader daalna hai baadme
-            $('#spinner').show;
+            $('#spinner').show();
+            $('#next_btn').attr('disabled',true);
             },
             success:function(html){
                 $("#nav-result-tab").removeClass("disabled")
@@ -344,7 +350,7 @@ $("#course_selection").submit(function(e){
                 $("#nav-result-tab").addClass("active")
             },
             complete:function(){
-                $('#spinner').hide;
+                $('#spinner').hide();
             }
         })
     })
