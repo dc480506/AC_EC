@@ -50,18 +50,22 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                 <form method="POST" id="update_course">
                                     <div class="form-row mt-4">
                                         <div class="form-group col-md-6">
-                                            <input type="text" class="form-control" required="required" placeholder="Course Name" name="cname" value="' . $cname . '" hidden>
+                                        <label for="cname"><b>Course Name</b></label>
+                                            <input type="text" class="form-control" required="required" placeholder="Course Name" name="cname" value="' . $cname . '" disabled>
+                                            <input type="hidden" class="form-control"  name="cname" value="' . $cname. '">
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <input type="text" class="form-control" required="required" placeholder="Course Id" name="cid" value="' . $cid . '" hidden>
+                                        <label for="cid"><b>Course ID</b></label>
+                                            <input type="text" class="form-control" required="required" placeholder="Course Id" name="cid" value="' . $cid . '" disabled>
+                                            <input type="hidden" class="form-control"  name="cid" value="' . $cid. '">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="min"><b>Minimum Limit</b></label> 
-                                            <input type="text" class="form-control"  placeholder="Minimum Strength" name="min_new" value="' . $min . '">
+                                            <input type="number" class="form-control"  placeholder="Minimum Strength" name="min_new" value="' . $min . '">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="max"><b>Maximum Limit</b></label> 
-                                            <input type="text" class="form-control"  placeholder="Maximum Strength" name="max_new" value="' . $max . '">
+                                            <input type="number" class="form-control"  placeholder="Maximum Strength" name="max_new" value="' . $max . '">
                                         </div>
                                     </div>
                                     <br>

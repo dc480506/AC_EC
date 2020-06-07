@@ -94,6 +94,20 @@ include('includes/scripts.php');
             }
         })
     }
+    // function loadAllocationAnalysisTab(){
+    //     $.ajax({
+    //         type:"POST",
+    //         url:"loadTabs/load_allocation_analysis_tab.php",
+    //         beforeSend:function(){
+    //         //Loader daalna hai baadme
+    //         },
+    //         success:function(html){
+    //             $("#nav-result-tab").removeClass("disabled")
+    //             $("#nav-tabContent").html(html)
+    //             $("#nav-result-tab").addClass("active")
+    //         }
+    //     })
+    // }
     $(document).ready(function(){
         loadAllocationMethodTab()
     })

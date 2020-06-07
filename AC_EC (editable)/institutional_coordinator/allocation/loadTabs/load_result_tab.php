@@ -1,3 +1,6 @@
+<?php 
+include_once("../../verify.php");
+?>
 <div class="tab-content" id="nav-tabContent">
                 <!--Allocation method-->
                 <div class="tab-pane fade show active" id="nav-allocate-method" role="tabpanel" aria-labelledby="nav-allocate-method-tab">

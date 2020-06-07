@@ -12,14 +12,14 @@ if(isset($_POST['order'])){
 }else{
    // $columnName='sem';
    // $columnSortOrder='asc';
-   $orderQuery=' order by cname asc ';
+   $orderQuery=' order by cai.no_of_hits desc,ct.no_of_allocated desc ';
 }
 $searchValue = $_POST['search']['value']; // Search value
 
 ## Search 
 $searchQuery = "";
 if($searchValue != ''){
-   $searchQuery = " and (cname like '%".$searchValue."%' or cid like '%".$searchValue."%')";
+   $searchQuery = " and (cname like '%".$searchValue."%' or ct.cid like '%".$searchValue."%')";
 }
 
 ## Total number of records without filtering
@@ -27,7 +27,7 @@ $sel = mysqli_query($conn,"select count(*) as totalcount from {$_SESSION['course
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 ## Total number of record with filtering
-$sel = mysqli_query($conn,"select count(*) as totalcountfilters from {$_SESSION['course_table']} WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}'".$searchQuery);
+$sel = mysqli_query($conn,"select count(*) as totalcountfilters from {$_SESSION['course_table']} ct INNER JOIN {$_SESSION['course_allocate_info']} cai ON ct.cid=cai.cid AND ct.sem=cai.sem AND ct.year=cai.year WHERE ct.sem='{$_SESSION['sem']}' and ct.year='{$_SESSION['year']}'".$searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
@@ -48,19 +48,23 @@ $totalStudentCount=$res['totalStudentCount'];
 //        GROUP BY 'all') as app 
 //        from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 "
 //        .$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
-$sql="select cid,cname,max,min,
-(select count(*) as firstprefCount from student_preference_audit spa where ac.cid=spa.pref1) as firstcount,
-round((select count(*)/{$totalStudentCount}*100 as firstpercentCount from student_preference_audit spa where ac.cid=spa.pref1),2) as firstpercent 
-from {$_SESSION['course_table']} ac WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}'".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
+$sql="select ct.cname,ct.cid,ct.max,ct.min,ct.no_of_allocated,cai.status,cai.no_of_hits from {$_SESSION['course_table']} ct INNER JOIN {$_SESSION['course_allocate_info']} cai ON ct.cid=cai.cid AND ct.sem=cai.sem AND ct.year=cai.year WHERE ct.sem='{$_SESSION['sem']}' and ct.year='{$_SESSION['year']}'".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;
 $firstpercent=0.0;
 while ($row = mysqli_fetch_assoc($courseRecords)) {
   $color='text-success';
-  if($row['max']<$row['firstcount'])
+  $status="In Range";
+  if($row['status']=='OF')
   {
+    $status="Overflow";
     $color='text-danger';
+  }
+  else if ($row['status']=='UF') {
+    # code...
+    $status="Underflow";
+    $color='text-info';
   }
    $data[] = array( 
       // "select-cbox"=>'<input type="checkbox">',
@@ -72,8 +76,9 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "cid"=>'<span class='.$color.'>'.$row['cid'].'</span>',
       "max"=>'<span class='.$color.'>'.$row['max'].'</span>',
       "min"=>'<span class='.$color.'>'.$row['min'].'</span>',
-      "firstpercent"=>'<span class='.$color.'>'.$row['firstpercent'].'</span>',
-      "firstcount"=>'<span class='.$color.'>'.$row['firstcount'].'</span>',
+      "no_of_allocated"=>'<span class='.$color.'>'.$row['no_of_allocated'].'</span>',
+      "status"=>'<span class='.$color.'>'.$status.'</span>',
+      "no_of_hits"=>'<span class='.$color.'>'.$row['no_of_hits'].'</span>',
       // "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn" data-toggle="modal" data-target="#exampleModalCenter'.$count.'">
       //                <i class="fas fa-tools"></i>
       //             </button>'
