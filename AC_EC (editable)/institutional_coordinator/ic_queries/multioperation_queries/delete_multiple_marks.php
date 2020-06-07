@@ -12,7 +12,8 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
         foreach($delete_data as $key=>$val){
             // echo var_dump($val);
             $del_condition.="email_id='".$val['email_id']."' AND ";
-            $del_condition.="sem='".$val['sem']."') OR (";
+            $del_condition.="sem='".$val['sem']."' AND ";
+            $del_condition.="year='".$val['year']."') OR (";
         }
         // echo $del_condition;
         $del_condition=substr($del_condition,0,strlen($del_condition)-4);

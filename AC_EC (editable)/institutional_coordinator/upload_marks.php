@@ -189,6 +189,7 @@ include('../includes/header.php');
                         <th>Email Address</th>
                         <th>Roll Number</th>
                         <th>Semester</th>
+                        <th>Year</th>
                         <th>GPA</th>
                     </tr>
                 </thead>
@@ -198,6 +199,7 @@ include('../includes/header.php');
                         <th>Email Address</th>
                         <th>Roll Number</th>
                         <th>Semester</th>
+                        <th>Year</th>
                         <th>GPA</th>
                     </tr>
                 </tfoot>
@@ -254,6 +256,7 @@ include('../includes/header.php');
             baseData = {}
             baseData['email_id'] = delete_rows[i].email_id
             baseData['sem'] = delete_rows[i].sem
+            baseData['year'] = delete_rows[i].year
             delete_data[i] = baseData
             // console.log(baseData);
         }
@@ -314,6 +317,9 @@ include('../includes/header.php');
                 },
                 {
                     data: 'sem'
+                },
+                {
+                    data: 'year'
                 },
                 {
                     data: 'gpa'

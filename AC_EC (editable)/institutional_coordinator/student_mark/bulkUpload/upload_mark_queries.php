@@ -4,6 +4,7 @@ include_once("../../verify.php");
         $sem=mysqli_escape_string($conn,$_POST['sem']);
         $email=mysqli_escape_string($conn,$_POST['email_id']);
         $marks=mysqli_escape_string($conn,$_POST['marks']);
+        $year=mysqli_escape_string($conn,$_POST['year']);
 
         $file_name=$_FILES['Uploadfile']['name'];
         $target_location=$base_dir.$file_name;

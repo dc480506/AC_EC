@@ -231,6 +231,24 @@ include('../includes/header.php');
             </div>
         </div>
         <!-- card end(loop) -->
+        <div class="col-md-12 grid-margin stretch-card mt-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="m-0 font-weight-bold text-primary">Semester Switch</h4>
+                        </div>
+                        <div class="col text-right">
+                            <button type="button" class="btn btn-danger" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
+                                <i class="fas fa-sync">&nbsp;</i>Switch
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+        
     </div>
 </div>
 <!-- /.container-fluid -->
