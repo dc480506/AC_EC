@@ -138,7 +138,6 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                             <input type="hidden" class="form-control"  name="employee_id_old" value="' . $employee_id. '">
                                         </div>
                                     </div>
-                                    <br>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="dept_name"><b>dept_name</b></label>

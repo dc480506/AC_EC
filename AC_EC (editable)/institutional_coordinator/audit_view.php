@@ -70,7 +70,7 @@ include('../includes/header.php');
 
                                             <div class="form-group col-md-12">
                                                 <label for="npre"><b>Number of valid Preferences</b></label>
-                                                <input type="number" class="form-control" id="npre" placeholder="No. of valid Preferences" name="npre" required>
+                                                <input type="number" class="form-control" id="npre" placeholder="No. of valid Preferences" name="npre" min=0 oninput="validity.valid||(value='');" required>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -191,7 +191,7 @@ include('../includes/header.php');
                             right: 0;
                             height: 56px;
                             content: "";
-                            background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+                            background-image: url('https://image.flaticon.com/icons/png/128/109/109612.png');
                             display: block;
                             margin: 0 auto;
                             background-size: 100%;
@@ -273,7 +273,7 @@ include('../includes/header.php');
         $("#upload_current").attr("disabled", true);
         $("#upload_current").text("Uploading...")
         $.ajax({
-            url: "view_response/bulkUpload/upload_response_queries.php",
+            url: "view_response/bulkUpload/upload_response_queries_ac.php",
             type: 'POST',
             data: formData,
             success: function(data) {
@@ -416,7 +416,7 @@ include('../includes/header.php');
         console.log(actual_delete_data_json)
         $.ajax({
             type: "POST",
-            url: "ic_queries/multioperation_queries/delete_multiple_response.php",
+            url: "ic_queries/multioperation_queries/delete_multiple_response_ac.php",
             data: actual_delete_data_json,
             success: function(data) {
                 // console.log(data)

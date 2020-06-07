@@ -26,12 +26,13 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <i class="fas fa-chalkboard-teacher"></i>
-      <span>Faculty</span>
+      <span>Add User</span>
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="addfaculty.php">Add faculty</a>
-        <a class="collapse-item" href="facultyallocation.php">Allocation</a>
+        <a class="collapse-item" href="addstudent.php">Student</a>
+        <a class="collapse-item" href="addfaculty_internal.php">Internal faculty</a>
+        <a class="collapse-item" href="addfaculty_external.php">External faculty</a>
       </div>
     </div>
   </li>
@@ -39,14 +40,16 @@
   <hr class="sidebar-divider">
 
   <!-- Nav Item - Utilities Collapse Menu -->
+
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages4" aria-expanded="true" aria-controls="collapseUtilities">
       <i class="fas fa-fw fa-wrench"></i>
-      <span>Add Course</span>
+      <span>Course Records</span>
     </a>
     <div id="collapsePages4" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="addcourse_ac.php">Audit Course</a>
+        <!-- <a class="collapse-item" href="addcourse_ac.php">Audit Course</a> -->
+        <a class="collapse-item" href="audit_course.php">Audit Course</a>
         <a class="collapse-item" href="addcourse_idc.php">Interdisciplinary Course</a>
         <a class="collapse-item" href="addcourse_cec.php">Close Elective Course</a>
         <a class="collapse-item" href="addcourse_oec.php">Open Elective Course</a>
@@ -61,7 +64,7 @@
       <i class="fas fa-user-graduate"></i>
       <span>Student Allocation</span></a>
   </li>
-
+  
   <hr class="sidebar-divider">
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages1" aria-expanded="true" aria-controls="collapseUtilities">
@@ -74,45 +77,33 @@
         <a class="collapse-item" href="prepare_form_idc.php">Interdisciplinary Course</a>
         <a class="collapse-item" href="prepare_form_cec.php">Close Elective Course</a>
         <a class="collapse-item" href="prepare_form_oec.php">Open Elective Course</a>
+
       </div>
     </div>
   </li>
 
-  <!-- Divider -->
   <hr class="sidebar-divider">
-
   <li class="nav-item">
-    <a class="nav-link" href="analysis.php">
-      <i class="fas fa-chart-area"></i>
-      <span>Analysis</span></a>
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true" aria-controls="collapseUtilities">
+      <i class="fa fa-eye" aria-hidden="true"></i>
+      <span>Responses</span>
+    </a>
+    <div id="collapsePages2" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="audit_view.php">Audit Course</a>
+        <a class="collapse-item" href="idc_view.php">Interdisciplinary Course</a>
+        <a class="collapse-item" href="cec_view.php">Close Elective Course</a>
+        <a class="collapse-item" href="oce_view.php">Open Elective Course</a>
+      </div>
+    </div>
   </li>
-
   <hr class="sidebar-divider">
   <!-- Nav Item - Pages Collapse Menu -->
   <li class="nav-item">
-    <a class="nav-link" href="allocate.php">
-      <i class="fas fa-plus"></i>
-      <span>Allocate</span></a>
+    <a class="nav-link" href="upload_marks.php">
+      <i class="fas fa-trophy"></i>
+      <span>Marks</span></a>
   </li>
-  <hr class="sidebar-divider">
-  <!-- Nav Item - Utilities Collapse Menu -->
-  <li class="nav-item">
-    <a class="nav-link" href="result.php">
-      <i class="fas fa-file"></i>
-      <span>Result</span></a>
-  </li>
-
-
-  <hr class="sidebar-divider">
-  <!-- Nav Item - Utilities Collapse Menu -->
-  <li class="nav-item">
-    <a class="nav-link" href="grade.php">
-      <i class="fas fa-cogs"></i>
-      <span>Grade System</span></a>
-  </li>
-
-
-
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
 
@@ -120,6 +111,7 @@
   <div class="text-center d-none d-md-inline">
     <button class="rounded-circle border-0" id="sidebarToggle"></button>
   </div>
+
 
 </ul>
 <!-- End of Sidebar -->
