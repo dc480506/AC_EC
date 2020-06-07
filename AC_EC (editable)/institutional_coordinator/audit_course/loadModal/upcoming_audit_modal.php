@@ -16,6 +16,49 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     // $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
     // $row=mysqli_fetch_assoc($result);
     // $year=$row['academic_year'];
+    
+    $faculty_div = "";
+    $i = 1;
+    //$faculties_allocated_temp = "(";
+    $sql="(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course INNER JOIN audit_map
+              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              UNION
+              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course_log INNER JOIN audit_map
+              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              ";
+    $result=mysqli_query($conn,$sql);
+    $similar_courses="";
+    if(mysqli_num_rows($result)==0){
+        $faculty_div .= 'No Similar Courses Found';
+        //$faculties_allocated_temp .= "'',";
+    }else{
+        while($row=mysqli_fetch_assoc($result)){
+          $oldyear = $row['oldyear'];
+          $newyear = $row['newyear'];
+          $oldsem = $row['oldsem'];
+          $newsem = $row['newsem'];
+          $oldcid = $row['oldcid'];
+          $newcid = $row['newcid'];
+          $cname = $row['cname'];
+            // $similar_courses.="<p><small>".$i.") ".$row['cname']." (Course ID: ".$row['oldcid']." , Sem: ".$row['oldsem']." , Year: ".$row['oldyear'].")</small></p>";
+            // $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldyear="'.$row['oldyear'].'" data-oldcid="'.$row['oldcid'].'" data-oldsem="'.$row['oldsem'].'" data-newyear="'.$row['newyear'].'" data-newcid="'.$row['newcid'].'" data-newsem="'.$row['newsem'].'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$row['oldcid'].''.$row['oldsem'].''.$row['oldyear'].'"><i class="fas fa-trash"></i>
+            //           </button>
+            //           <label for="sem"><b>Course ' . $i . ' : </b>
+            //           </label>
+            //           <span>' . $row['cname'] .'<br>(CID: '.$row['oldcid'].', SEM: '.$row['oldsem']. ', YEAR: ' . $row['oldyear'] .' ) </span>
+            //           <br>';
+            //           $i = $i + 1;
+
+            $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldsem="'.$oldsem.'" data-newsem="'.$newsem.'" data-oldyear="'.$oldyear.'" data-newyear="'.$newyear.'" data-oldcid="'.$oldcid.'" data-newcid="'.$newcid.'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$oldcid.'"><i class="fas fa-trash"></i>
+                      </button>
+                      <label for="sem"><b>Course ' . $i . ' : </b>
+                      </label>
+                      <span>' . $row['cname'] .'</span><br><span style="margin-left: 44px;"><b>CID:</b> '.$row['oldcid'].', <b>SEM:</b> '.$row['oldsem']. ', <b>YEAR:</b> ' . $row['oldyear'] .'</span>
+                      <br>';
+                      $i = $i + 1;
+        }
+    }
+
     $checkbox_div='';
     $floating_checkbox_div='';
     $sql3 = "SELECT * FROM department";
@@ -76,7 +119,8 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                           <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
-                          <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>                        
+                          <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
+                          <a class="nav-item nav-link" id="nav-map-tab" data-toggle="tab" href="#nav-map" role="tab" aria-controls="nav-map" aria-selected="false">Similar Previous Courses</a>                        
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -87,8 +131,8 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                           <label for="exampleFormControlSelect1"><i class="text-danger">*This will delete all the information related to the course including
                           students and faculties associated with it if there are any.</i><br>Are you sure you want to delete the course 
                           with Course ID <i><small><b>'.$cid.'</small></b></i> ,Semester <i><small><b>'.$sem.'</b></small></i> and
-                          Academic Year <i><small><b>'.$year.'</b></small></i>?
-                        </label>
+                            Academic Year <i><small><b>'.$year.'</b></small></i>?
+                          </label>
                           <br>
                           <input type="hidden" name="cid" value="' . $cid . '">
                           <input type="hidden" name="sem" value="' . $sem . '">
@@ -150,6 +194,49 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                         <br>
                       </div>
                       <!--end Update-->
+                      <!--Map-->
+                        <div class="tab-pane fade show" id="nav-map" role="tabpanel" aria-labelledby="nav-map-tab">
+                        <br>
+                          <form id="add_similar_course" method="POST" action="ic_queries/addcourse_queries.php">
+                          <input type="hidden" name="tempoldyear" value="'.$year.'"/>
+                          <input type="hidden" name="tempoldsem" value="'.$sem.'"/>
+                          <input type="hidden" name="tempoldcid" value="'.$cid.'"/>
+                            <h6><b>Similar Previous Courses</b></h6>
+                                              <div class="faculty_div">' . $faculty_div . '</div>
+                                              <hr class="my-4" />
+                                              <h6><b>Add New Course</b></h6>
+                                              
+                                              <br>
+                                              <div class = "temporarydiv" style="display:none">
+                                              <div class="form-row mt-4">
+                              <div class="form-group col-md-6">
+                                  <label for="cname"><b>Course ID</b></label>
+                                  <input class="tempcid" type="text" class="form-control" required="required" placeholder="New Course ID" name="tempcid" value="">
+                              </div>
+                              <div class="form-group col-md-6">
+                                  <label for="courseid"><b>Semester</b></label>
+                                  <input class="tempsem" type="text" class="form-control" required="required" placeholder="New Semester" name="tempsem" value="">
+                              </div>
+                          </div>
+                          <div class="form-row mt-4">
+                              <div class="form-group col-md-6">
+                                  <label for="cname"><b>Year</b></label>
+                                  <br>
+                                  <input class="tempyear" type="text" class="form-control" required="required" placeholder="New Year" name="tempyear" value="">
+                                  
+                              </div>
+                              <div class="form-group col-md-6">
+                                  
+                                  <input type="hidden" class="form-control" required="required" placeholder="New Year" name="tempyear2" value="">
+                              </div>
+                          </div>
+                          </div>
+                          <button type="submit" class="btn btn-primary" id="add_new_similar_course_btn" name="add_new_similar_course">Allocate</button>
+                          <br>
+                          <br>
+                          </form>
+                        </div>
+                      <!--end Map-->
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                           <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
@@ -158,7 +245,38 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                   </div>
                 </div>
               </div>
-            </div>';
+            </div>
+
+<!--delete Faculty Modal-->
+              <div style="background-color: rgba(40, 40, 40, .7)" class="modal fade" id="deleteSimilarCourseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel1">Are you sure?</h5>
+                      <button class="close" type="submit" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                  </div>
+                  <form id="newModalRemoveCourse" method="POST" action="ic_queries/addcourse_queries.php">
+                      <div class="modal-body">Select "Remove" below if you want to remove the selected course.
+                          <input type="hidden" name="oldyear" id="oldyear" value=""/>
+                          <input type="hidden" name="oldsem" id="oldsem" value=""/>
+                          <input type="hidden" name="oldcid" id="oldcid" value=""/>
+                          <input type="hidden" name="newyear" id="newyear" value=""/>
+                          <input type="hidden" name="newsem" id="newsem" value=""/>
+                          <input type="hidden" name="newcid" id="newcid" value=""/>
+                      </div>
+                      <div class="modal-footer">
+                          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                          <button class="btn btn-primary" type="submit" id="course_remove_btn" name="course_remove">Remove</button>
+                      </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!--end Delete Faculty Modal-->
+
+            ';
                                 // echo 'Hi';
 }
 ?>
