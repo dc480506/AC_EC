@@ -2,6 +2,11 @@
  include_once('../../verify.php');
 ?>
 <div class="tab-pane fade show active" id="nav-allocate-method" role="tabpanel" aria-labelledby="nav-allocate-method-tab">
+   <br>
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+    </div>
+    <br>
     <form action="" id="allocation_method">
 
         <div class="form-group">
@@ -27,11 +32,21 @@
             </div>
             <br>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
+                <button type="submit" class="btn btn-primary align-center" name="allocate" id='next_btn'>Next</button>
             </div>
         </div>
     </form>
 </div>
+<div id="spinner" style="display: none;">
+    <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
+</div>
+<style type="text/css">
+    #spinner{
+        position: fixed;
+        top: 50%;
+        left:50%;
+    }
+</style>
 <script>
     $("#allocation_method").submit(function(e){
         e.preventDefault();
@@ -46,6 +61,9 @@
             data:form_serialize,
             beforeSend:function(){
             //Loader daalna hai baadme
+                $("#spinner").show();
+                $("#next_btn").attr('disabled',true)
+
             },
             success:function(html){
                 $("#nav-course-tab").removeClass("disabled")

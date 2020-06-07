@@ -121,7 +121,7 @@ for cid,v in courses.items():
 		mycursor.execute(query)
 		# print(query)
 		# print()
-mydb.commit()	
+# mydb.commit()	
 		
 # print(str(count1) +" courses are overflow")
 # print(str(count2) + " courses are underflow")
@@ -141,7 +141,7 @@ for cid,hits in overlow_by.items():
 	mycursor.execute(query)
 	# print(query)
 	# print("Course id "+str(cid)+" has max "+str(courses[cid][-1])+ " was overflowed by "+str(hits))
-mydb.commit()
+# mydb.commit()
 
 underflow_stu_list.sort(key = lambda underflow_stu_list: underflow_stu_list[2])
 # print("following is the data of students whose courses have gone underflow")
@@ -156,11 +156,11 @@ for course,student in stu_course.items():
 	query="UPDATE `"+argument[mapper['course_table']]+"` SET no_of_allocated="+str(len(student))+" WHERE cid='"+course+"' and year='"+argument[mapper['year']]+"' and sem='"+argument[mapper['sem']]+"'"
 	# print(query)
 	mycursor.execute(query)
-	for i in range(len(student)):	
-		query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"','"+argument[mapper['sem']]+"','"+argument[mapper['year']]+"') ON DUPLICATE KEY UPDATE cid='"+cid+"'"
-		mycursor.execute(query)
-		mydb.commit()
-		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem='"+argument[mapper['sem']]+"'"
-		# print(query)
-		mycursor.execute(query)
+# 	for i in range(len(student)):	
+# 		query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"','"+argument[mapper['sem']]+"','"+argument[mapper['year']]+"') ON DUPLICATE KEY UPDATE cid='"+cid+"'"
+# 		mycursor.execute(query)
+# 		mydb.commit()
+# 		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem='"+argument[mapper['sem']]+"'"
+# 		# print(query)
+# 		mycursor.execute(query)
 mydb.commit()
