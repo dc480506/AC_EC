@@ -1367,14 +1367,6 @@ function loadAllocateModalCurrent(){
         {
             // $("#"+x).text("Deleted Successfully");
             target_row.append(output);
-            $('#deleteFacultyModal').on('shown.bs.modal', function (e) {
-              // $("#allocate-modal").css({ backdrop-filter: none });
-            })
-
-            //when modal closes
-            $('#deleteFacultyModal').on('hidden.bs.modal', function (e) {
-              // $("#allocate-modal").css({ opacity: 1 });
-            })
 
             $('#allocate-modal').modal('show')
                 $(document).on('hidden.bs.modal', '#allocate-modal', function () {
@@ -1507,7 +1499,8 @@ function loadModalCurrent(){
             target_row.append(output);
             $('#update-del-modal').modal('show')
                 $(document).on('hidden.bs.modal', '#update-del-modal', function () {
-                    $("#update-del-modal").remove(); 
+                    $("#update-del-modal").remove();
+                    $("#deleteSimilarCourseModal").remove();
                 });
             $('#delete_course_form').submit(function(e){
                 e.preventDefault();
@@ -1539,6 +1532,86 @@ function loadModalCurrent(){
             $('#update_course_form').submit(function(e){
                 update_course_form_current(e);
                 // $('#update-del-modal').modal('hide');
+            });
+
+            $('#add_new_similar_course_btn').click(function(e) {
+                if(document.querySelector(".temporarydiv").style.display=="none")
+                    document.querySelector(".temporarydiv").style.display="inline"
+            });
+
+            $('#add_similar_course').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#add_new_similar_course_btn").attr('name'), value: $("#add_new_similar_course_btn").attr('value') });
+                $("#add_new_similar_course_btn").text("Allocating...");
+                $("#add_new_similar_course_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addcourse_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        var z = data.split("+");
+                        //$('#deleteSimilarCourseModal').modal('hide');
+                        $("#add_new_similar_course_btn").text("Allocate");
+                        $("#add_new_similar_course_btn").attr("disabled",false);
+                        $(".faculty_div").html(z[1]);
+                        document.querySelector(".temporarydiv").style.display="none"
+                        $('.tempcid').val('');
+                        $('.tempyear').val('');
+                        $('.tempsem').val('');
+                        //$('#temp_allocated_faculty').val(z[0]);
+                        //$('#hiddenemailid').val("null");
+                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                    }
+                    });
+            });
+
+            $('#deleteSimilarCourseModal').on('show.bs.modal', function (event) {
+
+              let oldyear = $(event.relatedTarget).data('oldyear')
+              $(this).find('.modal-body #oldyear').val(oldyear)
+              let oldcid = $(event.relatedTarget).data('oldcid') 
+              $(this).find('.modal-body #oldcid').val(oldcid)
+              let oldsem = $(event.relatedTarget).data('oldsem') 
+              $(this).find('.modal-body #oldsem').val(oldsem)
+
+              let newyear = $(event.relatedTarget).data('newyear') 
+              $(this).find('.modal-body #newyear').val(newyear)
+              let newcid = $(event.relatedTarget).data('newcid') 
+              $(this).find('.modal-body #newcid').val(newcid)
+              let newsem = $(event.relatedTarget).data('newsem') 
+              $(this).find('.modal-body #newsem').val(newsem)
+              
+
+              $('#newModalRemoveCourse').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#course_remove_btn").attr('name'), value: $("#course_remove_btn").attr('value') });
+                $("#course_remove_btn").text("Removing...");
+                $("#course_remove_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addcourse_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        var z = data.split("+");
+                        $('#deleteSimilarCourseModal').modal('hide');
+                        $("#course_remove_btn").text("Remove");
+                        $("#course_remove_btn").attr("disabled",false);
+                        $(".faculty_div").html(z[1]);
+                        //$('#temp_allocated_faculty').val(z[0]);
+                        //$('#hiddenemailid').val("null");
+                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                    }
+                    });
+            });
+
             });
         }
     });
@@ -1908,6 +1981,7 @@ function loadModalUpcoming(){
             $('#update-del-modal').modal('show')
                 $(document).on('hidden.bs.modal', '#update-del-modal', function () {
                     $("#update-del-modal").remove(); 
+                    $("#deleteSimilarCourseModal").remove();
                 });
             $('#delete_course_form').submit(function(e){
                 e.preventDefault();
@@ -1940,6 +2014,86 @@ function loadModalUpcoming(){
                 update_course_form_upcoming(e);
                 // $('#update-del-modal').modal('hide');
                 });
+
+            $('#add_new_similar_course_btn').click(function(e) {
+                if(document.querySelector(".temporarydiv").style.display=="none")
+                    document.querySelector(".temporarydiv").style.display="inline"
+            });
+
+            $('#add_similar_course').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#add_new_similar_course_btn").attr('name'), value: $("#add_new_similar_course_btn").attr('value') });
+                $("#add_new_similar_course_btn").text("Allocating...");
+                $("#add_new_similar_course_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addcourse_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        var z = data.split("+");
+                        //$('#deleteSimilarCourseModal').modal('hide');
+                        $("#add_new_similar_course_btn").text("Allocate");
+                        $("#add_new_similar_course_btn").attr("disabled",false);
+                        $(".faculty_div").html(z[1]);
+                        document.querySelector(".temporarydiv").style.display="none"
+                        $('.tempcid').val('');
+                        $('.tempyear').val('');
+                        $('.tempsem').val('');
+                        //$('#temp_allocated_faculty').val(z[0]);
+                        //$('#hiddenemailid').val("null");
+                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                    }
+                    });
+            });
+
+            $('#deleteSimilarCourseModal').on('show.bs.modal', function (event) {
+
+              let oldyear = $(event.relatedTarget).data('oldyear')
+              $(this).find('.modal-body #oldyear').val(oldyear)
+              let oldcid = $(event.relatedTarget).data('oldcid') 
+              $(this).find('.modal-body #oldcid').val(oldcid)
+              let oldsem = $(event.relatedTarget).data('oldsem') 
+              $(this).find('.modal-body #oldsem').val(oldsem)
+
+              let newyear = $(event.relatedTarget).data('newyear') 
+              $(this).find('.modal-body #newyear').val(newyear)
+              let newcid = $(event.relatedTarget).data('newcid') 
+              $(this).find('.modal-body #newcid').val(newcid)
+              let newsem = $(event.relatedTarget).data('newsem') 
+              $(this).find('.modal-body #newsem').val(newsem)
+              
+
+              $('#newModalRemoveCourse').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#course_remove_btn").attr('name'), value: $("#course_remove_btn").attr('value') });
+                $("#course_remove_btn").text("Removing...");
+                $("#course_remove_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addcourse_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        var z = data.split("+");
+                        $('#deleteSimilarCourseModal').modal('hide');
+                        $("#course_remove_btn").text("Remove");
+                        $("#course_remove_btn").attr("disabled",false);
+                        $(".faculty_div").html(z[1]);
+                        //$('#temp_allocated_faculty').val(z[0]);
+                        //$('#hiddenemailid').val("null");
+                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                    }
+                    });
+            });
+
+            });
         }
     });
 }
@@ -2283,6 +2437,7 @@ function loadModalPrevious(){
             $('#update-del-modal').modal('show')
                 $(document).on('hidden.bs.modal', '#update-del-modal', function () {
                     $("#update-del-modal").remove(); 
+                    $("#deleteSimilarCourseModal").remove();
                 });
             $('#delete_course_form').submit(function(e){
                 e.preventDefault();
@@ -2310,6 +2465,86 @@ function loadModalPrevious(){
                         // console.log(row)
                     }
                     });
+            });
+            
+            $('#add_new_similar_course_btn').click(function(e) {
+                if(document.querySelector(".temporarydiv").style.display=="none")
+                    document.querySelector(".temporarydiv").style.display="inline"
+            });
+
+            $('#add_similar_course').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#add_new_similar_course_btn").attr('name'), value: $("#add_new_similar_course_btn").attr('value') });
+                $("#add_new_similar_course_btn").text("Allocating...");
+                $("#add_new_similar_course_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addcourse_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        var z = data.split("+");
+                        //$('#deleteSimilarCourseModal').modal('hide');
+                        $("#add_new_similar_course_btn").text("Allocate");
+                        $("#add_new_similar_course_btn").attr("disabled",false);
+                        $(".faculty_div").html(z[1]);
+                        document.querySelector(".temporarydiv").style.display="none"
+                        $('.tempcid').val('');
+                        $('.tempyear').val('');
+                        $('.tempsem').val('');
+                        //$('#temp_allocated_faculty').val(z[0]);
+                        //$('#hiddenemailid').val("null");
+                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                    }
+                    });
+            });
+
+            $('#deleteSimilarCourseModal').on('show.bs.modal', function (event) {
+
+              let oldyear = $(event.relatedTarget).data('oldyear')
+              $(this).find('.modal-body #oldyear').val(oldyear)
+              let oldcid = $(event.relatedTarget).data('oldcid') 
+              $(this).find('.modal-body #oldcid').val(oldcid)
+              let oldsem = $(event.relatedTarget).data('oldsem') 
+              $(this).find('.modal-body #oldsem').val(oldsem)
+
+              let newyear = $(event.relatedTarget).data('newyear') 
+              $(this).find('.modal-body #newyear').val(newyear)
+              let newcid = $(event.relatedTarget).data('newcid') 
+              $(this).find('.modal-body #newcid').val(newcid)
+              let newsem = $(event.relatedTarget).data('newsem') 
+              $(this).find('.modal-body #newsem').val(newsem)
+              
+
+              $('#newModalRemoveCourse').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#course_remove_btn").attr('name'), value: $("#course_remove_btn").attr('value') });
+                $("#course_remove_btn").text("Removing...");
+                $("#course_remove_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/addcourse_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        var z = data.split("+");
+                        $('#deleteSimilarCourseModal').modal('hide');
+                        $("#course_remove_btn").text("Remove");
+                        $("#course_remove_btn").attr("disabled",false);
+                        $(".faculty_div").html(z[1]);
+                        //$('#temp_allocated_faculty').val(z[0]);
+                        //$('#hiddenemailid').val("null");
+                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                    }
+                    });
+            });
+
             });
             $('#update_course_form').submit(function(e){
                 update_course_form_previous(e);
@@ -2470,3 +2705,4 @@ $("#close_add_form_cross").click(function(){
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');
 ?>
+s

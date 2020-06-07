@@ -231,6 +231,228 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
             $result=mysqli_query($conn,$sql);
 
         }
+    } else if(isset($_POST['course_remove'])) {
+          $oldcid=mysqli_escape_string($conn,$_POST['oldcid']);
+          $oldsem=mysqli_escape_string($conn,$_POST['oldsem']);
+          $oldyear=mysqli_escape_string($conn,$_POST['oldyear']);
+          $newcid=mysqli_escape_string($conn,$_POST['newcid']);
+          $newsem=mysqli_escape_string($conn,$_POST['newsem']);
+          $newyear=mysqli_escape_string($conn,$_POST['newyear']);
+
+          $sql = "DELETE FROM audit_map WHERE oldcid='$oldcid' AND newcid='$newcid' AND oldyear='$oldyear' AND newyear='$newyear' AND oldsem='$oldsem' AND newsem='$newsem'";
+          $result = mysqli_query($conn, $sql);
+
+
+          $faculty_div = "";
+    $i = 1;
+    //$faculties_allocated_temp = "(";
+    $sql="(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course INNER JOIN audit_map
+              ON newcid='$newcid' AND newsem='$newsem' AND newyear='$newyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              UNION
+              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course_log INNER JOIN audit_map
+              ON newcid='$newcid' AND newsem='$newsem' AND newyear='$newyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              ";
+    $result=mysqli_query($conn,$sql);
+    
+    if(mysqli_num_rows($result)==0){
+        $faculty_div .= 'No Similar Courses Found';
+        //$faculties_allocated_temp .= "'',";
+    }else{
+        while($row=mysqli_fetch_assoc($result)){
+          $oldyear = $row['oldyear'];
+          $newyear = $row['newyear'];
+          $oldsem = $row['oldsem'];
+          $newsem = $row['newsem'];
+          $oldcid = $row['oldcid'];
+          $newcid = $row['newcid'];
+          $cname = $row['cname'];
+            // $similar_courses.="<p><small>".$i.") ".$row['cname']." (Course ID: ".$row['oldcid']." , Sem: ".$row['oldsem']." , Year: ".$row['oldyear'].")</small></p>";
+            // $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldyear="'.$row['oldyear'].'" data-oldcid="'.$row['oldcid'].'" data-oldsem="'.$row['oldsem'].'" data-newyear="'.$row['newyear'].'" data-newcid="'.$row['newcid'].'" data-newsem="'.$row['newsem'].'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$row['oldcid'].''.$row['oldsem'].''.$row['oldyear'].'"><i class="fas fa-trash"></i>
+            //           </button>
+            //           <label for="sem"><b>Course ' . $i . ' : </b>
+            //           </label>
+            //           <span>' . $row['cname'] .'<br>(CID: '.$row['oldcid'].', SEM: '.$row['oldsem']. ', YEAR: ' . $row['oldyear'] .' ) </span>
+            //           <br>';
+            //           $i = $i + 1;
+
+            $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldsem="'.$oldsem.'" data-newsem="'.$newsem.'" data-oldyear="'.$oldyear.'" data-newyear="'.$newyear.'" data-oldcid="'.$oldcid.'" data-newcid="'.$newcid.'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$oldcid.'"><i class="fas fa-trash"></i>
+                      </button>
+                      <label for="sem"><b>Course ' . $i . ' : </b>
+                      </label>
+                      <span>' . $row['cname'] .'</span><br><span style="margin-left: 44px;"><b>CID:</b> '.$row['oldcid'].', <b>SEM:</b> '.$row['oldsem']. ', <b>YEAR:</b> ' . $row['oldyear'] .'</span>
+                      <br>';
+                      $i = $i + 1;
+        }
+    }
+    $faculties_allocated_temp = "nvvhvjh";
+    echo "{$faculties_allocated_temp}+{$faculty_div}";
+    } else if(isset($_POST['course_remove_log'])) {
+          $oldcid=mysqli_escape_string($conn,$_POST['oldcid']);
+          $oldsem=mysqli_escape_string($conn,$_POST['oldsem']);
+          $oldyear=mysqli_escape_string($conn,$_POST['oldyear']);
+          $newcid=mysqli_escape_string($conn,$_POST['newcid']);
+          $newsem=mysqli_escape_string($conn,$_POST['newsem']);
+          $newyear=mysqli_escape_string($conn,$_POST['newyear']);
+
+          $sql = "DELETE FROM audit_map_log WHERE oldcid='$oldcid' AND newcid='$newcid' AND oldyear='$oldyear' AND newyear='$newyear' AND oldsem='$oldsem' AND newsem='$newsem'";
+          $result = mysqli_query($conn, $sql);
+
+
+          $faculty_div = "";
+    $i = 1;
+    //$faculties_allocated_temp = "(";
+    $sql="(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course INNER JOIN audit_map_log
+              ON newcid='$newcid' AND newsem='$newsem' AND newyear='$newyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              UNION
+              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course_log INNER JOIN audit_map_log
+              ON newcid='$newcid' AND newsem='$newsem' AND newyear='$newyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              ";
+    $result=mysqli_query($conn,$sql);
+    
+    if(mysqli_num_rows($result)==0){
+        $faculty_div .= 'No Similar Courses Found';
+        //$faculties_allocated_temp .= "'',";
+    }else{
+        while($row=mysqli_fetch_assoc($result)){
+          $oldyear = $row['oldyear'];
+          $newyear = $row['newyear'];
+          $oldsem = $row['oldsem'];
+          $newsem = $row['newsem'];
+          $oldcid = $row['oldcid'];
+          $newcid = $row['newcid'];
+          $cname = $row['cname'];
+            // $similar_courses.="<p><small>".$i.") ".$row['cname']." (Course ID: ".$row['oldcid']." , Sem: ".$row['oldsem']." , Year: ".$row['oldyear'].")</small></p>";
+            // $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldyear="'.$row['oldyear'].'" data-oldcid="'.$row['oldcid'].'" data-oldsem="'.$row['oldsem'].'" data-newyear="'.$row['newyear'].'" data-newcid="'.$row['newcid'].'" data-newsem="'.$row['newsem'].'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$row['oldcid'].''.$row['oldsem'].''.$row['oldyear'].'"><i class="fas fa-trash"></i>
+            //           </button>
+            //           <label for="sem"><b>Course ' . $i . ' : </b>
+            //           </label>
+            //           <span>' . $row['cname'] .'<br>(CID: '.$row['oldcid'].', SEM: '.$row['oldsem']. ', YEAR: ' . $row['oldyear'] .' ) </span>
+            //           <br>';
+            //           $i = $i + 1;
+
+            $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldsem="'.$oldsem.'" data-newsem="'.$newsem.'" data-oldyear="'.$oldyear.'" data-newyear="'.$newyear.'" data-oldcid="'.$oldcid.'" data-newcid="'.$newcid.'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$oldcid.'"><i class="fas fa-trash"></i>
+                      </button>
+                      <label for="sem"><b>Course ' . $i . ' : </b>
+                      </label>
+                      <span>' . $row['cname'] .'</span><br><span style="margin-left: 44px;"><b>CID:</b> '.$row['oldcid'].', <b>SEM:</b> '.$row['oldsem']. ', <b>YEAR:</b> ' . $row['oldyear'] .'</span>
+                      <br>';
+                      $i = $i + 1;
+        }
+    }
+    $faculties_allocated_temp = "nvvhvjh";
+    echo "{$faculties_allocated_temp}+{$faculty_div}";
+    } else if(isset($_POST['add_new_similar_course'])) {
+        $oldyear=mysqli_escape_string($conn,$_POST['tempoldyear']);
+          $newyear=mysqli_escape_string($conn,$_POST['tempyear']);
+          $oldsem=mysqli_escape_string($conn,$_POST['tempoldsem']);
+          $newsem=mysqli_escape_string($conn,$_POST['tempsem']);
+          $oldcid=mysqli_escape_string($conn,$_POST['tempoldcid']);
+          $newcid=mysqli_escape_string($conn,$_POST['tempcid']);
+
+          $sql="INSERT INTO audit_map(`newcid`,`newsem`,`newyear`,`oldcid`,`oldsem`,`oldyear`) VALUES('$oldcid','$oldsem','$oldyear','$newcid','$newsem','$newyear')";
+
+        mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+        $faculty_div = "";
+    $i = 1;
+    //$faculties_allocated_temp = "(";
+    $sql="(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course INNER JOIN audit_map
+              ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              UNION
+              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course_log INNER JOIN audit_map
+              ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              ";
+    $result=mysqli_query($conn,$sql);
+
+        if(mysqli_num_rows($result)==0){
+        $faculty_div .= 'No Similar Courses Found';
+        //$faculties_allocated_temp .= "'',";
+    }else{
+        while($row=mysqli_fetch_assoc($result)){
+          $oldyear = $row['oldyear'];
+          $newyear = $row['newyear'];
+          $oldsem = $row['oldsem'];
+          $newsem = $row['newsem'];
+          $oldcid = $row['oldcid'];
+          $newcid = $row['newcid'];
+          $cname = $row['cname'];
+            // $similar_courses.="<p><small>".$i.") ".$row['cname']." (Course ID: ".$row['oldcid']." , Sem: ".$row['oldsem']." , Year: ".$row['oldyear'].")</small></p>";
+            // $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldyear="'.$row['oldyear'].'" data-oldcid="'.$row['oldcid'].'" data-oldsem="'.$row['oldsem'].'" data-newyear="'.$row['newyear'].'" data-newcid="'.$row['newcid'].'" data-newsem="'.$row['newsem'].'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$row['oldcid'].''.$row['oldsem'].''.$row['oldyear'].'"><i class="fas fa-trash"></i>
+            //           </button>
+            //           <label for="sem"><b>Course ' . $i . ' : </b>
+            //           </label>
+            //           <span>' . $row['cname'] .'<br>(CID: '.$row['oldcid'].', SEM: '.$row['oldsem']. ', YEAR: ' . $row['oldyear'] .' ) </span>
+            //           <br>';
+            //           $i = $i + 1;
+
+            $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldsem="'.$oldsem.'" data-newsem="'.$newsem.'" data-oldyear="'.$oldyear.'" data-newyear="'.$newyear.'" data-oldcid="'.$oldcid.'" data-newcid="'.$newcid.'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$oldcid.'"><i class="fas fa-trash"></i>
+                      </button>
+                      <label for="sem"><b>Course ' . $i . ' : </b>
+                      </label>
+                      <span>' . $row['cname'] .'</span><br><span style="margin-left: 44px;"><b>CID:</b> '.$row['oldcid'].', <b>SEM:</b> '.$row['oldsem']. ', <b>YEAR:</b> ' . $row['oldyear'] .'</span>
+                      <br>';
+                      $i = $i + 1;
+        }
+    }
+    $faculties_allocated_temp = "nvvhvjh";
+    echo "{$faculties_allocated_temp}+{$faculty_div}";
+
+    } else if(isset($_POST['add_new_similar_course_log'])) {
+        $oldyear=mysqli_escape_string($conn,$_POST['tempoldyear']);
+          $newyear=mysqli_escape_string($conn,$_POST['tempyear']);
+          $oldsem=mysqli_escape_string($conn,$_POST['tempoldsem']);
+          $newsem=mysqli_escape_string($conn,$_POST['tempsem']);
+          $oldcid=mysqli_escape_string($conn,$_POST['tempoldcid']);
+          $newcid=mysqli_escape_string($conn,$_POST['tempcid']);
+
+          $sql="INSERT INTO audit_map_log(`newcid`,`newsem`,`newyear`,`oldcid`,`oldsem`,`oldyear`) VALUES('$oldcid','$oldsem','$oldyear','$newcid','$newsem','$newyear')";
+          
+        mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+        $faculty_div = "";
+    $i = 1;
+    //$faculties_allocated_temp = "(";
+    $sql="(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course INNER JOIN audit_map_log
+              ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              UNION
+              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course_log INNER JOIN audit_map_log
+              ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              ";
+    $result=mysqli_query($conn,$sql);
+
+        if(mysqli_num_rows($result)==0){
+        $faculty_div .= 'No Similar Courses Found';
+        //$faculties_allocated_temp .= "'',";
+    }else{
+        while($row=mysqli_fetch_assoc($result)){
+          $oldyear = $row['oldyear'];
+          $newyear = $row['newyear'];
+          $oldsem = $row['oldsem'];
+          $newsem = $row['newsem'];
+          $oldcid = $row['oldcid'];
+          $newcid = $row['newcid'];
+          $cname = $row['cname'];
+            // $similar_courses.="<p><small>".$i.") ".$row['cname']." (Course ID: ".$row['oldcid']." , Sem: ".$row['oldsem']." , Year: ".$row['oldyear'].")</small></p>";
+            // $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldyear="'.$row['oldyear'].'" data-oldcid="'.$row['oldcid'].'" data-oldsem="'.$row['oldsem'].'" data-newyear="'.$row['newyear'].'" data-newcid="'.$row['newcid'].'" data-newsem="'.$row['newsem'].'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$row['oldcid'].''.$row['oldsem'].''.$row['oldyear'].'"><i class="fas fa-trash"></i>
+            //           </button>
+            //           <label for="sem"><b>Course ' . $i . ' : </b>
+            //           </label>
+            //           <span>' . $row['cname'] .'<br>(CID: '.$row['oldcid'].', SEM: '.$row['oldsem']. ', YEAR: ' . $row['oldyear'] .' ) </span>
+            //           <br>';
+            //           $i = $i + 1;
+
+            $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldsem="'.$oldsem.'" data-newsem="'.$newsem.'" data-oldyear="'.$oldyear.'" data-newyear="'.$newyear.'" data-oldcid="'.$oldcid.'" data-newcid="'.$newcid.'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$oldcid.'"><i class="fas fa-trash"></i>
+                      </button>
+                      <label for="sem"><b>Course ' . $i . ' : </b>
+                      </label>
+                      <span>' . $row['cname'] .'</span><br><span style="margin-left: 44px;"><b>CID:</b> '.$row['oldcid'].', <b>SEM:</b> '.$row['oldsem']. ', <b>YEAR:</b> ' . $row['oldyear'] .'</span>
+                      <br>';
+                      $i = $i + 1;
+        }
+    }
+    $faculties_allocated_temp = "nvvhvjh";
+    echo "{$faculties_allocated_temp}+{$faculty_div}";
+
     }
 }
 ?>
