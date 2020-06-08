@@ -53,24 +53,28 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                         <div class="form-row mt-4">
                             <div class="form-group col-md-6">
                             <label for="rollno"><b>Roll No</b></label>
-                            <input type="text" class="form-control" required="required" placeholder="New Roll no" name="rollno_new" value="' .$rollno. '">
-                            <input type="hidden" class="form-control"  name="rollno_old" value="' .$rollno. '">
+                            <input type="text" class="form-control" required="required" placeholder="New Roll no" name="rollno_new" id ="rollno_new" value="' .$rollno. '">
+                            <input type="hidden" class="form-control"  name="rollno_old" id="rollno_old" value="' .$rollno. '">
+                            <span id="rollno_error" class="text-danger"></span>
                         </div>           
                         <div class="form-group col-md-6">
                               <label for="allocate_status"><b>Allocate Status (0/1)</b></label>
-                              <input type="text" class="form-control" required="required" name="allocate_status_new" placeholder="New Allocate Status" value="' .$allocate_status. '">
+                              <input type="text" class="form-control" required="required" name="allocate_status_new" placeholder="New Allocate Status" maxlength="1" minlength="1" min="0" max="1"
+                              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="NumbersOnly(this)" value="' .$allocate_status. '">
                               <input type="hidden" class="form-control"  name="allocate_status_old" value="' .$allocate_status. '">
                           </div>                 
                       </div>
                       <div class="form-row">
                           <div class="form-group col-md-6">
                               <label for="sem"><b>Semester</b></label>
-                              <input type="text" class="form-control" required="required" placeholder="New Semester" name="sem_new" value="' .$sem. '">
+                              <input type="number" class="form-control" required="required" placeholder="New Semester" name="sem_new" min="1" max="8" maxlength="1" 
+                              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
+                              onkeyup="SemestersOnly(this) "value="' .$sem. '">
                               <input type="hidden" class="form-control"  name="sem_old" value="' .$sem. '">
                           </div>
                           <div class="form-group col-md-6">
                               <label for="year"><b>Year</b></label>
-                              <input type="text" class="form-control" required="required" placeholder="New Year" name="year_new" value="' .$year. '">
+                              <input type="text" class="form-control" required="required" placeholder="New Year(Eg 2019-20)" name="year_new" maxlength="7" minlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="' .$year. '">
                               <input type="hidden" class="form-control"  name="year_old" value="' .$year. '">
                           </div>
                       </div>
@@ -90,3 +94,19 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   </div>
 </div>';
 }
+?>
+<script>
+    function SemestersOnly(input)
+    {
+        var regex = /[^1-8]/;
+        input.value = input.value.replace(regex,"");
+    }
+    function NumbersOnly(input)
+    {
+        var regex =/[a-z]/;
+        input.value = input.value.replace(regex,"");
+        var regex1 =/[2-9]/;
+        input.value = input.value.replace(regex1,"");
+    }
+    
+</script>

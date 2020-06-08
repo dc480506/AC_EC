@@ -29,11 +29,22 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $sem_old=mysqli_escape_string($conn,$_POST['sem_old']);
         $allocate_status_new=mysqli_escape_string($conn,$_POST['allocate_status_new']);
         $allocate_status_old=mysqli_escape_string($conn,$_POST['allocate_status_old']);
-        $sql="UPDATE `student_preference_idc` SET `rollno`='$rollno_new',`sem`='$sem_new',`year`='$year_new'
+        if ($rollno_new != $rollno_old) {
+            $results = mysqli_query($conn, "Select rollno from student_preference_idc WHERE rollno = '$rollno_new'");
+            if (mysqli_num_rows($results) > 0) {
+                echo "Exists";
+            } else {
+                $sql = "UPDATE `student_preference_idc` SET `rollno`='$rollno_new',`sem`='$sem_new',`year`='$year_new'
         ,`allocate_status`='$allocate_status_new' WHERE `rollno`='$rollno_old'";
-        mysqli_query($conn,$sql);
-        exit();
+                mysqli_query($conn, $sql);
+                exit();
+            }
+        } else {
+            $sql = "UPDATE `student_preference_idc` SET `rollno`='$rollno_new',`sem`='$sem_new',`year`='$year_new'
+        ,`allocate_status`='$allocate_status_new' WHERE `rollno`='$rollno_old'";
+            mysqli_query($conn, $sql);
+            exit();
+        }
     }
-
 }
 ?>

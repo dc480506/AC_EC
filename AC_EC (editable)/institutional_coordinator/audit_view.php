@@ -48,7 +48,12 @@ include('../includes/header.php');
                         <div class="tab-content" id="nav-tabContent">
                             <!--Instructions Current-->
                             <div class="tab-pane fade show active" id="nav-audit-instructions" role="tabpanel" aria-labelledby="nav-audit-instructions">
-
+                                <a href="#" class="btn btn-primary btn-icon-split btn-sm" download>
+                                    <span class="icon text-white-50">
+                                    <i class="fas fa-file-download"></i>
+                                    </span>
+                                    <span class="text">Download</span>
+                                </a>
                             </div>
                             <!--end Instructions Current-->
                             <!--Upload Current-->
@@ -59,11 +64,11 @@ include('../includes/header.php');
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="semester"><b>Semester</b></label>
-                                                <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester" required>
+                                                <input type="number" class="form-control" id="semester" placeholder="Semester" name="semester" placeholder="New Semester" name="sem_new" min="1" max="8" maxlength="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="SemestersOnly(this)" required>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="year"><b>Year</b></label>
-                                                <input type="text" class="form-control" id="year" name="year" placeholder="Year" required>
+                                                <input type="text" class="form-control" id="year" name="year" placeholder="Eg 2019-20" minlength="7" maxlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -266,6 +271,11 @@ include('../includes/header.php');
 <!-- /.container-fluid -->
 
 <script type="text/javascript">
+    function SemestersOnly(input) {
+        var regex = /[^1-8]/;
+        input.value = input.value.replace(regex, "");
+    }
+
     $("#bulkUploadCurrent").submit(function(e) {
         e.preventDefault();
         form = this;
@@ -590,23 +600,30 @@ include('../includes/header.php');
             url: "ic_queries/audit_view_response_queries.php",
             data: form_serialize,
             success: function(data) {
-                //    alert(data); // show response from the php script.
-                $("#update_response_btn").text("Updated Successfully");
-                var row = $("#update-del-modal").closest('tr');
-                var aPos = $("#dataTable-response").dataTable().fnGetPosition(row.get(0));
-                var temp = $("#dataTable-response").DataTable().row(aPos).data();
-                // console.log(temp)
-                console.log(form_serialize)
-                temp['rollno'] = form_serialize[0].value; //new values
-                temp['allocate_status'] = form_serialize[2].value;
-                temp['sem'] = form_serialize[4].value;
-                temp['year'] = form_serialize[6].value;
-                console.log(temp)
-                $('#dataTable-response').dataTable().fnUpdate(temp, aPos, undefined, false);
-                $('.action-btn').off('click')
-                $('.action-btn').on('click', loadModalCurrent)
-                // $("#dataTable-response").DataTable().row(aPos).draw(false);
-                $(".selectrow_student").attr("disabled", true);
+                if (data === "Exists") {
+                    $('#rollno_error').text('*Already Exist');
+                    $("#update_response_btn").text("Update");
+                    $("#update_response_btn").attr("disabled", false);
+                } else {
+                    //    alert(data); // show response from the php script.
+                    $("#update_response_btn").text("Updated Successfully");
+                    var row = $("#update-del-modal").closest('tr');
+                    var aPos = $("#dataTable-response").dataTable().fnGetPosition(row.get(0));
+                    var temp = $("#dataTable-response").DataTable().row(aPos).data();
+                    // console.log(temp)
+                    console.log(form_serialize)
+                    temp['rollno'] = form_serialize[0].value; //new values
+                    temp['allocate_status'] = form_serialize[2].value;
+                    temp['sem'] = form_serialize[4].value;
+                    temp['year'] = form_serialize[6].value;
+                    console.log(temp)
+                    $('#dataTable-response').dataTable().fnUpdate(temp, aPos, undefined, false);
+                    $('.action-btn').off('click')
+                    $('.action-btn').on('click', loadModalCurrent)
+                    // $("#dataTable-response").DataTable().row(aPos).draw(false);
+                    $(".selectrow_student").attr("disabled", true);
+                    $('#rollno_error').remove();
+                }
             }
         });
     }

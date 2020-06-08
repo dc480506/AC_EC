@@ -63,7 +63,7 @@ include('../includes/header.php');
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="year"><b>Year</b></label>
-                                                <input type="text" class="form-control" id="year" placeholder="Eg 2019-20" name="year" required>
+                                                <input type="text" class="form-control" id="year" placeholder="Eg 2019-20" name="year" minlength ="7" maxlength ="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required>
                                             </div>
                                         </div>
                                         <div id="bulk_current_fields">
