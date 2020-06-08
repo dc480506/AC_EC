@@ -629,26 +629,39 @@ include('../includes/header.php');
             data: form_serialize,
             success: function(data) {
                 //    alert(data); // show response from the php script.
-                $("#update_student_btn").text("Updated Successfully");
-                var row = $("#update-del-modal").closest('tr');
-                var aPos = $("#dataTable-student").dataTable().fnGetPosition(row.get(0));
-                var temp = $("#dataTable-student").DataTable().row(aPos).data();
-                // console.log(temp)
-                // console.log(form_serialize)
-                temp['fname'] = form_serialize[0].value; //new values
-                temp['mname'] = form_serialize[1].value; //new values
-                temp['lname'] = form_serialize[2].value; //new values
-                temp['email_id'] = form_serialize[3].value;
-                temp['rollno'] = form_serialize[5].value;
-                temp['dept_name'] = id_to_name_convertor_dept(form_serialize[7].value);
-                temp['current_sem'] = form_serialize[8].value;
-                temp['year_of_admission'] = form_serialize[9].value;
-                // console.log(temp)
-                $('#dataTable-student').dataTable().fnUpdate(temp, aPos, undefined, false);
-                $('.action-btn').off('click')
-                $('.action-btn').on('click', loadModalCurrent)
-                // $("#dataTable-student").DataTable().row(aPos).draw(false);
-                $(".selectrow_student").attr("disabled", true);
+                // console.log(data)
+                if(data === "Exists_email_id"){
+                    $('#error_email_id').text('*This data already exists');
+                    $("#update_student_btn").text("Update");
+                    $("#update_student_btn").attr("disabled", false);
+                }else  if(data === "Exists_rollno"){
+                    $('#error_rollno').text('*This data already exists');
+                    $("#update_student_btn").text("Update");
+                    $("#update_student_btn").attr("disabled", false);
+                }else{
+                    $("#update_student_btn").text("Updated Successfully");
+                    var row = $("#update-del-modal").closest('tr');
+                    var aPos = $("#dataTable-student").dataTable().fnGetPosition(row.get(0));
+                    var temp = $("#dataTable-student").DataTable().row(aPos).data();
+                    // console.log(temp)
+                    // console.log(form_serialize)
+                    temp['fname'] = form_serialize[0].value; //new values
+                    temp['mname'] = form_serialize[1].value; //new values
+                    temp['lname'] = form_serialize[2].value; //new values
+                    temp['email_id'] = form_serialize[3].value;
+                    temp['rollno'] = form_serialize[5].value;
+                    temp['year_of_admission'] = form_serialize[7].value;
+                    temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
+                    temp['current_sem'] = form_serialize[10].value;
+                    // console.log(temp)
+                    $('#dataTable-student').dataTable().fnUpdate(temp, aPos, undefined, false);
+                    $('.action-btn').off('click')
+                    $('.action-btn').on('click', loadModalCurrent)
+                    // $("#dataTable-student").DataTable().row(aPos).draw(false);
+                    $(".selectrow_student").attr("disabled", true);
+                    $('#error_email_id').remove();
+                    $('#error_rollno').remove();
+                }
             }
         });
     }

@@ -202,22 +202,25 @@ include('../includes/header.php');
                                 <div class="form-row mt-4">
                                     <div class="form-group col-md-6">
                                         <label for="name"><b>Name</b></label>
-                                        <input type="text" class="form-control" id="nameadd" name="name" placeholder="name">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="name">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="emailid"><b>Email Address</b></label>
-                                        <input type="email" class="form-control" id="emailidadd" name="email" placeholder="email@gmail.com">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="email@gmail.com">
+                                        <span id="error_email_id" class="text-danger"></span>
 
                                     </div>
                                 </div>
                                 <div class="form-row mt-4">
                                     <div class="form-group col-md-6">
                                         <label for="faculty_code"><b>Faculty Code</b></label>
-                                        <input type="text" class="form-control" id="faculty_code_add" name="faculty_code" placeholder="faculty code">
+                                        <input type="text" class="form-control" id="faculty_code" name="faculty_code" placeholder="faculty code">
+                                        <span id="error_faculty_code" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="eid"><b>Employee ID</b></label>
-                                        <input type="text" class="form-control" id="eidadd" name="eid" placeholder="Employee Id">
+                                        <input type="text" class="form-control" id="eid" name="eid" placeholder="Employee Id">
+                                        <span id="error_employee_id" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -226,18 +229,18 @@ include('../includes/header.php');
                                         <select class="form-control" required name="dept">
                                             <?php
                                             include_once("../config.php");
-                                            $sql = "SELECT dept_name FROM department";
-                                            $result = mysqli_query($conn, $sql);
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                echo "<option>" . $row['dept_name'] . "</option>";
-                                            }
+                                            $sql = "SELECT * FROM department";
+                                                    $result = mysqli_query($conn, $sql);
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                        echo '<option value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
+                                                    }
                                             ?>
                                         </select>
                                         <!-- <input type="text" class="form-control" id="department" name="department" placeholder="department"> -->
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="postadd"><b>Post</b></label>
-                                        <input type="text" class="form-control" id="postadd" name="post" placeholder="post">
+                                        <input type="text" class="form-control" id="post" name="post" placeholder="post">
                                     </div>
                                 </div>
 
@@ -266,42 +269,9 @@ include('../includes/header.php');
 
                         <form class="forms-sample" method="POST" action="">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()">
-                                <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
-                                <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()">
-                                <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
-                                <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cname">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()">
-                                <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
-                                <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="cname">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()">
-                                <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
-                                <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="cname">
+                                <label class="form-check-label" for="exampleFormControlSelect4">Post</label>
+                                <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="post">
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -312,7 +282,7 @@ include('../includes/header.php');
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
                                 <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
-                                <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
+                                <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="dept_name">
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -398,12 +368,37 @@ include('../includes/header.php');
 
     $(document).ready(function() {
         loadCurrent();
+        // filterTable();
         $('#uploadinternal').on('hidden.bs.modal', function(e) {
             document.querySelector("#bulkUploadInternal").reset();
             $("#upload_internal").text("Upload")
             $("#upload_internal").attr("disabled", false);
         });
     });
+
+    // //filter table
+    // function filterTable(){
+    //     function filter_internal_faculty(filter_post = '',filter_dept_id = ''){
+    //         var dataTable = $('#dataTable-internal').DataTable({
+    //             "processing": true,
+    //             "serverSide": true,
+    //             "destroy": true,
+    //             "aaSorting": [],
+    //             "searching": false,
+    //             "ajax": {
+    //                 url: "adduser/filter/filter_internalfaculty.php",
+    //                 // url: "adduser/loadInfo/add_internalfaculty.php",
+    //                 type:"POST",
+    //                 data:{
+    //                     filter_post:filter_post,
+    //                     filter_dept_id:filter_dept_id
+    //                 }
+
+    //             },
+    //         });
+    //     }
+    // }
+
     //DATATABLE CREATE
     function loadCurrent() {
         // document.querySelector("#addCoursebtn").style.display="none"
@@ -477,7 +472,7 @@ include('../includes/header.php');
     }
     //SELECT CHECKALL
     $("#select_all").click(function(e) {
-        console.log("Hi")
+        // console.log("Hi")
         //   var row=$(this).closest('tr')
         if ($(this).is(":checked")) {
             $("#dataTable-internal tbody tr").addClass("selected table-secondary");
@@ -566,27 +561,46 @@ include('../includes/header.php');
             url: "ic_queries/addfaculty_queries.php",
             data: form_serialize,
             success: function(data) {
-                //    alert(data); // show response from the php script.
-                $("#update_internal_faculty_btn").text("Updated Successfully");
-                var row = $("#update-del-modal").closest('tr');
-                var aPos = $("#dataTable-internal").dataTable().fnGetPosition(row.get(0));
-                var temp = $("#dataTable-internal").DataTable().row(aPos).data();
-                // console.log(temp)
-                // console.log(form_serialize)
-                temp['fname'] = form_serialize[0].value; //new values
-                temp['mname'] = form_serialize[1].value; //new values
-                temp['lname'] = form_serialize[2].value; //new values
-                temp['email_id'] = form_serialize[3].value;
-                temp['faculty_code'] = form_serialize[5].value;
-                temp['employee_id'] = form_serialize[7].value;
-                temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
-                temp['post'] = form_serialize[10].value;
-                // // console.log(temp)
-                $('#dataTable-internal').dataTable().fnUpdate(temp, aPos, undefined, false);
-                $('.action-btn').off('click')
-                $('.action-btn').on('click', loadModalCurrent)
-                // $("#dataTable-internal").DataTable().row(aPos).draw(false);
-                $(".selectrow_student").attr("disabled", true);
+                // alert(data); // show response from the php script.
+                // console.log(data)
+                if(data === "Exists_email_id"){
+                    $('#error_email_id').text('*This data already exists');
+                    $("#update_internal_faculty_btn").text("Update");
+                    $("#update_internal_faculty_btn").attr("disabled", false);
+                }else  if(data === "Exists_faculty_code"){
+                    $('#error_faculty_code').text('*This data already exists');
+                    $("#update_internal_faculty_btn").text("Update");
+                    $("#update_internal_faculty_btn").attr("disabled", false);
+                }else  if(data === "Exists_employee_id"){
+                    $('#error_employee_id').text('*This data already exists');
+                    $("#update_internal_faculty_btn").text("Update");
+                    $("#update_internal_faculty_btn").attr("disabled", false);
+                }
+                else{
+                    $("#update_internal_faculty_btn").text("Updated Successfully");
+                    var row = $("#update-del-modal").closest('tr');
+                    var aPos = $("#dataTable-internal").dataTable().fnGetPosition(row.get(0));
+                    var temp = $("#dataTable-internal").DataTable().row(aPos).data();
+                    // console.log(temp)
+                    // console.log(form_serialize)
+                    temp['fname'] = form_serialize[0].value; //new values
+                    temp['mname'] = form_serialize[1].value; //new values
+                    temp['lname'] = form_serialize[2].value; //new values
+                    temp['email_id'] = form_serialize[3].value;
+                    temp['faculty_code'] = form_serialize[5].value;
+                    temp['employee_id'] = form_serialize[7].value;
+                    temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
+                    temp['post'] = form_serialize[10].value;
+                    // // console.log(temp)
+                    $('#dataTable-internal').dataTable().fnUpdate(temp, aPos, undefined, false);
+                    $('.action-btn').off('click')
+                    $('.action-btn').on('click', loadModalCurrent)
+                    // $("#dataTable-internal").DataTable().row(aPos).draw(false);
+                    $(".selectrow_student").attr("disabled", true);
+                    $('#error_email_id').remove();
+                    $('#error_faculty_code').remove();
+                    $('#error_employee_id').remove();
+                }
             }
         });
     }

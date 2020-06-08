@@ -73,8 +73,9 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                         </div>  
                                         <div class="form-group col-md-6">
                                             <label for="email_id"><b>Email ID</b></label>
-                                            <input type="text" class="form-control" required="required" placeholder="New Email Id" name="email_id_new" value="' . $email_id . '">
-                                            <input type="hidden" class="form-control"  name="email_id_old" value="' . $email_id. '">
+                                            <input type="email" class="form-control" required="required" placeholder="New Email Id" name="email_id_new" id="email_id_new" value="' . $email_id . '">
+                                            <input type="hidden" class="form-control"  name="email_id_old" id="email_id_old" value="' . $email_id. '">
+                                            <span id="error_email_id" class="text-danger"></span>
                                         </div>                                   
                                     </div>
                                     <div class="form-row">
@@ -82,10 +83,12 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                             <label for="rollno"><b>Roll No</b></label>
                                             <input type="text" class="form-control" required="required" placeholder="New Roll no" name="rollno_new" value="' . $rollno . '">
                                             <input type="hidden" class="form-control"  name="rollno_old" value="' . $rollno. '">
+                                            <span id="error_rollno" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="year_of_admission"><b>Year_of_Admission</b></label>
-                                            <input type="text" class="form-control" required="required" name="year_of_admission_new" value="' . $year_of_admission . '">
+                                            <input type="text" class="form-control" required="required" placeholder="eg..0000" name="year_of_admission_new" minlength="4" maxlength="4" value="'. $year_of_admission.'">
+                                            <input type="hidden" class="form-control"  name="year_of_admission_old" value="' . $year_of_admission. '">
                                         </div>  
                                     </div>
                                     <div class="form-row">
@@ -105,8 +108,10 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="current_sem"><b>current_sem</b></label>
-                                            <input type="text" class="form-control" required="required" name="current_sem_new" placeholder="1" value="' . $current_sem . '">
-                                        </div>
+                                            <input type="number" class="form-control" required="required" name="current_sem_new" placeholder="eg..1" min="1" max="8" maxlength="1" 
+                                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
+                                            onkeyup="SemestersOnly(this) "value="' . $current_sem . '">
+                                        </div>                                    
                                     </div>
                                     <br>
                                     <button type="submit" class="btn btn-primary" id="update_student_btn" name="update_student">Update</button>
@@ -128,3 +133,18 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                 // echo 'Hi';
 }
 ?>
+<script>
+    function SemestersOnly(input)
+    {
+        var regex = /[^1-8]/;
+        input.value = input.value.replace(regex,"");
+    }
+    function NumbersOnly(input)
+    {
+        var regex =/[a-z]/;
+        input.value = input.value.replace(regex,"");
+        var regex1 =/[2-9]/;
+        input.value = input.value.replace(regex1,"");
+    }
+    
+</script>
