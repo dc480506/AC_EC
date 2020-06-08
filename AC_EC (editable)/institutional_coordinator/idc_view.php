@@ -57,11 +57,11 @@ include('../includes/header.php');
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="semester"><b>Semester</b></label>
-                                                <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester" required>
+                                                <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester" min="1" max="8" maxlength="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="SemestersOnly(this)" required>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="year"><b>Year</b></label>
-                                                <input type="text" class="form-control" id="year" name="year" placeholder="Year" required>
+                                                <input type="text" class="form-control" id="year" name="year" placeholder="Eg 2019-20" minlength="7" maxlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -257,6 +257,11 @@ include('../includes/header.php');
 <!-- /.container-fluid -->
 
 <script type="text/javascript">
+    function SemestersOnly(input) {
+        var regex = /[^1-8]/;
+        input.value = input.value.replace(regex, "");
+    }
+    
     $("#bulkUploadCurrent").submit(function(e) {
         e.preventDefault();
         form = this;
