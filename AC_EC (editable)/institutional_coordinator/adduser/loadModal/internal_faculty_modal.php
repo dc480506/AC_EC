@@ -122,8 +122,9 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                     </div>  
                                     <div class="form-group col-md-6">
                                         <label for="email_id"><b>Email ID</b></label>
-                                        <input type="text" class="form-control" required="required" placeholder="New Email Id" name="email_id_new" value="' . $email_id . '">
-                                        <input type="hidden" class="form-control"  name="email_id_old" value="' . $email_id. '">
+                                        <input type="email" class="form-control" required="required" placeholder="New Email Id" name="email_id_new" id="email_id_new" value="' . $email_id . '">
+                                        <input type="hidden" class="form-control"  name="email_id_old" id="email_id_old" value="' . $email_id. '">
+                                        <span id="error_email_id" class="text-danger"></span>
                                     </div>                                   
                                 </div>
                                     <div class="form-row">
@@ -131,11 +132,13 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                             <label for="faculty_code"><b>Faculty Code</b></label>
                                             <input type="text" class="form-control" required="required" placeholder="New Faculty Code" name="faculty_code_new" value="' . $faculty_code . '">
                                             <input type="hidden" class="form-control"  name="faculty_code_old" value="' . $faculty_code. '">
+                                            <span id="error_faculty_code" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="employee_id"><b>Employee ID</b></label>
                                             <input type="text" class="form-control" required="required" placeholder="New Employee ID" name="employee_id_new" value="' . $employee_id. '">
                                             <input type="hidden" class="form-control"  name="employee_id_old" value="' . $employee_id. '">
+                                            <span id="error_employee_id" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="form-row">
