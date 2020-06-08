@@ -12,8 +12,11 @@
  $_SESSION['student_pref']=$hash."_student_pref_".$_SESSION['type'];
  $_SESSION['student_course_table']=$hash."_student_".$_SESSION['type'];
  $_SESSION['course_allocate_info']=$hash."_".$_SESSION['type']."_course_info";
+ $_SESSION['pref_percent_table']=$hash."_pref_percent";
+ $_SESSION['pref_student_alloted_table']=$hash."_pref_student_alloted";
  mysqli_query($conn,"INSERT INTO delete_temp_tables VALUES ('".$_SESSION['course_table']."','".$timestamp."'),
-        ('".$_SESSION['student_pref']."','".$timestamp."'),('".$_SESSION['student_course_table']."','".$timestamp."'),('".$_SESSION['course_allocate_info']."','".$timestamp."')");
+        ('".$_SESSION['student_pref']."','".$timestamp."'),('".$_SESSION['student_course_table']."','".$timestamp."'),('".$_SESSION['course_allocate_info']."','".$timestamp."')
+        ,('".$_SESSION['pref_percent_table']."','".$timestamp."'),,('".$_SESSION['pref_student_alloted_table']."','".$timestamp."')");
  $result=mysqli_query($conn,'CREATE TABLE '.$_SESSION['course_table'].' (
     `cid` varchar(30) NOT NULL,
     `sem` int(11) NOT NULL,
@@ -70,7 +73,27 @@
     PRIMARY KEY(cid,sem,year)
 )');
   mysqli_query($conn,'INSERT INTO '.$_SESSION['student_pref'].'(`email_id`,`sem`,`year`,`rollno`,`timestamp`,`allocate_status`,`no_of_valid_preferences`,'.$pref.') SELECT email_id,sem,year,rollno,timestamp,allocate_status,no_of_valid_preferences,'.$pref.' FROM student_preference_'.$_SESSION['type'].' WHERE sem="'.$_SESSION['sem'].'" AND year="'.$_SESSION['year'].'"');
+  mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_percent_table'].'(
+    `pref_no` varchar(15) NOT NULL,
+    `no_of_stu` int(8) NOT NULL,
+    `percent` float(23,19) NOT NULL,
+    PRIMARY KEY(pref_no)
+)');
+mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
+    `email_id` varchar(50) NOT NULL,
+    `pref_no` int(8) NOT NULL,
+    PRIMARY KEY(email_id)
+)');
 ?>
+<br>
+<h5 class="font-weight-bold text-dark mb-0">
+    Allocation Method: <?php
+     if($_SESSION['algorithm_chosen']=="fcfs")
+        echo "First Come First Serve";
+     else if($_SESSION['algorithm_chosen']=="previous_sem_marks")
+        echo "Previous Semester Marks";
+     ?>
+</h5>
 <div class="tab-pane fade show active" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab">
     <br>
     <div class="progress">

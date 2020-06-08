@@ -9,16 +9,34 @@ import pandas as pd
 import numpy as np
 import pymysql,sys
 
+mapper={
+		"sem":0,
+		"year":1,
+        "student_pref_table":2,
+        "student_course_table":3,
+        "course_allocate_info_table":4,
+        "course_table":5,
+		"pref_percent_table":6,
+		"pref_student_alloted_table":7,
+        "no_of_preferences":8,
+        "host":9,
+        "username":10,
+        "password":11,
+        "dbname":12,
+        }
+argument=list(map(str.strip, sys.argv[1].strip('[]').split(',')))
+n=len(argument)
 mydb = pymysql.connect(
-  host="localhost",
-  user="root",
-  passwd="",
-  database="dummy"
+  host=argument[mapper['host']],
+  user=argument[mapper['username']],
+  passwd=argument[mapper['password']],
+  database=argument[mapper['dbname']]
 )
-
 mycursor = mydb.cursor()
 
-mycursor.execute("SELECT cid,min,max FROM audit_course")
+
+course_query="SELECT cid,min,max FROM "+argument[mapper['course_table']]+" WHERE sem='"+argument[mapper['sem']]+"' and year='"+argument[mapper['year']]+"'"
+mycursor.execute(course_query)
 
 myresult = mycursor.fetchall()
 courses={}
@@ -27,21 +45,29 @@ for x in myresult:
   courses[x[0]]=l
 
 
+preferences=""
+for x in range(1,int(argument[mapper['no_of_preferences']])):
+	preferences+="pref"+str(x)+","
+preferences+="pref"+str(argument[mapper['no_of_preferences']])
 	
-
-mycursor.execute("SELECT s.email_id,s.rollno,s.timestamp,s.pref1,s.pref2,s.pref3,s.pref4,s.pref5,s.pref6,s.pref7,s.pref8,m.gpa FROM student_preference_audit as s inner join student_marks as m on s.email_id=m.email_id and s.sem=m.sem order by gpa DESC, timestamp ASC")
+student_preference_query="SELECT s.email_id,s.rollno,s.timestamp,m.gpa,"+preferences+" FROM "+argument[mapper['student_pref_table']]+" as s inner join student_marks as m on s.email_id=m.email_id and m.sem=s.sem-2 WHERE s.sem='"+argument[mapper['sem']]+"' and s.year='"+argument[mapper['year']]+"' order by gpa DESC, timestamp ASC"
+mycursor.execute(student_preference_query)
 
 myresult = mycursor.fetchall()
 student=[]
 
 for res in myresult:
-	l=[res[0],res[1],res[2],res[3],res[4],res[5],res[6],res[7],res[8],res[9],res[10],res[11]]
+	l=[res[0],res[1],res[2],res[3]]
+	for x in range(0,int(argument[mapper['no_of_preferences']])):
+		l.append(res[(x+4)])
 	student.append(l)
-#print(student)	
+# print(student)	
 
-cols=['email_id','rollno','timestamp','pref1','pref2','pref3','pref4','pref5','pref6','pref7','pref8','gpa']
-	
+cols=['email_id','rollno','timestamp','gpa']
+for x in range(1,int(argument[mapper['no_of_preferences']])+1):
+	cols.append("pref"+str(x))
 data=pd.DataFrame(student,columns=cols)
+total_responses=len(data.index)
 data['timestamp']=pd.to_datetime(data["timestamp"])
 #data=data.sort_values(by='timestamp')
 #data.reset_index(inplace=True,drop=True)
@@ -58,12 +84,19 @@ for i in range(len(data)):
 	eid=data.loc[i,'email_id']
 	time=data.loc[i,'timestamp']
 	marks=data.loc[i,'gpa']
-	pref=data.loc[i,data.columns[3:10]].values
-	pref=[x for x in pref if x.find("same")==-1]
+	pref=data.loc[i,data.columns[4:]].values
+	pref=[x for x in pref if x.find("same")==-1 and x in courses]
+	pref_true_no=[]
+	trueno=1
+	for h in data.loc[i,data.columns[4:]].values:
+		if h.find("same")==-1 and h in courses:
+			pref_true_no.append([h,trueno])
+		trueno+=1
 	for j in range (len(pref)):
 		if(check_upper_limit(stu_course,courses,pref[j])):
 			stu_course[pref[j]].append([eid,1,time,j+1,pref,i,marks])
-			student_pref_no[eid]=(j+1)
+			# student_pref_no[eid]=(j+1)
+			student_pref_no[eid]=pref_true_no[j][1]
 			break
 		else:
 			student_pref_no[eid]=-1
@@ -265,16 +298,24 @@ sem=5
 year='2020-21'
 
 for course,student in stu_course.items():
-	query="UPDATE `"+table_name_3+"` SET no_of_allocated="+str(len(student))+" where cid='"+course+"' and year='"+year+"' and sem="+str(sem)
+	query="UPDATE `"+argument[mapper['course_table']]+"` SET no_of_allocated="+str(len(student))+" where cid='"+course+"' and year='"+year+"' and sem="+str(sem)
 	# print(query)
 	mycursor.execute(query)
-	mydb.commit()
+	# mydb.commit()
 	for i in range(len(student)):	
-		query="INSERT INTO `"+table_name_1+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+str(sem)+",'"+year+"')"
+		query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+str(sem)+",'"+year+"')"
 		mycursor.execute(query)
-		mydb.commit()
-		query="UPDATE `"+table_name_2+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+year+"' and sem="+str(sem)
+		# mydb.commit()
+		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+year+"' and sem="+str(sem)
 		# print(query)
 		mycursor.execute(query)
-		mydb.commit()
+
+for k,v in dict1.items():
+	query="INSERT INTO `"+argument[mapper['pref_percent_table']]+"`(`pref_no`,`no_of_stu`,`percent`) VALUES('"+str(k)+"','"+str(v)+"','"+str(round(v/total_responses,4)*100)+"')"
+	mycursor.execute(query)
+for k,v in student_pref_no.items():
+	if v!=-1:
+		query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+str(k)+"','"+str(v)+"')"
+		mycursor.execute(query)
+mydb.commit()
 		# print("INSERT INTO `"+table_name+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+str(sem)+",'"+year+"')")

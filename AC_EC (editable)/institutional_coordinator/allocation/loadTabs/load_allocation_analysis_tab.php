@@ -8,6 +8,15 @@ $cmd='python ../algorithms/'.$_SESSION['algorithm_chosen'].'_phase1.py '.$args;
 $output=shell_exec($cmd." 2>&1");
 // echo $output;
 ?>
+<br>
+<h5 class="font-weight-bold text-dark mb-0">
+    Allocation Method: <?php
+     if($_SESSION['algorithm_chosen']=="fcfs")
+        echo "First Come First Serve";
+     else if($_SESSION['algorithm_chosen']=="previous_sem_marks")
+        echo "Previous Semester Marks";
+     ?>
+</h5>
 <div class="tab-pane fade show active" id="nav-result" role="tabpanel" aria-labelledby="nav-result-tab">
     <br>
     <div class="progress">

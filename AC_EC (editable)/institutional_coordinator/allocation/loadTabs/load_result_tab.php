@@ -1,178 +1,358 @@
 <?php 
-
 include_once('../../verify.php');
 include_once('../../../config.php');
-$args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
+$args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['pref_percent_table'].'","'.$_SESSION['pref_student_alloted_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
 $cmd='python ../algorithms/'.$_SESSION['algorithm_chosen'].'.py '.$args;
 // echo $cmd;
 $output=shell_exec($cmd." 2>&1");
 // echo $output;
 ?>
+<style>
+    .accordion-toggle{
+        cursor:pointer;
+    }
+    .accordion-toggle:hover{
+        background-color: #ffcccc;
+    }
+    .accordion-toggle.open{
+        background-color: #ffcccc;
+    }
+</style>
+<br>
+<h5 class="font-weight-bold text-dark mb-0">
+    Allocation Method: <?php
+     if($_SESSION['algorithm_chosen']=="fcfs")
+        echo "First Come First Serve";
+     else if($_SESSION['algorithm_chosen']=="previous_sem_marks")
+        echo "Previous Semester Marks";
+     ?>
+</h5>
 <div class="tab-pane fade show active" id="nav-final-allocate" role="tabpanel" aria-labelledby="nav-final-allocate-tab">
     <br>
     <div class="progress">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
     </div>
     <br>
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Student Unallocated</h6>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <br>
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email ID</th>
-                        <th>Roll Number</th>
-                        <th>Preference List</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Ganesh Gaitonde</td>
-                        <td>ganesh.g@somaiya.edu</td>
-                        <td>1719082</td>
-                        <td>1.Python<br> 2.OOPM <br>3.Data Structure</td>
-                        <td>
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter3">
-                                <i class="fas fa-tools"></i>
-                            </button>
+    <div class="accordion-container" id="final_allocation_accordion">
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle3" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalCenterTitle3">Action</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <nav>
-                                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                    <a class="nav-item nav-link active" id="nav-delete1-tab" data-toggle="tab" href="#nav-delete1" role="tab" aria-controls="nav-delete1" aria-selected="true">Deletion</a>
-                                                    <a class="nav-item nav-link" id="nav-update1-tab" data-toggle="tab" href="#nav-update1" role="tab" aria-controls="nav-update1" aria-selected="false">Allocate</a>
-                                                </div>
-                                            </nav>
-                                            <div class="tab-content" id="nav-tabContent">
-                                                <!--Deletion-->
-                                                <div class="tab-pane fade show active" id="nav-delete1" role="tabpanel" aria-labelledby="nav-delete1-tab">
-                                                    <form action="">
-                                                        <div class="form-group">
-                                                            <label for="exampleFormControlSelect1"><b>Are you sure you want to delete?</b>
-                                                            </label>
-                                                            <br>
-                                                            <button type="submit" class="btn btn-primary" name="yes">Yes</button>
-                                                            <button type="submit" class="btn btn-secondary" name="no">No</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <!--end Deletion-->
-                                                <!--Update-->
-                                                <div class="tab-pane fade show " id="nav-update1" role="tabpanel" aria-labelledby="nav-update1-tab">
-                                                    <form action="">
-                                                        <div class="form-group">
-                                                            <label for="exampleFormControlSelect1"><b>Department</b>
-                                                            </label>
-                                                            <select class="form-control" id="exampleFormControlSelect1" name="department">
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                                <option>5</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="exampleFormControlSelect1"><b>Course</b>
-                                                            </label>
-                                                            <select class="form-control" id="exampleFormControlSelect1" name="course">
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                                <option>5</option>
-                                                            </select>
-                                                        </div>
+        <div class="card-header accordion-toggle open" id="pref_percent_stats">
+            <h2 class="mb-0">
+                <button class="btn btn-link accordion-div" type="button">
+                    <h5 class="font-weight-bold text-primary mb-0">Preference-Wise Allotment Stats</h5>
+                </button>
+            </h2>
+        </div>
 
-                                                        <div class="form-group">
-                                                            <label for="exampleFormControlSelect1"><b>Course ID</b>
-                                                            </label>
-                                                            <select class="form-control" id="exampleFormControlSelect1" name="course">
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                                <option>5</option>
-                                                            </select>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-primary">Allocate</button>
-                                                    </form>
-                                                </div>
-
-
-
-                                                <!--Update end-->
-
-                                            </div>
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                            <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
-                                        </div>
-                                    </div>
+        <div id="pref_percent_stats_div" class="collapse show" aria-labelledby="pref_percent_stats" data-parent="#final_allocation_accordion">
+            <div class="card-body">
+                <?php 
+                    include_once('../../../config.php');
+                    $sql="SELECT COUNT(*) as total FROM {$_SESSION['student_pref']}";
+                    $result=mysqli_query($conn,$sql);
+                    $row=mysqli_fetch_assoc($result);
+                    $totalResponses=$row['total'];
+                    $sql="SELECT COUNT(*) as allocated FROM {$_SESSION['student_course_table']}";
+                    $result=mysqli_query($conn,$sql);
+                    $row=mysqli_fetch_assoc($result);
+                    $allocated=$row['allocated'];
+                    $unallocated=$totalResponses-$allocated;
+                    echo '
+                    <div class="row align-items-center">
+                        <div class="col text-left">
+                            <h6 class="font-weight-bold text-dark mb-0">
+                                Total Responses Collected: '.$totalResponses.'
+                            </h6>
+                        </div>
+                        <div class="col text-left">
+                            <h6 class="font-weight-bold text-success mb-0">
+                                No. of Students Allocated: '.$allocated.' ('.round($allocated*100/$totalResponses,2).'%)
+                            </h6>
+                        </div>
+                        <div class="col text-left">
+                            <h6 class="font-weight-bold text-danger mb-0">
+                                No. of Students Unallocated: '.$unallocated.' ('.round($unallocated*100/$totalResponses,2).'%)
+                            </h6>
+                        </div>
+                    </div>
+                    ';
+                ?>
+                <style>
+                    .text-success{
+                        color:#2ecc71!important;
+                    }
+                </style>
+                <??>
+                <div class="container">
+                    <div class="row ">
+                        <div class="col-lg-5 col-md-5">
+                            <div class="table-responsive">
+                                <br>
+                                <table class="table table-bordered" id="dataTable-pref-percent" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Preference No</th>
+                                            <th>No. of Students Allotted</th>
+                                            <th>Percentage of Students Allotted</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7">
+                            <div class="card-body" id="chart-canvas-div" style="position:relative;top:50%;transform:translateY(-50%)">
+                                <!-- <canvas id='chart'></canvas> -->
+                                <div id="chart-spinner" style="top:50%;left:50%;position:relative">
+                                    <label><b>Loading Chart </b></label>
+                                    <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-header accordion-toggle" id="unallocated_students">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed accordion-div" type="button">
+                    <h5 class="font-weight-bold text-primary mb-0"> Unallocated Students Info</h5>
+                </button>
+            </h2>
+        </div>
+        <div id="unallocated_students_div" class="collapse" aria-labelledby="unallocated_students" data-parent="#final_allocation_accordion">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <br>
+                    <table class="table table-bordered" id="dataTable-unallocated" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Email ID</th>
+                                <th>Roll No</th>
+                                <th>Full Name</th>
+                                <th>Department</th>
+                                <th>Timestamp</th>
+                                <th>Allocate</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Email ID</th>
+                                <th>Roll No</th>
+                                <th>Full Name</th>
+                                <th>Department</th>
+                                <th>Timestamp</th>
+                                <th>Allocate</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-header accordion-toggle" id="allocated_students">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed accordion-div" type="button">
+                    <h5 class="font-weight-bold text-primary mb-0"> Allocated Students Info</h5>
+                </button>
+            </h2>
+        </div>
+        <div id="allocated_students_div" class="collapse" aria-labelledby="allocated_students" data-parent="#final_allocation_accordion">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <br>
+                    <table class="table table-bordered" id="dataTable-allocated" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Email ID</th>
+                                <th>Roll No</th>
+                                <th>Full Name</th>
+                                <th>Department</th>
+                                <th>Timestamp</th>
+                                <th>Pref No Allotted</th>
+                                <th>Allocated Course</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Email ID</th>
+                                <th>Roll No</th>
+                                <th>Full Name</th>
+                                <th>Department</th>
+                                <th>Timestamp</th>
+                                <th>Pref No Allotted</th>
+                                <th>Allocated Course</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-header accordion-toggle" id="course">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed accordion-div" type="button">
+                    <h5 class="font-weight-bold text-primary mb-0"> Course Status</h5>
+                </button>
+            </h2>
+        </div>
+        <div id="course_div" class="collapse" aria-labelledby="course" data-parent="#final_allocation_accordion">
+            <div class="card-body">   
+            </div>
         </div>
     </div>
-
     <br>
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Student Allocated</h6>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <br>
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email ID</th>
-                        <th>Roll Number</th>
-                        <th>Preference List</th>
-                        <th>Course</th>
-                        <th>Preference Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Tiger Nixon</td>
-                        <td>tiger.n@somaiya.edu</td>
-                        <td>1719092</td>
-                        <td>1.Python<br> 2.OOPM <br>3.Data Structure</td>
-                        <td>Python(UCH132)</td>
-                        <td>1</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <br>
     <div class="modal-footer">
-        
+
         <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
         <button type="submit" class="btn btn-primary align-center" name="Complete">Complete</button>
     </div>
 </div>
-                <!--Update end-->
+<script>
+    // $("#spinner").show();
+    var unallocated_loaded=false;
+    var allocated_loaded=false;
+    $(".accordion-toggle").on("click",function(){
+        console.log($(this).next());
+        $(this).toggleClass("open");
+        $(this).next().slideToggle(200);
+        $(this).next().toggleClass('show');
+    })
+    $("#dataTable-pref-percent").DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            serverMethod: 'post',
+            searching: false,
+            aaSorting: [],
+            lengthChange:false,
+            info:false,
+            "bPaginate":false,
+            // pageLength:50,
+            ajax: {
+                'url': '../allocation/loadInfo/result_tab/pref_percent_stats.php'
+            },
+            columns: [{
+                    data: 'pref_no'
+                },
+                {
+                    data: 'no_of_stu'
+                },
+                {
+                    data: 'percent'
+                },
+            ],
+        })
+    function loadChart(){
+        var unallocated=<?php echo $unallocated.";";?>
+        $.ajax({
+            url:'../allocation/loadInfo/result_tab/loadChart.php',
+            type:'POST',
+            data:"unallocated="+unallocated,
+            success:function(response){
+                $("#chart-spinner").hide();
+                $("#chart-canvas-div").html(response);
+            }
+        })
+    }
+    loadChart();
+    function loadUnallocated(){
+       if(!unallocated_loaded){
+           unallocated_loaded=true;
+           $("#dataTable-unallocated").DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            serverMethod: 'post',
+            aaSorting: [],
+            ajax: {
+                'url': '../allocation/loadInfo/result_tab/unallocated_students.php'
+            },
+            fnDrawCallback: function() {
+                // $(".action-btn").on('click', loadModalCurrent)
+                // $(".selectrow").attr("disabled", true);
+                // $("th").removeClass('selectbox');
+                // $(".selectbox").click(function(e) {
+                //     var row = $(this).closest('tr')
+                //     var checkbox = $(this).find('input');
+                //     console.log(checkbox);
+                //     checkbox.attr("checked", !checkbox.attr("checked"));
+                //     row.toggleClass('selected table-secondary')
+                //     if ($("#dataTable-course tbody tr.selected").length != $("#dataTable-course tbody tr").length) {
+                //         $("#select_all").prop("checked", true)
+                //         $("#select_all").prop("checked", false)
+                //     } else {
+                //         $("#select_all").prop("checked", false)
+                //         $("#select_all").prop("checked", true)
+                //     }
+                // })
+            },
+            columns: [{
+                    data: 'email_id'
+                },
+                {
+                    data: 'rollno'
+                },
+                {
+                    data: 'fullname'
+                },
+                {
+                    data: 'dept_name'
+                },
+                {
+                    data: 'timestamp'
+                },
+                {
+                    data: 'action'
+                },
+            ],
+            columnDefs: [{
+                    targets: [3,5], // column index (start from 0)
+                    orderable: false, // set orderable false for selected columns
+                }
+            ],
+           })
+       }
+    }
+    loadUnallocated();
+    function loadAllocated(){
+        $("#dataTable-allocated").DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            serverMethod: 'post',
+            aaSorting: [],
+            ajax: {
+                'url': '../allocation/loadInfo/result_tab/allocated_students.php'
+            },
+            columns: [{
+                    data: 'email_id'
+                },
+                {
+                    data: 'rollno'
+                },
+                {
+                    data: 'fullname'
+                },
+                {
+                    data: 'dept_name'
+                },
+                {
+                    data: 'timestamp'
+                },
+                {
+                    data: 'pref_no_allotted'
+                },
+                {
+                    data: 'allocated_course'
+                },
+            ],
+            columnDefs: [{
+                    targets: [], // column index (start from 0)
+                    orderable: false, // set orderable false for selected columns
+                }
+            ],
+           })
+    }
+    loadAllocated();
+</script>
+<!--Update end-->
