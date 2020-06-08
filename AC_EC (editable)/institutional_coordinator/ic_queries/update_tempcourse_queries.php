@@ -9,11 +9,13 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         // $year=mysqli_escape_string($conn,$_POST['year']);
         if(isset($_POST['delete_course'])){
             $sql="DELETE FROM {$_SESSION['course_table']} WHERE cid='{$cid}' AND year='{$_SESSION['year']}' AND sem='{$_SESSION['sem']}'";
+            $sql2="DELETE FROM {$_SESSION['course_allocate_info']} WHERE cid='{$cid}' AND year='{$_SESSION['year']}' AND sem='{$_SESSION['sem']}'";
         }
         // else if(isset($_POST['delete_course_log'])){
         //     $sql="DELETE FROM audit_course_log WHERE email_id='$email_id' AND sem='$sem' AND year='$year'";
         // }
         mysqli_query($conn,$sql);
+        mysqli_query($conn,$sql2);
         // header("Location: ../addcourse_ac.php");
         exit();
     }

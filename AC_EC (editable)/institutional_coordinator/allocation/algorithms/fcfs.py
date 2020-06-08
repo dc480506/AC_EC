@@ -16,11 +16,13 @@ mapper={
         "student_course_table":3,
         "course_allocate_info_table":4,
         "course_table":5,
-        "no_of_preferences":6,
-        "host":7,
-        "username":8,
-        "password":9,
-        "dbname":10,
+		"pref_percent_table":6,
+		"pref_student_alloted_table":7,
+        "no_of_preferences":8,
+        "host":9,
+        "username":10,
+        "password":11,
+        "dbname":12,
         }
 argument=list(map(str.strip, sys.argv[1].strip('[]').split(',')))
 n=len(argument)
@@ -62,6 +64,7 @@ for x in range(1,int(argument[mapper['no_of_preferences']])+1):
 	cols.append("pref"+str(x))
 	
 data=pd.DataFrame(student,columns=cols)
+total_responses=len(data.index)
 data['timestamp']=pd.to_datetime(data["timestamp"])
 data=data.sort_values(by='timestamp')
 data.reset_index(inplace=True,drop=True)
@@ -78,11 +81,18 @@ for i in range(len(data)):
 	eid=data.loc[i,'email_id']
 	time=data.loc[i,'timestamp']
 	pref=data.loc[i,data.columns[3:]].values
-	pref=[x for x in pref if x.find("same")==-1]
+	pref=[x for x in pref if x.find("same")==-1 and x in courses]
+	pref_true_no=[]
+	trueno=1
+	for h in data.loc[i,data.columns[3:]].values:
+		if h.find("same")==-1 and h in courses:
+			pref_true_no.append([h,trueno])
+		trueno+=1
 	for j in range (len(pref)):
 		if(check_upper_limit(stu_course,courses,pref[j])):
 			stu_course[pref[j]].append([eid,1,time,j+1,pref])
-			student_pref_no[eid]=(j+1)
+			# student_pref_no[eid]=(j+1)
+			student_pref_no[eid]=pref_true_no[j][1]
 			break
 		else:
 			student_pref_no[eid]=-1
@@ -283,5 +293,12 @@ for course,student in stu_course.items():
 		# print(query)
 		mycursor.execute(query)
 		# print("INSERT INTO `"+table_name+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+str(sem)+",'"+year+"')")
+for k,v in dict1.items():
+	query="INSERT INTO `"+argument[mapper['pref_percent_table']]+"`(`pref_no`,`no_of_stu`,`percent`) VALUES('"+str(k)+"','"+str(v)+"','"+str(round(v/total_responses,4)*100)+"')"
+	mycursor.execute(query)
+for k,v in student_pref_no.items():
+	if v!=-1:
+		query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+str(k)+"','"+str(v)+"')"
+		mycursor.execute(query)
 mydb.commit()
 		

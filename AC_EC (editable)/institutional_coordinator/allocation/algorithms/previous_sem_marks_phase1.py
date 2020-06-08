@@ -43,7 +43,7 @@ preferences=""
 for x in range(1,int(argument[mapper['no_of_preferences']])):
 	preferences+="s.pref"+str(x)+","
 preferences+="s.pref"+str(argument[mapper['no_of_preferences']])
-mycursor.execute("SELECT s.email_id,s.rollno,s.timestamp,m.gpa,"+preferences+" FROM "+argument[mapper['student_pref_table']]+" as s inner join student_marks as m on s.email_id=m.email_id and s.sem=m.sem WHERE s.sem='"+argument[mapper['sem']]+"' and s.year='"+argument[mapper['year']]+"' order by gpa DESC, timestamp ASC")
+mycursor.execute("SELECT s.email_id,s.rollno,s.timestamp,m.gpa,"+preferences+" FROM "+argument[mapper['student_pref_table']]+" as s inner join student_marks as m on s.email_id=m.email_id and m.sem=s.sem-2 WHERE s.sem='"+argument[mapper['sem']]+"' and s.year='"+argument[mapper['year']]+"' order by gpa DESC, timestamp ASC")
 
 myresult = mycursor.fetchall()
 student=[]
@@ -76,7 +76,7 @@ for i in range(len(data)):
 	time=data.loc[i,'timestamp']
 	marks=data.loc[i,'gpa']
 	pref=data.loc[i,data.columns[4:]].values
-	pref=[x for x in pref if x.find("same")==-1]
+	pref=[x for x in pref if x.find("same")==-1 and x in courses]
 	for j in range (len(pref)):
 		if(check_upper_limit(stu_course,courses,pref[j])):
 			stu_course[pref[j]].append([eid,1,time,j+1,pref,i,marks])
@@ -117,7 +117,7 @@ for cid,v in courses.items():
 		query="INSERT INTO "+argument[mapper['course_allocate_info_table']]+" (cid,sem,year,status,no_of_hits) VALUES('"+cid+"','"+argument[mapper['sem']]+"','"+argument[mapper['year']]+"','IR','0') ON DUPLICATE KEY UPDATE status='IR',no_of_hits=0"
 		mycursor.execute(query)
 	print()	
-mydb.commit()		
+# mydb.commit()		
 # print(str(count1) +" courses are overflow")
 # print(str(count2) + " courses are underflow")
 # print(str(count) + " are unallocated")
@@ -136,7 +136,7 @@ for cid,hits in overlow_by.items():
 	mycursor.execute(query)
 	# print(query)
 	# print("Course id "+str(cid)+" has max "+str(courses[cid][-1])+ " was overflowed by "+str(hits))
-mydb.commit()
+# mydb.commit()
 
 
 
@@ -153,11 +153,11 @@ for course,student in stu_course.items():
 	query="UPDATE `"+argument[mapper['course_table']]+"` SET no_of_allocated="+str(len(student))+" WHERE cid='"+course+"' and year='"+argument[mapper['year']]+"' and sem='"+argument[mapper['sem']]+"'"
 	# print(query)
 	mycursor.execute(query)
-	for i in range(len(student)):	
-		query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"','"+argument[mapper['sem']]+"','"+argument[mapper['year']]+"') ON DUPLICATE KEY UPDATE cid='"+cid+"'"
-		mycursor.execute(query)
-		mydb.commit()
-		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem='"+argument[mapper['sem']]+"'"
-		# print(query)
-		mycursor.execute(query)
+	# for i in range(len(student)):	
+	# 	query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"','"+argument[mapper['sem']]+"','"+argument[mapper['year']]+"') ON DUPLICATE KEY UPDATE cid='"+cid+"'"
+	# 	mycursor.execute(query)
+	# 	# mydb.commit()
+	# 	query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem='"+argument[mapper['sem']]+"'"
+	# 	# print(query)
+	# 	mycursor.execute(query)
 mydb.commit()

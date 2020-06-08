@@ -78,7 +78,7 @@ for i in range(len(data)):
 	eid=data.loc[i,'email_id']
 	time=data.loc[i,'timestamp']
 	pref=data.loc[i,data.columns[3:]].values
-	pref=[x for x in pref if x.find("same")==-1]
+	pref=[x for x in pref if x.find("same")==-1 and x in courses]
 	for j in range (len(pref)):
 		if(check_upper_limit(stu_course,courses,pref[j])):
 			stu_course[pref[j]].append([eid,1,time,j+1,pref])
