@@ -42,6 +42,8 @@ def convert24am(str1):
     dt=str1.split(':')
     if dt[0]=='12':
     	return '00' + ':' + dt[1] + ':' + dt[2]
+    elif int(dt[0])<10:
+    	return '0' + dt[0] + ':' + dt[1] + ':' + dt[2] 
     else:
     	return str1
 def convert24pm(str1):
