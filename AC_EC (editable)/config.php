@@ -1,6 +1,6 @@
 <?php
 $servername="localhost";
-$password="root";
+$password="";
 $username="root";
 $dbname="AC_EC";
 $port="3306";
