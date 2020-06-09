@@ -12,6 +12,14 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
         $start_time=mysqli_escape_string($conn,$_POST['start_time']);
         // echo $start_date;
         // echo $start_time;
+        $current_date = date("Y-m-d");
+        if($start_date==$current_date)
+        {
+            $timestamp = strtotime($start_time) + 60*60*2;
+            $time = date('H:i', $timestamp);
+            $start_time = $time;
+        }
+        
         $start_timestamp=$start_date." ".$start_time;
         // echo $start_timestamp;
         $end_date=mysqli_escape_string($conn,$_POST['end_date']);
@@ -71,5 +79,3 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
         header("Location: ../prepare_form_ac.php");
     }
 }
-
-?>

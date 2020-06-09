@@ -40,31 +40,31 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $row=mysqli_fetch_assoc($result);
         $username=$row['username'];
 
-        // $sql="INSERT INTO faculty(`email_id`,`faculty_code`,`employee_id`, `fname`, `mname`, `lname`, `dept_id`, `post`, `username`,`added_by`,`timestamp`) VALUES ('$email','$faculty_code',$eid,'$names[0]','$names[1]','$names[2]','$dept_id', '$post', '$username','$added_by','$timestamp')";
-        // mysqli_query($conn,$sql) or die(mysqli_error($conn));
+        $sql="INSERT INTO faculty(`email_id`,`faculty_code`,`employee_id`, `fname`, `mname`, `lname`, `dept_id`, `post`, `username`,`added_by`,`timestamp`) VALUES ('$email','$faculty_code',$eid,'$names[0]','$names[1]','$names[2]','$dept_id', '$post', '$username','$added_by','$timestamp')";
+        mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
-            $results1 = mysqli_query($conn,"select email_id from faculty where email_id='$email'");
-            $results2 = mysqli_query($conn,"select faculty_code from faculty where faculty_code='$faculty_code'");
-            $results3 = mysqli_query($conn,"select employee_id from faculty where employee_id='$eid'");
+            // $results1 = mysqli_query($conn,"select email_id from faculty where email_id='$email'");
+            // $results2 = mysqli_query($conn,"select faculty_code from faculty where faculty_code='$faculty_code'");
+            // $results3 = mysqli_query($conn,"select employee_id from faculty where employee_id='$eid'");
 
-            if(mysqli_num_rows($results1) > 0){
-                echo "<script> 
-                $('#email_id_error').text('*This Email ID already exists');</script>";
-                // echo '<span id="error_email_id" class="text-danger">This id exists</span>';
-                // echo "Exists_email_id";
-            }else if(mysqli_num_rows($results2) > 0){
-                echo "<script> 
-                $('#email_faculty_code').text('*This faculty code already exists');</script>";
-                // echo "Exists_faculty_code";
-            }else if(mysqli_num_rows($results3) > 0){
-                echo "<script> 
-                $('#email_employee_id').text('*This employee ID already exists');</script>";
-                // echo "Exists_employee_id";
-            }
-            else{
-                $sql="INSERT INTO faculty(`email_id`,`faculty_code`,`employee_id`, `fname`, `mname`, `lname`, `dept_id`, `post`, `username`,`added_by`,`timestamp`) VALUES ('$email','$faculty_code',$eid,'$names[0]','$names[1]','$names[2]','$dept_id', '$post', '$username','$added_by','$timestamp')";
-                mysqli_query($conn,$sql) or die(mysqli_error($conn));
-            }
+            // if(mysqli_num_rows($results1) > 0){
+            //     echo "<script> 
+            //     $('#email_id_error').text('*This Email ID already exists');</script>";
+            //     // echo '<span id="error_email_id" class="text-danger">This id exists</span>';
+            //     // echo "Exists_email_id";
+            // }else if(mysqli_num_rows($results2) > 0){
+            //     echo "<script> 
+            //     $('#email_faculty_code').text('*This faculty code already exists');</script>";
+            //     // echo "Exists_faculty_code";
+            // }else if(mysqli_num_rows($results3) > 0){
+            //     echo "<script> 
+            //     $('#email_employee_id').text('*This employee ID already exists');</script>";
+            //     // echo "Exists_employee_id";
+            // }
+            // else{
+            //     $sql="INSERT INTO faculty(`email_id`,`faculty_code`,`employee_id`, `fname`, `mname`, `lname`, `dept_id`, `post`, `username`,`added_by`,`timestamp`) VALUES ('$email','$faculty_code',$eid,'$names[0]','$names[1]','$names[2]','$dept_id', '$post', '$username','$added_by','$timestamp')";
+            //     mysqli_query($conn,$sql) or die(mysqli_error($conn));
+            // }
             header("Location: ../addfaculty_internal.php");
         
     }
