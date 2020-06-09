@@ -17,6 +17,12 @@ $output=shell_exec($cmd." 2>&1");
     .accordion-toggle.open{
         background-color: #ffcccc;
     }
+    #spinner{
+        position: fixed;
+        top:50%;
+        left:50%;
+        display: none;
+    }
 </style>
 <br>
 <h5 class="font-weight-bold text-dark mb-0">
@@ -129,6 +135,11 @@ $output=shell_exec($cmd." 2>&1");
                                 <th>Roll No</th>
                                 <th>Full Name</th>
                                 <th>Department</th>
+                                <?php
+                                  if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
+                                      echo '<th>GPA</th>';
+                                  }
+                                ?>
                                 <th>Timestamp</th>
                                 <th>Allocate</th>
                             </tr>
@@ -139,6 +150,11 @@ $output=shell_exec($cmd." 2>&1");
                                 <th>Roll No</th>
                                 <th>Full Name</th>
                                 <th>Department</th>
+                                <?php
+                                  if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
+                                      echo '<th>GPA</th>';
+                                  }
+                                ?>
                                 <th>Timestamp</th>
                                 <th>Allocate</th>
                             </tr>
@@ -166,6 +182,11 @@ $output=shell_exec($cmd." 2>&1");
                                 <th>Roll No</th>
                                 <th>Full Name</th>
                                 <th>Department</th>
+                                <?php
+                                  if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
+                                      echo '<th>GPA</th>';
+                                  }
+                                ?>
                                 <th>Timestamp</th>
                                 <th>Pref No Allotted</th>
                                 <th>Allocated Course</th>
@@ -177,6 +198,11 @@ $output=shell_exec($cmd." 2>&1");
                                 <th>Roll No</th>
                                 <th>Full Name</th>
                                 <th>Department</th>
+                                <?php
+                                  if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
+                                      echo '<th>GPA</th>';
+                                  }
+                                ?>
                                 <th>Timestamp</th>
                                 <th>Pref No Allotted</th>
                                 <th>Allocated Course</th>
@@ -203,8 +229,11 @@ $output=shell_exec($cmd." 2>&1");
     <br>
     <div class="modal-footer">
 
-        <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
-        <button type="submit" class="btn btn-primary align-center" name="Complete">Complete</button>
+        <button type="button" class="btn btn-secondary align-center" id="prev_btn" name="previous">Previous</button>
+        <button type="submit" class="btn btn-primary align-center" id="complete_btn" name="Complete">Complete</button>
+    </div>
+    <div id="spinner">
+        <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
     </div>
 </div>
 <script>
@@ -298,6 +327,14 @@ $output=shell_exec($cmd." 2>&1");
                 {
                     data: 'dept_name'
                 },
+                <?php
+                    if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
+                        echo "
+                        {
+                            data: 'gpa'
+                        },";
+                    }
+                ?>
                 {
                     data: 'timestamp'
                 },
@@ -306,9 +343,23 @@ $output=shell_exec($cmd." 2>&1");
                 },
             ],
             columnDefs: [{
-                    targets: [3,5], // column index (start from 0)
-                    orderable: false, // set orderable false for selected columns
-                }
+                orderable: false ,
+                <?php
+                    if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
+                    echo "
+                    targets:[3,6],
+                    ";
+                    }else{
+                    echo "
+                    targets: [3,5],
+                    ";
+                    }
+                ?>
+                    // set orderable false for selected columns
+                     // column index (start from 0)
+                },
+                { className: "email_id", "targets": [ 0 ] },
+
             ],
            })
        }
@@ -336,6 +387,14 @@ $output=shell_exec($cmd." 2>&1");
                 {
                     data: 'dept_name'
                 },
+                <?php
+                    if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
+                        echo "
+                        {
+                            data: 'gpa'
+                        },";
+                    }
+                ?>
                 {
                     data: 'timestamp'
                 },
@@ -349,10 +408,89 @@ $output=shell_exec($cmd." 2>&1");
             columnDefs: [{
                     targets: [], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
-                }
+                },
+                { className: "email_id", "targets": [ 0 ] },
+
             ],
            })
     }
     loadAllocated();
+
+    $("#dataTable-allocated").on('click','td.email_id',function(){
+    var tr = $(this).closest('tr');
+        var row = $("#dataTable-allocated").DataTable().row( tr );
+ 
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown table-warning');
+        }
+        else {
+            // Open this row
+            var data={}
+            data['email_id']=row.data()['email_id'].split(">")[1].split("<")[0];
+            data_json=JSON.stringify(data)
+            console.log(data_json)
+            $.ajax({
+                type: "POST",
+                url: "../allocation/loadInfo/result_tab/loadAdditionalInfo/additional_info_response.php",
+                data: data_json, 
+                success: function(response)
+                {
+                row.child(response).show();
+                tr.addClass('shown table-warning');
+                }
+            });
+            // row.child("<b>Hello</b>").show();
+        }
+    })
+    $("#dataTable-unallocated").on('click','td.email_id',function(){
+    var tr = $(this).closest('tr');
+        var row = $("#dataTable-unallocated").DataTable().row( tr );
+ 
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown table-warning');
+        }
+        else {
+            // Open this row
+            var data={}
+            data['email_id']=row.data()['email_id'].split(">")[1].split("<")[0];
+            data_json=JSON.stringify(data)
+            console.log(data_json)
+            $.ajax({
+                type: "POST",
+                url: "../allocation/loadInfo/result_tab/loadAdditionalInfo/additional_info_response.php",
+                data: data_json, 
+                success: function(response)
+                {
+                row.child(response).show();
+                tr.addClass('shown table-warning');
+                }
+            });
+            // row.child("<b>Hello</b>").show();
+        }
+    })
+    // Previous Button Action
+    $("#prev_btn").on("click",function(){
+        $("#nav-final-allocate-tab").removeClass("active")
+        $("#nav-final-allocate-tab").addClass("disabled")
+        $.ajax({
+            url:'../allocation/loadPreviousTabs/load_allocation_analysis_tab_previous.php',
+            success:function(html){
+                $("#spinner").hide()
+                $("#nav-result-tab").removeClass("disabled")
+                $("#nav-tabContent").html(html)
+                $("#nav-result-tab").addClass("active")
+            },
+            beforeSend:function(){
+            //Loader daalna hai baadme
+            $('#spinner').show();
+            $('#complete_btn').attr('disabled',true);
+            $('#prev_btn').attr('disabled',true);
+            },
+        })
+    })
 </script>
 <!--Update end-->

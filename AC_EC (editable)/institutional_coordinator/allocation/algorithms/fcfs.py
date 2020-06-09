@@ -292,13 +292,16 @@ for course,student in stu_course.items():
 		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+year+"' and sem="+str(sem)
 		# print(query)
 		mycursor.execute(query)
+		query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+student[i][0]+"','"+str(student_pref_no[student[i][0]])+"')"
+		mycursor.execute(query)
+
 		# print("INSERT INTO `"+table_name+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+str(sem)+",'"+year+"')")
 for k,v in dict1.items():
 	query="INSERT INTO `"+argument[mapper['pref_percent_table']]+"`(`pref_no`,`no_of_stu`,`percent`) VALUES('"+str(k)+"','"+str(v)+"','"+str(round(v/total_responses,4)*100)+"')"
 	mycursor.execute(query)
-for k,v in student_pref_no.items():
-	if v!=-1:
-		query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+str(k)+"','"+str(v)+"')"
-		mycursor.execute(query)
+# for k,v in student_pref_no.items():
+# 	if v!=-1:
+# 		query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+str(k)+"','"+str(v)+"')"
+# 		mycursor.execute(query)
 mydb.commit()
 		
