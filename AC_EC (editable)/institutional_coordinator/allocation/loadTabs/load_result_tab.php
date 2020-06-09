@@ -221,7 +221,30 @@ $output=shell_exec($cmd." 2>&1");
             </h2>
         </div>
         <div id="course_div" class="collapse" aria-labelledby="course" data-parent="#final_allocation_accordion">
-            <div class="card-body">   
+            <div class="card-body">
+                <div class="table-responsive">
+                    <br>
+                    <table class="table table-bordered" id="dataTable-courses" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Course Name</th>
+                                <th>Course ID</th>
+                                <th>Min</th>
+                                <th>Max</th>
+                                <th>No of Students Allocated</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Course Name</th>
+                                <th>Course ID</th>
+                                <th>Min</th>
+                                <th>Max</th>
+                                <th>No of Students Allocated</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>   
             </div>
         </div>
     </div>
@@ -415,7 +438,46 @@ $output=shell_exec($cmd." 2>&1");
            })
     }
     loadAllocated();
+    function loadCourses(){
+        $("#dataTable-courses").DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            serverMethod: 'post',
+            aaSorting: [],
+            ajax: {
+                'url': '../allocation/loadInfo/result_tab/course_status.php'
+            },
+            columns: [
+                {
+                    data: 'cname'
+                },
+                {
+                    data: 'cid'
+                },
+                // {
+                //     data: 'dept_name'
+                // },
+                {
+                    data: 'min'
+                },
+                {
+                    data: 'max'
+                },
+                {
+                    data: 'no_of_allocated'
+                },
+            ],
+            columnDefs: [{
+                    targets: [], // column index (start from 0)
+                    orderable: false, // set orderable false for selected columns
+                },
+            ],
+           })
+    }
+    loadCourses();
 
+    // Additional Info Section
     $("#dataTable-allocated").on('click','td.email_id',function(){
     var tr = $(this).closest('tr');
         var row = $("#dataTable-allocated").DataTable().row( tr );
