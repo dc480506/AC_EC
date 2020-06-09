@@ -10080,6 +10080,8 @@ a:focus {
 .sidebar {
   width: 6.5rem;
   min-height: 100vh;
+  
+  
 }
 
 .sidebar .nav-item {
@@ -10235,7 +10237,8 @@ a:focus {
 
 @media (min-width: 768px) {
   .sidebar {
-    width: 14rem !important;
+    width: 15.2rem !important;
+    
   }
   .sidebar .nav-item .collapse {
     position: relative;
@@ -10262,14 +10265,14 @@ a:focus {
     width: 100%;
     text-align: left;
     padding: 1rem;
-    width: 14rem;
+    width: 13rem;
   }
   .sidebar .nav-item .nav-link i {
     font-size: 0.85rem;
     margin-right: 0.25rem;
   }
   .sidebar .nav-item .nav-link span {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     display: inline;
   }
   .sidebar .nav-item .nav-link[data-toggle="collapse"]::after {
@@ -10296,7 +10299,7 @@ a:focus {
   }
   .sidebar.toggled {
     overflow: visible;
-    width: 6.5rem !important;
+    width: 7.5rem !important;
   }
   .sidebar.toggled .nav-item .collapse {
     position: absolute;
@@ -10998,4 +11001,8 @@ footer.sticky-footer .copyright {
 
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }

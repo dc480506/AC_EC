@@ -2,11 +2,21 @@
   "use strict"; // Start of use strict
 
   // Toggle the side navigation
-  $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
+  $("#sidebarToggle, #sidebarToggleTop").on('click', function (e) {
     $("body").toggleClass("sidebar-toggled");
     $(".sidebar").toggleClass("toggled");
     if ($(".sidebar").hasClass("toggled")) {
       $('.sidebar .collapse').collapse('hide');
+      $("#left-page").removeClass("col-2");
+      $("#right-page").removeClass("col-10");
+      $("#left-page").addClass("col-1");
+      $("#right-page").addClass("col-11");
+    }
+    else {
+      $("#left-page").removeClass("col-1");
+      $("#right-page").removeClass("col-11");
+      $("#left-page").addClass("col-2");
+      $("#right-page").addClass("col-10");
     };
   });
 
