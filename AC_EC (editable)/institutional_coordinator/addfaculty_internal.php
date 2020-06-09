@@ -207,7 +207,7 @@ include('../includes/header.php');
                                     <div class="form-group col-md-6">
                                         <label for="emailid"><b>Email Address</b></label>
                                         <input type="email" class="form-control" id="email" name="email" placeholder="email@gmail.com">
-                                        <span id="error_email_id" class="text-danger"></span>
+                                        <!-- <span id="error_email_id" class="text-danger"></span> -->
 
                                     </div>
                                 </div>
@@ -215,12 +215,12 @@ include('../includes/header.php');
                                     <div class="form-group col-md-6">
                                         <label for="faculty_code"><b>Faculty Code</b></label>
                                         <input type="text" class="form-control" id="faculty_code" name="faculty_code" placeholder="faculty code">
-                                        <span id="error_faculty_code" class="text-danger"></span>
+                                        <!-- <span id="error_faculty_code" class="text-danger"></span> -->
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="eid"><b>Employee ID</b></label>
                                         <input type="text" class="form-control" id="eid" name="eid" placeholder="Employee Id">
-                                        <span id="error_employee_id" class="text-danger"></span>
+                                        <!-- <span id="error_employee_id" class="text-danger"></span> -->
                                     </div>
                                 </div>
                                 <div class="form-row">
