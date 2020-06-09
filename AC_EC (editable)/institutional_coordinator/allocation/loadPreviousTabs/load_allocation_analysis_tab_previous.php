@@ -1,89 +1,17 @@
-<?php
-//SELECT CONCAT('DROP TABLE `',t.table_name,'`;') AS stmt FROM delete_temp_tables as t (For cron)
+<?php 
 
- include_once('../../verify.php');
- include_once('../../../config.php');
- $_SESSION['algorithm_chosen']=$_POST['algo_selection'];
- $time=time();
- $hash=substr(hash_hmac('sha256', $time, $hash_key),0,6);
- $timestamp=date("Y-m-d H:i:s");
- $_SESSION['course_table']=$hash."_".$_SESSION['type']."_course";
-//  echo $_SESSION['course_table'];
- $_SESSION['student_pref']=$hash."_student_pref_".$_SESSION['type'];
- $_SESSION['student_course_table']=$hash."_student_".$_SESSION['type'];
- $_SESSION['course_allocate_info']=$hash."_".$_SESSION['type']."_course_info";
- $_SESSION['pref_percent_table']=$hash."_pref_percent";
- $_SESSION['pref_student_alloted_table']=$hash."_pref_student_alloted";
- mysqli_query($conn,"INSERT INTO delete_temp_tables VALUES ('".$_SESSION['course_table']."','".$timestamp."'),
-        ('".$_SESSION['student_pref']."','".$timestamp."'),('".$_SESSION['student_course_table']."','".$timestamp."'),('".$_SESSION['course_allocate_info']."','".$timestamp."')
-        ,('".$_SESSION['pref_percent_table']."','".$timestamp."'),,('".$_SESSION['pref_student_alloted_table']."','".$timestamp."')");
- $result=mysqli_query($conn,'CREATE TABLE '.$_SESSION['course_table'].' (
-    `cid` varchar(30) NOT NULL,
-    `sem` int(11) NOT NULL,
-    `year` varchar(8) NOT NULL,
-    `cname` varchar(50) NOT NULL,
-    `currently_active` tinyint(4) NOT NULL DEFAULT 0,
-    `min` int(11) NOT NULL,
-    `max` int(11) NOT NULL,
-    `no_of_allocated` int(11) NOT NULL DEFAULT 0,
-    `email_id` varchar(50) NOT NULL,
-    `timestamp` varchar(30) NOT NULL,
-    PRIMARY KEY(cid,sem,year)
-  )');
-//   echo $result." yo";
-  $preferences="";
-  $pref="";
-  for($i=1;$i<=$_SESSION['no_of_preferences'];$i++){
-      $preferences.='`pref'.$i.'` varchar(15) NOT NULL DEFAULT(""),';
-      if($i!=$_SESSION['no_of_preferences'])
-      {
-        $pref.='`pref'.$i.'`,';
-      }
-    }
-  $pref.='`pref'.$_SESSION['no_of_preferences'].'`';
-  mysqli_query($conn,'CREATE TABLE '.$_SESSION['student_pref'].' (
-    `email_id` varchar(50) NOT NULL,
-    `sem` int(11) NOT NULL,
-    `year` varchar(8) NOT NULL,
-    `rollno` varchar(20) NOT NULL,
-    `timestamp` varchar(30) NOT NULL,
-    `allocate_status` tinyint(4) NOT NULL DEFAULT 0,
-    `no_of_valid_preferences` int(11) NOT NULL,
-    '.$preferences.'
-    PRIMARY KEY(email_id,sem,year)
-  )');
-  mysqli_query($conn,'INSERT INTO '.$_SESSION['course_table'].
-  ' (`cid`, `sem`, `year`, `cname`, `currently_active`, `min`, `max`, `no_of_allocated`, `email_id`, `timestamp`)
-  SELECT cid,sem,year,cname,currently_active,min,max,no_of_allocated,email_id,timestamp 
-  FROM '.$_SESSION['type'].'_course WHERE sem="'.$_SESSION['sem'].'" AND year="'.$_SESSION['year'].'"
-  ');
-  mysqli_query($conn,'CREATE TABLE '.$_SESSION['student_course_table'].'(
-    `email_id` varchar(50) NOT NULL,
-    `cid` varchar(30) NOT NULL,
-    `sem` int(11) NOT NULL,
-    `year` varchar(8) NOT NULL,
-    PRIMARY KEY (email_id,sem,year)
-)');
-  mysqli_query($conn,'CREATE TABLE '.$_SESSION['course_allocate_info'].'(
-    `cid` varchar(30) NOT NULL,
-    `sem` int(11) NOT NULL,
-    `year` varchar(8) NOT NULL,
-    `status` varchar(2) NOT NULL,
-    `no_of_hits` int(11) NOT NULL,
-    PRIMARY KEY(cid,sem,year)
-)');
-  mysqli_query($conn,'INSERT INTO '.$_SESSION['student_pref'].'(`email_id`,`sem`,`year`,`rollno`,`timestamp`,`allocate_status`,`no_of_valid_preferences`,'.$pref.') SELECT email_id,sem,year,rollno,timestamp,allocate_status,no_of_valid_preferences,'.$pref.' FROM student_preference_'.$_SESSION['type'].' WHERE sem="'.$_SESSION['sem'].'" AND year="'.$_SESSION['year'].'"');
-  mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_percent_table'].'(
-    `pref_no` varchar(15) NOT NULL,
-    `no_of_stu` int(8) NOT NULL,
-    `percent` float(23,19) NOT NULL,
-    PRIMARY KEY(pref_no)
-)');
-mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
-    `email_id` varchar(50) NOT NULL,
-    `pref_no` int(8) NOT NULL,
-    PRIMARY KEY(email_id)
-)');
+include_once('../../verify.php');
+include_once('../../../config.php');
+mysqli_query($conn,"DELETE FROM `{$_SESSION['student_course_table']}` WHERE 1");
+mysqli_query($conn,"DELETE FROM `{$_SESSION['pref_percent_table']}` WHERE 1");
+mysqli_query($conn,"DELETE FROM `{$_SESSION['pref_student_alloted_table']}` WHERE 1");
+
+mysqli_query($conn,"DELETE FROM `{$_SESSION['course_allocate_info']}` WHERE 1");
+$args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
+$cmd='python ../algorithms/'.$_SESSION['algorithm_chosen'].'_phase1.py '.$args;
+// echo $cmd;
+$output=shell_exec($cmd." 2>&1");
+// echo $output;
 ?>
 <br>
 <h5 class="font-weight-bold text-dark mb-0">
@@ -94,14 +22,14 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
         echo "Previous Semester Marks";
      ?>
 </h5>
-<div class="tab-pane fade show active" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab">
+<div class="tab-pane fade show active" id="nav-result" role="tabpanel" aria-labelledby="nav-result-tab">
     <br>
     <div class="progress">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
     </div>
     <br>
-     <form class="forms-sample" method="POST" id="course_selection">
-    <table class="table table-bordered table-responsive" id="dataTable-course" width="100%" cellspacing="0">
+     <form class="forms-sample" method="POST" id="course_analysis">
+    <table class="table table-bordered table-responsive" id="dataTable-analysis" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>
@@ -114,8 +42,9 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
                                     <th>Course ID</th>
                                     <th>MIN Students</th>
                                     <th>MAX Students</th>
-                                    <th>1st Preference %</th>
-                                    <th>1st Preference Count</th>
+                                    <th>No of Students Allocated</th>
+                                    <th>Allocation Status</th>
+                                    <th>Course is overflow by</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -126,15 +55,16 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
                                     <th>Course ID</th>
                                     <th>MIN Students</th>
                                     <th>MAX Students</th>
-                                    <th>1st Preference %</th>
-                                    <th>1st Preference Count</th>
+                                    <th>No of Students Allocated</th>
+                                    <th>Allocation Status</th>
+                                    <th>Course is overflow by</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
                         </table>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary align-center" name="previous" id="prev_btn">Previous</button>
-                        <button type="submit" class="btn btn-primary align-center" id="next_btn" name="allocate">Next</button>
+                        <button type="submit" class="btn btn-primary align-center" name="allocate" id="next_btn">Next</button>
                     </div>
                 </form>
             </div>
@@ -148,13 +78,15 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
                     left:50%;
                 }
             </style>
+            <button id="reallocate" class="btn btn-primary align-center"><span class="text" id="reallocate_text">Reallocate</span></button>
 <script type="text/javascript">
    $(document).ready(function() {
+        console.log("hello")
         loadCurrent();
     });
    function loadCurrent() {
         // document.querySelector("#addCoursebtn").style.display="none"
-        $('#dataTable-course').DataTable({
+        $('#dataTable-analysis').DataTable({
             processing: true,
             serverSide: true,
             destroy: true,
@@ -162,7 +94,7 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
             aaSorting: [],
             pageLength:50,
             ajax: {
-                'url': '../allocation/loadInfo/select_course.php'
+                'url': '../allocation/loadInfo/course_analysis.php'
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModalCurrent)
@@ -174,7 +106,7 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
                     console.log(checkbox);
                     checkbox.attr("checked", !checkbox.attr("checked"));
                     row.toggleClass('selected table-secondary')
-                    if ($("#dataTable-course tbody tr.selected").length != $("#dataTable-course tbody tr").length) {
+                    if ($("#dataTable-analysis tbody tr.selected").length != $("#dataTable-analysis tbody tr").length) {
                         $("#select_all").prop("checked", true)
                         $("#select_all").prop("checked", false)
                     } else {
@@ -199,17 +131,20 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
                     data: 'max'
                 },
                 {
-                    data: 'firstpercent'
+                    data: 'no_of_allocated'
                 },
                 {
-                    data: 'firstcount'
+                    data: 'status'
+                },
+                {
+                    data: 'no_of_hits'
                 },
                 {
                     data: 'action'
                 },
             ],
             columnDefs: [{
-                    targets: [0,7], // column index (start from 0)
+                    targets: [0,8], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
@@ -244,8 +179,8 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
         var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
     // var btn=$(this);
-    var aPos = $("#dataTable-course").dataTable().fnGetPosition(target_row.get(0)); 
-    var courseData=$('#dataTable-course').DataTable().row(aPos).data()
+    var aPos = $("#dataTable-analysis").dataTable().fnGetPosition(target_row.get(0)); 
+    var courseData=$('#dataTable-analysis').DataTable().row(aPos).data()
     console.log(courseData)
     course_post_data={}
     course_post_data['cid']=courseData.cid.split(">")[1].split("</")[0].trim()
@@ -287,12 +222,12 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
                         //    alert(data); // show response from the php script.
                         $("#delete_course_btn").text("Deleted Successfully");
                         var row=$("#update-del-modal").closest('tr');
-                        var aPos = $("#dataTable-course").dataTable().fnGetPosition(row.get(0)); 
+                        var aPos = $("#dataTable-analysis").dataTable().fnGetPosition(row.get(0)); 
                         $('#update-del-modal').modal('hide');
                         $('body').removeClass('modal-open');
                         $('.modal-backdrop').remove();
                         // row.remove();
-                        $("#dataTable-course").DataTable().row(aPos).remove().draw(false);
+                        $("#dataTable-analysis").DataTable().row(aPos).remove().draw(false);
                         // console.log(aPos);
                         // console.log(row)
                     }
@@ -323,27 +258,23 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
         //    alert(data); // show response from the php script.
         $("#update_course_btn").text("Updated Successfully");
         var row=$("#update-del-modal").closest('tr');
-        var aPos = $("#dataTable-course").dataTable().fnGetPosition(row.get(0));
-        var temp = $("#dataTable-course").DataTable().row(aPos).data();
+        var aPos = $("#dataTable-analysis").dataTable().fnGetPosition(row.get(0));
+        var temp = $("#dataTable-analysis").DataTable().row(aPos).data();
         console.log(temp)
         //console.log(form_serialize)
         var color="text-success";
-        var maximum=form_serialize[3].value
-        var fc=temp.firstcount.split(">")[1].split("</")[0].trim()
-        var fp=temp.firstpercent.split(">")[1].split("</")[0].trim()
-        var name=temp.cname.split(">")[1].split("</")[0].trim()
+        var status=temp.status.split(">")[1].split("</")[0].trim()
         //console.log('max: '+maximum+' fc: '+fc)
-        if(parseInt(maximum)<parseInt(fc))
+        if(status == "Overflow")
            { color="text-danger";}
+        else if(status == "Underflow")
+            {color == "text-info";}
         //console.log(color)
         temp['cid'] = '<span class="'+color+'">'+form_serialize[1].value+'</span>';
         temp['min'] = '<span class="'+color+'">'+form_serialize[2].value+'</span>';    //new values
-        temp['max'] = '<span class="'+color+'">'+form_serialize[3].value+'</span>';
-        temp['cname']= '<span class="'+color+'">'+name+'</span>';   //new values
-        temp['firstcount']='<span class="'+color+'">'+fc+'</span>';
-        temp['firstpercent']='<span class="'+color+'">'+fp+'</span>';
+        temp['max'] = '<span class="'+color+'">'+form_serialize[3].value+'</span>';   //new values
         //console.log(temp)
-        $('#dataTable-course').dataTable().fnUpdate(temp,aPos,undefined,false);
+        $('#dataTable-analysis').dataTable().fnUpdate(temp,aPos,undefined,false);
         $('.action-btn').off('click')
         $('.action-btn').on('click',loadModalCurrent)
         // $("#dataTable-student").DataTable().row(aPos).draw(false);
@@ -351,16 +282,17 @@ mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
     }
     });
 }
-$("#course_selection").submit(function(e){
+
+$("#course_analysis").submit(function(e){
         e.preventDefault();
         var form=$(this);
         form_serialize=form.serializeArray();
         console.log(form_serialize);
-        $("#nav-course-tab").removeClass("active")
-        $("#nav-course-tab").addClass("disabled")
+        $("#nav-result-tab").removeClass("active")
+        $("#nav-result-tab").addClass("disabled")
         $.ajax({
             type:"POST",
-            url:"loadTabs/load_allocation_analysis_tab.php",
+            url:"loadTabs/load_result_tab.php",
             data:form_serialize,
             beforeSend:function(){
             //Loader daalna hai baadme
@@ -368,9 +300,9 @@ $("#course_selection").submit(function(e){
             $('#next_btn').attr('disabled',true);
             },
             success:function(html){
-                $("#nav-result-tab").removeClass("disabled")
+                $("#nav-final-allocate-tab").removeClass("disabled")
                 $("#nav-tabContent").html(html)
-                $("#nav-result-tab").addClass("active")
+                $("#nav-final-allocate-tab").addClass("active")
             },
             complete:function(){
                 $('#spinner').hide();
@@ -380,15 +312,15 @@ $("#course_selection").submit(function(e){
 
     // Previous Button Action
     $("#prev_btn").on("click",function(){
-        $("#nav-course-tab").removeClass("active")
-        $("#nav-course-tab").addClass("disabled")
+        $("#nav-result-tab").removeClass("active")
+        $("#nav-result-tab").addClass("disabled")
         $.ajax({
-            url:'../allocation/loadPreviousTabs/load_allocation_method_tab_previous.php',
+            url:'../allocation/loadPreviousTabs/load_course_selection_tab_previous.php',
             success:function(html){
                 $("#spinner").hide()
-                $("#nav-allocate-method-tab").removeClass("disabled")
+                $("#nav-course-tab").removeClass("disabled")
                 $("#nav-tabContent").html(html)
-                $("#nav-allocate-method-tab").addClass("active")
+                $("#nav-course-tab").addClass("active")
             },
             beforeSend:function(){
             //Loader daalna hai baadme

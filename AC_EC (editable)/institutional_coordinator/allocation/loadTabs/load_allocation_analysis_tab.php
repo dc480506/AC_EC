@@ -58,8 +58,8 @@ $output=shell_exec($cmd." 2>&1");
                             </tfoot>
                         </table>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
-                        <button type="submit" class="btn btn-primary align-center" name="allocate" id>Next</button>
+                        <button type="button" class="btn btn-secondary align-center" name="previous" id="prev_btn">Previous</button>
+                        <button type="submit" class="btn btn-primary align-center" name="allocate" id="next_btn">Next</button>
                     </div>
                 </form>
             </div>
@@ -302,6 +302,27 @@ $("#course_analysis").submit(function(e){
             complete:function(){
                 $('#spinner').hide();
             }
+        })
+    })
+
+    // Previous Button Action
+    $("#prev_btn").on("click",function(){
+        $("#nav-result-tab").removeClass("active")
+        $("#nav-result-tab").addClass("disabled")
+        $.ajax({
+            url:'../allocation/loadPreviousTabs/load_course_selection_tab_previous.php',
+            success:function(html){
+                $("#spinner").hide()
+                $("#nav-course-tab").removeClass("disabled")
+                $("#nav-tabContent").html(html)
+                $("#nav-course-tab").addClass("active")
+            },
+            beforeSend:function(){
+            //Loader daalna hai baadme
+            $('#spinner').show();
+            $('#next_btn').attr('disabled',true);
+            $('#prev_btn').attr('disabled',true);
+            },
         })
     })
 </script>

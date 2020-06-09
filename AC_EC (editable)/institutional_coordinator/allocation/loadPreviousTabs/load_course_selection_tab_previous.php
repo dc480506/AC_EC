@@ -3,87 +3,7 @@
 
  include_once('../../verify.php');
  include_once('../../../config.php');
- $_SESSION['algorithm_chosen']=$_POST['algo_selection'];
- $time=time();
- $hash=substr(hash_hmac('sha256', $time, $hash_key),0,6);
- $timestamp=date("Y-m-d H:i:s");
- $_SESSION['course_table']=$hash."_".$_SESSION['type']."_course";
-//  echo $_SESSION['course_table'];
- $_SESSION['student_pref']=$hash."_student_pref_".$_SESSION['type'];
- $_SESSION['student_course_table']=$hash."_student_".$_SESSION['type'];
- $_SESSION['course_allocate_info']=$hash."_".$_SESSION['type']."_course_info";
- $_SESSION['pref_percent_table']=$hash."_pref_percent";
- $_SESSION['pref_student_alloted_table']=$hash."_pref_student_alloted";
- mysqli_query($conn,"INSERT INTO delete_temp_tables VALUES ('".$_SESSION['course_table']."','".$timestamp."'),
-        ('".$_SESSION['student_pref']."','".$timestamp."'),('".$_SESSION['student_course_table']."','".$timestamp."'),('".$_SESSION['course_allocate_info']."','".$timestamp."')
-        ,('".$_SESSION['pref_percent_table']."','".$timestamp."'),,('".$_SESSION['pref_student_alloted_table']."','".$timestamp."')");
- $result=mysqli_query($conn,'CREATE TABLE '.$_SESSION['course_table'].' (
-    `cid` varchar(30) NOT NULL,
-    `sem` int(11) NOT NULL,
-    `year` varchar(8) NOT NULL,
-    `cname` varchar(50) NOT NULL,
-    `currently_active` tinyint(4) NOT NULL DEFAULT 0,
-    `min` int(11) NOT NULL,
-    `max` int(11) NOT NULL,
-    `no_of_allocated` int(11) NOT NULL DEFAULT 0,
-    `email_id` varchar(50) NOT NULL,
-    `timestamp` varchar(30) NOT NULL,
-    PRIMARY KEY(cid,sem,year)
-  )');
-//   echo $result." yo";
-  $preferences="";
-  $pref="";
-  for($i=1;$i<=$_SESSION['no_of_preferences'];$i++){
-      $preferences.='`pref'.$i.'` varchar(15) NOT NULL DEFAULT(""),';
-      if($i!=$_SESSION['no_of_preferences'])
-      {
-        $pref.='`pref'.$i.'`,';
-      }
-    }
-  $pref.='`pref'.$_SESSION['no_of_preferences'].'`';
-  mysqli_query($conn,'CREATE TABLE '.$_SESSION['student_pref'].' (
-    `email_id` varchar(50) NOT NULL,
-    `sem` int(11) NOT NULL,
-    `year` varchar(8) NOT NULL,
-    `rollno` varchar(20) NOT NULL,
-    `timestamp` varchar(30) NOT NULL,
-    `allocate_status` tinyint(4) NOT NULL DEFAULT 0,
-    `no_of_valid_preferences` int(11) NOT NULL,
-    '.$preferences.'
-    PRIMARY KEY(email_id,sem,year)
-  )');
-  mysqli_query($conn,'INSERT INTO '.$_SESSION['course_table'].
-  ' (`cid`, `sem`, `year`, `cname`, `currently_active`, `min`, `max`, `no_of_allocated`, `email_id`, `timestamp`)
-  SELECT cid,sem,year,cname,currently_active,min,max,no_of_allocated,email_id,timestamp 
-  FROM '.$_SESSION['type'].'_course WHERE sem="'.$_SESSION['sem'].'" AND year="'.$_SESSION['year'].'"
-  ');
-  mysqli_query($conn,'CREATE TABLE '.$_SESSION['student_course_table'].'(
-    `email_id` varchar(50) NOT NULL,
-    `cid` varchar(30) NOT NULL,
-    `sem` int(11) NOT NULL,
-    `year` varchar(8) NOT NULL,
-    PRIMARY KEY (email_id,sem,year)
-)');
-  mysqli_query($conn,'CREATE TABLE '.$_SESSION['course_allocate_info'].'(
-    `cid` varchar(30) NOT NULL,
-    `sem` int(11) NOT NULL,
-    `year` varchar(8) NOT NULL,
-    `status` varchar(2) NOT NULL,
-    `no_of_hits` int(11) NOT NULL,
-    PRIMARY KEY(cid,sem,year)
-)');
-  mysqli_query($conn,'INSERT INTO '.$_SESSION['student_pref'].'(`email_id`,`sem`,`year`,`rollno`,`timestamp`,`allocate_status`,`no_of_valid_preferences`,'.$pref.') SELECT email_id,sem,year,rollno,timestamp,allocate_status,no_of_valid_preferences,'.$pref.' FROM student_preference_'.$_SESSION['type'].' WHERE sem="'.$_SESSION['sem'].'" AND year="'.$_SESSION['year'].'"');
-  mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_percent_table'].'(
-    `pref_no` varchar(15) NOT NULL,
-    `no_of_stu` int(8) NOT NULL,
-    `percent` float(23,19) NOT NULL,
-    PRIMARY KEY(pref_no)
-)');
-mysqli_query($conn,'CREATE TABLE '.$_SESSION['pref_student_alloted_table'].'(
-    `email_id` varchar(50) NOT NULL,
-    `pref_no` int(8) NOT NULL,
-    PRIMARY KEY(email_id)
-)');
+ mysqli_query($conn,"DELETE FROM `{$_SESSION['course_allocate_info']}` WHERE 1");
 ?>
 <br>
 <h5 class="font-weight-bold text-dark mb-0">
@@ -377,7 +297,6 @@ $("#course_selection").submit(function(e){
             }
         })
     })
-
     // Previous Button Action
     $("#prev_btn").on("click",function(){
         $("#nav-course-tab").removeClass("active")
