@@ -162,6 +162,7 @@ while (len(underflow_stu_list)!=0):
 			temp=stu_course[prefl[s[3]-1]]
 			temp=[k for k in temp if k[0]!=email]
 			stu_course[prefl[s[3]-1]]=temp
+			student_pref_no[email]=-1
 		
 
 					
@@ -178,6 +179,7 @@ while (len(underflow_stu_list)!=0):
 				temp=stu_course[prefl[s[3]-1]]
 				temp=[k for k in temp if k[0]!=email]
 				stu_course[prefl[s[3]-1]]=temp
+				student_pref_no[email]=-1
 				print(email,"unallocated added")
 			else:
 				if(next_pref in under):
