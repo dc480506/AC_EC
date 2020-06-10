@@ -12,7 +12,7 @@ if(isset($_POST['order'])){
 }else{
    // $columnName='sem';
    // $columnSortOrder='asc';
-   $orderQuery=' order by cname asc ';
+   $orderQuery=' order by firstcount desc ';
 }
 $searchValue = $_POST['search']['value']; // Search value
 

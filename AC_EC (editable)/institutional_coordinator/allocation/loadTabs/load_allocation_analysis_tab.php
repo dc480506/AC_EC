@@ -263,7 +263,7 @@ $output=shell_exec($cmd." 2>&1");
         if(status == "Overflow")
            { color="text-danger";}
         else if(status == "Underflow")
-            {color == "text-info";}
+            {color = "text-info";}
         //console.log(color)
         temp['cid'] = '<span class="'+color+'">'+form_serialize[1].value+'</span>';
         temp['min'] = '<span class="'+color+'">'+form_serialize[2].value+'</span>';    //new values
