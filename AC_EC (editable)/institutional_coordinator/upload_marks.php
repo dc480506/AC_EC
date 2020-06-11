@@ -191,6 +191,7 @@ include('../includes/header.php');
                         <th>Semester</th>
                         <th>Year</th>
                         <th>GPA</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -201,6 +202,7 @@ include('../includes/header.php');
                         <th>Semester</th>
                         <th>Year</th>
                         <th>GPA</th>
+                        <th>Action</th>
                     </tr>
                 </tfoot>
             </table>
@@ -304,7 +306,8 @@ include('../includes/header.php');
                         $("#select_all").prop("checked", false)
                         $("#select_all").prop("checked", true)
                     }
-                })
+                });
+                $(".action-btn-marks").on('click',loadModalMarks)
             },
             columns: [{
                     data: 'select-cbox'
@@ -323,6 +326,9 @@ include('../includes/header.php');
                 },
                 {
                     data: 'gpa'
+                },
+                {
+                    data: 'action'
                 },
             ],
             columnDefs: [{
@@ -350,6 +356,94 @@ include('../includes/header.php');
             $("#dataTable-marks tbody tr").removeClass("selected table-secondary");
         }
     })
+
+    function loadModalMarks(){
+    var target_row = $(this).closest("tr"); // this line did the trick
+        console.log(target_row)
+    // var btn=$(this);
+    var aPos = $("#dataTable-marks").dataTable().fnGetPosition(target_row.get(0)); 
+    var courseData=$('#dataTable-marks').DataTable().row(aPos).data()
+    // delete courseData.action
+    // delete courseData.allocate_faculty
+    var json_courseData=JSON.stringify(courseData)
+    // console.log(json_courseData)
+    $.ajax({
+        type: "POST",
+        url: "student_mark/loadModal/loadModalMarks.php",
+        // data: form_serialize, 
+        // dataType: "json",
+        data: json_courseData,
+        success: function(output)
+        {
+            target_row.append(output);
+            $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
+                    $("#update-del-modal").remove();
+                });
+            $('#delete_course_form').submit(function(e){
+                e.preventDefault();
+                var form = $(this);
+                var form_serialize=form.serializeArray();// serializes the form's elements.
+                form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
+                $("#delete_course_btn").text("Deleting...");
+                $("#delete_course_btn").attr("disabled",true);
+                $.ajax({
+                    type: "POST",
+                    url: "ic_queries/studentmarks_queries.php",
+                    data: form_serialize, 
+                    success: function(data)
+                    {
+                        //    alert(data); // show response from the php script.
+                        $("#delete_course_btn").text("Deleted Successfully");
+                        var row=$("#update-del-modal").closest('tr');
+                        var aPos = $("#dataTable-marks").dataTable().fnGetPosition(row.get(0)); 
+                        $('#update-del-modal').modal('hide');
+                        // $('body').removeClass('modal-open');
+                        // $('.modal-backdrop').remove();
+                        // row.remove();
+                        $("#dataTable-marks").DataTable().row(aPos).remove().draw(false);
+                        // console.log(aPos);
+                        // console.log(row)
+                    }
+                    });
+            });
+            $('#update_course_form').submit(function(e){
+                update_course_form_current(e);
+                // $('#update-del-modal').modal('hide');
+            });
+        }
+    });
+}
+
+function update_course_form_current(e){
+    e.preventDefault();
+    var form = $('#update_course_form');
+    var form_serialize=form.serializeArray();
+    form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
+    $("#update_course_btn").text("Updating...");
+    $("#update_course_btn").attr("disabled",true);
+    $.ajax({
+    type: "POST",
+    url: "ic_queries/studentmarks_queries.php",
+    data: form_serialize, 
+    success: function(data)
+    {
+        $("#update_course_btn").text("Updated Successfully");
+        var row=$("#update-del-modal").closest('tr');
+        var aPos = $("#dataTable-marks").dataTable().fnGetPosition(row.get(0));
+        var temp = $("#dataTable-marks").DataTable().row(aPos).data();
+        temp['sem'] = form_serialize[0].value;
+        temp['year']=form_serialize[3].value;
+        temp['gpa']=form_serialize[5].value;
+        $('#dataTable-marks').dataTable().fnUpdate(temp,aPos,undefined,false);
+        $('.action-btn-marks').off('click')
+        $('.action-btn-marks').on('click',loadModalMarks)
+        $('#update-del-modal').modal('hide');
+        $(".selectrow_current").attr("disabled",true);
+
+    }
+    });
+}
 
 </script>
 
