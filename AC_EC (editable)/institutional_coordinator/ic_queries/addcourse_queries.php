@@ -26,14 +26,66 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $min=mysqli_escape_string($conn,$_POST['min']);
         $max=mysqli_escape_string($conn,$_POST['max']);
         // $dept_id=mysqli_escape_string($conn,$_POST['dept_id']);
-        if(isset($_POST['update_course'])){
-            $sql="UPDATE audit_course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
-                  AND sem='$semold' AND year='$year'";
-        } else if(isset($_POST['update_course_log'])){
-            $sql="UPDATE audit_course_log SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
-                  AND sem='$semold' AND year='$year'";
+        if($cidnew != $cidold){
+            $results = mysqli_query($conn,"select cid from audit_course where cid='$cidnew' and sem='$semnew'"); 
+            if($max <= $min){
+                echo "Max_error";
+            }
+            else if(mysqli_num_rows($results) > 0)
+            {    
+                echo "Exists_cid";
+            }
+            else{
+                if(isset($_POST['update_course']) && ($max > $min)){
+                    $sql="UPDATE audit_course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
+                        AND sem='$semold' AND year='$year'";
+                                        mysqli_query($conn,$sql);
+                } else if(isset($_POST['update_course_log']) && ($max > $min)){
+                    $sql="UPDATE audit_course_log SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
+                        AND sem='$semold' AND year='$year'";
+                                        mysqli_query($conn,$sql);
+                }else{
+                    echo "Max_error";
+                }
+            }
+        }else if($semnew != $semold){
+            $results = mysqli_query($conn,"select cid from audit_course where cid='$cidnew' and sem='$semnew'"); 
+            if($max <= $min){
+                echo "Max_error";
+            }
+            else if(mysqli_num_rows($results) > 0)
+            {    
+                echo "Exists_cid";
+            }
+            else{
+                if(isset($_POST['update_course']) && ($max > $min)){
+                    $sql="UPDATE audit_course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
+                        AND sem='$semold' AND year='$year'";
+                        mysqli_query($conn,$sql);
+                } else if(isset($_POST['update_course_log']) && ($max > $min)){
+                    $sql="UPDATE audit_course_log SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
+                        AND sem='$semold' AND year='$year'";
+                    mysqli_query($conn,$sql);
+                }else{
+                    echo "Max_error";
+                }
+            }
         }
-        mysqli_query($conn,$sql);
+        else if($max <= $min){
+            echo "Max_error";
+        }
+        else{
+            if(isset($_POST['update_course'])){
+                $sql="UPDATE audit_course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
+                    AND sem='$semold' AND year='$year'";
+            } else if(isset($_POST['update_course_log'])){
+                $sql="UPDATE audit_course_log SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' 
+                    AND sem='$semold' AND year='$year'";
+            }
+            mysqli_query($conn,$sql);
+        }
+       
+        // mysqli_query($conn,$sql);
         //Department applicable updation start
         if(isset($_POST['update_course'])){
             $sql="SELECT dept_id FROM audit_course_applicable_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year'";
@@ -85,7 +137,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
             $s.=")";
             if(isset($_POST['update_course'])){
                 $sql="DELETE FROM audit_course_applicable_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year' AND dept_id IN $s";
-                echo $sql;
+                // echo $sql;
             } else if(isset($_POST['update_course_log'])){
                 $sql="DELETE FROM audit_course_applicable_dept_log WHERE cid='$cidnew' AND sem='$semnew' AND year='$year' AND dept_id IN $s";
             }
@@ -106,7 +158,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         //Department applicable updation end
 
         //Floating department updation start
-        echo "Floating dept ".var_dump($_POST['floating_check_dept']);
+        // echo "Floating dept ".var_dump($_POST['floating_check_dept']);
         if(isset($_POST['update_course'])){
             $sql="SELECT dept_id FROM audit_course_floating_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year'";
         } else if(isset($_POST['update_course_log'])){
@@ -157,7 +209,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
             $s.=")";
             if(isset($_POST['update_course'])){
                 $sql="DELETE FROM audit_course_floating_dept WHERE cid='$cidnew' AND sem='$semnew' AND year='$year' AND dept_id IN $s";
-                echo $sql;
+                // echo $sql;
             } else if(isset($_POST['update_course_log'])){
                 $sql="DELETE FROM audit_course_floating_dept_log WHERE cid='$cidnew' AND sem='$semnew' AND year='$year' AND dept_id IN $s";
             }
