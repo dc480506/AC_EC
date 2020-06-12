@@ -48,12 +48,35 @@ include('../includes/header.php');
                         <div class="tab-content" id="nav-tabContent">
                             <!--Instructions Current-->
                             <div class="tab-pane fade show active" id="nav-audit-instructions" role="tabpanel" aria-labelledby="nav-audit-instructions">
-                                <a href="#" class="btn btn-primary btn-icon-split btn-sm" download>
+                                    <span>
+                                        <ol>
+                                            <li>Provide the following data directly <span class="text-danger">(not required in the excel sheet)*</span></li>
+                                            <ul>
+                                                <li><b>SEMESTER:-</b> The semester for which the students will take the course.</li>
+                                                <li><b>YEAR:-</b> The acedemic year for which the students will take the course.</li>
+                                                <li><b>No of Valid Preferences:-</b> Total number of preferences filled by students.</li>
+                                                <li><b>Allocate Status:-</b> Whether the students are allocated or not.</li>
+                                            </ul>
+                                            <li>Provide the column names (headers of the columns) for the following data from the excel sheet <span class="text-danger">(order is <em><b>Not</b></em> important)*</span></li>
+                                            <ul>
+                                                <li><b>Roll Number:-</b> The roll number of the students.</li>
+                                                <li><b>TIMESTAMP:-</b> The time at which student responded/submitted the Google form.</li>
+                                                <li><b>EMAIL:-</b> The Email ID of the student.</li>
+                                            </ul>
+                                            <li>Click on the "<b><em>Add preference column name</em></b>" checkbox:</li>
+                                            <ul>
+                                                <li>Then, click on "<b><em>Add</em></b>" button and write the column header/name (from the excel) for the preference number (which appears above the input box) as the input</li>
+                                                <li>Click on "<b><em>Undo</em></b>" button to remove the input for a particular preference.</li>
+                                            </ul>
+                                            <li>For your reference you can download the sample excel sheet from below:</li>
+                                        </ol>
+                                    </span>
+                                    <a href="../demo_excel_downloads/Student_Preference.xlsx" class="btn btn-primary btn-icon-split btn-sm float-right" download>
                                     <span class="icon text-white-50">
                                     <i class="fas fa-file-download"></i>
                                     </span>
                                     <span class="text">Download</span>
-                                </a>
+                                    </a>
                             </div>
                             <!--end Instructions Current-->
                             <!--Upload Current-->
