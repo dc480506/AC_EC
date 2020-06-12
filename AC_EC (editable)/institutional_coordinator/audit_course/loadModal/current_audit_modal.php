@@ -179,7 +179,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                           <div class="form-row">
                               <div class="form-group col-md-6">
                                   <label for="max"><b>Max</b></label>
-                                  <input type="number" class="form-control" required="required" name="max" placeholder="120" value="' . $max . '">
+                                  <input type="number" step="0.001" class="form-control" required="required" name="max" placeholder="120" value="' . $max . '">
                               </div>
                               <div class="form-group col-md-6">
                                   <label for="min"><b>Min</b></label>

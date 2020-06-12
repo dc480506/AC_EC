@@ -51,6 +51,9 @@ while ($row = mysqli_fetch_assoc($studentRecords)) {
       "sem"=>$row['sem'],
       "year"=>$row['year'],
       "gpa"=>$row['gpa'],
+      "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn-marks">
+                    <i class="fas fa-tools"></i>
+                </button>',
        );
    $count++;
 }
