@@ -16,6 +16,28 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     $row=mysqli_fetch_assoc($result);
     $year=$row['academic_year'];
 
+    $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+    $result = mysqli_query($conn, $sql);
+    $row=mysqli_fetch_assoc($result);
+    $sem_dropdown="";
+    // while ($row = mysqli_fetch_assoc($result)) {
+    $sem_dropdown.= "<option>".$sem."</option>";
+    if($row['sem_type']=='EVEN'){
+        for($sem_start=2;$sem_start<=8;$sem_start+=2){
+          if($sem == $sem_start){
+            continue;
+          }else{
+            $sem_dropdown.= "<option>" . $sem_start . "</option>";
+          }
+        }
+    $temp=explode('-',$row['academic_year'])[0];
+    $temp+=1;
+    $temp2="".($temp+1);
+    }else{
+        for($sem_start=1;$sem_start<=8;$sem_start+=2){
+            $sem_dropdown.= "<option>" . $sem_start . "</option>";
+        }
+    }
 
     $faculty_div = "";
     $i = 1;
@@ -157,13 +179,17 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                   <label for="courseid"><b>Course ID</b></label>
                                   <input type="text" class="form-control" required="required" placeholder="00000" name="courseidnew" value="' . $cid . '">
                                   <input type="hidden" class="form-control"  placeholder="00000" name="courseidold" value="' . $cid. '">
+                                  <span id="error_cid" class="text-danger"></span>
                               </div>
                           </div>
                           <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="semester"><b>Semester</b></label> 
-                                <input type="text" class="form-control" required="required" placeholder="Semester" name="semnew" value="' . $sem . '">
-                                <input type="hidden" class="form-control" placeholder="Semester" name="semold" value="' . $sem . '">
+                                <select class="form-control" required id="semnew" name="semnew" required="required" placeholder="Semester">
+                                '.$sem_dropdown.'
+                                </select>
+                                <input type="hidden" class="form-control" placeholder="Semester" id="semold" name="semold" value="' . $sem . '">
+                                <span id="error_sem" class="text-danger"></span>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="semester"><b>Year</b></label>
@@ -179,11 +205,12 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                           <div class="form-row">
                               <div class="form-group col-md-6">
                                   <label for="max"><b>Max</b></label>
-                                  <input type="number" step="0.001" class="form-control" required="required" name="max" placeholder="120" value="' . $max . '">
+                                  <input type="number" class="form-control" required="required" id="max "name="max" placeholder="120" min="0" value="' . $max . '">
+                                  <span id="error_max" class="text-danger"></span>
                               </div>
                               <div class="form-group col-md-6">
                                   <label for="min"><b>Min</b></label>
-                                  <input type="number" class="form-control" required="required" name="min" placeholder="1" value="' . $min . '">
+                                  <input type="number" class="form-control" required="required" id="min" name="min" placeholder="1" min="0" value="' . $min . '">
                               </div>
                           </div>
                           <label for="branch"><b>Branches to opt for</b></label>

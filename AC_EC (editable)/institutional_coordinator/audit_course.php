@@ -1630,43 +1630,57 @@ function update_course_form_current(e){
     data: form_serialize, 
     success: function(data)
     {
-        //    alert(data); // show response from the php script.
-        $("#update_course_btn").text("Updated Successfully");
-        var row=$("#update-del-modal").closest('tr');
-        var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0));
-        var temp = $("#dataTable-current").DataTable().row(aPos).data();
-        // console.log(temp)
-        // console.log(form_serialize)
-        temp['cname'] = form_serialize[0].value;
-        temp['cid']=form_serialize[1].value;
-        temp['sem']=form_serialize[3].value;
-        // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
-        var x="";
-        var index;
-        var floatingDeptIndex=findByAttr(form_serialize,'name','floating_check_dept[]')
-        for(index of floatingDeptIndex){
-            x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
-            x = x.concat(", ");
+        // alert(data); // show response from the php script.
+        if(data === "Exists_cid"){
+            $('#error_cid').text('*This course already exists in this Semester');
+            // $('#error_sem').text('*This course already exists in this Semester');
+            $("#update_course_btn").text("Update");
+            $("#update_course_btn").attr("disabled", false);
+        }else if(data === "Max_error"){
+            $('#error_max').text('*Max value is less than Min');
+            $("#update_course_btn").text("Update");
+            $("#update_course_btn").attr("disabled", false);
         }
-        x = x.substr(0, x.length - 2);
-        temp['dept_name']=x;
-        x="";
-        var deptApplicableIndex=findByAttr(form_serialize,'name','check_dept[]')
-        for(index of deptApplicableIndex){
-            x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
-            x = x.concat(", ");
+        else{
+            $("#update_course_btn").text("Updated Successfully");
+            var row=$("#update-del-modal").closest('tr');
+            var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0));
+            var temp = $("#dataTable-current").DataTable().row(aPos).data();
+            // console.log(temp)
+            // console.log(form_serialize)
+            temp['cname'] = form_serialize[0].value;
+            temp['cid']=form_serialize[1].value;
+            temp['sem']=form_serialize[3].value;
+            // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
+            var x="";
+            var index;
+            var floatingDeptIndex=findByAttr(form_serialize,'name','floating_check_dept[]')
+            for(index of floatingDeptIndex){
+                x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+                x = x.concat(", ");
+            }
+            x = x.substr(0, x.length - 2);
+            temp['dept_name']=x;
+            x="";
+            var deptApplicableIndex=findByAttr(form_serialize,'name','check_dept[]')
+            for(index of deptApplicableIndex){
+                x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+                x = x.concat(", ");
+            }
+            x = x.substr(0, x.length - 2);
+            temp['dept_applicable']=x;
+            temp['max']=form_serialize[7].value;
+            temp['min']=form_serialize[8].value;
+            console.log(temp)
+            $('#dataTable-current').dataTable().fnUpdate(temp,aPos,undefined,false);
+            $('.action-btn').off('click')
+            $('.action-btn').on('click',loadModalCurrent)
+            // $("#dataTable-current").DataTable().row(aPos).draw(false);
+            $(".selectrow_current").attr("disabled",true);
+            $('#error_cid').remove();
+            // $('#error_sem').remove();
+            $('#error_max').remove();
         }
-        x = x.substr(0, x.length - 2);
-        temp['dept_applicable']=x;
-        temp['max']=form_serialize[7].value;
-        temp['min']=form_serialize[8].value;
-        console.log(temp)
-        $('#dataTable-current').dataTable().fnUpdate(temp,aPos,undefined,false);
-        $('.action-btn').off('click')
-        $('.action-btn').on('click',loadModalCurrent)
-        // $("#dataTable-current").DataTable().row(aPos).draw(false);
-        $(".selectrow_current").attr("disabled",true);
-
     }
     });
 }
