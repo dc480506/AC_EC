@@ -45,9 +45,45 @@ include('../includes/header.php');
                             </button>
                         </div>
                         <div class="modal-body">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-students-tab" data-toggle="tab" href="#nav-students" role="tab" aria-controls="nav-students" aria-selected="true">Instructions</a>
+                                <a class="nav-item nav-link" id="nav-students-upload-tab" data-toggle="tab" href="#nav-students-upload" role="tab" aria-controls="nav-students-upload" aria-selected="false">Upload</a>
+                            </div>
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                            <!--Instructions Current-->
+                            <div class="tab-pane fade show active" id="nav-students" role="tabpanel" aria-labelledby="nav-students">
+                                <span>
+                                        <ol>
+                                            <li>Provide the column names (headers of the columns) for the following data from the excel sheet <span class="text-danger">(order is <em><b>Not</b></em> important)*</span></li>
+                                            <ul>
+                                                <li><b>FIRST NAME:-</b> The first name of the students.</li>
+                                                <li><b>MIDDLE NAME:-</b> The middle anme of the students.</li>
+                                                <li><b>LAST NAME:-</b> The last name of the students.</li>
+                                                <li><b>SEMESTER:-</b> The current semester of the students.</li>
+                                                <li><b>YEAR ADMITTED:-</b> The year in which the student was admitted.</li>
+                                                <li><b>DEPARTMENT:-</b> The department to which the student belongs <span class="text-danger">(the excel columns should have deparment id's as given in the sample excel sheet)*</span>.</li>
+                                                <li><b>EMAIL:-</b> The Email ID of the students.</li>
+                                                <li><b>Roll Number:-</b>The roll number of the students</li>
+                                            </ul>
+                                            <li>For your reference you can download the sample excel sheet from below:</li>
+                                        </ol>
+                                    </span>
+                                    <a href="../demo_excel_downloads/Student.xlsx" class="btn btn-primary btn-icon-split btn-sm float-right" download>
+                                    <span class="icon text-white-50">
+                                    <i class="fas fa-file-download"></i>
+                                    </span>
+                                    <span class="text">Download</span>
+                                    </a>
+                            </div>
+                            <!--end Instructions Current-->
+                            <!--Upload Current-->
+                            <div class="tab-pane fade" id="nav-students-upload" role="tabpanel" aria-labelledby="nav-students-upload">
                             <div class="container">
                                 <form method="POST" enctype="multipart/form-data" id="bulkUploadstudent">
                                     <label for="">
+                                        <br>
                                         <h6>Information for mapping Data from excel sheet to Database</h6>
                                     </label>
                                     <div class="form-row mt-4">
@@ -115,6 +151,9 @@ include('../includes/header.php');
                                 </form>
                             </div>
                         </div>
+                        <!-- end Upload Current -->
+                    </div>
+                </div>
                         <style type="text/css">
                             .files input {
                                 outline: 2px dashed #92b0b3;
