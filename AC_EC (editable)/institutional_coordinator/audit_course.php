@@ -1647,10 +1647,10 @@ function update_course_form_current(e){
             var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0));
             var temp = $("#dataTable-current").DataTable().row(aPos).data();
             // console.log(temp)
-            // console.log(form_serialize)
-            temp['cname'] = form_serialize[0].value;
-            temp['cid']=form_serialize[1].value;
-            temp['sem']=form_serialize[3].value;
+            console.log(form_serialize)
+            temp['cname'] = form_serialize[findByAttr(form_serialize,'name','coursename')].value;
+            temp['cid']=form_serialize[findByAttr(form_serialize,'name','courseidnew')].value;
+            temp['sem']=form_serialize[findByAttr(form_serialize,'name','semnew')].value;
             // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
             var x="";
             var index;
@@ -1669,8 +1669,8 @@ function update_course_form_current(e){
             }
             x = x.substr(0, x.length - 2);
             temp['dept_applicable']=x;
-            temp['max']=form_serialize[7].value;
-            temp['min']=form_serialize[8].value;
+            temp['max']=form_serialize[findByAttr(form_serialize,'name','max')].value;
+            temp['min']=form_serialize[findByAttr(form_serialize,'name','min')].value;
             console.log(temp)
             $('#dataTable-current').dataTable().fnUpdate(temp,aPos,undefined,false);
             $('.action-btn').off('click')
@@ -2132,11 +2132,11 @@ function update_course_form_upcoming(e){
         var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(row.get(0));
         var temp = $("#dataTable-upcoming").DataTable().row(aPos).data();
         // console.log(temp)
-        // console.log(form_serialize)
-        temp['cname'] = form_serialize[0].value;
-        temp['cid']=form_serialize[1].value;
-        temp['sem']=form_serialize[3].value;
-        temp['year']=form_serialize[5].value;
+        console.log(form_serialize)
+        temp['cname'] = form_serialize[findByAttr(form_serialize,'name','coursename')].value;
+        temp['cid']=form_serialize[findByAttr(form_serialize,'name','courseidnew')].value;
+        temp['sem']=form_serialize[findByAttr(form_serialize,'name','semnew')].value;
+        temp['year']=form_serialize[findByAttr(form_serialize,'name','year')].value;
         // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
         var x="";
         var index;
@@ -2155,8 +2155,8 @@ function update_course_form_upcoming(e){
         }
         x = x.substr(0, x.length - 2);
         temp['dept_applicable']=x;
-        temp['max']=form_serialize[7].value;
-        temp['min']=form_serialize[8].value;
+        temp['max']=form_serialize[findByAttr(form_serialize,'name','max')].value;
+        temp['min']=form_serialize[findByAttr(form_serialize,'name','min')].value;
         console.log(temp)
         $('#dataTable-upcoming').dataTable().fnUpdate(temp,aPos,undefined,false);
         $('.action-btn').off('click')
@@ -2588,11 +2588,11 @@ function update_course_form_previous(e){
         var aPos = $("#dataTable-previous").dataTable().fnGetPosition(row.get(0));
         var temp = $("#dataTable-previous").DataTable().row(aPos).data();
         // console.log(temp)
-        // console.log(form_serialize)
-        temp['cname'] = form_serialize[0].value;
-        temp['cid']=form_serialize[1].value;
-        temp['sem']=form_serialize[3].value;
-        temp['year']=form_serialize[5].value;
+        console.log(form_serialize)
+        temp['cname'] = form_serialize[findByAttr(form_serialize,'name','coursename')].value;
+        temp['cid']=form_serialize[findByAttr(form_serialize,'name','courseidnew')].value;
+        temp['sem']=form_serialize[findByAttr(form_serialize,'name','semnew')].value;
+        temp['year']=form_serialize[findByAttr(form_serialize,'name','year')].value;
         // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
         var x="";
         var index;
@@ -2611,8 +2611,8 @@ function update_course_form_previous(e){
         }
         x = x.substr(0, x.length - 2);
         temp['dept_applicable']=x;
-        temp['max']=form_serialize[7].value;
-        temp['min']=form_serialize[8].value;
+        temp['max']=form_serialize[findByAttr(form_serialize,'name','max')].value;
+        temp['min']=form_serialize[findByAttr(form_serialize,'name','min')].value;
         console.log(temp)
         $('#dataTable-previous').dataTable().fnUpdate(temp,aPos,undefined,false);
         $('.action-btn').off('click')
