@@ -188,8 +188,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                 <select class="form-control" required id="semnew" name="semnew" required="required" placeholder="Semester">
                                 '.$sem_dropdown.'
                                 </select>
-                                <input type="hidden" class="form-control" placeholder="Semester" id="semold" name="semold" value="' . $sem . '">
-                                <span id="error_sem" class="text-danger"></span>
+                              <input type="hidden" class="form-control" placeholder="Semester" id="semold" name="semold" value="' . $sem . '">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="semester"><b>Year</b></label>
