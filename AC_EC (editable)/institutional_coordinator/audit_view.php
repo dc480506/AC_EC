@@ -48,35 +48,35 @@ include('../includes/header.php');
                         <div class="tab-content" id="nav-tabContent">
                             <!--Instructions Current-->
                             <div class="tab-pane fade show active" id="nav-audit-instructions" role="tabpanel" aria-labelledby="nav-audit-instructions">
-                                    <span>
-                                        <ol>
-                                            <li>Provide the following data directly <span class="text-danger">(not required in the excel sheet)*</span></li>
-                                            <ul>
-                                                <li><b>SEMESTER:-</b> The semester for which the students will take the course.</li>
-                                                <li><b>YEAR:-</b> The acedemic year for which the students will take the course.</li>
-                                                <li><b>No of Valid Preferences:-</b> Total number of preferences filled by students.</li>
-                                                <li><b>Allocate Status:-</b> Whether the students are allocated or not.</li>
-                                            </ul>
-                                            <li>Provide the column names (headers of the columns) for the following data from the excel sheet <span class="text-danger">(order is <em><b>Not</b></em> important)*</span></li>
-                                            <ul>
-                                                <li><b>Roll Number:-</b> The roll number of the students.</li>
-                                                <li><b>TIMESTAMP:-</b> The time at which student responded/submitted the Google form.</li>
-                                                <li><b>EMAIL:-</b> The Email ID of the student.</li>
-                                            </ul>
-                                            <li>Click on the "<b><em>Add preference column name</em></b>" checkbox:</li>
-                                            <ul>
-                                                <li>Then, click on "<b><em>Add</em></b>" button and write the column header/name (from the excel) for the preference number (which appears above the input box) as the input</li>
-                                                <li>Click on "<b><em>Undo</em></b>" button to remove the input for a particular preference.</li>
-                                            </ul>
-                                            <li>For your reference you can download the sample excel sheet from below:</li>
-                                        </ol>
-                                    </span>
-                                    <a href="../demo_excel_downloads/Student_Preference.xlsx" class="btn btn-primary btn-icon-split btn-sm float-right" download>
+                                <span>
+                                    <ol>
+                                        <li>Provide the following data directly <span class="text-danger">(not required in the excel sheet)*</span></li>
+                                        <ul>
+                                            <li><b>SEMESTER:-</b> The semester for which the students will take the course.</li>
+                                            <li><b>YEAR:-</b> The acedemic year for which the students will take the course.</li>
+                                            <li><b>No of Valid Preferences:-</b> Total number of preferences filled by students.</li>
+                                            <li><b>Allocate Status:-</b> Whether the students are allocated or not.</li>
+                                        </ul>
+                                        <li>Provide the column names (headers of the columns) for the following data from the excel sheet <span class="text-danger">(order is <em><b>Not</b></em> important)*</span></li>
+                                        <ul>
+                                            <li><b>Roll Number:-</b> The roll number of the students.</li>
+                                            <li><b>TIMESTAMP:-</b> The time at which student responded/submitted the Google form.</li>
+                                            <li><b>EMAIL:-</b> The Email ID of the student.</li>
+                                        </ul>
+                                        <li>Click on the "<b><em>Add preference column name</em></b>" checkbox:</li>
+                                        <ul>
+                                            <li>Then, click on "<b><em>Add</em></b>" button and write the column header/name (from the excel) for the preference number (which appears above the input box) as the input</li>
+                                            <li>Click on "<b><em>Undo</em></b>" button to remove the input for a particular preference.</li>
+                                        </ul>
+                                        <li>For your reference you can download the sample excel sheet from below:</li>
+                                    </ol>
+                                </span>
+                                <a href="../demo_excel_downloads/Student_Preference.xlsx" class="btn btn-primary btn-icon-split btn-sm float-right" download>
                                     <span class="icon text-white-50">
-                                    <i class="fas fa-file-download"></i>
+                                        <i class="fas fa-file-download"></i>
                                     </span>
                                     <span class="text">Download</span>
-                                    </a>
+                                </a>
                             </div>
                             <!--end Instructions Current-->
                             <!--Upload Current-->
@@ -87,15 +87,51 @@ include('../includes/header.php');
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="semester"><b>Semester</b></label>
-                                                <input type="number" class="form-control" id="semester" placeholder="Semester" name="semester" placeholder="New Semester" name="sem_new" min="1" max="8" maxlength="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="SemestersOnly(this)" required>
+                                                <?php
+                                                include_once("../config.php");
+                                                $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+                                                $result = mysqli_query($conn, $sql);
+                                                $row = mysqli_fetch_assoc($result);
+                                                $sem_dropdown = "";
+                                                // while ($row = mysqli_fetch_assoc($result)) {
+                                                for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
+
+                                                    $sem_dropdown .= "<option>" . $sem_start . "</option>";
+                                                }
+                                                echo '<select class="form-control" required id="semester" name="semester">
+                                                    ' . $sem_dropdown . '
+                                                </select>'
+                                                ?>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="year"><b>Year</b></label>
-                                                <input type="text" class="form-control" id="year" name="year" placeholder="Eg 2019-20" minlength="7" maxlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required>
+                                                <select class="form-control" name="year" id="year">
+                                                    <?php
+                                                    $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
+                                                    $result = mysqli_query($conn, $sql);
+                                                    $row = mysqli_fetch_assoc($result);
+                                                    $year1 = $row['academic_year'];
+                                                    $year2 = $row['academic_year'];
+                                                    for ($i = 0; $i < 2; $i++) {
+                                                        $temp = explode('-', $year1)[0];
+                                                        $temp += 1;
+                                                        $temp2 = "" . ($temp + 1);
+                                                        $year1 = $temp . "-" . substr($temp2, 2);
+                                                        echo '<option>' . $year1 . '</option>';
+                                                    }
+                                                    for ($i = 0; $i < 4; $i++) {
+
+                                                        echo '<option>' . $year2 . '</option>';
+                                                        $temp = explode('-', $year2)[0];
+                                                        $temp -= 1;
+                                                        $temp2 = "" . ($temp + 1);
+                                                        $year2 = $temp . "-" . substr($temp2, 2);
+                                                    }
+                                                    echo '</select>';
+                                                    ?>
                                             </div>
                                         </div>
                                         <div class="form-row">
-
                                             <div class="form-group col-md-12">
                                                 <label for="npre"><b>Number of valid Preferences</b></label>
                                                 <input type="number" class="form-control" id="npre" placeholder="No. of valid Preferences" name="npre" min=0 oninput="validity.valid||(value='');" required>
@@ -219,7 +255,7 @@ include('../includes/header.php');
                             right: 0;
                             height: 56px;
                             content: "";
-                            background-image: url('https://image.flaticon.com/icons/png/128/109/109612.png');
+                            background-image: url("https://image.flaticon.com/icons/png/128/109/109612.png");
                             display: block;
                             margin: 0 auto;
                             background-size: 100%;

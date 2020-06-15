@@ -1,18 +1,18 @@
 <?php
-// echo 'Hi';
 session_start();
 if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
-  // echo 'Hi';
-  include_once('../../../config.php');
-  $data = json_decode(file_get_contents("php://input"), true);
-  $email_id = mysqli_escape_string($conn, $data['email_id']);
-  $rollno = mysqli_escape_string($conn, $data['rollno']);
-  $sem = mysqli_escape_string($conn, $data['sem']);
-  $allocate_status = mysqli_escape_string($conn, $data['allocate_status']);
-  $result = mysqli_query($conn, "select academic_year from current_sem_info WHERE currently_active=1");
-  $row = mysqli_fetch_assoc($result);
-  $year = $row['academic_year'];
-  echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+    include_once('../../../config.php');
+    $data = json_decode(file_get_contents("php://input"), true);
+    $email_id = mysqli_escape_string($conn, $data['email_id']);
+    $rollno = mysqli_escape_string($conn, $data['rollno']);
+    $sem = mysqli_escape_string($conn, $data['sem']);
+    $allocate_status = mysqli_escape_string($conn, $data['allocate_status']);
+    $year_temp = mysqli_escape_string($conn, $data['year']);
+    // echo $year_temp;
+    $result = mysqli_query($conn, "select academic_year from current_sem_info WHERE currently_active=1");
+    $row = mysqli_fetch_assoc($result);
+    $year = $row['academic_year'];
+    echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
           <div class="modal-header">
@@ -35,12 +35,12 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                   <form id="delete_response">
                       <div class="form-group">
                           <label for="exampleFormControlSelect1"><i class="text-danger">*This will delete all the information related to the students</i>
-                              <br>Are you sure you want to delete the student with Email ID <i><small><b>'.$email_id.'</small></b></i> ,rollno <i><small><b>'.$rollno.'</b></small></i>?
+                              <br>Are you sure you want to delete the student with Email ID <i><small><b>' . $email_id . '</small></b></i> ,rollno <i><small><b>' . $rollno . '</b></small></i>?
                           </label>
                           <br>
-                          <input type="hidden" name="email_id" value="' .$email_id. '">
-                          <input type="hidden" name="rollno" value="' .$rollno. '">
-                          <input type="hidden" name="sem" value="' .$sem. '">
+                          <input type="hidden" name="email_id" value="' . $email_id . '">
+                          <input type="hidden" name="rollno" value="' . $rollno . '">
+                          <input type="hidden" name="sem" value="' . $sem . '">
                           <button type="submit" class="btn btn-primary" id="delete_response_btn" name="delete_response">Yes</button>
                           <button type="button" class="btn btn-secondary" name="no">No</button>
                       </div>
@@ -53,31 +53,87 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                         <div class="form-row mt-4">
                             <div class="form-group col-md-6">
                             <label for="rollno"><b>Roll No</b></label>
-                            <input type="text" class="form-control" required="required" placeholder="New Roll no" name="rollno_new" id ="rollno_new" value="' .$rollno. '">
-                            <input type="hidden" class="form-control"  name="rollno_old" id="rollno_old" value="' .$rollno. '">
+                            <input type="text" class="form-control" required="required" placeholder="New Roll no" name="rollno_new" id ="rollno_new" value="' . $rollno . '">
+                            <input type="hidden" class="form-control"  name="rollno_old" id="rollno_old" value="' . $rollno . '">
                             <span id="rollno_error" class="text-danger"></span>
                         </div>           
                         <div class="form-group col-md-6">
                               <label for="allocate_status"><b>Allocate Status (0/1)</b></label>
                               <input type="text" class="form-control" required="required" name="allocate_status_new" placeholder="New Allocate Status" maxlength="1" minlength="1" min="0" max="1"
-                              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="NumbersOnly(this)" value="' .$allocate_status. '">
-                              <input type="hidden" class="form-control"  name="allocate_status_old" value="' .$allocate_status. '">
+                              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="NumbersOnly(this)" value="' . $allocate_status . '">
+                              <input type="hidden" class="form-control"  name="allocate_status_old" value="' . $allocate_status . '">
                           </div>                 
-                      </div>
-                      <div class="form-row">
-                          <div class="form-group col-md-6">
-                              <label for="sem"><b>Semester</b></label>
-                              <input type="number" class="form-control" required="required" placeholder="New Semester" name="sem_new" min="1" max="8" maxlength="1" 
-                              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
-                              onkeyup="SemestersOnly(this) "value="' .$sem. '">
-                              <input type="hidden" class="form-control"  name="sem_old" value="' .$sem. '">
-                          </div>
-                          <div class="form-group col-md-6">
-                              <label for="year"><b>Year</b></label>
-                              <input type="text" class="form-control" required="required" placeholder="New Year(Eg: 2019-20)" name="year_new" maxlength="7" minlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="' .$year. '">
-                              <input type="hidden" class="form-control"  name="year_old" value="' .$year. '">
-                          </div>
-                      </div>
+                      </div>'
+?>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="semester"><b>Semester</b></label>
+            <?php
+            $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_assoc($result);
+            $sem_dropdown = "";
+
+            for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
+                if ($sem == $sem_start) {
+                    $sem_dropdown .= "<option selected>" . $sem_start . "</option>";
+                } else {
+                    $sem_dropdown .= "<option>" . $sem_start . "</option>";
+                }
+            }
+            echo '<select class="form-control" name="sem_new" id="sem_new">
+                                ' . $sem_dropdown . '
+                            </select>';
+            echo '<input type="hidden" class="form-control" placeholder="Semester" name="sem_old" value="' . $sem . '">';
+
+            ?>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="year"><b>Year</b></label>
+            <select class="form-control" name="year_new" id="year_new">
+                <?php
+                $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
+                $result = mysqli_query($conn, $sql);
+                $row = mysqli_fetch_assoc($result);
+                $year1 = $row['academic_year'];
+                $year2 = $row['academic_year'];
+                // $selected = false;
+                // $temp3 = explode('-', $year_temp)[0];
+                // $temp4 = explode('-', $year1)[0];
+                // $temp5 = explode('-', $year2)[0];
+                echo "<option selected>" . $year_temp . "</option>";
+                for ($i = 0; $i < 2; $i++) {
+                    // if ($temp3 == $year2 || $temp3 == $year1) 
+                    // 
+                    if($year1 == $year_temp){
+                        continue;
+                        
+                    } else {
+                        $temp = explode('-', $year1)[0];
+                        $temp += 1;
+                        $temp2 = "" . ($temp + 1);
+                        $year1 = $temp . "-" . substr($temp2, 2);
+                        echo '<option>' . $year1 . '</option>';
+                    }
+                }
+                for ($i = 0; $i <4; $i++) {
+                    if ($year_temp == $year2) {
+                        continue;
+                    } else {
+                        echo '<option>' . $year2 . '</option>';
+                        $temp = explode('-', $year2)[0];
+                        $temp -= 1;
+                        $temp2 = "" . ($temp + 1);
+                        $year2 = $temp . "-" . substr($temp2, 2);
+                    }
+                }
+                echo '<input type="hidden" class="form-control" placeholder="Year" id ="year_old" name="year_old" value="' . $year . '">';
+                ?>
+        </div>
+        
+    </div>
+<?php
+    echo '
                       <br>
                       <button type="submit" class="btn btn-primary" id="update_response_btn" name="update_response">Update</button>
                   </form>
@@ -96,17 +152,15 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
 }
 ?>
 <script>
-    function SemestersOnly(input)
-    {
+    function SemestersOnly(input) {
         var regex = /[^1-8]/;
-        input.value = input.value.replace(regex,"");
+        input.value = input.value.replace(regex, "");
     }
-    function NumbersOnly(input)
-    {
-        var regex =/[a-z]/;
-        input.value = input.value.replace(regex,"");
-        var regex1 =/[2-9]/;
-        input.value = input.value.replace(regex1,"");
+
+    function NumbersOnly(input) {
+        var regex = /[a-z]/;
+        input.value = input.value.replace(regex, "");
+        var regex1 = /[2-9]/;
+        input.value = input.value.replace(regex1, "");
     }
-    
 </script>

@@ -310,7 +310,7 @@ include('../includes/header.php');
                                 <label class="custom-control-label" for="select_all"></label>
                             </div>
                         </th>
-                        <th>Faculty Code</th>
+                        <th>Short Name</th>
                         <th>Employee Id</th>
                         <th>Full Name</th>
                         <th>Email Id</th>
@@ -322,7 +322,7 @@ include('../includes/header.php');
                 <tfoot>
                     <tr>
                         <th></th>
-                        <th>Faculty Code</th>
+                        <th>Short Name</th>
                         <th>Employee Id</th>
                         <th>Full Name</th>
                         <th>Email Id</th>
@@ -375,29 +375,6 @@ include('../includes/header.php');
             $("#upload_internal").attr("disabled", false);
         });
     });
-
-    // //filter table
-    // function filterTable(){
-    //     function filter_internal_faculty(filter_post = '',filter_dept_id = ''){
-    //         var dataTable = $('#dataTable-internal').DataTable({
-    //             "processing": true,
-    //             "serverSide": true,
-    //             "destroy": true,
-    //             "aaSorting": [],
-    //             "searching": false,
-    //             "ajax": {
-    //                 url: "adduser/filter/filter_internalfaculty.php",
-    //                 // url: "adduser/loadInfo/add_internalfaculty.php",
-    //                 type:"POST",
-    //                 data:{
-    //                     filter_post:filter_post,
-    //                     filter_dept_id:filter_dept_id
-    //                 }
-
-    //             },
-    //         });
-    //     }
-    // }
 
     //DATATABLE CREATE
     function loadCurrent() {
@@ -591,7 +568,6 @@ include('../includes/header.php');
                     temp['employee_id'] = form_serialize[7].value;
                     temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
                     temp['post'] = form_serialize[10].value;
-                    // // console.log(temp)
                     $('#dataTable-internal').dataTable().fnUpdate(temp, aPos, undefined, false);
                     $('.action-btn').off('click')
                     $('.action-btn').on('click', loadModalCurrent)

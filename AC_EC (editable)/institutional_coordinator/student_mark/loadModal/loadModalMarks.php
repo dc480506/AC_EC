@@ -1,17 +1,17 @@
 <?php
-    // echo 'Hi';
+// echo 'Hi';
 session_start();
-if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
-    // echo 'Hi';
-    include_once('../../../config.php');
-    $data = json_decode(file_get_contents("php://input"),true); 
-    $email_id=mysqli_escape_string($conn,$data['email_id']);
-    $rollno=mysqli_escape_string($conn,$data['rollno']);
-    $sem=mysqli_escape_string($conn,$data['sem']);
-    $year=mysqli_escape_string($conn,$data['year']);
-    $gpa=mysqli_escape_string($conn,$data['gpa']);
+if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
+  // echo 'Hi';
+  include_once('../../../config.php');
+  $data = json_decode(file_get_contents("php://input"), true);
+  $email_id = mysqli_escape_string($conn, $data['email_id']);
+  $rollno = mysqli_escape_string($conn, $data['rollno']);
+  $sem = mysqli_escape_string($conn, $data['sem']);
+  $year = mysqli_escape_string($conn, $data['year']);
+  $gpa = mysqli_escape_string($conn, $data['gpa']);
 
-    echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+  echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -33,8 +33,8 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                         <form id="delete_course_form">
                         <div class="form-group">
                           <label for="exampleFormControlSelect1"><i class="text-danger">*This will delete all the information of this student related to the course</i><br>Are you sure you want to delete the student record 
-                          with Email ID <i><small><b>'.$email_id.'</small></b></i> ,Semester <i><small><b>'.$sem.'</b></small></i> and
-                            Academic Year <i><small><b>'.$year.'</b></small></i>?
+                          with Email ID <i><small><b>' . $email_id . '</small></b></i> ,Semester <i><small><b>' . $sem . '</b></small></i> and
+                            Academic Year <i><small><b>' . $year . '</b></small></i>?
                           </label>
                           <br>
                           <input type="hidden" name="email_id" value="' . $email_id . '">
@@ -64,36 +64,48 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                             <div class="form-group col-md-6">
                                 <label for="semester"><b>Semester</b></label> 
                                 <select class="form-control" name="semnew" id="sem_new">';
-                                  $i = 1;
-                                  for($i = 1; $i <= 8; $i++) {
-                                    echo '<option value="';
-                                    echo $i;
-                                    echo '"';
-                                    if($i == $sem)
-                                      echo ' selected';
-                                    echo ">";
-                                    echo $i;
-                                    echo '</option>';
-                                  }
-                                echo '</select>
-                                <input type="hidden" class="form-control" placeholder="Semester" name="semold" value="' . $sem . '">
-                                <input type="hidden" class="form-control" placeholder="Semester" name="email_id_student" value="' . $email_id . '">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="semester"><b>Year</b></label>
-                                <select class="form-control" name="yearnew" id="year_new">';
-                                      $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
-                                      $result = mysqli_query($conn, $sql);
-                                      $row=mysqli_fetch_assoc($result);
-                                      $year1=$row['academic_year'];
-                                      for($i=0;$i<4;$i++){
-                                          echo '<option>'.$year1.'</option>';
-                                          $temp=explode('-',$year1)[0];
-                                          $temp-=1;
-                                          $temp2="".($temp+1);
-                                          $year1=$temp."-".substr($temp2,2);
-                                      }
-                                echo '</select>
+  $i = 1;
+  for ($i = 1; $i <= 8; $i++) {
+    echo '<option value="';
+    echo $i;
+    echo '"';
+    if ($i == $sem)
+      echo ' selected';
+    echo ">";
+    echo $i;
+    echo '</option>';
+  }
+  echo '</select>
+<input type="hidden" class="form-control" placeholder="Semester" name="semold" value="' . $sem . '">
+<input type="hidden" class="form-control" placeholder="Semester" name="email_id_student" value="' . $email_id . '">
+</div>
+<div class="form-group col-md-6">
+<label for="semester"><b>Year</b></label>
+<select class="form-control" name="yearnew" id="year_new">';
+  $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
+  $result = mysqli_query($conn, $sql);
+  $row = mysqli_fetch_assoc($result);
+  $year1 = $row['academic_year'];
+  $year2 = $row['academic_year'];
+  for ($i = 0; $i < 2; $i++) {
+    $temp = explode('-', $year1)[0];
+    $temp += 1;
+    $temp2 = "" . ($temp + 1);
+    $year1 = $temp . "-" . substr($temp2, 2);
+    echo '<option>' . $year1 . '</option>';
+  }
+  for ($i = 0; $i < 4; $i++) {
+    if ($year == $year1) {
+      $year_dropdown .= "<option selected>" . $year1 . "</option>";
+    }
+    echo '<option>' . $year2 . '</option>';
+    $temp = explode('-', $year2)[0];
+    $temp -= 1;
+    $temp2 = "" . ($temp + 1);
+    $year2 = $temp . "-" . substr($temp2, 2);
+  }
+
+  echo '</select>
                                 <input type="hidden" class="form-control" placeholder="Year" name="yearold" value="' . $year . '">
                             </div>        
                           </div>
@@ -119,7 +131,6 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                 </div>
               </div>
             </div>';
-           
-                                // echo 'Hi';
+
+  // echo 'Hi';
 }
-?>

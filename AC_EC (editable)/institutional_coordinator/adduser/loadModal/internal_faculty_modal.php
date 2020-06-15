@@ -23,53 +23,6 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
     $row=mysqli_fetch_assoc($result);
     $year=$row['academic_year'];
-    // $checkbox_div='';
-    // $floating_checkbox_div='';
-    // $sql3 = "SELECT * FROM department";
-    // $dept_list = array();
-    // $result3 = mysqli_query($conn, $sql3);
-    // while ($row = mysqli_fetch_assoc($result3)) {
-    //   array_push($dept_list, $row['dept_id'], $row['dept_name']);
-    // }
-    // $str_arr = explode (", ", $dept_applicable);
-    // $str_arr2= explode (", ", $floating_dept);
-    // for ($i = 1; $i < count($dept_list); $i = $i + 2) {
-    //   // For applicable dept
-    //   if($dept_list[$i-1]!=$exclude_dept){
-    //     $checkbox_div .= '
-    //     <div class="custom-control custom-checkbox custom-control-inline">
-    //         <input type="checkbox" class="custom-control-input" id="applicableDeptCheck' . $i . '" name="check_dept[]" value="' . $dept_list[$i - 1] . '"';
-    //     if (in_array($dept_list[$i], $str_arr)) {
-    //         $checkbox_div .= " checked";
-    //     }
-    //     $checkbox_div .= '>
-    //         <label class="custom-control-label" for="applicableDeptCheck' . $i   . '"><small>' . $dept_list[$i] . '</small></label>
-    //     </div>
-    //     ';
-    //   }
-    //   // For floating dept
-    //     $floating_checkbox_div .= '
-    //     <div class="custom-control custom-checkbox custom-control-inline">
-    //         <input type="checkbox" class="custom-control-input" id="floatingDeptCheck' . $i . '" name="floating_check_dept[]" value="' . $dept_list[$i - 1] . '"';
-    //     if (in_array($dept_list[$i], $str_arr2)) {
-    //         $floating_checkbox_div .= " checked";
-    //     }
-    //     $floating_checkbox_div .= '>
-    //         <label class="custom-control-label" for="floatingDeptCheck' . $i   . '"><small>' . $dept_list[$i] . '</small></label>
-    //     </div>
-    //     ';
-    // }
-    // $dept_div .= '<div class="form-group">
-    //                 <label for="exampleInputDepartment"><b>Floating Department</b></label>
-    //                 <select class="form-control" required name="dept_id">';
-    // for ($i = 1; $i < count($dept_list); $i = $i + 2) {
-    //   $dept_div .= '<option';
-    //   if($floating_dept == $dept_list[$i])
-    //     $dept_div .= ' selected';
-    //   $dept_div .= ' value="' . $dept_list[$i - 1] . '">' . $dept_list[$i] . '';
-    //   $dept_div .= '</option>';
-    // }
-    // $dept_div .= '</select></div>';
       echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -129,7 +82,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                 </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="faculty_code"><b>Faculty Code</b></label>
+                                            <label for="faculty_code"><b>Short Name</b></label>
                                             <input type="text" class="form-control" required="required" placeholder="New Faculty Code" name="faculty_code_new" value="' . $faculty_code . '">
                                             <input type="hidden" class="form-control"  name="faculty_code_old" value="' . $faculty_code. '">
                                             <span id="error_faculty_code" class="text-danger"></span>
@@ -143,7 +96,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="dept_name"><b>dept_name</b></label>
+                                            <label for="dept_name"><b>Department</b></label>
                                             <div class="form-group">
                                                 <select class="form-control" required name="dept_id">
                                                     ';
@@ -157,7 +110,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                              </div> 
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="post"><b>post</b></label>
+                                            <label for="post"><b>Post</b></label>
                                             <input type="text" class="form-control" required="required" name="post_new" placeholder="New Post" value="' . $post . '">
                                         </div>
                                     </div>
