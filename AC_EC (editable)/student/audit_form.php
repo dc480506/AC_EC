@@ -6,8 +6,20 @@ include('sidebar.php');
 include('../includes/topbar_student.php');
 $course=array();
 $index=0;
+$sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+$result = mysqli_query($conn, $sql);
+$row=mysqli_fetch_assoc($result);
+// while ($row = mysqli_fetch_assoc($result)) {
+if($row['sem_type']=='EVEN'){
+    $temp=explode('-',$row['academic_year'])[0];
+    $temp+=1;
+    $temp2="".($temp+1);
+    $year_val=$temp."-".substr($temp2,2);
+}else{
+    $year_val=$row['academic_year'];
+}
 // TO get timestamp(start as well as end fOr a particular student) OF a FORM
-$sql1 = "SELECT form.start_timestamp,form.end_timestamp,sem,year,form.no_of_preferences,student.form_filled FROM form INNER JOIN student ON form.curr_sem=student.current_sem AND student.email_id='{$_SESSION['email']}' AND form.form_type='audit'";
+$sql1 = "SELECT form.start_timestamp,form.end_timestamp,sem,year,form.no_of_preferences,student.form_filled FROM form INNER JOIN student ON form.curr_sem=student.current_sem AND student.email_id='{$_SESSION['email']}' AND form.form_type='audit' AND year='$year_val'";
 $result1 = mysqli_query($conn, $sql1);
 if(mysqli_num_rows($result1)==0)
 {?>
@@ -42,14 +54,26 @@ else{
 // $count = mysqli_num_rows($result2);
 $row1 = mysqli_fetch_array($result1);
 $_SESSION['no_of_preferences']=$row1['no_of_preferences'];
-$today = date("Y-m-d H:i:s.u");
-//echo $today;
+$today = date("Y-m-d H:i:s");
+// echo $today;
+// echo '<br>';
+// echo $row1['start_timestamp'];
+// echo '<br>';
+// echo $row1['end_timestamp'];
 // $today_time = date("H:i:s");
 // $date = "2020-03-05 00:00:00";
 // if ($date < $today) {
 //     $allow=1;
 // }
 if($row1['start_timestamp']>$today){ ?>
+<style>
+    ::-webkit-scrollbar {
+    display: none!important
+}
+option:disabled{
+   color: red;
+}
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col">
@@ -131,7 +155,7 @@ while($row2 = mysqli_fetch_array($result2))
                         <h4><?php echo "Preference $i"; ?></h4>
                         <select id="cname<?php echo $i; ?>" class="btn btn-primary dropdown-toggle"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                            name="cname<?php echo $i; ?>" required>
+                            name="cname<?php echo $i; ?>" style="color:#ffffff;" required>
                             <!-- btn btn-primary dropdown-toggle -->
                             <option hidden="false" value="">--------</option>
                             <div class="dropdown-menu">
@@ -140,7 +164,7 @@ while($row2 = mysqli_fetch_array($result2))
                                             {
                                                 // $_SESSION['year']=$key['year'];
                                             ?>
-                                <option class="dropdown-item" value="<?php echo $key['cid']; ?>">
+                                <option style="color:white; " class="dropdown-item" value="<?php echo $key['cid']; ?>">
                                     <?php echo "{$key['cname']} ({$key['cid']})"; ?></option>
                                 <?php } ?>
                             </div>
