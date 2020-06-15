@@ -50,6 +50,9 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
         "max"=>'<h6 class="font-weight-bold '.$color.' mb-0">'.$row['max'].'</h6>',
         "min"=>'<h6 class="font-weight-bold '.$color.' mb-0">'.$row['min'].'</h6>',
         "no_of_allocated"=>'<h6 class="font-weight-bold '.$color.' mb-0">'.$row['no_of_allocated'].'</h6>',
+        "view_analysis"=>'<button type="button" class="btn btn-primary icon-btn action-btn">
+                             <i class="fas fa-chart-pie"></i>  
+                          </button>'
         );
     $count++;
 }

@@ -32,6 +32,8 @@ mydb = pymysql.connect(
 )
 
 mycursor = mydb.cursor()
+# mycursor.execute("DELETE FROM "+argument[mapper['course_info_table']]+" WHERE 1")
+# mydb.commit()
 course_query="SELECT cid,min,max FROM "+argument[mapper['course_table']]+" WHERE sem='"+argument[mapper['sem']]+"' and year='"+argument[mapper['year']]+"'"
 mycursor.execute(course_query)
 
@@ -107,7 +109,7 @@ for cid,v in courses.items():
 	if(len(stu_course[cid])>v[1]):
 		over.append(cid)
 		count1=count1+1
-	if(len(stu_course[cid])<v[0] and (len(stu_course[cid])!=0)):
+	elif(len(stu_course[cid])<v[0] and (len(stu_course[cid])!=0)):
 		under.append(cid)
 		underflow_stu_list.extend(x for x in stu_course[cid])
 		count2=count2+1
@@ -116,7 +118,7 @@ for cid,v in courses.items():
 		# print(query)
 		
 	# print(str(len(stu_course[cid]))+" are there in course "+cid+" whose max is "+str(v[1])+" and min is "+str(v[0]))
-	if(len(stu_course[cid])<v[1] and len(stu_course[cid])>v[0]):
+	elif(len(stu_course[cid])<v[1] and len(stu_course[cid])>v[0]):
 		query="INSERT INTO "+argument[mapper['course_allocate_info_table']]+" (cid,sem,year,status,no_of_hits) VALUES('"+cid+"','"+argument[mapper['sem']]+"','"+argument[mapper['year']]+"','IR','0') ON DUPLICATE KEY UPDATE status='IR',no_of_hits=0"
 		mycursor.execute(query)
 		# print(query)

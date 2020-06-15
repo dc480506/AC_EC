@@ -32,7 +32,7 @@
             </div>
             <br>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary align-center" name="allocate" id='next_btn'>Next</button>
+                <button type="submit" class="btn btn-primary align-center" name="allocate" id='next_btn'>Proceed</button>
             </div>
         </div>
     </form>
@@ -55,6 +55,7 @@
         console.log(form_serialize);
         $("#nav-allocate-method-tab").removeClass("active")
         $("#nav-allocate-method-tab").addClass("disabled")
+        $("#allocation_method").css("opacity",0.3)
         $.ajax({
             type:"POST",
             url:"loadTabs/load_course_selection_tab.php",

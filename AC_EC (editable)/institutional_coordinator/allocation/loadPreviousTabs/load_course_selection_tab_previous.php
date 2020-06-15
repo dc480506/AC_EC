@@ -53,8 +53,8 @@
                             </tfoot>
                         </table>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary align-center" name="previous" id="prev_btn">Previous</button>
-                        <button type="submit" class="btn btn-primary align-center" id="next_btn" name="allocate">Next</button>
+                        <button type="button" class="btn btn-secondary align-center" name="previous" id="prev_btn">Go Back</button>
+                        <button type="submit" class="btn btn-primary align-center" id="next_btn" name="allocate">Proceed</button>
                     </div>
                 </form>
             </div>
@@ -278,6 +278,7 @@ $("#course_selection").submit(function(e){
         console.log(form_serialize);
         $("#nav-course-tab").removeClass("active")
         $("#nav-course-tab").addClass("disabled")
+        $("#course_selection").css("opacity",0.3)
         $.ajax({
             type:"POST",
             url:"loadTabs/load_allocation_analysis_tab.php",
@@ -286,6 +287,7 @@ $("#course_selection").submit(function(e){
             //Loader daalna hai baadme
             $('#spinner').show();
             $('#next_btn').attr('disabled',true);
+            $('#prev_btn').attr('disabled',true);
             },
             success:function(html){
                 $("#nav-result-tab").removeClass("disabled")
@@ -311,6 +313,7 @@ $("#course_selection").submit(function(e){
             },
             beforeSend:function(){
             //Loader daalna hai baadme
+            $("#course_selection").css("opacity",0.3)
             $('#spinner').show();
             $('#next_btn').attr('disabled',true);
             $('#prev_btn').attr('disabled',true);
