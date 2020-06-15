@@ -50,7 +50,6 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
                 }
             }
             else if($semnew != $semold){
-                echo "".$semnew."***".$semold;
                 $results = mysqli_query($conn,"select * from audit_course where cid='$cidnew' and sem='$semnew'"); 
                 if(mysqli_num_rows($results) > 0)
                 {    
@@ -228,58 +227,70 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
             // header("Location: ../addcourse_ac.php");
             exit();
         }
-    }else if(isset($_POST['add_course'])){
+    }else if(isset($_POST['add_course']))
+    {
         $cname=mysqli_escape_string($conn,$_POST['cname']);
         $cid=mysqli_escape_string($conn,$_POST['courseid']);
         $sem=mysqli_escape_string($conn,$_POST['sem']);
         $year=mysqli_escape_string($conn,$_POST['year']);
-        $dept_name=mysqli_escape_string($conn,$_POST['dept']);
+        // $dept_name=mysqli_escape_string($conn,$_POST['dept']);
         $max=mysqli_escape_string($conn,$_POST['max']);
         $min=mysqli_escape_string($conn,$_POST['min']);
-        
-        // echo $cname."<br>";
-        // echo $cid."<br>";
-        // echo $sem."<br>";
-        // echo $year."<br>";
-        // echo $max."<br>";
-        // echo $min."<br>";
-        // echo $prevcid."<br>";
-        // echo $prevsem."<br>";
-        // echo $prevyear."<br>";
-        // echo $dept_id;
         $email=$_SESSION['email'];
         date_default_timezone_set('Asia/Kolkata');
-        $timestamp=date("Y-m-d H:i:s");
-        $sql="INSERT INTO audit_course(`cid`,`sem`,`year`,`cname`,`min`,`max`,`email_id`,`timestamp`) VALUES('$cid','$sem','$year','$cname','$min','$max','$email','$timestamp')";
-        mysqli_query($conn,$sql) or die(mysqli_error($conn));
-        $Values="";
-        foreach($_POST['floating_check_dept'] as $u){
-            $Values.="('$cid','$sem','$year','$u'),";
-        }
-        $sql="INSERT INTO audit_course_floating_dept VALUES ".substr($Values,0,strlen($Values)-1);
-        mysqli_query($conn,$sql) or die(mysqli_error($conn));
-        $Values="";
-        foreach($_POST['check_dept'] as $u){
-           $Values.="('$cid','$sem','$year','$u'),";
-        };
-        $sql="INSERT INTO audit_course_applicable_dept VALUES ".substr($Values,0,strlen($Values)-1);
-        mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-        if(isset($_POST['map_cbox'])){
-            $total_prev=mysqli_escape_string($conn,$_POST['total_prev']);
-            $temp=1;
-            $tuples="";
-            for($i=0;$i<$total_prev;$i++){
-                $prevcid=mysqli_escape_string($conn,$_POST['prevcid'.$temp]);
-                $prevsem=mysqli_escape_string($conn,$_POST['prevsem'.$temp]);
-                $prevyear=mysqli_escape_string($conn,$_POST['prevyear'.$temp]);
-                // echo ''.$prevcid.'';
-                $tuples.="('$cid','$sem','$year','$prevcid','$prevsem','$prevyear'),";
-                $temp++;
+        $timestamp=date("Y-m-d H:i:s"); 
+            // echo $cname."<br>";
+            // echo $cid."<br>";
+            // echo $sem."<br>";
+            // echo $year."<br>";
+            // echo $max."<br>";
+            // echo $min."<br>";
+            // echo $prevcid."<br>";
+            // echo $prevsem."<br>";
+            // echo $prevyear."<br>";
+            // echo $dept_id;
+        if($max < $min){
+            echo "add_up_max_error";
+        }else
+        {
+            $results = mysqli_query($conn,"select * from audit_course where cid='$cid' and sem='$sem'"); 
+            if(mysqli_num_rows($results) > 0)
+            {    
+                echo "add_up_cid_error";
             }
-            $sql="INSERT into audit_map VALUES ".substr($tuples,0,strlen($tuples)-1);
-            $result=mysqli_query($conn,$sql);
+            else{
+                $sql="INSERT INTO audit_course(`cid`,`sem`,`year`,`cname`,`min`,`max`,`email_id`,`timestamp`) VALUES('$cid','$sem','$year','$cname','$min','$max','$email','$timestamp')";
+                mysqli_query($conn,$sql);
+            }
 
+            $Values="";
+            foreach($_POST['floating_check_dept'] as $u){
+                $Values.="('$cid','$sem','$year','$u'),";
+            }
+            $sql="INSERT INTO audit_course_floating_dept VALUES ".substr($Values,0,strlen($Values)-1);
+            mysqli_query($conn,$sql);
+            $Values="";
+            foreach($_POST['check_dept'] as $u){
+            $Values.="('$cid','$sem','$year','$u'),";
+            };
+            $sql="INSERT INTO audit_course_applicable_dept VALUES ".substr($Values,0,strlen($Values)-1);
+            mysqli_query($conn,$sql);
+
+            if(isset($_POST['map_cbox'])){
+                $total_prev=mysqli_escape_string($conn,$_POST['total_prev']);
+                $temp=1;
+                $tuples="";
+                for($i=0;$i<$total_prev;$i++){
+                    $prevcid=mysqli_escape_string($conn,$_POST['prevcid'.$temp]);
+                    $prevsem=mysqli_escape_string($conn,$_POST['prevsem'.$temp]);
+                    $prevyear=mysqli_escape_string($conn,$_POST['prevyear'.$temp]);
+                    // echo ''.$prevcid.'';
+                    $tuples.="('$cid','$sem','$year','$prevcid','$prevsem','$prevyear'),";
+                    $temp++;
+                }
+                $sql="INSERT into audit_map VALUES ".substr($tuples,0,strlen($tuples)-1);
+                $result=mysqli_query($conn,$sql);
+            }
         }
     } else if(isset($_POST['course_remove'])) {
           $oldcid=mysqli_escape_string($conn,$_POST['oldcid']);
@@ -335,7 +346,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         }
     }
     $faculties_allocated_temp = "nvvhvjh";
-    echo "{$faculties_allocated_temp}+{$faculty_div}";
+    // echo "{$faculties_allocated_temp}+{$faculty_div}";
     } else if(isset($_POST['course_remove_log'])) {
           $oldcid=mysqli_escape_string($conn,$_POST['oldcid']);
           $oldsem=mysqli_escape_string($conn,$_POST['oldsem']);
@@ -390,7 +401,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         }
     }
     $faculties_allocated_temp = "nvvhvjh";
-    echo "{$faculties_allocated_temp}+{$faculty_div}";
+    // echo "{$faculties_allocated_temp}+{$faculty_div}";
     } else if(isset($_POST['add_new_similar_course'])) {
         $oldyear=mysqli_escape_string($conn,$_POST['tempoldyear']);
           $newyear=mysqli_escape_string($conn,$_POST['tempyear']);
@@ -445,7 +456,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         }
     }
     $faculties_allocated_temp = "nvvhvjh";
-    echo "{$faculties_allocated_temp}+{$faculty_div}";
+    // echo "{$faculties_allocated_temp}+{$faculty_div}";
 
     } else if(isset($_POST['add_new_similar_course_log'])) {
         $oldyear=mysqli_escape_string($conn,$_POST['tempoldyear']);
