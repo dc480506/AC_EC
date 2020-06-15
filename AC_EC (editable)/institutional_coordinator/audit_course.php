@@ -407,6 +407,7 @@ include('../includes/header.php');
                                                     <div class="form-group">
                                                         <label for="exampleInputCourseid"><b>Course ID</b></label>
                                                         <input type="text" class="form-control" required id="exampleInputCourseid" name="courseid" placeholder="Course ID">
+                                                        <span id="add_upcoming_cid_error" class="text-danger"></span>
                                                     </div>
                                                     <?php
                                                             include_once("../config.php");
@@ -437,6 +438,7 @@ include('../includes/header.php');
                                                             <select class="form-control" required id="exampleInputSemester" name="sem">
                                                             '.$sem_dropdown.'
                                                             </select>
+                                                            <span id="add_upcoming_cid_error" class="text-danger"></span>
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label for="exampleInputYear"><b>Year</b></label>
@@ -471,6 +473,7 @@ include('../includes/header.php');
                                                         <div class="form-group col-md-6">
                                                             <label for="exampleInputMax"><b>Max</b></label>
                                                             <input type="number" class="form-control" required id="exampleInputMax" name="max" placeholder="Maximum no. of students">
+                                                            <span id="add_upcoming_max_error" class="text-danger"></span>
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label for="exampleInputMin"><b>Min</b></label>
@@ -2705,7 +2708,7 @@ $('#nav-tab').on("click", "a", function (event) {
       loadPrevious()
   }
 });
-$("#add_course_form").submit(function(e) {
+$("#add_course_form").submit(function(e){
     e.preventDefault(); // avoid to execute the actual submit of the form.
     var form = $(this);
     var form_serialize=form.serializeArray();// serializes the form's elements.
@@ -2718,8 +2721,21 @@ $("#add_course_form").submit(function(e) {
         data: form_serialize, 
         success: function(data)
         {
-            //    alert(data); // show response from the php script.
-            $("#add_course_btn").text("Added Successfully");
+            //alert(data); // show response from the php script.
+            if(data === "add_up_max_error"){
+                $('#add_upcoming_max_error').text('*Max value is less than Min');
+                $("#add_course_btn").text("Add");
+                $("#add_course_btn").attr("disabled", false);
+            }else if(data === "add_up_cid_error"){
+                $('#add_upcoming_cid_error').text('*This course already exists in this Semester');
+                // $('#error_sem').text('*This course already exists in this Semester');
+                $("#add_course_btn").text("Add");
+                $("#add_course_btn").attr("disabled", false);
+            }
+            else{
+                $("#add_course_btn").text("Added Successfully");
+                $('add_upcoming_max_error').remove();
+            }
         }
         });
 });
