@@ -19,6 +19,7 @@ include('../includes/header.php');
                 $row= mysqli_fetch_array($result,MYSQLI_ASSOC);
                 $count= mysqli_num_rows($result);
                 $_SESSION['sem']=$row['current_sem'];
+                $_SESSION['rollno']=$row['rollno'];
                 // $_SESSION['year']=$row['year'];
                 if($count==1)
                 {
