@@ -86,14 +86,14 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                             <span id="error_rollno" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="year_of_admission"><b>Year_of_Admission</b></label>
+                                            <label for="year_of_admission"><b>Year</b></label>
                                             <input type="text" class="form-control" required="required" placeholder="eg..0000" name="year_of_admission_new" minlength="4" maxlength="4" value="'. $year_of_admission.'">
                                             <input type="hidden" class="form-control"  name="year_of_admission_old" value="' . $year_of_admission. '">
                                         </div>  
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="dept_name"><b>dept_name</b></label>
+                                            <label for="dept_name"><b>Department</b></label>
                                             <div class="form-group">
                                                 <select class="form-control" required name="dept_id">
                                                     ';
@@ -107,13 +107,13 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                              </div> 
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="current_sem"><b>current_sem</b></label>
+                                            <label for="current_sem"><b>Semester</b></label>
                                             <input type="number" class="form-control" required="required" name="current_sem_new" placeholder="eg..1" min="1" max="8" maxlength="1" 
                                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
                                             onkeyup="SemestersOnly(this) "value="' . $current_sem . '">
                                         </div>                                    
                                     </div>
-                                    <br>
+                                    
                                     <button type="submit" class="btn btn-primary" id="update_student_btn" name="update_student">Update</button>
                                 </form>
                                 <br>

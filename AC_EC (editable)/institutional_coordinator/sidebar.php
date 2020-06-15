@@ -57,11 +57,20 @@
   </li>
 
   <hr class="sidebar-divider">
-  <!-- Nav Item - Pages Collapse Menu -->
   <li class="nav-item">
-    <a class="nav-link" href="studentallocation.php">
-      <i class="fas fa-user-graduate"></i>
-      <span>Student Allocation</span></a>
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages10" aria-expanded="true" aria-controls="collapseUtilities">
+    <i class="fas fa-user-graduate"></i>
+    <span>Student Allocation</span></a>
+    </a>
+    <div id="collapsePages10" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="studentallocation.php">Audit Course</a>
+        <a class="collapse-item" href="studentallocation_idc.php">Interdisciplinary Course</a>
+        <a class="collapse-item" href="studentallocation_cec.php">Close Elective Course</a>
+        <a class="collapse-item" href="studentallocation_oec.php">Open Elective Course</a>
+
+      </div>
+    </div>
   </li>
 
   <hr class="sidebar-divider">
@@ -100,8 +109,9 @@
   <!-- Nav Item - Pages Collapse Menu -->
   <li class="nav-item">
     <a class="nav-link" href="upload_marks.php">
-      <i class="fa fa-eye" aria-hidden="true"></i>
-      <span>View Marks</span></a>
+    <i class="fas fa-file"></i>
+
+      <span>Marks</span></a>
   </li>
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">

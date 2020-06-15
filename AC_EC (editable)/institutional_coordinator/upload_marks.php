@@ -28,7 +28,6 @@ include('../includes/header.php');
                 </div>
             </div>
         </div>
-
         <div class="modal fade" id="uploadstudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -49,26 +48,26 @@ include('../includes/header.php');
                             <!--Instructions Current-->
                             <div class="tab-pane fade show active" id="nav-marks-instructions" role="tabpanel" aria-labelledby="nav-marks-instructions">
                                 <span>
-                                        <ol>
-                                            <li>Provide the following data directly <span class="text-danger">(not required in the excel sheet)*</span></li>
-                                            <ul>
-                                                <li><b>SEMESTER:-</b> The semester for which the student's gpa is to be added.</li>
-                                                <li><b>YEAR:-</b> The acedemic year for which the student's gpa is to be added.</li>
-                                            </ul>
-                                            <li>Provide the column names (headers of the columns) for the following data from the excel sheet <span class="text-danger">(order is <em><b>Not</b></em> important)*</span></li>
-                                            <ul>
-                                                <li><b>GPA:-</b> The gpa of the students.</li>
-                                                <li><b>EMAIL:-</b> The Email ID of the student.</li>
-                                            </ul>
-                                            <li>For your reference you can download the sample excel sheet from below:</li>
-                                        </ol>
-                                    </span>
-                                    <a href="#" class="btn btn-primary btn-icon-split btn-sm float-right" download>
+                                    <ol>
+                                        <li>Provide the following data directly <span class="text-danger">(not required in the excel sheet)*</span></li>
+                                        <ul>
+                                            <li><b>SEMESTER:-</b> The semester for which the student's gpa is to be added.</li>
+                                            <li><b>YEAR:-</b> The acedemic year for which the student's gpa is to be added.</li>
+                                        </ul>
+                                        <li>Provide the column names (headers of the columns) for the following data from the excel sheet <span class="text-danger">(order is <em><b>Not</b></em> important)*</span></li>
+                                        <ul>
+                                            <li><b>GPA:-</b> The gpa of the students.</li>
+                                            <li><b>EMAIL:-</b> The Email ID of the student.</li>
+                                        </ul>
+                                        <li>For your reference you can download the sample excel sheet from below:</li>
+                                    </ol>
+                                </span>
+                                <a href="#" class="btn btn-primary btn-icon-split btn-sm float-right" download>
                                     <span class="icon text-white-50">
-                                    <i class="fas fa-file-download"></i>
+                                        <i class="fas fa-file-download"></i>
                                     </span>
                                     <span class="text">Download</span>
-                                    </a>
+                                </a>
                             </div>
                             <!--end Instructions Current-->
                             <!--Upload Current-->
@@ -79,11 +78,46 @@ include('../includes/header.php');
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="semester"><b>Semester</b></label>
-                                                <input type="number" class="form-control" id="sem" placeholder="Semester" name="sem" oninput="validity.valid||(value='');" min="1" max="8" required>
+                                                <?php
+                                                include_once("../config.php");
+                                                $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+                                                $result = mysqli_query($conn, $sql);
+                                                $row = mysqli_fetch_assoc($result);
+                                                $sem_dropdown = "";
+                                                // while ($row = mysqli_fetch_assoc($result)) {
+                                                for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
+                                                    $sem_dropdown .= "<option>" . $sem_start . "</option>";
+                                                }
+                                                echo '<select class="form-control" required id="sem" name="sem">
+                                                    ' . $sem_dropdown . '
+                                                </select>'
+                                                ?>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="year"><b>Year</b></label>
-                                                <input type="text" class="form-control" id="year" placeholder="Eg 2019-20" name="year" minlength ="7" maxlength ="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required>
+                                                <select class="form-control" name="year" id="year">
+                                                    <?php
+                                                    $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
+                                                    $result = mysqli_query($conn, $sql);
+                                                    $row = mysqli_fetch_assoc($result);
+                                                    $year1 = $row['academic_year'];
+                                                    $year2 = $row['academic_year'];
+                                                    for ($i = 0; $i < 2; $i++) {
+                                                        $temp = explode('-', $year1)[0];
+                                                        $temp += 1;
+                                                        $temp2 = "" . ($temp + 1);
+                                                        $year1 = $temp . "-" . substr($temp2, 2);
+                                                        echo '<option>' . $year1 . '</option>';
+                                                    }
+                                                    for ($i = 0; $i < 4; $i++) {
+                                                        echo '<option>' . $year2 . '</option>';
+                                                        $temp = explode('-', $year2)[0];
+                                                        $temp -= 1;
+                                                        $temp2 = "" . ($temp + 1);
+                                                        $year2 = $temp . "-" . substr($temp2, 2);
+                                                    }
+                                                    echo '</select>';
+                                                    ?>
                                             </div>
                                         </div>
                                         <div id="bulk_current_fields">
@@ -129,7 +163,6 @@ include('../includes/header.php');
                                 </div>
                             </div>
                             <!--end Upload Current-->
-                            
                         </div>
                     </div>
                     <style type="text/css">
@@ -327,7 +360,7 @@ include('../includes/header.php');
                         $("#select_all").prop("checked", true)
                     }
                 });
-                $(".action-btn-marks").on('click',loadModalMarks)
+                $(".action-btn-marks").on('click', loadModalMarks)
             },
             columns: [{
                     data: 'select-cbox'
@@ -377,94 +410,95 @@ include('../includes/header.php');
         }
     })
 
-    function loadModalMarks(){
-    var target_row = $(this).closest("tr"); // this line did the trick
+    function loadModalMarks() {
+        var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
-    // var btn=$(this);
-    var aPos = $("#dataTable-marks").dataTable().fnGetPosition(target_row.get(0)); 
-    var courseData=$('#dataTable-marks').DataTable().row(aPos).data()
-    // delete courseData.action
-    // delete courseData.allocate_faculty
-    var json_courseData=JSON.stringify(courseData)
-    // console.log(json_courseData)
-    $.ajax({
-        type: "POST",
-        url: "student_mark/loadModal/loadModalMarks.php",
-        // data: form_serialize, 
-        // dataType: "json",
-        data: json_courseData,
-        success: function(output)
-        {
-            target_row.append(output);
-            $('#update-del-modal').modal('show')
-                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
+        // var btn=$(this);
+        var aPos = $("#dataTable-marks").dataTable().fnGetPosition(target_row.get(0));
+        var courseData = $('#dataTable-marks').DataTable().row(aPos).data()
+        // delete courseData.action
+        // delete courseData.allocate_faculty
+        var json_courseData = JSON.stringify(courseData)
+        // console.log(json_courseData)
+        $.ajax({
+            type: "POST",
+            url: "student_mark/loadModal/loadModalMarks.php",
+            // data: form_serialize, 
+            // dataType: "json",
+            data: json_courseData,
+            success: function(output) {
+                target_row.append(output);
+                $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function() {
                     $("#update-del-modal").remove();
                 });
-            $('#delete_course_form').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
-                $("#delete_course_btn").text("Deleting...");
-                $("#delete_course_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/studentmarks_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        //    alert(data); // show response from the php script.
-                        $("#delete_course_btn").text("Deleted Successfully");
-                        var row=$("#update-del-modal").closest('tr');
-                        var aPos = $("#dataTable-marks").dataTable().fnGetPosition(row.get(0)); 
-                        $('#update-del-modal').modal('hide');
-                        // $('body').removeClass('modal-open');
-                        // $('.modal-backdrop').remove();
-                        // row.remove();
-                        $("#dataTable-marks").DataTable().row(aPos).remove().draw(false);
-                        // console.log(aPos);
-                        // console.log(row)
-                    }
+                $('#delete_course_form').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#delete_course_btn").attr('name'),
+                        value: $("#delete_course_btn").attr('value')
                     });
-            });
-            $('#update_course_form').submit(function(e){
-                update_course_form_current(e);
-                // $('#update-del-modal').modal('hide');
-            });
-        }
-    });
-}
-
-function update_course_form_current(e){
-    e.preventDefault();
-    var form = $('#update_course_form');
-    var form_serialize=form.serializeArray();
-    form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
-    $("#update_course_btn").text("Updating...");
-    $("#update_course_btn").attr("disabled",true);
-    $.ajax({
-    type: "POST",
-    url: "ic_queries/studentmarks_queries.php",
-    data: form_serialize, 
-    success: function(data)
-    {
-        $("#update_course_btn").text("Updated Successfully");
-        var row=$("#update-del-modal").closest('tr');
-        var aPos = $("#dataTable-marks").dataTable().fnGetPosition(row.get(0));
-        var temp = $("#dataTable-marks").DataTable().row(aPos).data();
-        temp['sem'] = form_serialize[0].value;
-        temp['year']=form_serialize[3].value;
-        temp['gpa']=form_serialize[5].value;
-        $('#dataTable-marks').dataTable().fnUpdate(temp,aPos,undefined,false);
-        $('.action-btn-marks').off('click')
-        $('.action-btn-marks').on('click',loadModalMarks)
-        $('#update-del-modal').modal('hide');
-        $(".selectrow_current").attr("disabled",true);
-
+                    $("#delete_course_btn").text("Deleting...");
+                    $("#delete_course_btn").attr("disabled", true);
+                    $.ajax({
+                        type: "POST",
+                        url: "ic_queries/studentmarks_queries.php",
+                        data: form_serialize,
+                        success: function(data) {
+                            //    alert(data); // show response from the php script.
+                            $("#delete_course_btn").text("Deleted Successfully");
+                            var row = $("#update-del-modal").closest('tr');
+                            var aPos = $("#dataTable-marks").dataTable().fnGetPosition(row.get(0));
+                            $('#update-del-modal').modal('hide');
+                            // $('body').removeClass('modal-open');
+                            // $('.modal-backdrop').remove();
+                            // row.remove();
+                            $("#dataTable-marks").DataTable().row(aPos).remove().draw(false);
+                            // console.log(aPos);
+                            // console.log(row)
+                        }
+                    });
+                });
+                $('#update_course_form').submit(function(e) {
+                    update_course_form_current(e);
+                    // $('#update-del-modal').modal('hide');
+                });
+            }
+        });
     }
-    });
-}
 
+    function update_course_form_current(e) {
+        e.preventDefault();
+        var form = $('#update_course_form');
+        var form_serialize = form.serializeArray();
+        form_serialize.push({
+            name: $("#update_course_btn").attr('name'),
+            value: $("#update_course_btn").attr('value')
+        });
+        $("#update_course_btn").text("Updating...");
+        $("#update_course_btn").attr("disabled", true);
+        $.ajax({
+            type: "POST",
+            url: "ic_queries/studentmarks_queries.php",
+            data: form_serialize,
+            success: function(data) {
+                $("#update_course_btn").text("Updated Successfully");
+                var row = $("#update-del-modal").closest('tr');
+                var aPos = $("#dataTable-marks").dataTable().fnGetPosition(row.get(0));
+                var temp = $("#dataTable-marks").DataTable().row(aPos).data();
+                temp['sem'] = form_serialize[0].value;
+                temp['year'] = form_serialize[3].value;
+                temp['gpa'] = form_serialize[5].value;
+                $('#dataTable-marks').dataTable().fnUpdate(temp, aPos, undefined, false);
+                $('.action-btn-marks').off('click')
+                $('.action-btn-marks').on('click', loadModalMarks)
+                $('#update-del-modal').modal('hide');
+                $(".selectrow_current").attr("disabled", true);
+            }
+        });
+    }
 </script>
 
 
