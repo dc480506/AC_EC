@@ -39,7 +39,7 @@
             </div>
             <br>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary align-center" name="allocate" id='next_btn'>Next</button>
+                <button type="submit" class="btn btn-primary align-center" name="allocate" id='next_btn'>Proceed</button>
             </div>
         </div>
     </form>
@@ -60,6 +60,7 @@
         var form=$(this);
         form_serialize=form.serializeArray();
         console.log(form_serialize);
+        $("#allocation_method").css("opacity",0.3)
         $("#nav-allocate-method-tab").removeClass("active")
         $("#nav-allocate-method-tab").addClass("disabled")
         $.ajax({

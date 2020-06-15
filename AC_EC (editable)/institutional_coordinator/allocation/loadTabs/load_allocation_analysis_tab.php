@@ -2,6 +2,8 @@
 
 include_once('../../verify.php');
 include_once('../../../config.php');
+// $sql="DELETE FROM `{$_SESSION['course_allocate_info']}` WHERE 1";
+// mysqli_query($conn,$sql);
 $args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
 $cmd='python ../algorithms/'.$_SESSION['algorithm_chosen'].'_phase1.py '.$args;
 // echo $cmd;
@@ -24,44 +26,45 @@ $output=shell_exec($cmd." 2>&1");
     </div>
     <br>
      <form class="forms-sample" method="POST" id="course_analysis">
-    <table class="table table-bordered table-responsive" id="dataTable-analysis" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="select_all">
-                                            <label class="custom-control-label" for="select_all"></label>
-                                        </div>
-                                    </th>
-                                    <th>Course Name</th>
-                                    <th>Course ID</th>
-                                    <th>MIN Students</th>
-                                    <th>MAX Students</th>
-                                    <th>No of Students Allocated</th>
-                                    <th>Allocation Status</th>
-                                    <th>Course is overflow by</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th></th>
-                                    <th>Course Name</th>
-                                    <th>Course ID</th>
-                                    <th>MIN Students</th>
-                                    <th>MAX Students</th>
-                                    <th>No of Students Allocated</th>
-                                    <th>Allocation Status</th>
-                                    <th>Course is overflow by</th>
-                                    <th>Action</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary align-center" name="previous" id="prev_btn">Previous</button>
-                        <button type="submit" class="btn btn-primary align-center" name="allocate" id="next_btn">Next</button>
-                    </div>
-                </form>
+        <table class="table table-bordered table-responsive" id="dataTable-analysis" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="select_all">
+                            <label class="custom-control-label" for="select_all"></label>
+                        </div>
+                    </th>
+                    <th>Course Name</th>
+                    <th>Course ID</th>
+                    <th>MIN Students</th>
+                    <th>MAX Students</th>
+                    <th>No of Students Allocated</th>
+                    <th>Allocation Status</th>
+                    <th>Course is overflow by</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Course Name</th>
+                    <th>Course ID</th>
+                    <th>MIN Students</th>
+                    <th>MAX Students</th>
+                    <th>No of Students Allocated</th>
+                    <th>Allocation Status</th>
+                    <th>Course is overflow by</th>
+                    <th>Action</th>
+                </tr>
+            </tfoot>
+        </table>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary align-center" name="previous" id="prev_btn">Go Back</button>
+        <button type="submit" class="btn btn-primary align-center" name="allocate" id="next_btn">Proceed</button>
+        <button id="reallocate" type="button" style="display:none;" class="btn btn-primary align-center">Reallocate</button>
+    </div>
+</form>
             </div>
             <div id="spinner" style="display: none;">
                 <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
@@ -73,12 +76,12 @@ $output=shell_exec($cmd." 2>&1");
                     left:50%;
                 }
             </style>
-            <button id="reallocate" class="btn btn-primary align-center"><span class="text" id="reallocate_text">Reallocate</span></button>
 <script type="text/javascript">
    $(document).ready(function() {
         console.log("hello")
         loadCurrent();
     });
+    var courseUpdated=false;
    function loadCurrent() {
         // document.querySelector("#addCoursebtn").style.display="none"
         $('#dataTable-analysis').DataTable({
@@ -215,6 +218,11 @@ $output=shell_exec($cmd." 2>&1");
                     success: function(data)
                     {
                         //    alert(data); // show response from the php script.
+                        if(!courseUpdated){
+                            courseUpdated=true
+                            $("#next_btn").hide();
+                            $("#reallocate").show();
+                        }
                         $("#delete_course_btn").text("Deleted Successfully");
                         var row=$("#update-del-modal").closest('tr');
                         var aPos = $("#dataTable-analysis").dataTable().fnGetPosition(row.get(0)); 
@@ -252,6 +260,11 @@ $output=shell_exec($cmd." 2>&1");
     {
         //    alert(data); // show response from the php script.
         $("#update_course_btn").text("Updated Successfully");
+        if(!courseUpdated){
+            courseUpdated=true
+            $("#next_btn").hide();
+            $("#reallocate").show();
+        }
         var row=$("#update-del-modal").closest('tr');
         var aPos = $("#dataTable-analysis").dataTable().fnGetPosition(row.get(0));
         var temp = $("#dataTable-analysis").DataTable().row(aPos).data();
@@ -283,6 +296,7 @@ $("#course_analysis").submit(function(e){
         var form=$(this);
         form_serialize=form.serializeArray();
         console.log(form_serialize);
+        $("#course_analysis").css("opacity",0.3)
         $("#nav-result-tab").removeClass("active")
         $("#nav-result-tab").addClass("disabled")
         $.ajax({
@@ -293,6 +307,7 @@ $("#course_analysis").submit(function(e){
             //Loader daalna hai baadme
             $('#spinner').show();
             $('#next_btn').attr('disabled',true);
+            $('#prev_btn').attr('disabled',true);
             },
             success:function(html){
                 $("#nav-final-allocate-tab").removeClass("disabled")
@@ -309,6 +324,7 @@ $("#course_analysis").submit(function(e){
     $("#prev_btn").on("click",function(){
         $("#nav-result-tab").removeClass("active")
         $("#nav-result-tab").addClass("disabled")
+        $("#course_analysis").css("opacity",0.3)
         $.ajax({
             url:'../allocation/loadPreviousTabs/load_course_selection_tab_previous.php',
             success:function(html){
@@ -322,6 +338,25 @@ $("#course_analysis").submit(function(e){
             $('#spinner').show();
             $('#next_btn').attr('disabled',true);
             $('#prev_btn').attr('disabled',true);
+            $("#reallocate").attr('disabled',true);
+            },
+        })
+    })
+    // Reallocate Button Action
+    $("#reallocate").on("click",function(){
+        $.ajax({
+            url:'../allocation/loadTabs/load_allocation_analysis_tab.php',
+            success:function(html){
+                $("#spinner").hide()
+                $("#nav-tabContent").html(html)
+            },
+            beforeSend:function(){
+            //Loader daalna hai baadme
+            $("#course_analysis").css("opacity",0.3)
+            $('#spinner').show();
+            $('#next_btn').attr('disabled',true);
+            $('#prev_btn').attr('disabled',true);
+            $("#reallocate").attr('disabled',true);
             },
         })
     })
