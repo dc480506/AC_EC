@@ -23,7 +23,12 @@ def check_upper_limit(stu_course,courses,pref_id):
 		return False
 	else:
 	    return True	
-
+def check_applicable(cid,dept_id,courses):
+    dept_list=courses[cid][2]
+    if dept_id in dept_list:
+        return True
+    else:
+        return False
 mydb = pymysql.connect(
   host=argument[mapper['host']],
   user=argument[mapper['username']],
@@ -32,34 +37,42 @@ mydb = pymysql.connect(
 )
 
 mycursor = mydb.cursor()
-# mycursor.execute("DELETE FROM "+argument[mapper['course_info_table']]+" WHERE 1")
-# mydb.commit()
 course_query="SELECT cid,min,max FROM "+argument[mapper['course_table']]+" WHERE sem='"+argument[mapper['sem']]+"' and year='"+argument[mapper['year']]+"'"
 mycursor.execute(course_query)
 
 myresult = mycursor.fetchall()
 courses={}
 for x in myresult:
-  l=[x[1],x[2]]
+  applicable_query="select dept_id from audit_course_applicable_dept where cid=%s"
+  course_id=(x[0],)
+  #mycursor.execute(applicable_query, course_id)
+  mycursor.execute(applicable_query, course_id)
+  myresult2 = mycursor.fetchall()
+  d_list=[]
+  for dept in myresult2:
+    d_list.append(dept)
+    
+  
+  
+  l=[x[1],x[2],d_list]
   courses[x[0]]=l
 preferences=""
 for x in range(1,int(argument[mapper['no_of_preferences']])):
 	preferences+="pref"+str(x)+","
 preferences+="pref"+str(argument[mapper['no_of_preferences']])
-student_pref_query="SELECT email_id,rollno,timestamp,"+preferences+" FROM "+argument[mapper['student_pref_table']]+" WHERE sem='"+argument[mapper['sem']]+"' and year='"+argument[mapper['year']]+"'" 	
-
+student_pref_query="SELECT "+argument[mapper['student_pref_table']]+".email_id,"+argument[mapper['student_pref_table']]+".rollno,"+argument[mapper['student_pref_table']]+".timestamp,student.dept_id, "+preferences+" FROM "+argument[mapper['student_pref_table']]+" inner join student  on student.email_id="+argument[mapper['student_pref_table']]+".email_id  WHERE sem='"+argument[mapper['sem']]+"' and year='"+argument[mapper['year']]+"'"
 mycursor.execute(student_pref_query)
 
 myresult = mycursor.fetchall()
 student=[]
 
 for res in myresult:
-	l=[res[0],res[1],res[2]]
+	l=[res[0],res[1],res[2],res[3]]
 	for x in range(0,int(argument[mapper['no_of_preferences']])):
-		l.append(res[(x+3)])
+		l.append(res[(x+4)])
 	student.append(l)
 #print(student)	
-cols=['email_id','rollno','timestamp']
+cols=['email_id','rollno','timestamp','dept']
 for x in range(1,int(argument[mapper['no_of_preferences']])+1):
 	cols.append("pref"+str(x))
 	
@@ -79,17 +92,19 @@ overlow_by={}
 for i in range(len(data)):
 	eid=data.loc[i,'email_id']
 	time=data.loc[i,'timestamp']
-	pref=data.loc[i,data.columns[3:]].values
+	dept_id=data.loc[i,'dept']
+	pref=data.loc[i,data.columns[4:]].values
 	pref=[x for x in pref if x.find("same")==-1 and x in courses]
 	for j in range (len(pref)):
-		if(check_upper_limit(stu_course,courses,pref[j])):
-			stu_course[pref[j]].append([eid,1,time,j+1,pref])
-			student_pref_no[eid]=(j+1)
-			break
-		else:
-			student_pref_no[eid]=-1
-			overlow_by[pref[j]]=overlow_by.get(pref[j],0)+1
-			continue
+		if(check_applicable(pref[j],dept_id,courses)):
+			if(check_upper_limit(stu_course,courses,pref[j])):
+				stu_course[pref[j]].append([eid,1,time,j+1,pref])
+				student_pref_no[eid]=(j+1)
+				break
+			else:
+				student_pref_no[eid]=-1
+				overlow_by[pref[j]]=overlow_by.get(pref[j],0)+1
+				continue
 			
 count=0
 count2=0
@@ -109,7 +124,7 @@ for cid,v in courses.items():
 	if(len(stu_course[cid])>v[1]):
 		over.append(cid)
 		count1=count1+1
-	elif(len(stu_course[cid])<v[0] and (len(stu_course[cid])!=0)):
+	if(len(stu_course[cid])<v[0] and (len(stu_course[cid])!=0)):
 		under.append(cid)
 		underflow_stu_list.extend(x for x in stu_course[cid])
 		count2=count2+1
@@ -118,7 +133,7 @@ for cid,v in courses.items():
 		# print(query)
 		
 	# print(str(len(stu_course[cid]))+" are there in course "+cid+" whose max is "+str(v[1])+" and min is "+str(v[0]))
-	elif(len(stu_course[cid])<v[1] and len(stu_course[cid])>v[0]):
+	if(len(stu_course[cid])<v[1] and len(stu_course[cid])>v[0]):
 		query="INSERT INTO "+argument[mapper['course_allocate_info_table']]+" (cid,sem,year,status,no_of_hits) VALUES('"+cid+"','"+argument[mapper['sem']]+"','"+argument[mapper['year']]+"','IR','0') ON DUPLICATE KEY UPDATE status='IR',no_of_hits=0"
 		mycursor.execute(query)
 		# print(query)

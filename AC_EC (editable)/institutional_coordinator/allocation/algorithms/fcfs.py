@@ -5,6 +5,14 @@ def check_upper_limit(stu_course,courses,pref_id):
 	else:
 	    return True	
 
+def check_applicable(cid,dept_id,courses):
+    dept_list=courses[cid][2]
+    if dept_id in dept_list:
+        return True
+    else:
+        return False
+
+		
 import pandas as pd 
 import numpy as np
 import pymysql,sys
@@ -40,26 +48,39 @@ mycursor.execute(course_query)
 myresult = mycursor.fetchall()
 courses={}
 for x in myresult:
-  l=[x[1],x[2]]
+  applicable_query="select dept_id from audit_course_applicable_dept where cid=%s"
+  course_id=(x[0],)
+  #mycursor.execute(applicable_query, course_id)
+  mycursor.execute(applicable_query, course_id)
+  myresult2 = mycursor.fetchall()
+  d_list=[]
+  for dept in myresult2:
+    d_list.append(dept)
+    
+  
+  
+  l=[x[1],x[2],d_list]
   courses[x[0]]=l
 
-
+ 
 preferences=""
 for x in range(1,int(argument[mapper['no_of_preferences']])):
 	preferences+="pref"+str(x)+","
 preferences+="pref"+str(argument[mapper['no_of_preferences']])
-student_pref_query="SELECT email_id,rollno,timestamp,"+preferences+" FROM "+argument[mapper['student_pref_table']]+" WHERE sem='"+argument[mapper['sem']]+"' and year='"+argument[mapper['year']]+"'" 	
+student_pref_query="SELECT "+argument[mapper['student_pref_table']]+".email_id,"+argument[mapper['student_pref_table']]+".rollno,"+argument[mapper['student_pref_table']]+".timestamp,student.dept_id, "+preferences+" FROM "+argument[mapper['student_pref_table']]+" inner join student  on student.email_id="+argument[mapper['student_pref_table']]+".email_id  WHERE sem='"+argument[mapper['sem']]+"' and year='"+argument[mapper['year']]+"'" 	
 mycursor.execute(student_pref_query)
 myresult = mycursor.fetchall()
 student=[]
 
 for res in myresult:
-	l=[res[0],res[1],res[2]]
+	#print(student_pref_query)
+	#print(str(res[0])+" "+str(res[1])+" "+str(res[2])+" "+str(res[3])+" "+str(res[4])+" "+str(res[5])+" "+str(res[6])+" "+str(res[7])+" "+str(res[8])+" "+str(res[9])+" "+str(res[10]))
+	l=[res[0],res[1],res[2],res[3]]
 	for x in range(0,int(argument[mapper['no_of_preferences']])):
-		l.append(res[(x+3)])
+		l.append(res[(x+4)])
 	student.append(l)
 #print(student)	
-cols=['email_id','rollno','timestamp']
+cols=['email_id','rollno','timestamp','dept']
 for x in range(1,int(argument[mapper['no_of_preferences']])+1):
 	cols.append("pref"+str(x))
 	
@@ -80,25 +101,27 @@ overlow_by={}
 for i in range(len(data)):
 	eid=data.loc[i,'email_id']
 	time=data.loc[i,'timestamp']
-	pref=data.loc[i,data.columns[3:]].values
+	dept_id=data.loc[i,'dept']
+	pref=data.loc[i,data.columns[4:]].values
 	pref=[x for x in pref if x.find("same")==-1 and x in courses]
 	pref_true_no=[]
 	trueno=1
-	for h in data.loc[i,data.columns[3:]].values:
+	for h in data.loc[i,data.columns[4:]].values:
 		if h.find("same")==-1 and h in courses:
 			pref_true_no.append([h,trueno])
 		trueno+=1
 	for j in range (len(pref)):
-		if(check_upper_limit(stu_course,courses,pref[j])):
-			stu_course[pref[j]].append([eid,1,time,j+1,pref])
-			# student_pref_no[eid]=(j+1)
-			student_pref_no[eid]=pref_true_no[j][1]
-			break
-		else:
-			student_pref_no[eid]=-1
-			overlow_by[pref[j]]=overlow_by.get(pref[j],0)+1
-			continue
-			
+	    if(check_applicable(pref[j],dept_id,courses)):
+		    if(check_upper_limit(stu_course,courses,pref[j])):
+			    stu_course[pref[j]].append([eid,1,time,j+1,pref,dept_id])
+			    # student_pref_no[eid]=(j+1)
+			    student_pref_no[eid]=pref_true_no[j][1]
+			    break
+		    else:
+			    student_pref_no[eid]=-1
+			    overlow_by[pref[j]]=overlow_by.get(pref[j],0)+1
+			    continue
+
 count=0
 count2=0
 count1=0
@@ -144,7 +167,7 @@ print('length',len(underflow_stu_list))
 print("#################################################")    
 while (len(underflow_stu_list)!=0):
 	for s in underflow_stu_list:
-		
+		dept_id=s[5]
 		prefl=s[4]
 		email=s[0]
 		time=s[2]
@@ -179,41 +202,41 @@ while (len(underflow_stu_list)!=0):
 				if(next_pref in under):
 					print("sorry the course is scraped")
 					continue
-				
-				elif(check_upper_limit(stu_course,courses,next_pref)):
-					# print(email,'in else if.')
-					stu_course[next_pref].append([email,1,time,i+1,prefl])
-					student_pref_no[email]=i+1
-					# print('before',underflow_stu_list[o])
-					del underflow_stu_list[o]
-					temp=stu_course[prefl[s[3]-1]]
-					temp=[k for k in temp if k[0]!=email]
-					stu_course[prefl[s[3]-1]]=temp
-					# print('after',underflow_stu_list[o])
-					print('max student:'+email+' got course '+prefl[i])
-					break
-				else:
-					# print(email,'in else else.')
-					last_stu=stu_course[next_pref][-1]
-					if(last_stu[2]>time):
-						print(str(len(stu_course[next_pref]))+ "length of stu_course")
-						stu_course[next_pref].pop()
+				elif(check_applicable(next_pref,dept_id,courses)):
+					if(check_upper_limit(stu_course,courses,next_pref)):
+						# print(email,'in else if.')
+						stu_course[next_pref].append([email,1,time,i+1,prefl,dept_id])
+						student_pref_no[email]=i+1
+						# print('before',underflow_stu_list[o])
+						del underflow_stu_list[o]
 						temp=stu_course[prefl[s[3]-1]]
 						temp=[k for k in temp if k[0]!=email]
 						stu_course[prefl[s[3]-1]]=temp
-						print(str(len(stu_course[next_pref]))+ "length of stu_course after pop")
-						del underflow_stu_list[o]
-						underflow_stu_list.append(last_stu)
-						underflow_stu_list.sort(key = lambda underflow_stu_list: underflow_stu_list[2]) 
-						stu_course[prefl[i]].append([email,1,time,i+1,prefl])
-						student_pref_no[email]=i+1
-						print('student:'+email+' got course '+prefl[i])
+						# print('after',underflow_stu_list[o])
+						print('max student:'+email+' got course '+prefl[i])
 						break
 					else:
-						# print('continue')
-						# print(email,'in else.')
-						continue
-						
+						# print(email,'in else else.')
+						last_stu=stu_course[next_pref][-1]
+						if(last_stu[2]>time):
+							print(str(len(stu_course[next_pref]))+ "length of stu_course")
+							stu_course[next_pref].pop()
+							temp=stu_course[prefl[s[3]-1]]
+							temp=[k for k in temp if k[0]!=email]
+							stu_course[prefl[s[3]-1]]=temp
+							print(str(len(stu_course[next_pref]))+ "length of stu_course after pop")
+							del underflow_stu_list[o]
+							underflow_stu_list.append(last_stu)
+							underflow_stu_list.sort(key = lambda underflow_stu_list: underflow_stu_list[2]) 
+							stu_course[prefl[i]].append([email,1,time,i+1,prefl,dept_id])
+							student_pref_no[email]=i+1
+							print('student:'+email+' got course '+prefl[i])
+							break
+						else:
+							# print('continue')
+							# print(email,'in else.')
+							continue
+				
 
 	print("after iteration "+str(loop+1))				
 	for v in underflow_stu_list: 
