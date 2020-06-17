@@ -23,7 +23,12 @@ def check_upper_limit(stu_course,courses,pref_id):
 		return False
 	else:
 	    return True	
-
+def check_applicable(cid,dept_id,courses):
+    dept_list=courses[cid][2]
+    if dept_id in dept_list:
+        return True
+    else:
+        return False
 mydb = pymysql.connect(
   host=argument[mapper['host']],
   user=argument[mapper['username']],
@@ -36,25 +41,36 @@ mycursor.execute(course_query)
 myresult = mycursor.fetchall()
 courses={}
 for x in myresult:
-  l=[x[1],x[2]]
+  applicable_query="select dept_id from audit_course_applicable_dept where cid=%s"
+  course_id=(x[0],)
+  #mycursor.execute(applicable_query, course_id)
+  mycursor.execute(applicable_query, course_id)
+  myresult2 = mycursor.fetchall()
+  d_list=[]
+  for dept in myresult2:
+    d_list.append(dept)
+    
+  
+  
+  l=[x[1],x[2],d_list]
   courses[x[0]]=l
 
 preferences=""
 for x in range(1,int(argument[mapper['no_of_preferences']])):
 	preferences+="s.pref"+str(x)+","
 preferences+="s.pref"+str(argument[mapper['no_of_preferences']])
-mycursor.execute("SELECT s.email_id,s.rollno,s.timestamp,m.gpa,"+preferences+" FROM "+argument[mapper['student_pref_table']]+" as s inner join student_marks as m on s.email_id=m.email_id and m.sem=s.sem-2 WHERE s.sem='"+argument[mapper['sem']]+"' and s.year='"+argument[mapper['year']]+"' order by gpa DESC, timestamp ASC")
+student_preference_query="SELECT s.email_id,s.rollno,s.timestamp,m.gpa,stud.dept_id,"+preferences+" FROM "+argument[mapper['student_pref_table']]+" as s inner join student_marks as m on s.email_id=m.email_id and m.sem=s.sem-2 inner join student as stud on stud.email_id=m.email_id WHERE s.sem='"+argument[mapper['sem']]+"' and s.year='"+argument[mapper['year']]+"' order by gpa DESC, timestamp ASC"
 
 myresult = mycursor.fetchall()
 student=[]
 for res in myresult:
-	l=[res[0],res[1],res[2],res[3]]
+	l=[res[0],res[1],res[2],res[3],res[4]]
 	for x in range(0,int(argument[mapper['no_of_preferences']])):
-		l.append(res[(x+4)])
+		l.append(res[(x+5)])
 	student.append(l)
-#print(student)	
+print(myresult)	
 
-cols=['email_id','rollno','timestamp','gpa']
+cols=['email_id','rollno','timestamp','gpa','dept']
 for x in range(1,int(argument[mapper['no_of_preferences']])+1):
 	cols.append("pref"+str(x))
 	
@@ -75,17 +91,19 @@ for i in range(len(data)):
 	eid=data.loc[i,'email_id']
 	time=data.loc[i,'timestamp']
 	marks=data.loc[i,'gpa']
-	pref=data.loc[i,data.columns[4:]].values
+	dept_id=data.loc[i,'dept']
+	pref=data.loc[i,data.columns[5:]].values
 	pref=[x for x in pref if x.find("same")==-1 and x in courses]
 	for j in range (len(pref)):
-		if(check_upper_limit(stu_course,courses,pref[j])):
-			stu_course[pref[j]].append([eid,1,time,j+1,pref,i,marks])
-			student_pref_no[eid]=(j+1)
-			break
-		else:
-			student_pref_no[eid]=-1
-			overlow_by[pref[j]]=overlow_by.get(pref[j],0)+1
-			continue
+		if(check_applicable(pref[j],dept_id,courses)):
+			if(check_upper_limit(stu_course,courses,pref[j])):
+				stu_course[pref[j]].append([eid,1,time,j+1,pref,i,marks,dept_id])
+				student_pref_no[eid]=(j+1)
+				break
+			else:
+				student_pref_no[eid]=-1
+				overlow_by[pref[j]]=overlow_by.get(pref[j],0)+1
+				continue
 			
 count=0
 count2=0
@@ -141,7 +159,7 @@ for cid,hits in overlow_by.items():
 
 
 
-underflow_stu_list.sort(key = lambda underflow_stu_list: underflow_stu_list[2])
+underflow_stu_list.sort(key = lambda underflow_stu_list: underflow_stu_list[-3])
 # print("following is the data of students whose courses have gone underflow")
 # for data in underflow_stu_list:
 # 	print(data[0])
