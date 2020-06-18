@@ -9,11 +9,12 @@ mapper={
         "student_course_table":3,
         "course_allocate_info_table":4,
         "course_table":5,
-        "no_of_preferences":6,
-        "host":7,
-        "username":8,
-        "password":9,
-        "dbname":10,
+		"course_app_dept_table":6,
+        "no_of_preferences":7,
+        "host":8,
+        "username":9,
+        "password":10,
+        "dbname":11,
         }
 argument=list(map(str.strip, sys.argv[1].strip('[]').split(',')))
 n=len(argument)
@@ -41,7 +42,7 @@ mycursor.execute(course_query)
 myresult = mycursor.fetchall()
 courses={}
 for x in myresult:
-  applicable_query="select dept_id from audit_course_applicable_dept where cid=%s"
+  applicable_query="select dept_id from "+argument[mapper['course_app_dept_table']]+" where cid=%s"
   course_id=(x[0],)
   #mycursor.execute(applicable_query, course_id)
   mycursor.execute(applicable_query, course_id)
@@ -60,15 +61,17 @@ for x in range(1,int(argument[mapper['no_of_preferences']])):
 	preferences+="s.pref"+str(x)+","
 preferences+="s.pref"+str(argument[mapper['no_of_preferences']])
 student_preference_query="SELECT s.email_id,s.rollno,s.timestamp,m.gpa,stud.dept_id,"+preferences+" FROM "+argument[mapper['student_pref_table']]+" as s inner join student_marks as m on s.email_id=m.email_id and m.sem=s.sem-2 inner join student as stud on stud.email_id=m.email_id WHERE s.sem='"+argument[mapper['sem']]+"' and s.year='"+argument[mapper['year']]+"' order by gpa DESC, timestamp ASC"
-
+# print(student_preference_query)
+mycursor.execute(student_preference_query)
 myresult = mycursor.fetchall()
+# print(myresult)
 student=[]
 for res in myresult:
 	l=[res[0],res[1],res[2],res[3],res[4]]
 	for x in range(0,int(argument[mapper['no_of_preferences']])):
 		l.append(res[(x+5)])
 	student.append(l)
-print(myresult)	
+# print(myresult)	
 
 cols=['email_id','rollno','timestamp','gpa','dept']
 for x in range(1,int(argument[mapper['no_of_preferences']])+1):
@@ -118,23 +121,23 @@ for k,v in student_pref_no.items():
 		unallocated.append(k)
 underflow_stu_list=[]
 
-print("After 1st iteration:")
+# print("After 1st iteration:")
 for cid,v in courses.items():
-	if(len(stu_course[cid])>v[1]):
-		over.append(cid)
-		count1=count1+1
 	if(len(stu_course[cid])<v[0] and (len(stu_course[cid])!=0)):
 		under.append(cid)
 		underflow_stu_list.extend(x for x in stu_course[cid])
 		count2=count2+1
 		query="INSERT INTO "+argument[mapper['course_allocate_info_table']]+" (cid,sem,year,status,no_of_hits) VALUES('"+cid+"','"+argument[mapper['sem']]+"','"+argument[mapper['year']]+"','UF','0') ON DUPLICATE KEY UPDATE status='UF',no_of_hits=0"
 		mycursor.execute(query)
-		
+		# print(cid+" UF<br>")
 	# print(str(len(stu_course[cid]))+" are there in course "+cid+" whose max is "+str(v[1])+" and min is "+str(v[0]))
-	if(len(stu_course[cid])<v[1] and len(stu_course[cid])>v[0]):
+	elif(len(stu_course[cid])<=v[1] and len(stu_course[cid])>=v[0]):
 		query="INSERT INTO "+argument[mapper['course_allocate_info_table']]+" (cid,sem,year,status,no_of_hits) VALUES('"+cid+"','"+argument[mapper['sem']]+"','"+argument[mapper['year']]+"','IR','0') ON DUPLICATE KEY UPDATE status='IR',no_of_hits=0"
 		mycursor.execute(query)
-	print()	
+		# print(cid+" IR<br>")
+	# else:
+	# 	print(cid+" "+str(v[1])+" "+str(v[0])+" "+str(len(stu_course[cid]))+" YO<br>")
+
 # mydb.commit()		
 # print(str(count1) +" courses are overflow")
 # print(str(count2) + " courses are underflow")
@@ -171,11 +174,4 @@ for course,student in stu_course.items():
 	query="UPDATE `"+argument[mapper['course_table']]+"` SET no_of_allocated="+str(len(student))+" WHERE cid='"+course+"' and year='"+argument[mapper['year']]+"' and sem='"+argument[mapper['sem']]+"'"
 	# print(query)
 	mycursor.execute(query)
-	# for i in range(len(student)):	
-	# 	query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"','"+argument[mapper['sem']]+"','"+argument[mapper['year']]+"') ON DUPLICATE KEY UPDATE cid='"+cid+"'"
-	# 	mycursor.execute(query)
-	# 	# mydb.commit()
-	# 	query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem='"+argument[mapper['sem']]+"'"
-	# 	# print(query)
-	# 	mycursor.execute(query)
 mydb.commit()

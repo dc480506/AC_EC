@@ -1,5 +1,15 @@
 <?php 
  include_once('../../verify.php');
+ include_once('../../../config.php');
+ if(isset($_SESSION['course_table'])){
+ mysqli_query($conn,"DROP TABLE `".$_SESSION['course_table'])."`";
+ mysqli_query($conn,"DROP TABLE `".$_SESSION['course_app_dept_table'])."`";
+ mysqli_query($conn,"DROP TABLE `".$_SESSION['student_course_table'])."`";
+ mysqli_query($conn,"DROP TABLE `".$_SESSION['student_pref'])."`";
+ mysqli_query($conn,"DROP TABLE `".$_SESSION['course_allocate_info'])."`";
+ mysqli_query($conn,"DROP TABLE `".$_SESSION['pref_percent_table'])."`";
+ mysqli_query($conn,"DROP TABLE `".$_SESSION['pref_student_alloted_table'])."`";
+ }
 ?>
 <div class="tab-pane fade show active" id="nav-allocate-method" role="tabpanel" aria-labelledby="nav-allocate-method-tab">
    <br>

@@ -1,7 +1,7 @@
 <?php 
 include_once('../../verify.php');
 include_once('../../../config.php');
-$args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['pref_percent_table'].'","'.$_SESSION['pref_student_alloted_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
+$args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['pref_percent_table'].'","'.$_SESSION['pref_student_alloted_table'].'","'.$_SESSION['course_app_dept_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
 $cmd='python ../algorithms/'.$_SESSION['algorithm_chosen'].'.py '.$args;
 // echo $cmd;
 $output=shell_exec($cmd." 2>&1");
@@ -580,8 +580,12 @@ $output=shell_exec($cmd." 2>&1");
         $("#nav-final-allocate-tab").removeClass("active")
         $("#nav-final-allocate-tab").addClass("disabled")
         // $("body").css("opacity",'0.5')
+        data_serialize="prev_result_tab=1"
         $.ajax({
-            url:'../allocation/loadPreviousTabs/load_allocation_analysis_tab_previous.php',
+            // url:'../allocation/loadPreviousTabs/load_allocation_analysis_tab_previous.php',
+            url:'../allocation/loadTabs/load_allocation_analysis_tab.php',
+            data:data_serialize,
+            method:"POST",
             success:function(html){
                 $("#spinner").hide()
                 $("#nav-result-tab").removeClass("disabled")

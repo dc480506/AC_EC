@@ -4,7 +4,14 @@ include_once('../../verify.php');
 include_once('../../../config.php');
 // $sql="DELETE FROM `{$_SESSION['course_allocate_info']}` WHERE 1";
 // mysqli_query($conn,$sql);
-$args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
+if(isset($_POST['prev_result_tab'])){
+    mysqli_query($conn,"DELETE FROM `{$_SESSION['student_course_table']}` WHERE 1");
+    mysqli_query($conn,"DELETE FROM `{$_SESSION['pref_percent_table']}` WHERE 1");
+    mysqli_query($conn,"DELETE FROM `{$_SESSION['pref_student_alloted_table']}` WHERE 1");
+    mysqli_query($conn,"DELETE FROM `{$_SESSION['course_allocate_info']}` WHERE 1");
+    mysqli_query($conn,"UPDATE `{$_SESSION['student_pref']}` SET allocate_status='0' WHERE 1");
+}
+$args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['course_app_dept_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
 $cmd='python ../algorithms/'.$_SESSION['algorithm_chosen'].'_phase1.py '.$args;
 // echo $cmd;
 $output=shell_exec($cmd." 2>&1");
@@ -213,7 +220,7 @@ $output=shell_exec($cmd." 2>&1");
                 $("#delete_course_btn").attr("disabled",true);
                 $.ajax({
                     type: "POST",
-                    url: "../ic_queries/update_tempcourse_queries.php",
+                    url: "../allocation/update_tempcourse_queries.php",
                     data: form_serialize, 
                     success: function(data)
                     {
@@ -254,7 +261,7 @@ $output=shell_exec($cmd." 2>&1");
     $("#update_course_btn").attr("disabled",true);
     $.ajax({
     type: "POST",
-    url: "../ic_queries/update_tempcourse_queries.php",
+    url: "../allocation/update_tempcourse_queries.php",
     data: form_serialize, 
     success: function(data)
     {
@@ -326,7 +333,7 @@ $("#course_analysis").submit(function(e){
         $("#nav-result-tab").addClass("disabled")
         $("#course_analysis").css("opacity",0.3)
         $.ajax({
-            url:'../allocation/loadPreviousTabs/load_course_selection_tab_previous.php',
+            url:'../allocation/loadTabs/load_course_selection_tab.php',
             success:function(html){
                 $("#spinner").hide()
                 $("#nav-course-tab").removeClass("disabled")
