@@ -26,11 +26,12 @@ mapper={
         "course_table":5,
 		"pref_percent_table":6,
 		"pref_student_alloted_table":7,
-        "no_of_preferences":8,
-        "host":9,
-        "username":10,
-        "password":11,
-        "dbname":12,
+		"course_app_dept_table":8,
+        "no_of_preferences":9,
+        "host":10,
+        "username":11,
+        "password":12,
+        "dbname":13,
         }
 argument=list(map(str.strip, sys.argv[1].strip('[]').split(',')))
 n=len(argument)
@@ -48,7 +49,7 @@ mycursor.execute(course_query)
 myresult = mycursor.fetchall()
 courses={}
 for x in myresult:
-  applicable_query="select dept_id from audit_course_applicable_dept where cid=%s"
+  applicable_query="select dept_id from "+argument[mapper['course_app_dept_table']]+" where cid=%s"
   course_id=(x[0],)
   #mycursor.execute(applicable_query, course_id)
   mycursor.execute(applicable_query, course_id)
@@ -113,7 +114,7 @@ for i in range(len(data)):
 	for j in range (len(pref)):
 	    if(check_applicable(pref[j],dept_id,courses)):
 		    if(check_upper_limit(stu_course,courses,pref[j])):
-			    stu_course[pref[j]].append([eid,1,time,j+1,pref,dept_id])
+			    stu_course[pref[j]].append([eid,1,time,j+1,pref_true_no,dept_id])
 			    # student_pref_no[eid]=(j+1)
 			    student_pref_no[eid]=pref_true_no[j][1]
 			    break
@@ -176,61 +177,77 @@ while (len(underflow_stu_list)!=0):
 			print(email +" "+str(s[3])+" "+str(len(prefl))+" pref list exhuasted")
 			unallocated.append(email)
 			del underflow_stu_list[o]
-			temp=stu_course[prefl[s[3]-1]]
+			temp=stu_course[prefl[s[3]-1][0]]
 			temp=[k for k in temp if k[0]!=email]
 			student_pref_no[email]=-1
-			stu_course[prefl[s[3]-1]]=temp			
+			print()
+			stu_course[prefl[s[3]-1][0]]=temp			
 		
 
 					
-		for i in range(s[3],len(s[4])):
+		for i in range(s[3],len(s[4])+1):
 			
 			
 			#previous_pref_no=prefl[i]
-			print("previous course which "+email+" opted "+prefl[s[3]-1])
+			print("previous course which "+email+" opted "+prefl[s[3]-1][0]+"")
 			#print(email+" "+str(i)+ " "+str(len(prefl)))
-			next_pref=prefl[i]
-			if(i>=len(prefl)-1):
+			
+			print(str(i)+" "+str(len(prefl)))
+			#print(len(prefl))
+			if(i>=len(prefl)):
 				unallocated.append(email)
 				del underflow_stu_list[o]
-				temp=stu_course[prefl[s[3]-1]]
+				temp=stu_course[prefl[s[3]-1][0]]
 				temp=[k for k in temp if k[0]!=email]
 				student_pref_no[email]=-1
-				stu_course[prefl[s[3]-1]]=temp
-				print(email,"unallocated added")
+				stu_course[prefl[s[3]-1][0]]=temp
+				print(email,"unallocated added\n")
+				print()
 			else:
+				next_pref=prefl[i][0]
 				if(next_pref in under):
 					print("sorry the course is scraped")
 					continue
 				elif(check_applicable(next_pref,dept_id,courses)):
 					if(check_upper_limit(stu_course,courses,next_pref)):
 						# print(email,'in else if.')
-						stu_course[next_pref].append([email,1,time,i+1,prefl,dept_id])
+						stu_course[next_pref].append([email,1,time,pref[i][1],prefl,dept_id])
 						student_pref_no[email]=i+1
 						# print('before',underflow_stu_list[o])
 						del underflow_stu_list[o]
-						temp=stu_course[prefl[s[3]-1]]
+						temp=stu_course[prefl[s[3]-1][0]]
 						temp=[k for k in temp if k[0]!=email]
-						stu_course[prefl[s[3]-1]]=temp
+						stu_course[prefl[s[3]-1][0]]=temp
+						temp_list=stu_course[prefl[i][0]]
+						temp_list.sort(key=lambda temp_list:temp_list[2])
+						stu_course[prefl[i][0]]=temp_list
 						# print('after',underflow_stu_list[o])
-						print('max student:'+email+' got course '+prefl[i])
+						print('max student:'+email+' got course '+prefl[i][0]+"")
+						print("\n")
 						break
 					else:
 						# print(email,'in else else.')
 						last_stu=stu_course[next_pref][-1]
 						if(last_stu[2]>time):
-							print(str(len(stu_course[next_pref]))+ "length of stu_course")
+							print(last_stu[2])
+							print(time)
+							print("last student of course "+next_pref+" was "+last_stu[0]+"") 
+							#print(str(len(stu_course[next_pref]))+ " length of stu_course"+"\n")
 							stu_course[next_pref].pop()
-							temp=stu_course[prefl[s[3]-1]]
+							temp=stu_course[prefl[s[3]-1][0]]
 							temp=[k for k in temp if k[0]!=email]
-							stu_course[prefl[s[3]-1]]=temp
-							print(str(len(stu_course[next_pref]))+ "length of stu_course after pop")
+							stu_course[prefl[s[3]-1][0]]=temp
+							#print(str(len(stu_course[next_pref]))+ "length of stu_course after pop"+"\n")
 							del underflow_stu_list[o]
 							underflow_stu_list.append(last_stu)
 							underflow_stu_list.sort(key = lambda underflow_stu_list: underflow_stu_list[2]) 
-							stu_course[prefl[i]].append([email,1,time,i+1,prefl,dept_id])
+							stu_course[prefl[i][0]].append([email,1,time,i+1,prefl,dept_id])
+							temp_list=stu_course[prefl[i][0]]
+							temp_list.sort(key=lambda temp_list:temp_list[2])
+							stu_course[prefl[i][0]]=temp_list							
 							student_pref_no[email]=i+1
-							print('student:'+email+' got course '+prefl[i])
+							print('student:'+email+' got course '+prefl[i][0]+"")
+							print()
 							break
 						else:
 							# print('continue')
@@ -285,6 +302,7 @@ print(dict1)
 print(overlow_by)
 print(len(overlow_by))
 print(len(courses))
+print(unallocated)
 count=0
 total_allocated=0
 for k,v in student_pref_no.items():
@@ -298,21 +316,20 @@ print(total_allocated)
 print(count)
 # print('Unallocated',unallocated)
 # sql updations
-table_name_1='student_audit'
-table_name_2='student_preference_audit'
-table_name_3='audit_course'
-sem=5
-year='2020-21'
+# table_name_1='student_audit'
+# table_name_2='student_preference_audit'
+# table_name_3='audit_course'
+
 for course,student in stu_course.items():
 	query="UPDATE `"+argument[mapper['course_table']]+"` SET no_of_allocated="+str(len(student))+" WHERE cid='"+course+"' and year='"+argument[mapper['year']]+"' and sem='"+argument[mapper['sem']]+"'"
 	# print(query)
 	mycursor.execute(query)
 	# mydb.commit()
 	for i in range(len(student)):	
-		query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+str(sem)+",'"+year+"')"
+		query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+argument[mapper['sem']]+",'"+argument[mapper['year']]+"')"
 		mycursor.execute(query)
 		# mydb.commit()
-		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+year+"' and sem="+str(sem)
+		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem="+argument[mapper['sem']]
 		# print(query)
 		mycursor.execute(query)
 		query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+student[i][0]+"','"+str(student_pref_no[student[i][0]])+"')"
