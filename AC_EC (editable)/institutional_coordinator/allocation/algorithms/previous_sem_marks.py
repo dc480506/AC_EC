@@ -256,7 +256,7 @@ while (len(underflow_stu_list)!=0):
 								del underflow_stu_list[o]
 								underflow_stu_list.append(last_stu)
 								underflow_stu_list.sort(key = lambda underflow_stu_list: underflow_stu_list[-3])
-								stu_course[prefl[i]].append([email,1,time,prefl[i][1]+1,prefl,k,curr_marks,dept_id])
+								stu_course[prefl[i][0]].append([email,1,time,prefl[i][1]+1,prefl,k,curr_marks,dept_id])
 								temp_list=stu_course[prefl[i][0]]
 								temp_list.sort(key=lambda temp_list:temp_list[-3])
 								stu_course[prefl[i][0]]=temp_list
@@ -332,16 +332,17 @@ for course,student in stu_course.items():
 	for i in range(len(student)):	
 		#if(student[i][0]=='saurabh.shetty@somaiya.edu'):
 		#   print("HELLO")
-		
-		query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+argument[mapper['sem']]+",'"+argument[mapper['year']]+"')"
-		mycursor.execute(query)
-		# mydb.commit()
-		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem="+argument[mapper['sem']]
-		# print(query)
-		mycursor.execute(query)
-		query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+student[i][0]+"','"+str(student_pref_no[student[i][0]])+"')"
-		mycursor.execute(query)
-
+		try:
+			query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+argument[mapper['sem']]+",'"+argument[mapper['year']]+"')"
+			mycursor.execute(query)
+			# mydb.commit()
+			query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem="+argument[mapper['sem']]
+			# print(query)
+			mycursor.execute(query)
+			query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+student[i][0]+"','"+str(student_pref_no[student[i][0]])+"')"
+			mycursor.execute(query)
+		except:
+			pass
 for k,v in dict1.items():
 	query="INSERT INTO `"+argument[mapper['pref_percent_table']]+"`(`pref_no`,`no_of_stu`,`percent`) VALUES('"+str(k)+"','"+str(v)+"','"+str(round(v/total_responses,4)*100)+"')"
 	mycursor.execute(query)
