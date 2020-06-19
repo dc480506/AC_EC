@@ -326,14 +326,17 @@ for course,student in stu_course.items():
 	mycursor.execute(query)
 	# mydb.commit()
 	for i in range(len(student)):	
-		query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+argument[mapper['sem']]+",'"+argument[mapper['year']]+"')"
-		mycursor.execute(query)
-		# mydb.commit()
-		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem="+argument[mapper['sem']]
-		# print(query)
-		mycursor.execute(query)
-		query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+student[i][0]+"','"+str(student_pref_no[student[i][0]])+"')"
-		mycursor.execute(query)
+		try:
+			query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+argument[mapper['sem']]+",'"+argument[mapper['year']]+"')"
+			mycursor.execute(query)
+			# mydb.commit()
+			query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem="+argument[mapper['sem']]
+			# print(query)
+			mycursor.execute(query)
+			query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+student[i][0]+"','"+str(student_pref_no[student[i][0]])+"')"
+			mycursor.execute(query)
+		except:
+			pass
 
 		# print("INSERT INTO `"+table_name+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+str(sem)+",'"+year+"')")
 for k,v in dict1.items():
