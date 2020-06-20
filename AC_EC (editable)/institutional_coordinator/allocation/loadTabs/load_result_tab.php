@@ -3,9 +3,9 @@ include_once('../../verify.php');
 include_once('../../../config.php');
 $args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['pref_percent_table'].'","'.$_SESSION['pref_student_alloted_table'].'","'.$_SESSION['course_app_dept_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
 $cmd='python ../algorithms/'.$_SESSION['algorithm_chosen'].'.py '.$args;
-// echo $cmd;
+echo $cmd;
 $output=shell_exec($cmd." 2>&1");
-// echo $output;
+ echo $output;
 ?>
 <style>
     .accordion-toggle{
