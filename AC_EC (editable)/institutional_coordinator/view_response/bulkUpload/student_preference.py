@@ -9,16 +9,17 @@ mapper={
         "sem":5,
         "year":6,
         "type_of_form":7,
-        "status":8,
-        "npref":9,
-        "rollno":10,
-        "email":11,
-        "timestamp":12,
-        "firstpref":13
+		"no":8,
+        "status":9,
+        "npref":10,
+        "rollno":11,
+        "email":12,
+        "timestamp":13,
+        "firstpref":14
        }
 argument=list(map(str.strip, sys.argv[1].strip('[]').split(',')))
 n=len(argument)
-start_col=10
+start_col=11
 no_of_valid_preferences=argument[mapper['npref']]
 header,choice=[],[]
 header_id={}
@@ -71,12 +72,14 @@ except Exception as e:
 allocate_status=argument[mapper['status']]
 sem=argument[mapper['sem']]
 year=argument[mapper['year']]
+no=argument[mapper['no']]
 for z in range(1,int(no_of_valid_preferences)):
 	preferences=preferences+'pref'+str(z)+','
 	percent=percent+'%s,'
 preferences=preferences+'pref'+str(no_of_valid_preferences)
 percent=percent+'%s'
 type_of_form=str(argument[mapper['type_of_form']])
+insert_student_form="""INSERT INTO student_form (sem,year,no,form_type,email_id,timestamp) VALUES(%s,%s,%s,%s,%s,%s)"""
 insertform="""INSERT into student_preference_"""+type_of_form+"""(email_id,sem,year,rollno,timestamp,allocate_status,no_of_valid_preferences,"""+preferences+""") VALUES(%s,%s,%s,%s,%s,%s,%s,"""+percent+""");"""
 # print(insertform)
 try:
@@ -108,16 +111,19 @@ try:
 				time=time+q+" "
 			time=time.strip(' ')	
 		# print(time)
-		values=[email,sem,year,rollno,time,allocate_status,no_of_valid_preferences]
+		values=[sem,year,no,argument[mapper['type_of_form']],email,time]
+		values2=[email,sem,year,rollno,time,allocate_status,no_of_valid_preferences]
 		for z in range(1,int(no_of_valid_preferences)+1):
 			prefer.append(data.cell(x,header_id[argument[(mapper['firstpref']+z-1)].lower()]).value)
 		prefer=sameprefrem(prefer)
 		for val in range(0,len(prefer)):
-			values.append(prefer[val])
+			values2.append(prefer[val])
 		# print(values)
 		choice=[]
 		#execution of query
-		cursor.execute(insertform,values)
+		# print(values)
+		cursor.execute(insert_student_form,values)
+		cursor.execute(insertform,values2)
 except Exception as e:
     print(str(e))
     sys.exit(0)

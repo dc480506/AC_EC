@@ -63,7 +63,8 @@ $sql="select cname,cid,sem,
          (SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_floating_dept afd 
          INNER JOIN department d2 ON afd.dept_id=d2.dept_id WHERE a.cid=afd.cid AND a.sem=afd.sem AND a.year=afd.year
          GROUP BY 'all') as dept_name,
-         max,min,year, no_of_allocated,
+         max,min,year, (SELECT COUNT(*) FROM student_audit st_aud WHERE st_aud.cid=a.cid AND 
+            a.sem=st_aud.sem AND a.year=st_aud.year) as no_of_allocated,
          (SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_applicable_dept aad 
          INNER JOIN department ad ON aad.dept_id=ad.dept_id WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year
          GROUP BY 'all') as app 

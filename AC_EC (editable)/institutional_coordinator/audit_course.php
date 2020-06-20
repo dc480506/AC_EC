@@ -831,7 +831,7 @@ include('../includes/header.php');
                                                 <!--Upload previous-->
                                                     <div class="tab-pane fade" id="nav-previous-upload" role="tabpanel" aria-labelledby="nav-previous-upload">
                                                         <div class="container">
-                                                            <form method="post" method="POST" enctype="multipart/form-data" id="bulkUploadprevious">
+                                                            <form method="post" method="POST" enctype="multipart/form-data" id="bulkUploadPrevious">
                                                                 <br>
                                                                 <div class="form-row"> 
                                                                     <div class="form-group col-md-6">
@@ -929,7 +929,7 @@ include('../includes/header.php');
                                                                     </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                                    <button type="submit" class="btn btn-primary" name="save_changes">Upload</button>
+                                                                    <button type="submit" class="btn btn-primary" name="save_changes" id="upload_previous">Upload</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -1216,6 +1216,11 @@ $(document).ready(function(){
         document.querySelector("#bulkUploadUpcoming").reset();
         $("#upload_upcoming").text("Upload")
         $("#upload_upcoming").attr("disabled",false);
+    });
+    $('#uploadPrevious').on('hidden.bs.modal',function (e) {
+        document.querySelector("#bulkUploadPrevious").reset();
+        $("#upload_previous").text("Upload")
+        $("#upload_previous").attr("disabled",false);
     });
 });
 function findByAttr(array,attr_name,value){
@@ -2214,6 +2219,31 @@ $("#dataTable-upcoming").on('click','td.cname',function(){
 })
 
 // ***************Previous Course Section**************
+$("#bulkUploadPrevious").submit(function(e) {
+    e.preventDefault();  
+    form=this;  
+    var formData = new FormData(this);
+    $("#upload_previous").attr("disabled",true);
+    $("#upload_previous").text("Uploading...")
+    $.ajax({
+        url: "audit_course/bulkUpload/previous_audit_upload.php",
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            if($.trim(data)=="Successful"){
+                $("#upload_previous").text("Uploaded Successfully")
+                loadPrevious();
+            }else{
+                $("#upload_previous").text("Upload Failed")
+                alert(data);
+            }
+            // form.reset();
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+})
 $("#select_all_previous_page").click(function(e){
             //   var row=$(this).closest('tr')
     if($(this).is(":checked")){    
@@ -2760,4 +2790,3 @@ $("#close_add_form_cross").click(function(){
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');
 ?>
-s

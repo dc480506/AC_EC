@@ -84,6 +84,7 @@ include('../includes/header.php');
                                 <div class="container">
                                     <form method="post" method="POST" enctype="multipart/form-data" id="bulkUploadCurrent">
                                         <br>
+                                        <input type="hidden" name="type" value="audit">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="semester"><b>Semester</b></label>
