@@ -114,9 +114,9 @@ for i in range(len(data)):
 	for j in range (len(pref)):
 	    if(check_applicable(pref[j],dept_id,courses)):
 		    if(check_upper_limit(stu_course,courses,pref[j])):
-			    stu_course[pref[j]].append([eid,1,time,j+1,pref_true_no,dept_id])
+			    stu_course[pref[j]].append([eid,1,time,j+1,pref,dept_id])
 			    # student_pref_no[eid]=(j+1)
-			    student_pref_no[eid]=pref_true_no[j][1]
+			    student_pref_no[eid]=j+1
 			    break
 		    else:
 			    student_pref_no[eid]=-1
@@ -165,23 +165,24 @@ loop=0
 for v in underflow_stu_list: 
     print(v[0],end=',')
 print('length',len(underflow_stu_list))
-print("#################################################")    
-while (len(underflow_stu_list)!=0):
+print("#################################################")  
+rem_underflow_stu_list=[]  
+while (len(underflow_stu_list)!=len(rem_underflow_stu_list)):
 	for s in underflow_stu_list:
 		dept_id=s[5]
 		prefl=s[4]
 		email=s[0]
 		time=s[2]
-		o=underflow_stu_list.index(s)
+		o=s
 		if(s[3]==len(prefl)):
 			print(email +" "+str(s[3])+" "+str(len(prefl))+" pref list exhuasted")
 			unallocated.append(email)
-			del underflow_stu_list[o]
-			temp=stu_course[prefl[s[3]-1][0]]
+			rem_underflow_stu_list.append(o)
+			temp=stu_course[prefl[s[3]-1]]
 			temp=[k for k in temp if k[0]!=email]
 			student_pref_no[email]=-1
 			print()
-			stu_course[prefl[s[3]-1][0]]=temp			
+			stu_course[prefl[s[3]-1]]=temp			
 		
 
 					
@@ -189,40 +190,40 @@ while (len(underflow_stu_list)!=0):
 			
 			
 			#previous_pref_no=prefl[i]
-			print("previous course which "+email+" opted "+prefl[s[3]-1][0]+"")
+			print("previous course which "+email+" opted "+prefl[s[3]-1]+"")
 			#print(email+" "+str(i)+ " "+str(len(prefl)))
 			
 			print(str(i)+" "+str(len(prefl)))
 			#print(len(prefl))
 			if(i>=len(prefl)):
 				unallocated.append(email)
-				del underflow_stu_list[o]
-				temp=stu_course[prefl[s[3]-1][0]]
+				rem_underflow_stu_list.append(o)
+				temp=stu_course[prefl[s[3]-1]]
 				temp=[k for k in temp if k[0]!=email]
 				student_pref_no[email]=-1
-				stu_course[prefl[s[3]-1][0]]=temp
+				stu_course[prefl[s[3]-1]]=temp
 				print(email,"unallocated added\n")
 				print()
 			else:
-				next_pref=prefl[i][0]
+				next_pref=prefl[i]
 				if(next_pref in under):
 					print("sorry the course is scraped")
 					continue
 				elif(check_applicable(next_pref,dept_id,courses)):
 					if(check_upper_limit(stu_course,courses,next_pref)):
 						# print(email,'in else if.')
-						stu_course[next_pref].append([email,1,time,pref[i][1],prefl,dept_id])
+						stu_course[next_pref].append([email,1,time,i+1,prefl,dept_id])
 						student_pref_no[email]=i+1
 						# print('before',underflow_stu_list[o])
-						del underflow_stu_list[o]
-						temp=stu_course[prefl[s[3]-1][0]]
+						rem_underflow_stu_list.append(o)
+						temp=stu_course[prefl[s[3]-1]]
 						temp=[k for k in temp if k[0]!=email]
-						stu_course[prefl[s[3]-1][0]]=temp
-						temp_list=stu_course[prefl[i][0]]
+						stu_course[prefl[s[3]-1]]=temp
+						temp_list=stu_course[prefl[i]]
 						temp_list.sort(key=lambda temp_list:temp_list[2])
-						stu_course[prefl[i][0]]=temp_list
+						stu_course[prefl[i]]=temp_list
 						# print('after',underflow_stu_list[o])
-						print('max student:'+email+' got course '+prefl[i][0]+"")
+						print('max student:'+email+' got course '+prefl[i]+"")
 						print("\n")
 						break
 					else:
@@ -234,19 +235,19 @@ while (len(underflow_stu_list)!=0):
 							print("last student of course "+next_pref+" was "+last_stu[0]+"") 
 							#print(str(len(stu_course[next_pref]))+ " length of stu_course"+"\n")
 							stu_course[next_pref].pop()
-							temp=stu_course[prefl[s[3]-1][0]]
+							temp=stu_course[prefl[s[3]-1]]
 							temp=[k for k in temp if k[0]!=email]
-							stu_course[prefl[s[3]-1][0]]=temp
+							stu_course[prefl[s[3]-1]]=temp
 							#print(str(len(stu_course[next_pref]))+ "length of stu_course after pop"+"\n")
-							del underflow_stu_list[o]
+							rem_underflow_stu_list.append(o)
 							underflow_stu_list.append(last_stu)
 							underflow_stu_list.sort(key = lambda underflow_stu_list: underflow_stu_list[2]) 
-							stu_course[prefl[i][0]].append([email,1,time,i+1,prefl,dept_id])
-							temp_list=stu_course[prefl[i][0]]
+							stu_course[prefl[i]].append([email,1,time,i+1,prefl,dept_id])
+							temp_list=stu_course[prefl[i]]
 							temp_list.sort(key=lambda temp_list:temp_list[2])
-							stu_course[prefl[i][0]]=temp_list							
+							stu_course[prefl[i]]=temp_list							
 							student_pref_no[email]=i+1
-							print('student:'+email+' got course '+prefl[i][0]+"")
+							print('student:'+email+' got course '+prefl[i]+"")
 							print()
 							break
 						else:
@@ -254,7 +255,10 @@ while (len(underflow_stu_list)!=0):
 							# print(email,'in else.')
 							continue
 				
-
+	print("<br><br>^^^^^^^^^^",rem_underflow_stu_list,"^^^^^^^^^^<br><br>")					
+	for o in rem_underflow_stu_list:
+		underflow_stu_list.remove(o)
+	rem_underflow_stu_list=[]
 	print("after iteration "+str(loop+1))				
 	for v in underflow_stu_list: 
 		print(v[0],end=',')
