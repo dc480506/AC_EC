@@ -61,41 +61,41 @@ include('../includes/header.php');
                                     <div class="form-row mt-4">
                                         <div class="form-group col-md-6">
                                             <label for="fcode"><b>Faculty Code</b></label>
-                                            <input type="text" class="form-control" id="fcode" placeholder="Column name of Faculty Code" name="fcode" required>
+                                            <input type="text" class="form-control" id="fcode" placeholder="Column name of Faculty Code" name="fcode" value="faculty_code" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="eid"><b>Employee ID</b></label>
-                                            <input type="text" class="form-control" id="eid" placeholder="Column name of Employee ID" name="eid" required>
+                                            <input type="text" class="form-control" id="eid" placeholder="Column name of Employee ID" name="eid" value="employee_id" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="name"><b>First Name</b></label>
-                                            <input type="text" class="form-control" id="fname" placeholder="Column name of First Name" name="fname" required>
+                                            <input type="text" class="form-control" id="fname" placeholder="Column name of First Name" name="fname" value="fname" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="emailid"><b>Middle Name</b></label>
-                                            <input type="text" class="form-control" id="mname" name="mname" placeholder="Column name of Middle Name" required>
+                                            <input type="text" class="form-control" id="mname" name="mname" placeholder="Column name of Middle Name" value="mname" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="name"><b>Last Name</b></label>
-                                            <input type="text" class="form-control" id="lname" placeholder="Column name of Last Name" name="lname" required>
+                                            <input type="text" class="form-control" id="lname" placeholder="Column name of Last Name" name="lname" value="lname" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="emailid"><b>Email ID</b></label>
-                                            <input type="text" class="form-control" id="emailid" name="emailid" placeholder="Column name of Email ID" required>
+                                            <input type="text" class="form-control" id="emailid" name="emailid" placeholder="Column name of Email ID" value="email_id" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="department"><b>Department</b></label>
-                                            <input type="text" class="form-control" id="department" name="department" placeholder="Column name of Department" required>
+                                            <input type="text" class="form-control" id="department" name="department" placeholder="Column name of Department" value="dept_id" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="post"><b>Post</b></label>
-                                            <input type="text" class="form-control" id="post" name="post" placeholder="Column name of Post" required>
+                                            <input type="text" class="form-control" id="post" name="post" placeholder="Column name of Post" value="post" required>
                                         </div>
                                     </div>
                                     <br>

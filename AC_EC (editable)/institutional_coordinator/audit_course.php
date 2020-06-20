@@ -195,33 +195,33 @@ include('../includes/header.php');
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-12">
                                                                                 <label for="cname_current"><b>Course Name</b></label>
-                                                                                <input type="text" class="form-control" id="cname_current" placeholder="" name="cname" required>
+                                                                                <input type="text" class="form-control" id="cname_current" placeholder="" name="cname" value="cname" required>
                                                                             </div>
                                                                         </div>   
                                                                         <div class="form-row"> 
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="cid_current"><b>Course ID</b></label>
-                                                                                <input type="text" class="form-control" id="cid_current" placeholder="" name="cid" required>
+                                                                                <input type="text" class="form-control" id="cid_current" placeholder="" name="cid" value="cid" required>
                                                                             </div>
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="floating_dept_current"><b>Floating Department</b></label>
-                                                                                <input type="text" class="form-control" id="floating_dept_current" placeholder="" name="floating_dept" required>
+                                                                                <input type="text" class="form-control" id="floating_dept_current" placeholder="" name="floating_dept" value="floating_dept_id" required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="min_current"><b>Min</b></label>
-                                                                                <input type="text" class="form-control" id="min_current" placeholder="" name="min" required>
+                                                                                <input type="text" class="form-control" id="min_current" placeholder="" name="min" value="min" required>
                                                                             </div>
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="max_current"><b>Max</b></label>
-                                                                                <input type="text" class="form-control" id="max_current" name="max" placeholder="" required>
+                                                                                <input type="text" class="form-control" id="max_current" name="max" placeholder="" value="max" required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-12">
                                                                                 <label for="applicable_dept_current"><b>Applicable Departments</b></label>
-                                                                                <input type="text" class="form-control" id="applicable_dept_current" name="applicable_department" placeholder="" required>
+                                                                                <input type="text" class="form-control" id="applicable_dept_current" name="applicable_department" value="applicable_dept" placeholder="" required>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -618,33 +618,33 @@ include('../includes/header.php');
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-12">
                                                                                 <label for="cname_upcoming"><b>Course Name</b></label>
-                                                                                <input type="text" class="form-control" id="cname_upcoming" placeholder="" name="cname" required>
+                                                                                <input type="text" class="form-control" id="cname_upcoming" placeholder="" name="cname" value="cname" required>
                                                                             </div>
                                                                         </div>   
                                                                         <div class="form-row"> 
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="cid_upcoming"><b>Course ID</b></label>
-                                                                                <input type="text" class="form-control" id="cid_upcoming" placeholder="" name="cid" required>
+                                                                                <input type="text" class="form-control" id="cid_upcoming" placeholder="" name="cid" value="cid" required>
                                                                             </div>
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="floating_dept_upcoming"><b>Floating Department</b></label>
-                                                                                <input type="text" class="form-control" id="floating_dept_upcoming" placeholder="" name="floating_dept" required>
+                                                                                <input type="text" class="form-control" id="floating_dept_upcoming" placeholder="" name="floating_dept" value="floating_dept_id" required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="min_upcoming"><b>Min</b></label>
-                                                                                <input type="text" class="form-control" id="min_upcoming" placeholder="" name="min" required>
+                                                                                <input type="text" class="form-control" id="min_upcoming" placeholder="" name="min" value="min" required>
                                                                             </div>
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="max_upcoming"><b>Max</b></label>
-                                                                                <input type="text" class="form-control" id="max_upcoming" name="max" placeholder="" required>
+                                                                                <input type="text" class="form-control" id="max_upcoming" name="max" placeholder="" value="max" required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-12">
                                                                                 <label for="applicable_dept_upcoming"><b>Applicable Departments</b></label>
-                                                                                <input type="text" class="form-control" id="applicable_dept_upcoming" name="applicable_department" placeholder="" required>
+                                                                                <input type="text" class="form-control" id="applicable_dept_upcoming" name="applicable_department" value="applicable_dept" placeholder="" required>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -877,33 +877,33 @@ include('../includes/header.php');
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-12">
                                                                                 <label for="cname_previous"><b>Course Name</b></label>
-                                                                                <input type="text" class="form-control" id="cname_previous" placeholder="" name="cname" required>
+                                                                                <input type="text" class="form-control" id="cname_previous" placeholder="" name="cname" value="cname" required>
                                                                             </div>
                                                                         </div>   
                                                                         <div class="form-row"> 
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="cid_previous"><b>Course ID</b></label>
-                                                                                <input type="text" class="form-control" id="cid_previous" placeholder="" name="cid" required>
+                                                                                <input type="text" class="form-control" id="cid_previous" placeholder="" name="cid" value="cid" required>
                                                                             </div>
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="floating_dept_previous"><b>Floating Department</b></label>
-                                                                                <input type="text" class="form-control" id="floating_dept_previous" placeholder="" name="floating_dept" required>
+                                                                                <input type="text" class="form-control" id="floating_dept_previous" placeholder="" name="floating_dept" value="floating_dept_id" required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="min_previous"><b>Min</b></label>
-                                                                                <input type="text" class="form-control" id="min_previous" placeholder="" name="min" required>
+                                                                                <input type="text" class="form-control" id="min_previous" placeholder="" name="min" value="min" required>
                                                                             </div>
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="max_previous"><b>Max</b></label>
-                                                                                <input type="text" class="form-control" id="max_previous" name="max" placeholder="" required>
+                                                                                <input type="text" class="form-control" id="max_previous" name="max" placeholder="" value="max" required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-row">
                                                                             <div class="form-group col-md-12">
                                                                                 <label for="applicable_dept_previous"><b>Applicable Departments</b></label>
-                                                                                <input type="text" class="form-control" id="applicable_dept_previous" name="applicable_department" placeholder="" required>
+                                                                                <input type="text" class="form-control" id="applicable_dept_previous" name="applicable_department" value="applicable_dept" placeholder="" required>
                                                                             </div>
                                                                         </div>
                                                                     </div>

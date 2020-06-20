@@ -18,7 +18,7 @@ include('../includes/header.php');
                 </div>
                 <div class="col text-right" id="delete_selected_response_div">
                     <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
-                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Record(s)
                     </button>
                 </div>
                 <div class="col text-right">
@@ -385,7 +385,7 @@ include('../includes/header.php');
                 },
             ],
             columnDefs: [{
-                    targets: [0], // column index (start from 0)
+                    targets: [0,6], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {

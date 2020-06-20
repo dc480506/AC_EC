@@ -45,7 +45,7 @@ $totalRecordwithFilter = $records['totalcountfilters'];
 //        GROUP BY 'all') as app 
 //        from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 "
 //        .$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
-$sql="select email_id,rollno,current_sem,dept_name,fname,mname,lname,year_of_admission  
+$sql="select email_id,rollno,current_sem,dept_name,CONCAT(fname,' ',mname,' ',lname) as name,year_of_admission  
        from student s INNER JOIN department d ON s.dept_id=d.dept_id WHERE "
        .$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 $studentRecords = mysqli_query($conn, $sql);
@@ -53,10 +53,10 @@ $data = array();
 $count=0;
 $fullname="";
 while ($row = mysqli_fetch_assoc($studentRecords)) {
-  if($row['mname']!='')
-   {$fullname=$row['fname']." ".$row['mname']." ".$row['lname'];}
-  else 
-    {$fullname=$row['fname']." ".$row['lname'];}
+//   if($row['mname']!='')
+//    {$fullname=$row['fname']." ".$row['mname']." ".$row['lname'];}
+//   else 
+//     {$fullname=$row['fname']." ".$row['lname'];}
    $data[] = array( 
       // "select-cbox"=>'<input type="checkbox">',
       "select-cbox"=>'<div class="custom-control custom-checkbox">
@@ -65,7 +65,7 @@ while ($row = mysqli_fetch_assoc($studentRecords)) {
                      </div>',
       "email_id"=>$row['email_id'],
       "rollno"=>$row['rollno'],
-      "name"=>$fullname,
+      "name"=>$row['name'],
       "current_sem"=>$row['current_sem'],
       "dept_name"=>$row['dept_name'],
       "year_of_admission"=>$row['year_of_admission'],

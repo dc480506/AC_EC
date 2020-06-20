@@ -3,9 +3,9 @@ include_once('../../verify.php');
 include_once('../../../config.php');
 $args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['pref_percent_table'].'","'.$_SESSION['pref_student_alloted_table'].'","'.$_SESSION['course_app_dept_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
 $cmd='python ../algorithms/'.$_SESSION['algorithm_chosen'].'.py '.$args;
-echo $cmd;
+// echo $cmd;
 $output=shell_exec($cmd." 2>&1");
- echo $output;
+//  echo $output;
 ?>
 <style>
     .accordion-toggle{
@@ -222,6 +222,11 @@ $output=shell_exec($cmd." 2>&1");
                 </h2>
             </div>
             <div id="course_div" class="collapse" aria-labelledby="course" data-parent="#final_allocation_accordion">
+                <br>
+                <div class="custom-control custom-switch" style="float: right;">
+                    <input type="checkbox" class="custom-control-input" id="show_all_course_analysis">
+                    <label class="custom-control-label" for="show_all_course_analysis"><b>View All Courses Analysis</b></label>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <br>
@@ -571,7 +576,21 @@ $output=shell_exec($cmd." 2>&1");
             // row.child("<b>Hello</b>").show();
         }
     })
+    // $("#show_all_course_analysis").on('change',function(){
+    //     var rows=$("#dataTable-courses tbody tr")
+    //     console.log(rows)
+    //     if($(this).is(':checked')){
 
+    //     }else{
+    //     try{
+    //         $("#dataTable-courses tbody tr").child.hide()
+    //     }catch(err){
+
+    //     }
+    //         $("#dataTable-courses tbody tr").removeClass('shown table-warning')
+
+    //     }
+    // })
     $("#complete_allocation").submit(function(e){
         e.preventDefault();
     })
