@@ -183,7 +183,7 @@ while (len(underflow_stu_list)!=len(rem_underflow_stu_list)):
 			student_pref_no[email]=-1
 			print()
 			stu_course[prefl[s[3]-1]]=temp			
-		
+			continue
 
 					
 		for i in range(s[3],len(s[4])+1):
@@ -255,8 +255,11 @@ while (len(underflow_stu_list)!=len(rem_underflow_stu_list)):
 							# print(email,'in else.')
 							continue
 				
-	print("<br><br>^^^^^^^^^^",rem_underflow_stu_list,"^^^^^^^^^^<br><br>")					
+	# print("<br><br>^^^^^^^^^^",rem_underflow_stu_list,"^^^^^^^^^^<br><br>")	
+	# print("<br><br>^-^^-^^-^^",underflow_stu_list,"^-^^-^^-^^^<br><br>")	
+
 	for o in rem_underflow_stu_list:
+		# print("<br><br>^-^^&&&&-^^",o,"^-&&&&&^<br><br>")	
 		underflow_stu_list.remove(o)
 	rem_underflow_stu_list=[]
 	print("after iteration "+str(loop+1))				

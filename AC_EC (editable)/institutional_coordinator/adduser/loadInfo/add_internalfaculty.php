@@ -48,18 +48,18 @@ $totalRecordwithFilter = $records['totalcountfilters'];
 //        GROUP BY 'all') as app 
 //        from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 "
 //        .$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
-$sql="select faculty_code,email_id,employee_id,dept_name,fname,mname,lname,post from faculty f INNER JOIN department d ON f.dept_id=d.dept_id WHERE "
+$sql="select faculty_code,email_id,employee_id,dept_name,CONCAT(fname,' ',mname,' ',lname) as name,post from faculty f INNER JOIN department d ON f.dept_id=d.dept_id WHERE "
        .$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 $facultyRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;
 $fullname="";
 while ($row = mysqli_fetch_assoc($facultyRecords)) {
-  if($row['mname']!=''){
-  $fullname=$row['fname']." ".$row['mname']." ".$row['lname'];}
-  else{
-    $fullname=$row['fname']." ".$row['lname'];
-  }
+//   if($row['mname']!=''){
+//   $fullname=$row['fname']." ".$row['mname']." ".$row['lname'];}
+//   else{
+//     $fullname=$row['fname']." ".$row['lname'];
+//   }
    $data[] = array( 
 
       // "select-cbox"=>'<input type="checkbox">',
@@ -69,7 +69,7 @@ while ($row = mysqli_fetch_assoc($facultyRecords)) {
                      </div>',
       "faculty_code"=>$row['faculty_code'],
       "employee_id"=>$row['employee_id'],
-      "name"=>$fullname,
+      "name"=>$row['name'],
       "email_id"=>$row['email_id'],
       "dept_name"=>$row['dept_name'],
       "post"=>$row['post'],

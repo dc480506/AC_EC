@@ -194,7 +194,6 @@ while (len(underflow_stu_list)!=len(rem_underflow_stu_list)):
 	for s in underflow_stu_list:
 		#print("<br>@@@!!!!!@@@@@!!!!!@@@@@!!!!!",len(underflow_stu_list),"@@@!!!!!@@@@@!!!!!@@@@@!!!!!<br>")
 		#s=> [emailid,allocate_status(0,1),timestamp,preference_alloted,preference_list,sorting order index,marks,dept_id]
-		#if s[0]=='darsh.parmar@somaiya.edu':
 		#	print("<br>-------------------",s[0],s[4][s[3]],"------------<br>")
 		prefl=s[4]
 		email=s[0]
@@ -235,20 +234,12 @@ while (len(underflow_stu_list)!=len(rem_underflow_stu_list)):
 				print(email,"unallocated added")
 			else:
 				next_pref=prefl[i]
-				#if(s[0]=='karan19@somaiya.edu'):
-				#	print("<br>","@@@@@@@@@@@@",next_pref,s[0],"@@@@@@@@@@@<br>")
 				if(next_pref in under):
-					if(s[0]=='karan19@somaiya.edu'):
-						print("<br>","$$$$$$$$$$",next_pref,s[0],"<br>")	
-						# print("<br>","*************** ",curr_marks,prefl[i],"<br>")
-						print("sorry the course "+next_pref+" is scraped")
+					print("sorry the course "+next_pref+" is scraped")
 					continue
 				
 				elif(check_applicable(next_pref,dept_id,courses)):
 					if(check_upper_limit(stu_course,courses,next_pref)):
-						# print(email,'in else if.')
-					#	if s[0]=='darsh.parmar@somaiya.edu':
-					#		print("<br>-----@---@---@-----",s[0],s[4][s[3]],"---@--@---<br>")
 						stu_course[next_pref].append([email,1,time,i+1,prefl,k,curr_marks,dept_id])
 						student_pref_no[email]=i+1
 						# print('before',underflow_stu_list[o])
@@ -266,10 +257,6 @@ while (len(underflow_stu_list)!=len(rem_underflow_stu_list)):
 					else:
 						# print(email,'in else else.')
 						last_stu=stu_course[next_pref][-1]
-						# if(s[0]=='karan19@somaiya.edu'):
-						# 	print("<br>","$$$$$$$$$$",last_stu[-2],last_stu[0],"<br>")	
-						# 	print("<br>","*************** ",curr_marks,prefl[i],"<br>")
-
 						if(last_stu[-2]<curr_marks):
 							print(str(next_pref)+ " course is overflowed. so curr_stu displace "+str(last_stu[0]))
 							print("curr_stu marks "+str(curr_marks)+" displace stu marks"+str(last_stu[-1]))

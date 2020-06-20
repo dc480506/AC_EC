@@ -89,41 +89,41 @@ include('../includes/header.php');
                                     <div class="form-row mt-4">
                                         <div class="form-group col-md-4">
                                             <label for="cname"><b>First Name</b></label>
-                                            <input type="text" class="form-control" id="fname" placeholder="First" name="fname" required>
+                                            <input type="text" class="form-control" id="fname" placeholder="First" name="fname" value="fname" required>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="cname"><b>Middle Name</b></label>
-                                            <input type="text" class="form-control" id="mname" placeholder="Middle" name="mname" required>
+                                            <input type="text" class="form-control" id="mname" placeholder="Middle" name="mname" value="mname" required>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="cname"><b>Last Name</b></label>
-                                            <input type="text" class="form-control" id="lname" placeholder="Last" name="lname" required>
+                                            <input type="text" class="form-control" id="lname" placeholder="Last" name="lname" value="lname" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="semester"><b>Semester</b></label>
-                                            <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester" required>
+                                            <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester" value="current_sem" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="year"><b>Year Admitted</b></label>
-                                            <input type="text" class="form-control" id="year" name="year" placeholder="year" required>
+                                            <input type="text" class="form-control" id="year" name="year" placeholder="year" value="year_of_admission" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="department"><b>Department</b></label>
-                                            <input type="text" class="form-control" id="department" name="department" placeholder="Department" required>
+                                            <input type="text" class="form-control" id="department" name="department" placeholder="Department" value="dept_id" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="email"><b>Email</b></label>
-                                            <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
+                                            <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="email_id" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
                                             <label for="rno"><b>Roll Number</b></label>
-                                            <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll no" required>
+                                            <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll no" value="rollno" required>
                                         </div>
                                     </div>
                                     <br>

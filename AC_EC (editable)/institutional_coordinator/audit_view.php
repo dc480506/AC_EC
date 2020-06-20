@@ -18,7 +18,7 @@ include('../includes/header.php');
                 </div>
                 <div class="col text-right" id="delete_selected_response_div">
                     <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
-                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Response(s)
                     </button>
                 </div>
                 <div class="col text-right">
@@ -156,15 +156,15 @@ include('../includes/header.php');
                                                 <div class="form-row">
                                                     <div class="form-group col-md-12">
                                                         <label for="rno"><b>Roll Number</b></label>
-                                                        <input type="text" class="form-control" id="rno" name="rno" placeholder="Column name of Roll Number" required>
+                                                        <input type="text" class="form-control" id="rno" name="rno" placeholder="Column name of Roll Number" value="rollno" required>
                                                     </div>
                                                     <div class="form-group col-md-12">
                                                         <label for="tstamp"><b>Time Stamp</b></label>
-                                                        <input type="text" class="form-control" id="tstamp" placeholder="Column name of Time Stamp" name="tstamp" required>
+                                                        <input type="text" class="form-control" id="tstamp" placeholder="Column name of Time Stamp" name="tstamp" value="timestamp" required>
                                                     </div>
                                                     <div class="form-group col-md-12">
                                                         <label for="email"><b>Email</b></label>
-                                                        <input type="text" class="form-control" id="email" name="email" placeholder="Column name of Email" required>
+                                                        <input type="text" class="form-control" id="email" name="email" placeholder="Column name of Email" value="email_id" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-row mt-4">
