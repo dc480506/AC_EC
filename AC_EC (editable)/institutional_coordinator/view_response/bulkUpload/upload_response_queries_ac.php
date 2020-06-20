@@ -3,13 +3,13 @@ include_once("../../../config.php");
 include_once("../../verify.php");
 $sem = mysqli_escape_string($conn, $_POST['semester']);
 $year = mysqli_escape_string($conn, $_POST['year']);
-$type = 'audit';
+$type = mysqli_escape_string($conn,$_POST['type']);
 $rno = mysqli_escape_string($conn, $_POST['rno']);
 $email = mysqli_escape_string($conn, $_POST['email']);
 $tstamp = mysqli_escape_string($conn, $_POST['tstamp']);
 $status = mysqli_escape_string($conn, $_POST['status']);
 $npre = mysqli_escape_string($conn, $_POST['npre']);
-
+$no=0;
 $total_pref = mysqli_escape_string($conn, $_POST['total_pref']);
 $npref = [];
 for ($i = 1; $i <= $total_pref; $i++) {
@@ -38,7 +38,7 @@ if ($npre > $current_pref_columns) {
     mysqli_query($conn, $sql);
 }
 
-$args = '["' . $target_location . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $sem . '","' . $year . '","' . $type . '","' . $status . '","' . $npre . '","' . $rno . '","' . $email . '","' . $tstamp;
+$args = '["' . $target_location . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $sem . '","' . $year . '","' . $type . '","' . $no . '","' . $status . '","' . $npre . '","' . $rno . '","' . $email . '","' . $tstamp;
 for ($i = 1; $i <= $total_pref; $i++) {
     $args .= '","' . $npref[$i];
 }
