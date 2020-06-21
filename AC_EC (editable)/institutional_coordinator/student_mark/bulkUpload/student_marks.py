@@ -15,6 +15,8 @@ header_id={}
 start_col=2
 argument=list(map(str.strip, sys.argv[1].strip('[]').split(',')))
 n=len(argument)
+class Gpaoutofbounds(Exception):
+	pass
 # dept={'COMP':'1','IT':'2','EXTC':'3','ETRX':'4','MECH':'5'}
 #database connection
 connection = pymysql.connect(host=argument[mapper['host']], user=argument[mapper['username']], passwd=argument[mapper['password']], database=argument[mapper['dbname']])
@@ -38,6 +40,13 @@ try:
 		email=data.cell(x,header_id[argument[mapper['email']].lower()]).value
 		#print(email)
 		marks=data.cell(x,header_id[argument[mapper['marks']].lower()]).value
+		try:
+			if float(marks)>10.00:
+				raise Gpaoutofbounds
+				break
+		except Gpaoutofbounds:
+			print('Gpa of student '+email+' is '+str(marks)+' which is greater than 10')
+			sys.exit(0)
 		#print(rollno)
 		values=(email,sem,year,marks)
 		#executing query

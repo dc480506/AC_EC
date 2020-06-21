@@ -62,7 +62,7 @@ include('../includes/header.php');
                                         <li>For your reference you can download the sample excel sheet from below:</li>
                                     </ol>
                                 </span>
-                                <a href="#" class="btn btn-primary btn-icon-split btn-sm float-right" download>
+                                <a href="../demo_excel_downloads/student_marks.xlsx" class="btn btn-primary btn-icon-split btn-sm float-right" download>
                                     <span class="icon text-white-50">
                                         <i class="fas fa-file-download"></i>
                                     </span>
