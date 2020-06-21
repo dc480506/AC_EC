@@ -64,8 +64,8 @@
         PRIMARY KEY(email_id,sem,year)
     )');
     mysqli_query($conn,'INSERT INTO '.$_SESSION['course_table'].
-    ' (`cid`, `sem`, `year`, `cname`, `currently_active`, `min`, `max`, `no_of_allocated`, `email_id`, `timestamp`)
-    SELECT cid,sem,year,cname,currently_active,min,max,no_of_allocated,email_id,timestamp 
+    ' (`cid`, `sem`, `year`, `cname`, `currently_active`, `min`, `max`, `email_id`, `timestamp`)
+    SELECT cid,sem,year,cname,currently_active,min,max,email_id,timestamp 
     FROM '.$_SESSION['type'].'_course WHERE sem="'.$_SESSION['sem'].'" AND year="'.$_SESSION['year'].'"
     ');
     mysqli_query($conn,'INSERT INTO '.$_SESSION['course_app_dept_table'].

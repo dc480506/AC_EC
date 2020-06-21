@@ -60,23 +60,22 @@ echo '
                         <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
                             <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
                                 <div class="form-group">
-                                    <label for="exampleInputPreference"><b>No of Preferences</b></label>
-                                    <input type="number" required class="form-control" name="nop" value="' . $no_of_preferences . '">
-                                </div>
-                                <div class="form-group">
                                     <label for="exampleInputSem"><b>Floating Semester</b></label>
-                                    <input type="number" required class="form-control" name="sem" value="' . $sem . '">
-                                    <input type="hidden" required class="form-control" name="oldsem" value="' . $sem . '">
+                                    <input type="number" required class="form-control" disabled value="' . $sem . '">
+                                    <input type="hidden" required class="form-control" name="sem" value="' . $sem . '">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputYear"><b>Year</b></label>
-                                    <input type="year" required class="form-control" name="year" value="' . $year . '">
-                                    <input type="hidden" required class="form-control" name="oldyear" value="' . $year . '">
+                                    <input type="year" required class="form-control" disabled value="' . $year . '">
+                                    <input type="hidden" required class="form-control" name="year" value="' . $year . '">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputCurrSem"><b>Opening Semester</b></label>
-                                    <input type="number" required class="form-control" name="curr_sem" value="' . $curr_sem . '">
-        
+                                    <input type="number" required class="form-control" disabled value="' . $curr_sem . '">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPreference"><b>No of Preferences</b></label>
+                                    <input type="number" required class="form-control" name="nop" value="' . $no_of_preferences . '">
                                 </div>
                                 <div class="row">
                                     <div class="col-6">

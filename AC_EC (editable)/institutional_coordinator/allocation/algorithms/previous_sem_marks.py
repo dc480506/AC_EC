@@ -362,25 +362,24 @@ for item in student_pref_no.values():
 
 
 # sql updations
+print("<br>$$$^6^^",len(stu_course),"<br>")
 for course,student in stu_course.items():
+	
 	query="UPDATE `"+argument[mapper['course_table']]+"` SET no_of_allocated="+str(len(student))+" where cid='"+course+"' and year='"+argument[mapper['year']]+"' and sem="+argument[mapper['sem']]
-	# print(query)
 	mycursor.execute(query)
 	# mydb.commit()
 	for i in range(len(student)):	
-		#if(student[i][0]=='saurabh.shetty@somaiya.edu'):
-		#   print("HELLO")
-		try:
-			query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+argument[mapper['sem']]+",'"+argument[mapper['year']]+"')"
-			mycursor.execute(query)
-			# mydb.commit()
-			query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem="+argument[mapper['sem']]
-			# print(query)
-			mycursor.execute(query)
-			query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+student[i][0]+"','"+str(student_pref_no[student[i][0]])+"')"
-			mycursor.execute(query)
-		except:
-			pass
+		# try:
+		query="INSERT INTO `"+argument[mapper['student_course_table']]+"`(`email_id`, `cid`, `sem`, `year`) VALUES ('"+student[i][0]+"','"+course+"',"+argument[mapper['sem']]+",'"+argument[mapper['year']]+"')"
+		mycursor.execute(query)
+		# mydb.commit()
+		query="UPDATE `"+argument[mapper['student_pref_table']]+"` SET allocate_status=1 where email_id='"+student[i][0]+"' and year='"+argument[mapper['year']]+"' and sem="+argument[mapper['sem']]
+		# print(query)
+		mycursor.execute(query)
+		query="INSERT INTO `"+argument[mapper['pref_student_alloted_table']]+"` (email_id,pref_no) VALUES('"+student[i][0]+"','"+str(student_pref_no[student[i][0]])+"')"
+		mycursor.execute(query)
+		# except:
+		# 	pass
 for k,v in dict1.items():
 	query="INSERT INTO `"+argument[mapper['pref_percent_table']]+"`(`pref_no`,`no_of_stu`,`percent`) VALUES('"+str(k)+"','"+str(v)+"','"+str(round(v/total_responses,4)*100)+"')"
 	mycursor.execute(query)

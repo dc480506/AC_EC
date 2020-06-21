@@ -12,7 +12,7 @@ if(isset($_POST['order'])){
 }else{
    // $columnName='sem,year';
    // $columnSortOrder='desc';
-   $orderQuery=" order by cid ";
+   $orderQuery=" order by year desc,sem asc,cid asc";
 
 }
 $searchValue = $_POST['search']['value']; // Search value
