@@ -12,7 +12,7 @@ if(isset($_POST['order'])){
 }else{
    // $columnName='sem';
    // $columnSortOrder='asc';
-   $orderQuery=' order by sem asc ';
+   $orderQuery=' order by cid asc ';
 }
 $searchValue = $_POST['search']['value']; // Search value
 
