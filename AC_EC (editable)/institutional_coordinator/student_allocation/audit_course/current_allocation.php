@@ -31,18 +31,19 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$sel = mysqli_query($conn,"select count(*) as totalcount from audit_course_log as c 
-inner join student_audit_log as stu_audit 
-on c.cid=stu_audit.cid inner join student as stu on stu.email_id=stu_audit.email_id ");
+$sel = mysqli_query($conn,"select count(*) as totalcount from 
+audit_course as c inner join student_audit as stu_audit 
+on c.cid=stu_audit.cid inner join student as stu on stu.email_id=stu_audit.email_id 
+where stu_audit.currently_active=1");
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
 ## Total number of record with filtering
 // $sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=0 ".$searchQuery);
-$sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course_log as c 
-inner join student_audit_log as stu_audit 
+$sel = mysqli_query($conn,"select count(*) as totalcountfilters from 
+audit_course as c inner join student_audit as stu_audit 
 on c.cid=stu_audit.cid inner join student as stu on stu.email_id=stu_audit.email_id 
-".$searchQuery. $orderQuery." limit ".$row.",".$rowperpage);
+where stu_audit.currently_active=1 ".$searchQuery. $orderQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
@@ -55,9 +56,9 @@ $totalRecordwithFilter = $records['totalcountfilters'];
 //         .$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
 
 $sql="select c.cid,c.cname,stu.fname,stu.lname,stu.email_id,stu_audit.sem,stu_audit.year 
-from audit_course_log as c inner join student_audit_log as stu_audit 
+from audit_course as c inner join student_audit as stu_audit 
 on c.cid=stu_audit.cid inner join student as stu on stu.email_id=stu_audit.email_id 
-".$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
+where stu_audit.currently_active=1 ".$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;
