@@ -12,7 +12,8 @@ if(isset($_POST['order'])){
 }else{
    // $columnName='sem,year';
    // $columnSortOrder='desc';
-   $orderQuery=" order by timestamp desc ";
+   // $orderQuery=" order by timestamp desc ";
+  $orderQuery="order by cid asc";
 
 }
 $searchValue = $_POST['search']['value']; // Search value
