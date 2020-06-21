@@ -25,7 +25,7 @@ if(isset($_POST['submit']))
         mysqli_query($conn, $sql3);
         echo $sql3;
         // $sql4="UPDATE student SET form_filled=1 WHERE email_id='{$_SESSION['email']}';";
-        $sql4="UPDATE student_form set form_filled=1,timestamp='{$timestamp}' WHERE sem='{$_SESSION['sem']}'AND year='{$_SESSION['year']}' AND email_id='{$_SESSION['email']}'";
+        $sql4="UPDATE student_form set form_filled=1,timestamp='{$timestamp}' WHERE sem='{$_SESSION['sem']}'AND year='{$_SESSION['year']}' AND email_id='{$_SESSION['email']}' AND form_type='audit'";
         mysqli_query($conn,$sql4);
         unset($_SESSION['no_of_preferences']);
         unset($_SESSION['sem']);
