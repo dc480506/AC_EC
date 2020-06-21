@@ -79,7 +79,7 @@ for z in range(1,int(no_of_valid_preferences)):
 preferences=preferences+'pref'+str(no_of_valid_preferences)
 percent=percent+'%s'
 type_of_form=str(argument[mapper['type_of_form']])
-insert_student_form="""INSERT INTO student_form (sem,year,no,form_type,email_id,timestamp) VALUES(%s,%s,%s,%s,%s,%s)"""
+update_student_form="""UPDATE student_form SET form_filled=1, timestamp=%s WHERE email_id=%s AND sem=%s AND year=%s AND no=%s AND form_type=%s"""
 insertform="""INSERT into student_preference_"""+type_of_form+"""(email_id,sem,year,rollno,timestamp,allocate_status,no_of_valid_preferences,"""+preferences+""") VALUES(%s,%s,%s,%s,%s,%s,%s,"""+percent+""");"""
 # print(insertform)
 try:
@@ -111,7 +111,7 @@ try:
 				time=time+q+" "
 			time=time.strip(' ')	
 		# print(time)
-		values=[sem,year,no,argument[mapper['type_of_form']],email,time]
+		values=[time,email,sem,year,no,type_of_form]
 		values2=[email,sem,year,rollno,time,allocate_status,no_of_valid_preferences]
 		for z in range(1,int(no_of_valid_preferences)+1):
 			prefer.append(data.cell(x,header_id[argument[(mapper['firstpref']+z-1)].lower()]).value)
@@ -122,7 +122,7 @@ try:
 		choice=[]
 		#execution of query
 		# print(values)
-		cursor.execute(insert_student_form,values)
+		cursor.execute(update_student_form,values)
 		cursor.execute(insertform,values2)
 except Exception as e:
     print(str(e))
