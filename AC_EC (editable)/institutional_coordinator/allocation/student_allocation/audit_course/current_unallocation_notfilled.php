@@ -1,6 +1,6 @@
 <?php
-include_once('../../verify.php');
-include_once('../../../config.php');
+include_once('../../../verify.php');
+include_once('../../../../config.php');
 $draw = $_POST['draw'];
 $row = $_POST['start'];
 $rowperpage = $_POST['length']; // Rows display per page

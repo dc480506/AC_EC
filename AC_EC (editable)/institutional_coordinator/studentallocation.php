@@ -147,7 +147,7 @@ include('../includes/header.php');
 
                 <div class="tab-content" id="nav-tabContent">
                     <!--Current-->
-                    <div class="tab-pane fade" id="nav-current" role="tabpanel" aria-labelledby="nav-current-tab">
+                    <div class="tab-pane fade show active" id="nav-current" role="tabpanel" aria-labelledby="nav-current-tab">
                         <br>
 
                         
@@ -1158,32 +1158,9 @@ all_cbox.addEventListener("click", function() {
 
 <script>
 $(document).ready(function() {
-    $('input[type="radio"]').click(function() {
-		var s=(($(this).attr('id')).split("_"));
-        if (s[0] == 'defaultInline2') {
-              if(s[1]=='upcoming'){
-				$('#show-me_up').show();
-				loadCurrent();
-        }
-		if(s[1]=='curr'){
-			$('#show-me_curr').show();
-		}
-        }
-
-    });
-	$('input[type="radio"]').click(function() {
-		var s=(($(this).attr('id')).split("_"));
-        if (s[0] == 'defaultInline1') {
-              if(s[1]=='upcoming'){
-				$('#show-me_up').hide();
-        }
-		if(s[1]=='curr'){
-			$('#show-me_curr').hide();
-		}
-        }
-
-   
-    });
+    loadCurrent_allocated();
+    loadCurrent_unallocated_filled();
+    loadCurrent_unallocated_notfilled();
 });
 
 
@@ -1213,7 +1190,7 @@ function loadUpcoming_allocated(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'allocation/loadInfo/upcoming_allocation.php'
+          'url':'allocation/student_allocation/audit_course/upcoming_allocation.php'
       },
       fnDrawCallback:function(){
           //$(".action-btn").on('click',loadModalUpcoming);
@@ -1270,7 +1247,7 @@ function loadUpcoming_unallocated_filled(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'allocation/loadInfo/upcoming_unallocation_filled.php'
+          'url':'allocation/student_allocation/audit_course/upcoming_unallocation_filled.php'
       },
       fnDrawCallback:function(){
           //$(".action-btn").on('click',loadModalUpcoming);
@@ -1322,7 +1299,7 @@ function loadUpcoming_unallocated_notfilled(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'allocation/loadInfo/upcoming_unallocation_notfilled.php'
+          'url':'allocation/student_allocation/audit_course/upcoming_unallocation_notfilled.php'
       },
       fnDrawCallback:function(){
           //$(".action-btn").on('click',loadModalUpcoming);
@@ -1374,7 +1351,7 @@ function loadCurrent_allocated(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'allocation/loadInfo/current_allocation.php'
+          'url':'allocation/student_allocation/audit_course/current_allocation.php'
       },
       fnDrawCallback:function(){
           //$(".action-btn").on('click',loadModalUpcoming);
@@ -1431,7 +1408,7 @@ function loadCurrent_unallocated_filled(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'allocation/loadInfo/current_unallocation_filled.php'
+          'url':'allocation/student_allocation/audit_course/current_unallocation_filled.php'
       },
       fnDrawCallback:function(){
         //   $(".action-btn").on('click',loadModalUpcoming);
@@ -1482,7 +1459,7 @@ function loadCurrent_unallocated_notfilled(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'allocation/loadInfo/current_unallocation_notfilled.php'
+          'url':'allocation/student_allocation/audit_course/current_unallocation_notfilled.php'
       },
       fnDrawCallback:function(){
           //$(".action-btn").on('click',loadModalUpcoming);
@@ -1535,7 +1512,7 @@ function loadPrevious(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'allocation/loadInfo/previous_allocation.php'
+          'url':'allocation/student_allocation/audit_course/previous_allocation.php'
       },
       fnDrawCallback:function(){
           //$(".action-btn").on('click',loadModalUpcoming);
