@@ -419,7 +419,8 @@ include('../includes/header.php');
 										<th>First Name</th>
                                          <th>Last Name</th>
 										 <th>Email</th>
-										 
+										 <th>Sem</th>
+										 <th>Year</th>
                                         
                                         
                                         
@@ -433,7 +434,8 @@ include('../includes/header.php');
 										<th>First Name</th>
                                          <th>Last Name</th>
 										 <th>Email</th>
-										 
+										 <th>Sem</th>
+										 <th>Year</th>
                                         
                                         <th>Action</th>
 
@@ -468,7 +470,8 @@ include('../includes/header.php');
 										<th>First Name</th>
                                          <th>Last Name</th>
 										 <th>Email</th>
-										 
+										 <th>Sem</th>
+										 <th>Year</th>
                                         
                                         
                                         
@@ -482,7 +485,8 @@ include('../includes/header.php');
 										<th>First Name</th>
                                          <th>Last Name</th>
 										 <th>Email</th>
-										 
+										 <th>Sem</th>
+										 <th>Year</th>
                                         
                                         <th>Action</th>
 
@@ -768,7 +772,8 @@ include('../includes/header.php');
 										<th>First Name</th>
                                          <th>Last Name</th>
 										 <th>Email</th>
-										 
+										 <th>Sem</th>
+										 <th>Year</th>
                                         
                                         
                                         
@@ -782,7 +787,8 @@ include('../includes/header.php');
 										<th>First Name</th>
                                          <th>Last Name</th>
 										 <th>Email</th>
-										 
+										 <th>Sem</th>
+										 <th>Year</th>
                                         
                                         <th>Action</th>
 
@@ -817,7 +823,8 @@ include('../includes/header.php');
 										<th>First Name</th>
                                          <th>Last Name</th>
 										 <th>Email</th>
-										 
+										 <th>Sem</th>
+										 <th>Year</th>
                                         
                                         
                                         
@@ -831,7 +838,8 @@ include('../includes/header.php');
 										<th>First Name</th>
                                          <th>Last Name</th>
 										 <th>Email</th>
-										 
+										 <th>Sem</th>
+										 <th>Year</th>
                                         
                                         <th>Action</th>
 
@@ -1276,11 +1284,13 @@ function loadUpcoming_unallocated_filled(){
          { data: 'fname' },
          { data: 'lname' },
          { data: 'email_id' },
+         { data: 'sem' },
+		 { data: 'year' },
          
          { data: 'action' },
       ],
       columnDefs: [ {
-        targets: [0], // column index (start from 0)
+        targets: [0,7], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
      },
      {className:"selectbox_upcoming_td",targets:[0]},
@@ -1328,11 +1338,13 @@ function loadUpcoming_unallocated_notfilled(){
          { data: 'fname' },
          { data: 'lname' },
          { data: 'email_id' },
+         { data: 'sem' },
+		 { data: 'year' },
          
          { data: 'action' },
       ],
       columnDefs: [ {
-        targets: [0], // column index (start from 0)
+        targets: [0,7], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
      },
      {className:"selectbox_upcoming_td",targets:[0]},
@@ -1437,11 +1449,13 @@ function loadCurrent_unallocated_filled(){
          { data: 'fname' },
          { data: 'lname' },
          { data: 'email_id' },
+         { data: 'sem' },
+		 { data: 'year' },
          
          { data: 'action' },
       ],
       columnDefs: [ {
-        targets: [0], // column index (start from 0)
+        targets: [0,7], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
      },
      {className:"selectbox_upcoming_td",targets:[0]},
@@ -1488,11 +1502,13 @@ function loadCurrent_unallocated_notfilled(){
          { data: 'fname' },
          { data: 'lname' },
          { data: 'email_id' },
+         { data: 'sem' },
+		 { data: 'year' },
          
          { data: 'action' },
       ],
       columnDefs: [ {
-        targets: [0], // column index (start from 0)
+        targets: [0,7], // column index (start from 0)
         orderable: false, // set orderable false for selected columns
      },
      {className:"selectbox_upcoming_td",targets:[0]},
