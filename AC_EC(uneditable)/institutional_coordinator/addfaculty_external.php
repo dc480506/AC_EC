@@ -1,4 +1,4 @@
-<?php 
+<?php
 include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
@@ -18,11 +18,16 @@ include('../includes/header.php');
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
-                <h4 class="m-0 font-weight-bold text-primary">External Faculty Records</h4>
+                    <h4 class="m-0 font-weight-bold text-primary">External Faculty Records</h4>
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
                         <i class="fas fa-filter"></i>
+                    </button>
+                </div>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter0">
+                        <i class="fas fa-upload"></i>
                     </button>
                 </div>
                 <div class="col text-right">
@@ -31,7 +36,137 @@ include('../includes/header.php');
                     </button>
                 </div>
             </div>
+            <div class="modal fade" id="exampleModalCenter0" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle0" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle0">Upload Your File </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <form method="post" method="POST" enctype="multipart/form-data" action="ic_queries/addstudent_queries.php" id="#">
+                                    <label for="">
+                                        <h6>Information for mapping Data from excel sheet to Database</h6>
+                                    </label>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="name"><b>Name</b></label>
+                                            <input type="text" class="form-control" id="name" placeholder="Name" name="name" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="emailid"><b>Email ID</b></label>
+                                            <input type="text" class="form-control" id="emailid" name="emailid" placeholder="Email ID" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="cname"><b>Course Name</b></label>
+                                            <input type="text" class="form-control" id="cname" name="cname" placeholder="Course Name" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="cid"><b>Course ID</b></label>
+                                            <input type="text" class="form-control" id="cid" name="cid" placeholder="Course ID" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row mt-4">
+                                        <div class="form-group col-md-12">
+                                            <label for="accomplishment"><b>Accomplishment</b></label>
+                                            <input type="text" class="form-control" id="accomplishment" placeholder="Accomplishment" name="accomplishment" required>
+                                        </div>
+                                        
+                                    </div>
+                                    <br>
+                                    <div class="form-group files color">
+                                        <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
+                                        <script type="text/javascript" language="javascript">
+                                            function checkfile(sender) {
+                                                var validExts = new Array(".xlsx", ".xls");
+                                                var fileExt = sender.value;
+                                                fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+                                                if (validExts.indexOf(fileExt) < 0) {
+                                                    alert("Invalid file selected, valid files are of " +
+                                                        validExts.toString() + " types.");
+                                                    return false;
+                                                } else return true;
+                                            }
+                                        </script>
+                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+                                        <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                        <button type="submit" class="btn btn-primary" name="save_changes">Upload</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <style type="text/css">
+                            .files input {
+                                outline: 2px dashed #92b0b3;
+                                outline-offset: -10px;
+                                -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                padding: 120px 0px 85px 35%;
+                                text-align: center !important;
+                                margin: 0;
+                                width: 100% !important;
+                            }
 
+                            .files input:focus {
+                                outline: 2px dashed #92b0b3;
+                                outline-offset: -10px;
+                                -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                transition: outline-offset .15s ease-in-out, background-color .15s linear;
+                                border: 1px solid #92b0b3;
+                            }
+
+                            .files {
+                                position: relative
+                            }
+
+                            .files:after {
+                                pointer-events: none;
+                                position: absolute;
+                                top: 60px;
+                                left: 0;
+                                width: 50px;
+                                right: 0;
+                                height: 56px;
+                                content: "";
+                                background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+                                display: block;
+                                margin: 0 auto;
+                                background-size: 100%;
+                                background-repeat: no-repeat;
+                            }
+
+                            .color input {
+                                background-color: #f1f1f1;
+                            }
+
+                            .files:before {
+                                position: absolute;
+                                bottom: 10px;
+                                left: 0;
+                                pointer-events: none;
+                                width: 100%;
+                                right: 0;
+                                height: 57px;
+                                display: block;
+                                margin: 0 auto;
+                                color: #2ea591;
+                                font-weight: 600;
+                                text-transform: capitalize;
+                                text-align: center;
+                            }
+                        </style>
+                    </div>
+                </div>
+            </div>
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -64,7 +199,7 @@ include('../includes/header.php');
                                             echo "<option>" . $row['dept_name'] . "</option>";
                                         }
                                         ?>
-                                    </select> 
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputAccomplishment"><b>Accomplishment</b></label>
@@ -190,23 +325,21 @@ include('../includes/header.php');
                         <!-- tr starts-->
                         <?php
                         include '../config.php';
-                        if(isset($_SESSION['email']))
-                        {
-                            $sql="SELECT c.email_id,f.fname,f.lname,f.mname,d.dept_name,c.course_certified,f.post FROM ((`faculty_certification` as c inner JOIN `faculty` as f on c.email_id=f.email_id ) INNER JOIN `department` as d on f.dept_id = d.dept_id )";
+                        if (isset($_SESSION['email'])) {
+                            $sql = "SELECT c.email_id,f.fname,f.lname,f.mname,d.dept_name,c.course_certified,f.post FROM ((`faculty_certification` as c inner JOIN `faculty` as f on c.email_id=f.email_id ) INNER JOIN `department` as d on f.dept_id = d.dept_id )";
                             $result = mysqli_query($conn, $sql);
-                            $output='';
+                            $output = '';
                             $sql1 = "SELECT dept_name FROM department";
                             $result1 = mysqli_query($conn, $sql1);
                             $count = 500;
-                            while($row = mysqli_fetch_array($result))
-                            {
-                            //$name=$row["fname"]+" "+$row["mname"]+" "+$row["lname"];
-                            $output.= '<tr>
-                                <td>'.$row["fname"]." ".$row["mname"]." ".$row["lname"].'</td>
-                                <td>'.$row["email_id"].'</td>
-                                <td>'.$row["dept_name"].'</td>
-                                <td>'.$row["course_certified"].'</td>
-                                <td>'.$row["post"].'</td>
+                            while ($row = mysqli_fetch_array($result)) {
+                                //$name=$row["fname"]+" "+$row["mname"]+" "+$row["lname"];
+                                $output .= '<tr>
+                                <td>' . $row["fname"] . " " . $row["mname"] . " " . $row["lname"] . '</td>
+                                <td>' . $row["email_id"] . '</td>
+                                <td>' . $row["dept_name"] . '</td>
+                                <td>' . $row["course_certified"] . '</td>
+                                <td>' . $row["post"] . '</td>
                                 <td>
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter' . $count . '">
@@ -252,36 +385,36 @@ include('../includes/header.php');
                                                                 <div class="form-row mt-4">
                                                                     <div class="form-group col-md-6">
                                                                         <label for="name"><b>Name</b></label>
-                                                                        <input type="text" class="form-control" id="name" name="name" placeholder="name" value="'.$row["fname"]." ".$row["mname"]." ".$row["lname"].'">
+                                                                        <input type="text" class="form-control" id="name" name="name" placeholder="name" value="' . $row["fname"] . " " . $row["mname"] . " " . $row["lname"] . '">
                                                                     </div>
                                                                     <div class="form-group col-md-6">
                                                                         <label for="emailid"><b>Email Address</b></label>
-                                                                        <input type="email" class="form-control" id="emailid" name="email" placeholder="email@gmail.com" value="'.$row["email_id"].'">
+                                                                        <input type="email" class="form-control" id="emailid" name="email" placeholder="email@gmail.com" value="' . $row["email_id"] . '">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
                                                                     <div class="form-group col-md-6">
                                                                         <label for="department"><b>Department</b></label>
                                                                         <select class="form-control" required name="dept">';
-                                                                            
-                                                                            //include_once("../config.php");
 
-                                                                            while ($row1 = mysqli_fetch_assoc($result1)) {
-                                                                                $output.= "<option>" . $row1['dept_name'] . "</option>";
-                                                                            }
-                    
-                                                                        $output.='</select> 
+                                //include_once("../config.php");
+
+                                while ($row1 = mysqli_fetch_assoc($result1)) {
+                                    $output .= "<option>" . $row1['dept_name'] . "</option>";
+                                }
+
+                                $output .= '</select> 
                                                                         <!-- <input type="text" class="form-control" id="department" name="department" placeholder="department"> -->
                                                                     </div>
                                                                     <div class="form-group col-md-6">
                                                                         <label for="accomplishment"><b>Accomplishment</b></label>
-                                                                        <input type="text" class="form-control" id="accomplishment" name="accomplishment" placeholder="accomplishment" value="'.$row["course_certified"].'">
+                                                                        <input type="text" class="form-control" id="accomplishment" name="accomplishment" placeholder="accomplishment" value="' . $row["course_certified"] . '">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
                                                                     <div class="form-group col-md-6">
                                                                         <label for="post"><b>Post</b></label>
-                                                                        <input type="text" class="form-control" id="post" name="post" placeholder="post" value="'.$row["post"].'">
+                                                                        <input type="text" class="form-control" id="post" name="post" placeholder="post" value="' . $row["post"] . '">
                                                                     </div>
                                                                 </div>
                                                                 <button type="submit" class="btn btn-primary" name="update_faculty">Update</button>
@@ -299,7 +432,7 @@ include('../includes/header.php');
                                     </div>
                                 </td>
                             </tr>';
-                            $count++;
+                                $count++;
                             }
                             echo $output;
                         }

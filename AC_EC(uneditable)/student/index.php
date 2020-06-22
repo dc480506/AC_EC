@@ -6,7 +6,7 @@ include('../includes/header.php');
 
 <?php include('sidebar.php'); ?>
 
-<?php include('../includes/topbar.php'); ?>
+<?php include('../includes/topbar_student.php'); ?>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -19,6 +19,7 @@ include('../includes/header.php');
                 $row= mysqli_fetch_array($result,MYSQLI_ASSOC);
                 $count= mysqli_num_rows($result);
                 $_SESSION['sem']=$row['current_sem'];
+                $_SESSION['rollno']=$row['rollno'];
                 // $_SESSION['year']=$row['year'];
                 if($count==1)
                 {
@@ -66,8 +67,11 @@ include('../includes/header.php');
                             <h5><strong> Audit Course </strong></h5>
                         </p>
                         <?php 
-                        $sql="SELECT ac.cname,sa.sem,ac.no_of_allocated,sa.complete_status,ac.year FROM audit_course AS ac,student_audit AS sa WHERE sa.email_id='{$_SESSION['email']}' AND sa.cid=ac.cid AND sa.sem=ac.sem AND ac.year=sa.year";
+                        $sql="SELECT ac.cname,sa.sem,(SELECT count(*) FROM student_audit sa WHERE currently_active=1 AND sa.cid=ac.cid) as no_of_allocated,sa.complete_status,ac.year FROM audit_course AS ac INNER Join student_audit AS sa on sa.cid=ac.cid AND sa.sem=ac.sem AND ac.year=sa.year WHERE sa.email_id='{$_SESSION['email']}' AND sa.currently_active='1'";
                             $result= mysqli_query($conn,$sql);
+                            if(mysqli_num_rows($result)==0)
+                            { echo 'no current courses';}
+                        else{
                             $row= mysqli_fetch_array($result,MYSQLI_ASSOC);
                             $count= mysqli_num_rows($result);
                             if($count==1)
@@ -108,7 +112,7 @@ include('../includes/header.php');
                                     <span><?php echo $row['no_of_allocated'];}?></span>
                                 </div>
                             </div>
-                        </div>
+                        </div> <?php }?>
                     </form>
                 </div>
             </div>

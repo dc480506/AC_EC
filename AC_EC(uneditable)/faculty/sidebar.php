@@ -25,9 +25,10 @@
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="previous.php">Audit Course</a>
-        <a class="collapse-item" href="previous.php">Interdisciplinary Course</a>
-        <a class="collapse-item" href="previous.php">Elective Course</a>
+        <a class="collapse-item" href="previous_ac.php">Audit Course</a>
+        <a class="collapse-item" href="previous_idc.php">Interdisciplinary Course</a>
+        <a class="collapse-item" href="previous_cec.php">Close Elective Course</a>
+        <a class="collapse-item" href="previous_oec.php">Open Elective Course</a>
       </div>
     </div>
   </li>
@@ -40,9 +41,10 @@
     </a>
     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="current.php">Audit Course</a>
-        <a class="collapse-item" href="current.php">Interdisciplinary Course</a>
-        <a class="collapse-item" href="current.php">Elective Course</a>
+        <a class="collapse-item" href="current_ac.php">Audit Course</a>
+        <a class="collapse-item" href="current_idc.php">Interdisciplinary Course</a>
+        <a class="collapse-item" href="current_cec.php">Close Elective Course</a>
+        <a class="collapse-item" href="current_oec.php">Open Elective Course</a>
       </div>
     </div>
   </li>

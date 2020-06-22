@@ -3,11 +3,23 @@ include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
 include('sidebar.php');
-include('../includes/topbar.php');
+include('../includes/topbar_student.php');
 $course=array();
 $index=0;
+$sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+$result = mysqli_query($conn, $sql);
+$row=mysqli_fetch_assoc($result);
+// while ($row = mysqli_fetch_assoc($result)) {
+if($row['sem_type']=='EVEN'){
+    $temp=explode('-',$row['academic_year'])[0];
+    $temp+=1;
+    $temp2="".($temp+1);
+    $year_val=$temp."-".substr($temp2,2);
+}else{
+    $year_val=$row['academic_year'];
+}
 // TO get timestamp(start as well as end fOr a particular student) OF a FORM
-$sql1 = "SELECT form.start_timestamp,form.end_timestamp,sem,year,form.no_of_preferences,student.form_filled FROM form INNER JOIN student ON form.curr_sem=student.current_sem AND student.email_id='{$_SESSION['email']}' AND form.form_type='audit'";
+$sql1 = "SELECT form.start_timestamp,form.end_timestamp,sem,year,form.no_of_preferences,student.form_filled FROM form INNER JOIN student ON form.curr_sem=student.current_sem AND student.email_id='{$_SESSION['email']}' AND form.form_type='audit' AND year='$year_val'";
 $result1 = mysqli_query($conn, $sql1);
 if(mysqli_num_rows($result1)==0)
 {?>
@@ -42,14 +54,26 @@ else{
 // $count = mysqli_num_rows($result2);
 $row1 = mysqli_fetch_array($result1);
 $_SESSION['no_of_preferences']=$row1['no_of_preferences'];
-$today = date("Y-m-d H:i:s.u");
-//echo $today;
+$today = date("Y-m-d H:i:s");
+// echo $today;
+// echo '<br>';
+// echo $row1['start_timestamp'];
+// echo '<br>';
+// echo $row1['end_timestamp'];
 // $today_time = date("H:i:s");
 // $date = "2020-03-05 00:00:00";
 // if ($date < $today) {
 //     $allow=1;
 // }
 if($row1['start_timestamp']>$today){ ?>
+<style>
+    ::-webkit-scrollbar {
+    display: none!important
+}
+option:disabled{
+   color: red;
+}
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col">
@@ -96,20 +120,23 @@ else{
     $_SESSION['sem']=$sem;
     $sql7="SELECT * FROM student_form WHERE form_type='audit' AND sem='$sem' AND year='{$row1['year']}' AND no=0 AND email_id='{$_SESSION['email']}'";
     $result7=mysqli_query($conn,$sql7);
-    if(mysqli_num_rows($result7)==0){ 
-        $sql2="SELECT audit_course.cname,audit_course.cid,audit_course.year FROM audit_course 
-      INNER JOIN student ON audit_course.sem='$sem' AND audit_course.year='$year' AND student.email_id='{$_SESSION['email']}' 
-      AND student.dept_id IN(SELECT dept_id FROM audit_course_applicable_dept aca 
-                             WHERE aca.cid=audit_course.cid AND aca.sem=audit_course.sem AND aca.year=audit_course.year) 
-      EXCEPT (SELECT hide_student_audit_course.cname, hide_student_audit_course.cid,hide_student_audit_course.year FROM hide_student_audit_course 
-              INNER JOIN student ON hide_student_audit_course.email_id=student.email_id AND hide_student_audit_course.sem='$sem' AND student.email_id='{$_SESSION['email']}')";
-$result2 = mysqli_query($conn, $sql2);
-while($row2 = mysqli_fetch_array($result2))
-{
-    $course[$index]=$row2;
-    $index++;
-}         
-       ?>
+    if(mysqli_num_rows($result7)>0)
+    {
+        $row7=mysqli_fetch_assoc($result7);
+        if($row7['form_filled']==0){ 
+            $sql2="SELECT audit_course.cname,audit_course.cid,audit_course.year FROM audit_course 
+          INNER JOIN student ON audit_course.sem='$sem' AND audit_course.year='$year' AND student.email_id='{$_SESSION['email']}' 
+          AND student.dept_id IN(SELECT dept_id FROM audit_course_applicable_dept aca 
+                                 WHERE aca.cid=audit_course.cid AND aca.sem=audit_course.sem AND aca.year=audit_course.year) 
+          EXCEPT (SELECT hide_student_audit_course.cname, hide_student_audit_course.cid,hide_student_audit_course.year FROM hide_student_audit_course 
+                  INNER JOIN student ON hide_student_audit_course.email_id=student.email_id AND hide_student_audit_course.sem='$sem' AND student.email_id='{$_SESSION['email']}')";
+        $result2 = mysqli_query($conn, $sql2);
+        while($row2 = mysqli_fetch_array($result2))
+        {
+            $course[$index]=$row2;
+            $index++;
+        }         
+           ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <div class="row">
@@ -120,7 +147,7 @@ while($row2 = mysqli_fetch_array($result2))
                         <h1 class="h3 mb-4 text-gray-800">Form</h1>
                     </div>
                     <div class="row align-items-center">
-                        <h6 class="card-description"> Audit/Elective/InterDisciplinary Courses </h6>
+                        <h6 class="card-description"> Audit Courses </h6>
                     </div>
                 </div>
                 <div class="card-body">
@@ -131,7 +158,7 @@ while($row2 = mysqli_fetch_array($result2))
                         <h4><?php echo "Preference $i"; ?></h4>
                         <select id="cname<?php echo $i; ?>" class="btn btn-primary dropdown-toggle"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                            name="cname<?php echo $i; ?>" required>
+                            name="cname<?php echo $i; ?>" style="color:#ffffff;" required>
                             <!-- btn btn-primary dropdown-toggle -->
                             <option hidden="false" value="">--------</option>
                             <div class="dropdown-menu">
@@ -140,7 +167,7 @@ while($row2 = mysqli_fetch_array($result2))
                                             {
                                                 // $_SESSION['year']=$key['year'];
                                             ?>
-                                <option class="dropdown-item" value="<?php echo $key['cid']; ?>">
+                                <option style="color:white; " class="dropdown-item" value="<?php echo $key['cid']; ?>">
                                     <?php echo "{$key['cname']} ({$key['cid']})"; ?></option>
                                 <?php } ?>
                             </div>
@@ -161,7 +188,7 @@ while($row2 = mysqli_fetch_array($result2))
 
 <?php 
     }
-    else{
+    else if($row7['form_filled']==1){
         //Major bugs in this section 
         $sql5="SELECT * FROM student_preference_audit WHERE student_preference_audit.sem='{$_SESSION['sem']}' 
               AND student_preference_audit.year='{$_SESSION['year']}' AND student_preference_audit.email_id='{$_SESSION['email']}'";
@@ -188,7 +215,7 @@ for ($i=1; $i <=$row1['no_of_preferences'] ; $i++) {
                         <h1 class="h3 mb-4 text-gray-800">Form</h1>
                     </div>
                     <div class="row align-items-center">
-                        <h6 class="card-description"> Audit/Elective/InterDisciplinary Courses </h6>
+                        <h6 class="card-description"> Audit Courses </h6>
                     </div>
                 </div>
                 <div class="card-body">
@@ -207,7 +234,26 @@ for ($i=1; $i <=$row1['no_of_preferences'] ; $i++) {
         </div>
     </div>
 </div>
-<?php }
+<?php } }
+else 
+{ ?>
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="row align-items-center">
+                        <h1 class="h3 mb-4 text-gray-800">Form</h1>
+                    </div>
+                    <div class="row align-items-center">
+                        <h6 class="card-description"> Student not added in student_form table </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <?php
+}
 }
 }
 ?>

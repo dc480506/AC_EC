@@ -3,7 +3,7 @@ include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
 include('sidebar.php');
-include('../includes/topbar.php');
+include('../includes/topbar_student.php');
 $course=array();
 $index=0;
 // TO get timestamp(start as well as end fOr a particular student) OF a FORM

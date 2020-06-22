@@ -1,15 +1,4 @@
-/*!
- * Start Bootstrap - SB Admin 2 v4.0.7 (https://startbootstrap.com/template-overviews/sb-admin-2)
- * Copyright 2013-2019 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-sb-admin-2/blob/master/LICENSE)
- */
 
-/*!
- * Bootstrap v4.3.1 (https://getbootstrap.com/)
- * Copyright 2011-2019 The Bootstrap Authors
- * Copyright 2011-2019 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
 :root {
   --blue: #4e73df;
   --indigo: #6610f2;
@@ -53,6 +42,9 @@ html {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+/* ::-webkit-scrollbar{
+  display: none;
+} */
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
@@ -10077,6 +10069,8 @@ a:focus {
 .sidebar {
   width: 6.5rem;
   min-height: 100vh;
+  
+  
 }
 
 .sidebar .nav-item {
@@ -10094,7 +10088,7 @@ a:focus {
 }
 
 .sidebar .nav-item .nav-link span {
-  font-size: 0.65rem;
+  font-size: 0.80rem;
   display: block;
 }
 
@@ -10232,7 +10226,8 @@ a:focus {
 
 @media (min-width: 768px) {
   .sidebar {
-    width: 14rem !important;
+    width: 15.2rem !important;
+    
   }
   .sidebar .nav-item .collapse {
     position: relative;
@@ -10259,14 +10254,14 @@ a:focus {
     width: 100%;
     text-align: left;
     padding: 1rem;
-    width: 14rem;
+    width: 13rem;
   }
   .sidebar .nav-item .nav-link i {
     font-size: 0.85rem;
     margin-right: 0.25rem;
   }
   .sidebar .nav-item .nav-link span {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     display: inline;
   }
   .sidebar .nav-item .nav-link[data-toggle="collapse"]::after {
@@ -10293,7 +10288,7 @@ a:focus {
   }
   .sidebar.toggled {
     overflow: visible;
-    width: 6.5rem !important;
+    width: 7.5rem !important;
   }
   .sidebar.toggled .nav-item .collapse {
     position: absolute;
@@ -10328,7 +10323,7 @@ a:focus {
     width: 6.5rem;
   }
   .sidebar.toggled .nav-item .nav-link span {
-    font-size: 0.65rem;
+    font-size: 0.80rem;
     display: block;
   }
   .sidebar.toggled .nav-item .nav-link i {
@@ -10996,3 +10991,7 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+/* 
+::-webkit-scrollbar {
+    display: none;
+} */
