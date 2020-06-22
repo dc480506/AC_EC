@@ -73,7 +73,9 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "fname"=>$row['fname'],
 	  "lname"=>$row['lname'],
       "email_id"=>$row['email_id'],
-	  "status"=>"FILLED",
+     "status"=>"FILLED",
+     "sem"=>$row['sem'],
+     "year"=>$row['year'],
       
       
       "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn">
