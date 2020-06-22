@@ -45,7 +45,7 @@ if(isset($_POST['submit']))
       else {
       	echo"<script>
       			alert('username or password incorrect');
-      			windows.href.location(index.php);
-      		</script>";
+          </script>";
+          header("location:index.php");
       }
 }

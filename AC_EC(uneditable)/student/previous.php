@@ -5,7 +5,7 @@ include_once('verify.php');
 
 <?php include('sidebar.php'); ?>
 
-<?php include('../includes/topbar.php'); ?>
+<?php include('../includes/topbar_student.php'); ?>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -33,7 +33,7 @@ include_once('verify.php');
                                     <th>Course ID</th>
                                     <th>Year</th>
                                     <th>Semester</th>
-                                    <th>Department</th>
+                                    <th>Floating Departments</th>
                                     <th>About</th>
                                 </tr>
                             </thead>
@@ -43,13 +43,15 @@ include_once('verify.php');
                                     <th>Course ID</th>
                                     <th>Year</th>
                                     <th>Semester</th>
-                                    <th>Department</th>
+                                    <th>Floating Departments</th>
                                     <th>About</th>
                                 </tr>
                             </tfoot>
                             <tbody>
                             <?php 
-                                $sql="SELECT sal.cid,sal.sem,sal.year,acl.cname,dep.dept_name,f.fname,f.mname,f.lname,sal.complete_status,sal.student_attendence FROM student_audit_log AS sal,audit_course_log AS acl,department AS dep,faculty AS f,faculty_audit_log AS fal WHERE dep.dept_id=acl.dept_id AND sal.sem=acl.sem AND sal.year=acl.year AND sal.cid=acl.cid AND sal.email_id='{$_SESSION['email']}' AND f.email_id=fal.email_id AND fal.cid=acl.cid AND fal.sem=acl.sem AND fal.year=acl.year";
+                                $sql="SELECT sal.cid,sal.sem,sal.year,acl.cname,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_floating_dept_log afd 
+         INNER JOIN department d2 ON afd.dept_id=d2.dept_id WHERE acl.cid=afd.cid AND acl.sem=afd.sem AND acl.year=afd.year
+         GROUP BY 'all') as dept_name,f.fname,f.mname,f.lname,sal.complete_status,sal.student_attendence FROM student_audit_log AS sal INNER Join audit_course_log AS acl on sal.cid=acl.cid AND sal.year=acl.year AND sal.sem=acl.sem INNER Join faculty_audit_log AS fal on fal.cid=acl.cid AND fal.sem=acl.sem AND fal.year=acl.year INNER Join  faculty AS f on f.email_id=fal.email_id WHERE sal.email_id='{$_SESSION['email']}'";
                                 $result =mysqli_query($conn,$sql);
                                 $count=0;
                                  while($row = mysqli_fetch_array($result)) 
