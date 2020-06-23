@@ -708,11 +708,8 @@ include('../includes/header.php');
     })
 
     $("#clear-filters").click(function(e) {
-        $(':input', '#filter_faculty_form')
-            .not(':button, :submit, :reset, :hidden')
-            .val('')
-            .prop('checked', false)
-            .prop('selected', false);
+        $('#filter_faculty_form').trigger('reset');
+
         $('#dataTable-internal').DataTable().ajax.reload(false).draw();
     });
 </script>
