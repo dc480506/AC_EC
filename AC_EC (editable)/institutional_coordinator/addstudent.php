@@ -8,6 +8,7 @@ include('../includes/header.php');
 
 <?php include('../includes/topbar.php'); ?>
 
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -19,7 +20,7 @@ include('../includes/header.php');
                     <h4 class="font-weight-bold text-primary mb-0">Student Records</h4>
                 </div>
                 <div class="col text-right">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
+                    <button type="button" id="filterToggle" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
                         <i class="fas fa-filter"></i>
                     </button>
                 </div>
@@ -45,16 +46,16 @@ include('../includes/header.php');
                             </button>
                         </div>
                         <div class="modal-body">
-                        <nav>
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-students-tab" data-toggle="tab" href="#nav-students" role="tab" aria-controls="nav-students" aria-selected="true">Instructions</a>
-                                <a class="nav-item nav-link" id="nav-students-upload-tab" data-toggle="tab" href="#nav-students-upload" role="tab" aria-controls="nav-students-upload" aria-selected="false">Upload</a>
-                            </div>
-                        </nav>
-                        <div class="tab-content" id="nav-tabContent">
-                            <!--Instructions Current-->
-                            <div class="tab-pane fade show active" id="nav-students" role="tabpanel" aria-labelledby="nav-students">
-                                <span>
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="nav-students-tab" data-toggle="tab" href="#nav-students" role="tab" aria-controls="nav-students" aria-selected="true">Instructions</a>
+                                    <a class="nav-item nav-link" id="nav-students-upload-tab" data-toggle="tab" href="#nav-students-upload" role="tab" aria-controls="nav-students-upload" aria-selected="false">Upload</a>
+                                </div>
+                            </nav>
+                            <div class="tab-content" id="nav-tabContent">
+                                <!--Instructions Current-->
+                                <div class="tab-pane fade show active" id="nav-students" role="tabpanel" aria-labelledby="nav-students">
+                                    <span>
                                         <ol>
                                             <li>Provide the column names (headers of the columns) for the following data from the excel sheet <span class="text-danger">(order is <em><b>Not</b></em> important)*</span></li>
                                             <ul>
@@ -71,89 +72,89 @@ include('../includes/header.php');
                                         </ol>
                                     </span>
                                     <a href="../demo_excel_downloads/Student.xlsx" class="btn btn-primary btn-icon-split btn-sm float-right" download>
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-file-download"></i>
-                                    </span>
-                                    <span class="text">Download</span>
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-file-download"></i>
+                                        </span>
+                                        <span class="text">Download</span>
                                     </a>
-                            </div>
-                            <!--end Instructions Current-->
-                            <!--Upload Current-->
-                            <div class="tab-pane fade" id="nav-students-upload" role="tabpanel" aria-labelledby="nav-students-upload">
-                            <div class="container">
-                                <form method="POST" enctype="multipart/form-data" id="bulkUploadstudent">
-                                    <label for="">
-                                        <br>
-                                        <h6>Information for mapping Data from excel sheet to Database</h6>
-                                    </label>
-                                    <div class="form-row mt-4">
-                                        <div class="form-group col-md-4">
-                                            <label for="cname"><b>First Name</b></label>
-                                            <input type="text" class="form-control" id="fname" placeholder="First" name="fname" value="fname" required>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="cname"><b>Middle Name</b></label>
-                                            <input type="text" class="form-control" id="mname" placeholder="Middle" name="mname" value="mname" required>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="cname"><b>Last Name</b></label>
-                                            <input type="text" class="form-control" id="lname" placeholder="Last" name="lname" value="lname" required>
-                                        </div>
+                                </div>
+                                <!--end Instructions Current-->
+                                <!--Upload Current-->
+                                <div class="tab-pane fade" id="nav-students-upload" role="tabpanel" aria-labelledby="nav-students-upload">
+                                    <div class="container">
+                                        <form method="POST" enctype="multipart/form-data" id="bulkUploadstudent">
+                                            <label for="">
+                                                <br>
+                                                <h6>Information for mapping Data from excel sheet to Database</h6>
+                                            </label>
+                                            <div class="form-row mt-4">
+                                                <div class="form-group col-md-4">
+                                                    <label for="cname"><b>First Name</b></label>
+                                                    <input type="text" class="form-control" id="fname" placeholder="First" name="fname" value="fname" required>
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="cname"><b>Middle Name</b></label>
+                                                    <input type="text" class="form-control" id="mname" placeholder="Middle" name="mname" value="mname" required>
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="cname"><b>Last Name</b></label>
+                                                    <input type="text" class="form-control" id="lname" placeholder="Last" name="lname" value="lname" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="semester"><b>Semester</b></label>
+                                                    <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester" value="current_sem" required>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="year"><b>Year Admitted</b></label>
+                                                    <input type="text" class="form-control" id="year" name="year" placeholder="year" value="year_of_admission" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="department"><b>Department</b></label>
+                                                    <input type="text" class="form-control" id="department" name="department" placeholder="Department" value="dept_id" required>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="email"><b>Email</b></label>
+                                                    <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="email_id" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">
+                                                    <label for="rno"><b>Roll Number</b></label>
+                                                    <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll no" value="rollno" required>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="form-group files color">
+                                                <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
+                                                <script type="text/javascript" language="javascript">
+                                                    function checkfile(sender) {
+                                                        var validExts = new Array(".xlsx", ".xls");
+                                                        var fileExt = sender.value;
+                                                        fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+                                                        if (validExts.indexOf(fileExt) < 0) {
+                                                            alert("Invalid file selected, valid files are of " +
+                                                                validExts.toString() + " types.");
+                                                            return false;
+                                                        } else return true;
+                                                    }
+                                                </script>
+                                                <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+                                                <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                                <button type="submit" class="btn btn-primary" name="save_changes" id="upload_student">Upload</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="semester"><b>Semester</b></label>
-                                            <input type="text" class="form-control" id="semester" placeholder="Semester" name="semester" value="current_sem" required>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="year"><b>Year Admitted</b></label>
-                                            <input type="text" class="form-control" id="year" name="year" placeholder="year" value="year_of_admission" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="department"><b>Department</b></label>
-                                            <input type="text" class="form-control" id="department" name="department" placeholder="Department" value="dept_id" required>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="email"><b>Email</b></label>
-                                            <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="email_id" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12">
-                                            <label for="rno"><b>Roll Number</b></label>
-                                            <input type="text" class="form-control" id="rno" name="rno" placeholder="Roll no" value="rollno" required>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="form-group files color">
-                                        <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
-                                        <script type="text/javascript" language="javascript">
-                                            function checkfile(sender) {
-                                                var validExts = new Array(".xlsx", ".xls");
-                                                var fileExt = sender.value;
-                                                fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
-                                                if (validExts.indexOf(fileExt) < 0) {
-                                                    alert("Invalid file selected, valid files are of " +
-                                                        validExts.toString() + " types.");
-                                                    return false;
-                                                } else return true;
-                                            }
-                                        </script>
-                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
-                                        <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                        <button type="submit" class="btn btn-primary" name="save_changes" id="upload_student">Upload</button>
-                                    </div>
-                                </form>
+                                </div>
+                                <!-- end Upload Current -->
                             </div>
                         </div>
-                        <!-- end Upload Current -->
-                    </div>
-                </div>
                         <style type="text/css">
                             .files input {
                                 outline: 2px dashed #92b0b3;
@@ -227,101 +228,113 @@ include('../includes/header.php');
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form class="forms-sample" method="POST" action="">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()" name="cname_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
-                                        <?php
-                                        $email = $_SESSION['email'];
-                                        $department = 'department';
-                                        $query = "SELECT cname FROM faculty_audit NATURAL JOIN audit_course WHERE email_id = '$email'";
-                                        if ($result = mysqli_query($conn, $query)) {
-                                            $rowcount = mysqli_num_rows($result);
-                                            while ($row = mysqli_fetch_array($result)) {
-                                                $cname = $row['cname'];
-                                                echo '
-                                      <option>' . $cname . '<option>
-                                    ';
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()" name="cid_box">
-                                    <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cid">
-                                        <?php
-                                        $email = $_SESSION['email'];
-                                        $department = 'department';
-                                        $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
-                                        if ($result = mysqli_query($conn, $query)) {
-                                            $rowcount = mysqli_num_rows($result);
-                                            while ($row = mysqli_fetch_array($result)) {
-                                                $cid = $row['cid'];
-                                                echo '
-                                      <option>' . $cid . '<option>
-                                    ';
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()" name="sem_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="sem">
-                                        <?php
-                                        $email = $_SESSION['email'];
-                                        $department = 'department';
-                                        $query = "SELECT sem FROM faculty_audit NATURAL JOIN audit_course WHERE email_id = '$email'";
-                                        if ($result = mysqli_query($conn, $query)) {
-                                            $rowcount = mysqli_num_rows($result);
-                                            while ($row = mysqli_fetch_array($result)) {
-                                                $sem = $row['sem'];
-                                                echo '
-                                      <option>' . $sem . '<option>
-                                    ';
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()" name="dos_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect4">Department of Study</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="dept">
-                                        <?php
-                                        $dept_names = array();
-                                        $email = $_SESSION['email'];
-                                        $department = 'department';
-                                        $query = "SELECT distinct(dept_name) FROM faculty_audit NATURAL JOIN audit_course NATURAL JOIN department WHERE email_id = '$email'";
-                                        if ($result = mysqli_query($conn, $query)) {
-                                            $rowcount = mysqli_num_rows($result);
-                                            while ($row = mysqli_fetch_array($result)) {
-                                                $dept_name = $row['dept_name'];
-                                                echo '<option>' . $dept_name . '<option>';
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <!-- <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
-                  <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
-                  <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="cname">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </select>
-                </div> -->
+                            <form class="forms-sample" id="filter_student_form" method="POST" action="">
 
+                                <div class="form-check">
+                                    <label for="">Semester</label>
+                                    <br />
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="1" id="semester_1">
+                                        <label class="custom-control-label" for="semester_1">1</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="2" id="semester_2">
+                                        <label class="custom-control-label" for="semester_2">2</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="3" id="semester_3">
+                                        <label class="custom-control-label" for="semester_3">3</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="4" id="semester_4">
+                                        <label class="custom-control-label" for="semester_4">4</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="5" id="semester_5">
+                                        <label class="custom-control-label" for="semester_5">5</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="6" id="semester_6">
+                                        <label class="custom-control-label" for="semester_6">6</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="7" id="semester_7">
+                                        <label class="custom-control-label" for="semester_7">7</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="8" id="semester_8">
+                                        <label class="custom-control-label" for="semester_8">8</label>
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div class="form-check">
+                                    <label for="">Department</label>
+                                    <br>
+                                    <?php
+                                    $dept_names = array();
+                                    $email = $_SESSION['email'];
+                                    $department = 'department';
+                                    $query = "SELECT distinct(dept_name) FROM department";
+                                    if ($result = mysqli_query($conn, $query)) {
+                                        $rowcount = mysqli_num_rows($result);
+                                        while ($row = mysqli_fetch_array($result)) {
+                                            $dept_name = $row['dept_name'];
+                                            echo '<div class="custom-control custom-checkbox custom-control-inline">
+                                                    <input type="checkbox" name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
+                                                    <label class="custom-control-label" for="filter_dept_' . $dept_name . '">' . $dept_name . '</label>
+                                                </div>';
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                                <br />
+                                <div class="form-check">
+                                    <label for="">Year Of Admission</label>
+                                    <br>
+                                    <?php
+                                    $years = array();
+                                    $email = $_SESSION['email'];
+                                    $department = 'department';
+                                    $query = "SELECT distinct(year_of_admission) FROM student";
+                                    if ($result = mysqli_query($conn, $query)) {
+                                        $rowcount = mysqli_num_rows($result);
+                                        while ($row = mysqli_fetch_array($result)) {
+                                            array_push($years, $row['year_of_admission']);
+                                        }
+                                    }
+
+                                    ?>
+                                    <div class="row">
+                                        <!-- <label for="filter_start_year" class="col col-form-label ">Start Year</label> -->
+                                        <div class="col">
+                                            <select class="custom-select" id="filter_start_year" name="filter_start_year">
+                                                <option value="">Start Year</option>
+                                                <?php
+                                                foreach ($years as &$year) {
+                                                    echo '<option value="' . $year . '">' . $year . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <!-- <label for="filter_start_year" class="col col-form-label ">End Year</label> -->
+                                        <div class="col">
+                                            <select class="custom-select " name="filter_end_year">
+                                                <option value="">End Year</option>
+                                                <?php
+                                                foreach ($years as &$year) {
+                                                    echo '<option value="' . $year . '">' . $year . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                    <button type="submit" class="btn btn-outline-primary" name="filter">Filter</button>
+                                    <button type="button" class="btn btn-outline-primary" id="clear-filters" name="clear">clear filters</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" name="close">Close</button>
+                                    <button type="submit" class="btn btn-primary" name="filter">Filter</button>
                                 </div>
                             </form>
                         </div>
@@ -476,6 +489,39 @@ include('../includes/header.php');
         });
     });
 
+    function getFilters() {
+        const filters = $("#filter_student_form").serializeArray();
+        let normalizedFilters = {};
+        for (filter of filters) {
+            switch (filter.name) {
+                case "filter_start_year":
+                    if (filter.value != "") {
+                        normalizedFilters.start_year = filter.value
+                    }
+                    break;
+                case "filter_end_year":
+                    if (filter.value != "") {
+                        normalizedFilters.end_year = filter.value
+                    }
+                    break;
+                case "filter_semester[]":
+                    if (!normalizedFilters.semesters) {
+                        normalizedFilters.semesters = []
+                    }
+                    normalizedFilters.semesters.push(filter.value)
+                    break;
+                case "filter_dept[]":
+                    if (!normalizedFilters.depts) {
+                        normalizedFilters.depts = []
+                    }
+                    normalizedFilters.depts.push(filter.value)
+                    break;
+            }
+        }
+        console.log(normalizedFilters);
+        return normalizedFilters
+    }
+
     function loadCurrent() {
         // document.querySelector("#addCoursebtn").style.display="none"
         $('#dataTable-student').DataTable({
@@ -485,7 +531,11 @@ include('../includes/header.php');
             serverMethod: 'post',
             aaSorting: [],
             ajax: {
-                'url': 'adduser/loadInfo/add_student.php'
+                'url': 'adduser/loadInfo/add_student.php',
+                "data": function(d) {
+                    d.filters = getFilters();
+                    return d
+                }
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModalCurrent)
@@ -651,6 +701,21 @@ include('../includes/header.php');
         });
     }
 
+    $("#filter_student_form").submit(function(e) {
+        e.preventDefault();
+        $('#dataTable-student').DataTable().ajax.reload(false).draw();
+        $("#exampleModalCenter1").modal("hide")
+    })
+
+    $("#clear-filters").click(function(e) {
+        $(':input', '#filter_student_form')
+            .not(':button, :submit, :reset, :hidden')
+            .val('')
+            .prop('checked', false)
+            .prop('selected', false);
+        $('#dataTable-student').DataTable().ajax.reload(false).draw();
+    });
+
     function update_student(e) {
         e.preventDefault();
         var form = $('#update_student');
@@ -669,15 +734,15 @@ include('../includes/header.php');
             success: function(data) {
                 //    alert(data); // show response from the php script.
                 // console.log(data)
-                if(data === "Exists_email_id"){
+                if (data === "Exists_email_id") {
                     $('#error_email_id').text('*This data already exists');
                     $("#update_student_btn").text("Update");
                     $("#update_student_btn").attr("disabled", false);
-                }else  if(data === "Exists_rollno"){
+                } else if (data === "Exists_rollno") {
                     $('#error_rollno').text('*This data already exists');
                     $("#update_student_btn").text("Update");
                     $("#update_student_btn").attr("disabled", false);
-                }else{
+                } else {
                     $("#update_student_btn").text("Updated Successfully");
                     var row = $("#update-del-modal").closest('tr');
                     var aPos = $("#dataTable-student").dataTable().fnGetPosition(row.get(0));
