@@ -573,7 +573,7 @@ include('../includes/header.php');
 
     $("#filter_faculty_form").submit(function(e) {
         e.preventDefault();
-        $('#dataTable-internal').DataTable().ajax.reload(false).draw();
+        $('#dataTable-internal').DataTable().ajax.reload(false);
         $("#exampleModalCenter1").modal("hide")
     })
 
@@ -710,7 +710,7 @@ include('../includes/header.php');
     $("#clear-filters").click(function(e) {
         $('#filter_faculty_form').trigger('reset');
 
-        $('#dataTable-internal').DataTable().ajax.reload(false).draw();
+        $('#dataTable-internal').DataTable().ajax.reload(false);
     });
 </script>
 

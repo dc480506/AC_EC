@@ -703,13 +703,13 @@ include('../includes/header.php');
 
     $("#filter_student_form").submit(function(e) {
         e.preventDefault();
-        $('#dataTable-student').DataTable().ajax.reload(false).draw();
+        $('#dataTable-student').DataTable().ajax.reload(false);
         $("#exampleModalCenter1").modal("hide")
     })
 
     $("#clear-filters").click(function(e) {
         $('#filter_student_form').trigger('reset');
-        $('#dataTable-student').DataTable().ajax.reload(false).draw();
+        $('#dataTable-student').DataTable().ajax.reload(false);
     });
 
     function update_student(e) {
