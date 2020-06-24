@@ -31,6 +31,7 @@ if($searchValue != ''){
 }
 
 $filterQuery="1";
+$deptQuery = "";
 if (isset($_POST['filters'])) {
    $filters = $_POST['filters'];
    // echo json_encode($filters);
@@ -41,9 +42,14 @@ if (isset($_POST['filters'])) {
    if (isset($filters['semesters'])) {
       $filterQuery .= "&& sem in(" . "'" . implode("', '", $filters['semesters']) . "'" . ")" . " ";
    }
-   // if (isset($filters['depts'])) {
-   //    $filterQuery .= "&& dept_name in(" . "'" . implode("', '", $filters['depts']) . "'" . ")";
-   // }
+   if (isset($filters['depts'])) {
+       
+      foreach($filters['depts'] as &$dept){
+         $dept = " dept_name like '%".$dept."%' ";
+      }
+
+      $deptQuery.="&& ( " . implode(" || "  ,$filters['depts'])." ) ";
+   }
 }
 
 ## Total number of records without filtering
@@ -86,7 +92,7 @@ $sql="select cname,cid,sem,
          INNER JOIN department ad ON aad.dept_id=ad.dept_id WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year
          GROUP BY 'all') as app 
       from audit_course_log a WHERE 1 "
-      .$searchQuery ." HAVING ". $filterQuery." " .$orderQuery." limit ".$row.",".$rowperpage;
+      .$searchQuery ." HAVING ". $filterQuery." ".$deptQuery." ".$orderQuery." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;

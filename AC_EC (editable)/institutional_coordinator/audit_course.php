@@ -122,7 +122,7 @@ include('../includes/header.php');
                                     </div>
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal" name="close">Clear Filters</button>
+                                    <button type="button" class="btn btn-outline-primary" id="clear-filters" data-dismiss="modal" name="close">Clear Filters</button>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal" name="close">Close</button>
                                     <button type="submit" class="btn btn-primary" name="filter">Filter</button>
                                 </div>
@@ -1365,7 +1365,7 @@ function getFilters() {
     
     $("#filter_courses_form").submit(function(e) {
         e.preventDefault();
-        $(`#dataTable-${activeTab}`).DataTable().ajax.reload(false).draw();
+        $(`#dataTable-${activeTab}`).DataTable().ajax.reload(false);
         $("#exampleModalCenter2").modal("hide")
     })
 
@@ -1375,7 +1375,8 @@ function getFilters() {
 
     $("#clear-filters").click(function(e) {
         clearFilters();
-        $('#dataTable-student').DataTable().ajax.reload(false);
+        
+        $(`#dataTable-${activeTab}`).DataTable().ajax.reload(false);
     });
 
 function loadCurrent(){
