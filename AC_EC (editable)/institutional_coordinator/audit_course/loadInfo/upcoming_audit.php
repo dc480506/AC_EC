@@ -31,6 +31,28 @@ if($searchValue != ''){
    ) ";
 }
 
+$filterQuery="1";
+$deptQuery = "";
+if (isset($_POST['filters'])) {
+   $filters = $_POST['filters'];
+   // echo json_encode($filters);
+   if (isset($filters['start_year'])) {
+      $filterQuery .= "&& year = '" . $filters['start_year'] . "' ";
+   }
+   
+   if (isset($filters['semesters'])) {
+      $filterQuery .= "&& sem in(" . "'" . implode("', '", $filters['semesters']) . "'" . ")" . " ";
+   }
+   if (isset($filters['depts'])) {
+       
+      foreach($filters['depts'] as &$dept){
+         $dept = " dept_name like '%".$dept."%' ";
+      }
+
+      $deptQuery.="&& ( " . implode(" || "  ,$filters['depts'])." ) ";
+   }
+}
+
 ## Total number of records without filtering
 $sel = mysqli_query($conn,"select count(*) as totalcount from audit_course WHERE currently_active=0");
 $records = mysqli_fetch_assoc($sel);
@@ -38,7 +60,7 @@ $totalRecords = $records['totalcount'];
 
 ## Total number of record with filtering
 // $sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=0 ".$searchQuery);
-$sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course WHERE currently_active=0 ".$searchQuery);
+$sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course WHERE currently_active=0 ".$searchQuery ." && ".$filterQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
@@ -59,7 +81,7 @@ $sql="select cname,cid,sem,
          INNER JOIN department ad ON aad.dept_id=ad.dept_id WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year
          GROUP BY 'all') as app 
       from audit_course a WHERE currently_active=0 "
-.$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
+.$searchQuery." HAVING ". $filterQuery." ".$deptQuery." ". $orderQuery." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;
