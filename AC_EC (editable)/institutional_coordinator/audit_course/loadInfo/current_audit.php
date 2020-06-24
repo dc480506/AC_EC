@@ -29,14 +29,34 @@ if($searchValue != ''){
    ) ";
 }
 
+#filters
+$filterQuery="1";
+if (isset($_POST['filters'])) {
+   $filters = $_POST['filters'];
+   // echo json_encode($filters);
+   if (isset($filters['start_year'])) {
+      $filterQuery .= "&& year = '" . $filters['start_year'] . "' ";
+   }
+   
+   if (isset($filters['semesters'])) {
+      $filterQuery .= "&& sem in(" . "'" . implode("', '", $filters['semesters']) . "'" . ")" . " ";
+   }
+   // if (isset($filters['depts'])) {
+   //    $filterQuery .= "&& dept_name in(" . "'" . implode("', '", $filters['depts']) . "'" . ")";
+   // }
+}
+
 ## Total number of records without filtering
-$sel = mysqli_query($conn,"select count(*) as totalcount from audit_course WHERE currently_active=1");
+$sel = mysqli_query($conn,"select count(*) as totalcount from audit_course WHERE currently_active=1 ");
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
+
+
+
 ## Total number of record with filtering
 // $sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 ".$searchQuery);
-$sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course a WHERE currently_active=1 ".$searchQuery);
+$sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course a WHERE currently_active=1 ".$searchQuery ." && ".$filterQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
@@ -68,8 +88,8 @@ $sql="select cname,cid,sem,
          (SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_applicable_dept aad 
          INNER JOIN department ad ON aad.dept_id=ad.dept_id WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year
          GROUP BY 'all') as app 
-      from audit_course a WHERE currently_active=1 "
-      .$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
+      from audit_course a WHERE currently_active=1"
+      .$searchQuery." HAVING ". $filterQuery." ". $orderQuery." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;

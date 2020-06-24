@@ -34,66 +34,97 @@ include('../includes/header.php');
                                 </button>
                             </div>
                             <!--filter form start-->
-                            <form class="forms-sample" method="POST" action="">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="disp1()" name="cname_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect1">Course Name</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect1" name="cname">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
+                            <form class="forms-sample" id="filter_courses_form" method="POST" action="">
+
+                            <div class="form-check">
+                                    <label for="">Semester</label>
+                                    <br />
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="1" id="semester_1">
+                                        <label class="custom-control-label" for="semester_1">1</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="2" id="semester_2">
+                                        <label class="custom-control-label" for="semester_2">2</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="3" id="semester_3">
+                                        <label class="custom-control-label" for="semester_3">3</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="4" id="semester_4">
+                                        <label class="custom-control-label" for="semester_4">4</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="5" id="semester_5">
+                                        <label class="custom-control-label" for="semester_5">5</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="6" id="semester_6">
+                                        <label class="custom-control-label" for="semester_6">6</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="7" id="semester_7">
+                                        <label class="custom-control-label" for="semester_7">7</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="8" id="semester_8">
+                                        <label class="custom-control-label" for="semester_8">8</label>
+                                    </div>
+
                                 </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck2" onclick="disp2()" name="cid_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect2">Course ID</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect2" name="cid">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
+                                <br>
+                            <div class="form-check">
+                                    <label for="">Floating Department</label>
+                                    <br>
+                                    <?php
+                                    $dept_names = array();
+                                    $email = $_SESSION['email'];
+                                    $department = 'department';
+                                    $query = "SELECT distinct(dept_name) FROM department";
+                                    if ($result = mysqli_query($conn, $query)) {
+                                        $rowcount = mysqli_num_rows($result);
+                                        while ($row = mysqli_fetch_array($result)) {
+                                            $dept_name = $row['dept_name'];
+                                            echo '<div class="custom-control custom-checkbox custom-control-inline">
+                                                    <input type="checkbox" name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
+                                                    <label class="custom-control-label" for="filter_dept_' . $dept_name . '">' . $dept_name . '</label>
+                                                </div>';
+                                        }
+                                    }
+                                    ?>
                                 </div>
+                                <br />
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck3" onclick="disp3()" name="sem_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect3">Semester</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect3" name="sem">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
+                                    <label for="">Academic Year</label>
+                                    <br>
+                                    <?php
+                                    $years = array();
+                                    $email = $_SESSION['email'];
+                                    
+                                    $query = "SELECT distinct(year) FROM audit_course";
+                                    if ($result = mysqli_query($conn, $query)) {
+                                        $rowcount = mysqli_num_rows($result);
+                                        while ($row = mysqli_fetch_array($result)) {
+                                            array_push($years, $row['year']);
+                                        }
+                                    }
+                                    ?>
+                                    <select class="custom-select" id="filter_start_year" name="filter_academic_year">
+                                        <option value="">Select academic Year</option>
+                                        <?php
+                                        foreach ($years as &$year) {
+                                            echo '<option value="' . $year . '">' . $year . '</option>';
+                                        }
+                                        ?>
                                     </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()" name="year_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect4">Year</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="year">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()" name="dept_cbox">
-                                    <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
-                                    <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="dept">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
+                                       
+                                    </div>
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                    <button type="submit" class="btn btn-outline-primary" name="filter">Filter</button>
+                                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal" name="close">Clear Filters</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" name="close">Close</button>
+                                    <button type="submit" class="btn btn-primary" name="filter">Filter</button>
                                 </div>
                             </form>
                             <!-- fiter form end-->
@@ -1176,6 +1207,8 @@ include('../includes/header.php');
         console.log("Add exiting!!");
     }
 
+
+
     function adjustDivs(nextDivs) {
         for (var i = 0; i < nextDivs.length; i++) {
             // console.log(nextDivs[i]);
@@ -1205,6 +1238,8 @@ include('../includes/header.php');
             $('#total_prev').val(last_prev_no - 1);
         }
     }
+
+    var activeTab = "current"
 $(document).ready(function(){
     loadCurrent();
     $('#uploadCurrent').on('hidden.bs.modal',function (e) {
@@ -1297,6 +1332,52 @@ $("#delete_selected_current_btn").click(function(e){
         }
     })
 })
+
+function getFilters() {
+        const filters = $("#filter_courses_form").serializeArray();
+        
+        let normalizedFilters = {};
+        for (filter of filters) {
+            switch (filter.name) {
+                case "filter_academic_year":
+                    if (filter.value != "") {
+                        normalizedFilters.academic_year = filter.value
+                    }
+                    break;
+               
+                case "filter_semester[]":
+                    if (!normalizedFilters.semesters) {
+                        normalizedFilters.semesters = []
+                    }
+                    normalizedFilters.semesters.push(filter.value)
+                    break;
+                case "filter_dept[]":
+                    if (!normalizedFilters.depts) {
+                        normalizedFilters.depts = []
+                    }
+                    normalizedFilters.depts.push(filter.value)
+                    break;
+            }
+        }
+        console.log(normalizedFilters);
+        return normalizedFilters
+    }
+    
+    $("#filter_courses_form").submit(function(e) {
+        e.preventDefault();
+        $(`#dataTable-${activeTab}`).DataTable().ajax.reload(false).draw();
+        $("#exampleModalCenter2").modal("hide")
+    })
+
+    function clearFilters(){
+        $('#filter_courses_form').trigger('reset');
+    }
+
+    $("#clear-filters").click(function(e) {
+        clearFilters();
+        $('#dataTable-student').DataTable().ajax.reload(false);
+    });
+
 function loadCurrent(){
     // document.querySelector("#addCoursebtn").style.display="none"
     $('#dataTable-current').DataTable({
@@ -1306,7 +1387,11 @@ function loadCurrent(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'audit_course/loadInfo/current_audit.php'
+          'url':'audit_course/loadInfo/current_audit.php',
+          "data": function(d) {
+                    d.filters = getFilters();
+                    return d
+                }
       },
       fnDrawCallback:function(){
           $(".action-btn").on('click',loadModalCurrent)
@@ -1796,7 +1881,11 @@ function loadUpcoming(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'audit_course/loadInfo/upcoming_audit.php'
+          'url':'audit_course/loadInfo/upcoming_audit.php',
+          "data": function(d) {
+                    d.filters = getFilters();
+                    return d
+                }
       },
       fnDrawCallback:function(){
           $(".action-btn").on('click',loadModalUpcoming);
@@ -2292,7 +2381,11 @@ function loadPrevious(){
       serverMethod: 'post',
       aaSorting:[],
       ajax: {
-          'url':'audit_course/loadInfo/previous_audit.php'
+          'url':'audit_course/loadInfo/previous_audit.php',
+          "data": function(d) {
+                    d.filters = getFilters();
+                    return d
+                }
       },
       fnDrawCallback:function(){
           $(".action-btn").on('click',loadModalPrevious);
@@ -2728,8 +2821,9 @@ function id_to_name_convertor_dept(id) {
 }
 
 $('#nav-tab').on("click", "a", function (event) {         
-  var activeTab = $(this).attr('id').split('-')[1];
+  activeTab = $(this).attr('id').split('-')[1];
   console.log(activeTab)
+    clearFilters();
   if(activeTab=='current'){
       loadCurrent()
   }else if(activeTab=='upcoming'){
