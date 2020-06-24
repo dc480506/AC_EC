@@ -54,6 +54,7 @@ else{
 // $count = mysqli_num_rows($result2);
 $row1 = mysqli_fetch_array($result1);
 $_SESSION['no_of_preferences']=$row1['no_of_preferences'];
+date_default_timezone_set('Asia/Kolkata');
 $today = date("Y-m-d H:i:s");
 // echo $today;
 // echo '<br>';
@@ -92,7 +93,7 @@ option:disabled{
     </div>
 </div>
 <?php }
-
+// end timestamp
 else if($row1['end_timestamp']<$today){ ?>
 <div class="container-fluid">
     <div class="row">
@@ -114,6 +115,24 @@ else if($row1['end_timestamp']<$today){ ?>
 
 // if($allow==1){
 else{
+//    $info=$row1['end_timestamp'];
+//    //function to show time remaining
+//    function give_diff($in)
+//     {
+//         $datetime1 = date("Y-m-d H:i:s");
+//         $date=new DateTime($datetime1);
+//         // echo  " ". date_format($date,"Y/m/d H:i");
+//         // echo " $in";
+//         $datetime2 = new DateTime($in);
+//         // echo " ". date_format($datetime2,"Y/m/d H:i");
+//         $interval = $datetime2->diff($date);
+//         echo $interval->format("Closes in %d days, %h hours, %i minutes and %s seconds.");
+
+//     }
+//     give_diff($info);
+
+    //session variable to store end timestamp
+    $_SESSION['endTime']=$row1['end_timestamp'];
     $sem=$row1['sem'];
     $year=$row1['year'];
     $_SESSION['year']=$year;
@@ -137,6 +156,18 @@ else{
             $index++;
         }         
            ?>
+
+        <script src="https://kit.fontawesome.com/57397afa58.js" crossorigin="anonymous"></script>
+        <!-- ajax to update timer dynamically -->
+        <script type="text/javascript">
+           setInterval(() => {
+               var xmlhttp=new XMLHttpRequest();
+               xmlhttp.open("GET","timer.php",false);
+               xmlhttp.send(null);
+               document.getElementById("response").innerHTML=xmlhttp.responseText;
+           }, 1000);
+        </script>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <div class="row">
@@ -148,7 +179,11 @@ else{
                     </div>
                     <div class="row align-items-center">
                         <h6 class="card-description"> Audit Courses </h6>
+                        <br>    
                     </div>
+                    <div class="row float-right text-danger" id="response">
+                    </div>
+                     
                 </div>
                 <div class="card-body">
                     <!-- echo $_SERVER['PHP_SELF']; -->
