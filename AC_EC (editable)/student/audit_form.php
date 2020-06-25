@@ -19,7 +19,7 @@ if($row['sem_type']=='EVEN'){
     $year_val=$row['academic_year'];
 }
 // TO get timestamp(start as well as end fOr a particular student) OF a FORM
-$sql1 = "SELECT form.start_timestamp,form.end_timestamp,sem,year,form.no_of_preferences,student.form_filled FROM form INNER JOIN student ON form.curr_sem=student.current_sem AND student.email_id='{$_SESSION['email']}' AND form.form_type='audit' AND year='$year_val'";
+$sql1 = "SELECT form.start_timestamp,form.end_timestamp,sem,year,form.no_of_preferences FROM form INNER JOIN student ON form.curr_sem=student.current_sem AND student.email_id='{$_SESSION['email']}' AND form.form_type='audit' AND year='$year_val'";
 $result1 = mysqli_query($conn, $sql1);
 if(mysqli_num_rows($result1)==0)
 {?>
@@ -157,16 +157,7 @@ else{
         }         
            ?>
 
-        <script src="https://kit.fontawesome.com/57397afa58.js" crossorigin="anonymous"></script>
-        <!-- ajax to update timer dynamically -->
-        <script type="text/javascript">
-           setInterval(() => {
-               var xmlhttp=new XMLHttpRequest();
-               xmlhttp.open("GET","timer.php",false);
-               xmlhttp.send(null);
-               document.getElementById("response").innerHTML=xmlhttp.responseText;
-           }, 1000);
-        </script>
+        
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -187,7 +178,7 @@ else{
                 </div>
                 <div class="card-body">
                     <!-- echo $_SERVER['PHP_SELF']; -->
-                    <form method="post" action="student_queries/store_preference_audit.php">
+                    <form id="prefForm" method="post" action="student_queries/store_preference_audit.php">
                         <?php
                             for($i=1;$i<=$row1['no_of_preferences'];$i++){ ?>
                         <h4><?php echo "Preference $i"; ?></h4>
@@ -202,7 +193,7 @@ else{
                                             {
                                                 // $_SESSION['year']=$key['year'];
                                             ?>
-                                <option style="color:white; " class="dropdown-item" value="<?php echo $key['cid']; ?>">
+                                <option style="color:white; " class="dropdown-item me" value="<?php echo $key['cid']; ?>">
                                     <?php echo "{$key['cname']} ({$key['cid']})"; ?></option>
                                 <?php } ?>
                             </div>
@@ -211,6 +202,8 @@ else{
                         <br>
                         <?php }?>
                         <div class="modal-footer">
+                        <button id="ResetForm" type="reset" class="btn btn-danger align-center" >Clear</button>
+                        <!-- <input type="reset" class="btn btn-danger" id="ResetForm" value="Reset"> -->
                             <button id="button" type="submit" class="btn btn-primary align-center"
                                 name="submit">Submit</button>
                         </div>
@@ -220,6 +213,7 @@ else{
         </div>
     </div>
 </div>
+
 
 <?php 
     }
@@ -293,6 +287,7 @@ else
 }
 ?>
 <!-- /.container-fluid -->
+
 <script>
 $(".dropdown-toggle").change(function() {
     var selVal = [];
@@ -307,6 +302,77 @@ $(".dropdown-toggle").change(function() {
 });
 $(".dropdown-toggle").eq(0).trigger('change');
 </script>
+
+<script src="https://kit.fontawesome.com/57397afa58.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- ajax to update timer dynamically -->
+        <script type="text/javascript">
+           setInterval(() => {
+               var xmlhttp=new XMLHttpRequest();
+               xmlhttp.open("GET","timer.php",false);
+               xmlhttp.send(null);
+               document.getElementById("response").innerHTML=xmlhttp.responseText;
+           }, 1000);
+           var ar=[];
+            $('#ResetForm').click(function() {
+                // console.log("hiiiii0");
+                // Reset the form
+                // $('.dropdown-toggle option :selected')
+                // console.log(ar);
+                var elems = document.getElementsByTagName('option');
+                for (var i=0, iLen=elems.length; i<iLen; i++) {
+                elems[i].disabled = false;
+                }
+                console.log(elems);
+                document.getElementById('prefForm').reset();
+            
+    // var selVal = [];
+    // $(".dropdown-toggle").each(function() {
+    //     selVal.push(this.value);
+    // });
+
+    // $(this).siblings(".dropdown-toggle").find("option").prop("disabled", false);
+// $(".dropdown-toggle").eq(0).trigger('change');
+
+                // if($(".me").prop("disabled", "disabled"))
+                // {
+                //     console.log("hey");
+                //     $(".me").prop("disabled", false);
+                // }
+            
+                // $('.dropdown-toggle').find('option').prop("disabled", false);
+                // $('.dropdown-menu').find('option').removeAttr("disabled");
+                // $(".dropdown-toggle option").prop('disabled',false);
+                
+                //     $(".dropdown-toggle").each(function() {
+                //         console.log("found");
+                //         $('.dropdown-toggle').find("option").prop('disabled', false);
+                    
+                // });
+            //    var arr=[];
+            //     $(".dropdown-toggle option:selected").each((i,items)=>{
+            //         // arr.push(items);
+                    
+            //         // $(items).attr('disabled',false);
+
+
+            //     });
+            //     console.log(items);
+    
+
+            // var select=$(".dropdown-toggle");
+            // if(select.find("option"))
+            // {
+            //     console.log("hi");
+            // }
+            // select.find("option:disabled").prop("disabled", false);
+            // select.find("option").each(function(index,item.attr('disabled',false);
+
+            
+            });
+
+           
+        </script>
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');
 ?>
