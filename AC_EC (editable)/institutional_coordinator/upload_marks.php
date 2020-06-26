@@ -376,6 +376,18 @@ include('../includes/header.php');
                 text: '<span> <i class="fas fa-download "></i> CSV</span>',
                 className: "btn btn-outline-primary  ",
                 action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: "student-marks-data",
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                },
             }],
             ajax: {
                 'url': 'student_mark/loadInfo/marks_info.php'
