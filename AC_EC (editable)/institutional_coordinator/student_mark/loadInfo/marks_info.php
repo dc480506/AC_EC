@@ -12,14 +12,14 @@ if(isset($_POST['order'])){
 }else{
    // $columnName='sem';
    // $columnSortOrder='asc';
-   $orderQuery=' order by sem,rollno asc ';
+   $orderQuery=' order by year desc,sem,rollno asc ';
 }
 $searchValue = $_POST['search']['value']; // Search value
 
 ## Search 
 $searchQuery = "1";
 if($searchValue != ''){
-   $searchQuery = "gpa like '%".$searchValue."%' or sem like '%".$searchValue."%' or rollno like '%".$searchValue."%' or m.email_id like '%".$searchValue."%' or year like '%".$searchValue."%'";
+   $searchQuery = "gpa like '%".$searchValue."%' or sem like '%".$searchValue."%' or m.rollno like '%".$searchValue."%' or m.email_id like '%".$searchValue."%' or year like '%".$searchValue."%'";
 }
 
 ## Total number of records without filtering
@@ -32,7 +32,7 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
 ##Fetch Record
-$sql="select m.email_id,rollno,sem,gpa,year
+$sql="select m.email_id,m.rollno,CONCAT(fname,' ',mname,' ',lname) as fullname,sem,gpa,year
 from student_marks m INNER JOIN student s ON m.email_id=s.email_id WHERE "
        .$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 $studentRecords = mysqli_query($conn, $sql);
@@ -48,6 +48,7 @@ while ($row = mysqli_fetch_assoc($studentRecords)) {
                      </div>',
       "email_id"=>$row['email_id'],
       "rollno"=>$row['rollno'],
+      "fullname"=>$row['fullname'],
       "sem"=>$row['sem'],
       "year"=>$row['year'],
       "gpa"=>$row['gpa'],

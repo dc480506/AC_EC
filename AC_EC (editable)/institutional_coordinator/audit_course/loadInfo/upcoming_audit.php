@@ -25,23 +25,27 @@ if($searchValue != ''){
    //      sem like '%".$searchValue."%' or year like '%".$searchValue."%' or
    //      cname like'%".$searchValue."%' or dept_name like '%".$searchValue."%'
    //      ) ";
-   $searchQuery = " and (cid like '%".$searchValue."%' or 
-   sem like '%".$searchValue."%' or year like '%".$searchValue."%' or
-   cname like'%".$searchValue."%'
+   $searchQuery = " and (a.cid like '%".$searchValue."%' or 
+   a.sem like '%".$searchValue."%' or a.year like '%".$searchValue."%' or
+   a.cname like'%".$searchValue."%'
    ) ";
 }
 
 $filterQuery="1";
+$filterQuery2="1";
 $deptQuery = "";
 if (isset($_POST['filters'])) {
    $filters = $_POST['filters'];
    // echo json_encode($filters);
    if (isset($filters['start_year'])) {
       $filterQuery .= "&& year = '" . $filters['start_year'] . "' ";
+      $filterQuery2 .= "&& a.year = '" . $filters['start_year'] . "' ";
    }
    
    if (isset($filters['semesters'])) {
       $filterQuery .= "&& sem in(" . "'" . implode("', '", $filters['semesters']) . "'" . ")" . " ";
+      $filterQuery2 .= "&& a.sem in(" . "'" . implode("', '", $filters['semesters']) . "'" . ")" . " ";
+
    }
    if (isset($filters['depts'])) {
        
@@ -60,9 +64,19 @@ $totalRecords = $records['totalcount'];
 
 ## Total number of record with filtering
 // $sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=0 ".$searchQuery);
-$sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course WHERE currently_active=0 ".$searchQuery ." && ".$filterQuery);
-$records = mysqli_fetch_assoc($sel);
-$totalRecordwithFilter = $records['totalcountfilters'];
+// $sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course WHERE currently_active=0 ".$searchQuery ." && ".$filterQueryz);
+// $sel= mysqli_query($conn,"SELECT cid,cname,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_floating_dept afd INNER JOIN department d WHERE 
+//             afd.cid=a.cid AND afd.sem=a.sem AND afd.year=a.year AND afd.dept_id=d.dept_id GROUP BY 'all' ".$deptQuery.") FROM audit_course a WHERE currently_active=0");
+// echo "SELECT cid,cname,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_floating_dept afd INNER JOIN department d WHERE 
+// afd.cid=a.cid AND afd.sem=a.sem AND afd.year=a.year ".$deptQuery.") FROM audit_course a WHERE currently_active=0";
+// $records = mysqli_fetch_assoc($sel);
+// $totalRecordwithFilter = $records['totalcountfilters'];
+$sql="SELECT DISTINCT a.cid,a.cname,a.sem,a.year FROM audit_course a INNER JOIN audit_course_floating_dept afd 
+INNER JOIN department d ON a.cid=afd.cid AND a.sem=afd.sem AND a.year=afd.year AND afd.dept_id=d.dept_id WHERE currently_active=0"
+.$searchQuery." && ".$filterQuery2." ".$deptQuery;
+// echo $sql;
+$sel=mysqli_query($conn,$sql);
+$totalRecordwithFilter=mysqli_num_rows($sel);
 
 ## Fetch records
 // $sql="select cname,cid,sem,dept_name,max,min,year, 

@@ -102,7 +102,8 @@ include('../includes/header.php');
                                     $years = array();
                                     $email = $_SESSION['email'];
 
-                                    $query = "SELECT distinct(year) FROM audit_course";
+                                    $query = "SELECT distinct(year) FROM audit_course 
+                                        UNION SELECT distinct(year) FROM audit_course_log ORDER by year desc";
                                     if ($result = mysqli_query($conn, $query)) {
                                         $rowcount = mysqli_num_rows($result);
                                         while ($row = mysqli_fetch_array($result)) {
@@ -1380,7 +1381,7 @@ include('../includes/header.php');
             switch (filter.name) {
                 case "filter_academic_year":
                     if (filter.value != "") {
-                        normalizedFilters.academic_year = filter.value
+                        normalizedFilters.start_year = filter.value
                     }
                     break;
 
