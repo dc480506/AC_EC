@@ -131,6 +131,7 @@ include('../includes/header.php');
                             <th>No of Preferences</th>
                             <th>Form Status</th>
                             <th>Action</th>
+                            <th>View responses</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -146,6 +147,7 @@ include('../includes/header.php');
                             <th>No of Preferences</th>
                             <th>Form Status</th>
                             <th>Action</th>
+                            <th>View responses</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -271,6 +273,8 @@ include('../includes/header.php');
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModal)
+                
+
                 $(".selectrow_current").attr("disabled", true);
                 $("th").removeClass('selectbox_current_td');
                 $(".selectbox_current_td").click(function(e) {
@@ -320,9 +324,11 @@ include('../includes/header.php');
                 {
                     data: 'action'
                 },
+                {  data: 'view'},
             ],
             columnDefs: [{
-                    targets: [0, 3, 4, 5, 6, 7, 8, 9, 10], // column index (start from 0)
+                    targets: [0, 3, 4, 5, 6, 7, 8, 9, 10,11
+                ], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
@@ -410,6 +416,15 @@ include('../includes/header.php');
             }
         });
     }
+
+
+
+
+
+
+
+
+
 </script>
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');

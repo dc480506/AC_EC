@@ -93,49 +93,65 @@ include('../includes/header.php');
                                                 $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
                                                 $result = mysqli_query($conn, $sql);
                                                 $row = mysqli_fetch_assoc($result);
-                                                $sem_dropdown = "";
+                                                $sem=mysqli_escape_string($conn,$_POST['sem']);
                                                 // while ($row = mysqli_fetch_assoc($result)) {
-                                                for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
+                                                // for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
 
-                                                    $sem_dropdown .= "<option>" . $sem_start . "</option>";
-                                                }
-                                                echo '<select class="form-control" required id="semester" name="semester">
-                                                    ' . $sem_dropdown . '
-                                                </select>'
+                                                //     $sem_dropdown .= "<option>" . $sem_start . "</option>";
+                                                // }
+                                                // echo '<select class="form-control" required id="semester" name="semester">
+                                                //     ' . $sem_dropdown . '
+                                                // </select>'
+
+                                                echo '<input class="form-control" id="semester" name="semester" value="'.$sem. '" disabled>' ;
+                                                echo '<input class="form-control" type="hidden" id="semester" name="semester" value="'.$sem.'">';
+
                                                 ?>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="year"><b>Year</b></label>
-                                                <select class="form-control" name="year" id="year">
+                                                <!-- <select class="form-control" name="year" id="year"> -->
                                                     <?php
                                                     $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
                                                     $result = mysqli_query($conn, $sql);
                                                     $row = mysqli_fetch_assoc($result);
-                                                    $year1 = $row['academic_year'];
-                                                    $year2 = $row['academic_year'];
-                                                    for ($i = 0; $i < 2; $i++) {
-                                                        $temp = explode('-', $year1)[0];
-                                                        $temp += 1;
-                                                        $temp2 = "" . ($temp + 1);
-                                                        $year1 = $temp . "-" . substr($temp2, 2);
-                                                        echo '<option>' . $year1 . '</option>';
-                                                    }
-                                                    for ($i = 0; $i < 4; $i++) {
 
-                                                        echo '<option>' . $year2 . '</option>';
-                                                        $temp = explode('-', $year2)[0];
-                                                        $temp -= 1;
-                                                        $temp2 = "" . ($temp + 1);
-                                                        $year2 = $temp . "-" . substr($temp2, 2);
-                                                    }
-                                                    echo '</select>';
+                                                    $yr1=mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);
+                                                    $yr2=mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);
+                                                    
+
+                                                    echo '<input class="form-control" id="year" name="year" value="'.$yr1.'-'.$yr2. '" disabled>' ;
+                                                    echo '<input class="form-control" type="hidden" id="year" name="year" value="'.$yr1.'-'.$yr2. '">'; 
+
+                                                    // $year1 = $row['academic_year'];
+                                                    // $year2 = $row['academic_year'];
+                                                    // for ($i = 0; $i < 2; $i++) {
+                                                    //     $temp = explode('-', $year1)[0];
+                                                    //     $temp += 1;
+                                                    //     $temp2 = "" . ($temp + 1);
+                                                    //     $year1 = $temp . "-" . substr($temp2, 2);
+                                                    //     echo '<option>' . $year1 . '</option>';
+                                                    // }
+                                                    // for ($i = 0; $i < 4; $i++) {
+
+                                                    //     echo '<option>' . $year2 . '</option>';
+                                                    //     $temp = explode('-', $year2)[0];
+                                                    //     $temp -= 1;
+                                                    //     $temp2 = "" . ($temp + 1);
+                                                    //     $year2 = $temp . "-" . substr($temp2, 2);
+                                                    // }
+                                                    // echo '</select>';
                                                     ?>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="npre"><b>Number of valid Preferences</b></label>
-                                                <input type="number" class="form-control" id="npre" placeholder="No. of valid Preferences" name="npre" min=0 oninput="validity.valid||(value='');" required>
+                                                <?php
+                                                $pref=mysqli_escape_string($conn,$_POST['no_of_preferences']);
+                                                echo '<input type="text" class="form-control" id="npre" name="npre" value="'.$pref.'" disabled>' ;
+                                                echo '<input type="hidden" class="form-control" id="npre" name="npre" value="'.$pref.'">' ; ?>
+                                                <!-- <input type="number" class="form-control" id="npre" placeholder="No. of valid Preferences" name="npre" min=0 oninput="validity.valid||(value='');" required> -->
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -498,6 +514,16 @@ include('../includes/header.php');
 
     function loadCurrent() {
         // document.querySelector("#addCoursebtn").style.display="none"
+        var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+		var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+		var y3=yr1+"-"+yr2;
+        var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+        var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
+        
+        // console.log(y3);
+        // console.log(sem);
+        // console.log(currently_active);
+
         $('#dataTable-response').DataTable({
             processing: true,
             serverSide: true,
@@ -505,7 +531,12 @@ include('../includes/header.php');
             serverMethod: 'post',
             aaSorting: [],
             ajax: {
-                'url': 'view_response/loadInfo/view_audit.php'
+                
+                'url': 'view_response/loadInfo/view_audit.php',
+                'data': {
+					'year':y3,
+                         'sem':sem,
+                        'currently_active':currently_active}
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModalCurrent)
