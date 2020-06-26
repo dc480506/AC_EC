@@ -36,7 +36,7 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
 ## Fetch records
-$sql="SELECT sem,year,curr_sem,start_timestamp,end_timestamp,no_of_preferences,allocate_status
+$sql="SELECT sem,year,curr_sem,start_timestamp,end_timestamp,no_of_preferences,allocate_status , currently_active
        FROM form WHERE form_type='audit' "
       .$searchQuery. $orderQuery." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
@@ -50,6 +50,14 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
    $action='<button type="button" class="btn btn-primary icon-btn action-btn">
                 <i class="fas fa-tools"></i>
             </button>';
+   $view='<form action="audit_view.php" method="post">
+   <input type="hidden" name="sem" value="'.$row['sem'].'">
+   <input type="hidden" name="yearb" value="'.$row['year'].'">
+   <input type="hidden" name="currently_active" value="'.$row['currently_active'].'">
+   <input type="hidden" name="no_of_preferences" value="'.$row['no_of_preferences'].'">
+   <button type="submit"  class="btn btn-primary icon-btn view-btn">
+            <i class="fas fa-eye"></i>
+        </button></form>';
    $start_timestamp=$row['start_timestamp'];
    $end_timestamp=$row['end_timestamp'];
    $sArr = explode(" ", $start_timestamp);
@@ -90,6 +98,7 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "no_of_preferences"=>'<span class='.$color.'>'.$row['no_of_preferences'].'</span>',
       "form_status"=>'<span class='.$color.'>'.$status.'</span>',
       "action"=>$action,
+      "view"=>$view,
    );
    $count++;
 }

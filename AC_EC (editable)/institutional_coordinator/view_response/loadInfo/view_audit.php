@@ -19,7 +19,7 @@ $searchValue = $_POST['search']['value']; // Search value
 ## Search 
 $searchQuery = "1";
 if($searchValue != ''){
-   $searchQuery = "email_id like '%".$searchValue."%' or sem like '%".$searchValue."%' or year like '%".$searchValue."%' or rollno like '%".$searchValue."%' or timestamp like '%".$searchValue."%' or allocate_status like '%".$searchValue."%' or no_of_valid_preferences like '%".$searchValue."%'  ";
+   $searchQuery = " (email_id like '%".$searchValue."%' or sem like '%".$searchValue."%' or year like '%".$searchValue."%' or rollno like '%".$searchValue."%' or timestamp like '%".$searchValue."%' or allocate_status like '%".$searchValue."%' or no_of_valid_preferences like '%".$searchValue."%' ) ";
 }
 
 ## Total number of records without filtering
@@ -30,12 +30,16 @@ $totalRecords = $records['totalcount'];
 $sel = mysqli_query($conn,"select count(*) as totalcountfilters from student_preference_audit WHERE ".$searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
-
+$sem=$_POST['sem'];
+$cr=$_POST['currently_active'];
+$yr=$_POST['year'];
+//echo $yr;
+//echo $sem;
 ##Fetch Record
 $sql="select *  
-       from student_preference_audit WHERE "
-       .$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
+       from student_preference_audit WHERE year='$yr' AND  sem='$sem' AND currently_active='$cr' and ".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 $studentRecords = mysqli_query($conn, $sql);
+//echo $sql;
 $data = array();
 $count=0;
 $preference_list="";
