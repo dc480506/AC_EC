@@ -71,8 +71,25 @@ if($row1['start_timestamp']>$today){ ?>
     ::-webkit-scrollbar {
     display: none!important
 }
-option:disabled{
+/* option:disabled{
    color: red;
+} */
+
+/* option[disabled] {
+     background-color: black; }  */
+     /* option:disabled {
+    background-color: red;
+    font-weight: bold;
+} */
+/* select:invalid {
+   background: red;
+} */
+   /*Specific to chrome and firefox*/
+   /* select[disabled='disabled'] {
+                background-color: black;
+            } */
+            option:disabled {
+    color: red;
 }
 </style>
 <div class="container-fluid">
@@ -178,7 +195,8 @@ else{
                 </div>
                 <div class="card-body">
                     <!-- echo $_SERVER['PHP_SELF']; -->
-                    <form id="prefForm" method="post" action="student_queries/store_preference_audit.php">
+                  
+                    <form id="prefForm" onsubmit="return confirmpref();" method="post" action="student_queries/store_preference_audit.php">
                         <?php
                             for($i=1;$i<=$row1['no_of_preferences'];$i++){ ?>
                         <h4><?php echo "Preference $i"; ?></h4>
@@ -203,15 +221,58 @@ else{
                         <?php }?>
                         <div class="modal-footer">
                         <button id="ResetForm" type="reset" class="btn btn-danger align-center" >Clear</button>
-                        <!-- <input type="reset" class="btn btn-danger" id="ResetForm" value="Reset"> -->
+                       
                             <button id="button" type="submit" class="btn btn-primary align-center"
                                 name="submit">Submit</button>
+
+                               <!-- <input type="button" name="btn" value="Submit" id="submitBtn" 
+                               data-toggle="modal" data-target="#confirmModal" data-modal-type="confirm" 
+                               class="btn btn-primary align-center"> -->
+
+                               <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+<!-- confirm modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to submit?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to submit the following details?
+
+                <!-- We display the details entered by the user here -->
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <td id="cidd"></td>
+                    </tr>
+                    <tr>
+                        <th>Course Name</th>
+                        <td id="cnam"></td>
+                    </tr>
+                </table>
+        </div>
+       
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a href='#' id="submitc" class="btn btn-success success" name="sub">Submit</a>
+                
+                
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 
@@ -286,6 +347,62 @@ else
 }
 }
 ?>
+
+
+<script type="text/javascript">
+
+function confirmpref(){
+             
+               if(confirm("Are you sure you want to submit the selected preferences?"))
+               {
+
+                   return true;
+               }
+               else
+               {
+                   return false;
+               }
+           }
+// $('#submitBtn').click(function() {
+//     // e.preventDefault();
+//     $('#cidd').text("course id");
+//     $('#cnam').text("course name");
+
+// });
+
+
+// $('#submitc').click(function(){
+//     console.log("hii");
+//      /* when the submit button in the modal is clicked, submit the form */
+//     var formm=document.getElementById('prefForm');
+//     console.log(formm);
+//     // var form1=$('#prefForm');
+//     //  console.log(form1);
+//     //  form1.submit();
+//     // formm.submit();
+//     // $('form').submit();
+    
+   
+// });
+// function openModal()
+// {
+//     $('#confirmModal').modal('show');
+//     $('#submitc').click(function(e){
+//         e.preventDefault();
+//    var formm=document.getElementById('prefForm');
+//     console.log(formm);
+//     formm.submit();
+//     });
+// }
+// $('#prefForm').on('submit', function(e){
+//     e.preventDefault();
+//     openModal();
+  
+ 
+// });
+
+</script>
+
 <!-- /.container-fluid -->
 
 <script>
@@ -373,6 +490,7 @@ $(".dropdown-toggle").eq(0).trigger('change');
 
            
         </script>
+      
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');
 ?>
