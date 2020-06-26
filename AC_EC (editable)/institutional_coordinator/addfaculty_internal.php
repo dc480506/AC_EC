@@ -230,10 +230,10 @@ include('../includes/header.php');
                                             <?php
                                             include_once("../config.php");
                                             $sql = "SELECT * FROM department";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    while ($row = mysqli_fetch_assoc($result)) {
-                                                        echo '<option value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
-                                                    }
+                                            $result = mysqli_query($conn, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo '<option value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                            }
                                             ?>
                                         </select>
                                         <!-- <input type="text" class="form-control" id="department" name="department" placeholder="department"> -->
@@ -385,6 +385,14 @@ include('../includes/header.php');
             destroy: true,
             serverMethod: 'post',
             aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: "faculty-data",
+                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+            }],
             ajax: {
                 'url': 'adduser/loadInfo/add_internalfaculty.php'
             },
@@ -540,20 +548,19 @@ include('../includes/header.php');
             success: function(data) {
                 // alert(data); // show response from the php script.
                 // console.log(data)
-                if(data === "Exists_email_id"){
+                if (data === "Exists_email_id") {
                     $('#error_email_id').text('*This data already exists');
                     $("#update_internal_faculty_btn").text("Update");
                     $("#update_internal_faculty_btn").attr("disabled", false);
-                }else  if(data === "Exists_faculty_code"){
+                } else if (data === "Exists_faculty_code") {
                     $('#error_faculty_code').text('*This data already exists');
                     $("#update_internal_faculty_btn").text("Update");
                     $("#update_internal_faculty_btn").attr("disabled", false);
-                }else  if(data === "Exists_employee_id"){
+                } else if (data === "Exists_employee_id") {
                     $('#error_employee_id').text('*This data already exists');
                     $("#update_internal_faculty_btn").text("Update");
                     $("#update_internal_faculty_btn").attr("disabled", false);
-                }
-                else{
+                } else {
                     $("#update_internal_faculty_btn").text("Updated Successfully");
                     var row = $("#update-del-modal").closest('tr');
                     var aPos = $("#dataTable-internal").dataTable().fnGetPosition(row.get(0));
@@ -652,7 +659,6 @@ include('../includes/header.php');
             }
         })
     })
-
 </script>
 
 <?php include('../includes/footer.php');

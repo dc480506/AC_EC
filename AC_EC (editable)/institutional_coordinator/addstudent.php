@@ -530,6 +530,14 @@ include('../includes/header.php');
             destroy: true,
             serverMethod: 'post',
             aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: "student-data",
+                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+            }],
             ajax: {
                 'url': 'adduser/loadInfo/add_student.php',
                 "data": function(d) {
