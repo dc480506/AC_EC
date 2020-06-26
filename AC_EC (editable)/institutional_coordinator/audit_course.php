@@ -36,7 +36,7 @@ include('../includes/header.php');
                             <!--filter form start-->
                             <form class="forms-sample" id="filter_courses_form" method="POST" action="">
 
-                            <div class="form-check">
+                                <div class="form-check">
                                     <label for="">Semester</label>
                                     <br />
                                     <div class="custom-control custom-checkbox custom-control-inline">
@@ -74,7 +74,7 @@ include('../includes/header.php');
 
                                 </div>
                                 <br>
-                            <div class="form-check">
+                                <div class="form-check">
                                     <label for="">Floating Department</label>
                                     <br>
                                     <?php
@@ -101,9 +101,8 @@ include('../includes/header.php');
                                     <?php
                                     $years = array();
                                     $email = $_SESSION['email'];
-                                    
-                                    $query = "SELECT distinct(year) FROM audit_course 
-                                        UNION SELECT distinct(year) FROM audit_course_log ORDER by year desc";
+
+                                    $query = "SELECT distinct(year) FROM audit_course UNION SELECT distinct(year) FROM audit_course_log ORDER by year desc";
                                     if ($result = mysqli_query($conn, $query)) {
                                         $rowcount = mysqli_num_rows($result);
                                         while ($row = mysqli_fetch_array($result)) {
@@ -119,8 +118,8 @@ include('../includes/header.php');
                                         }
                                         ?>
                                     </select>
-                                       
-                                    </div>
+
+                                </div>
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-primary" id="clear-filters" data-dismiss="modal" name="close">Clear Filters</button>
@@ -151,7 +150,7 @@ include('../includes/header.php');
                         <br>
                         <!-- <div class="table-responsive"> -->
                         <div class="card-header py-3">
-                             <div class="row align-items-center">
+                            <div class="row align-items-center">
                                 <div class="col text-right">
                                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadCurrent">
                                         <i class="fas fa-upload"></i>
@@ -170,58 +169,60 @@ include('../includes/header.php');
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                         <a class="nav-item nav-link active" id="nav-current-instructions-tab" data-toggle="tab" href="#nav-current-instructions" role="tab" aria-controls="nav-current-instructions" aria-selected="true">Instructions</a>
-                                                        <a class="nav-item nav-link" id="nav-current-upload-tab" data-toggle="tab" href="#nav-current-upload" role="tab" aria-controls="nav-current-upload" aria-selected="false">Upload</a>                                                    
+                                                        <a class="nav-item nav-link" id="nav-current-upload-tab" data-toggle="tab" href="#nav-current-upload" role="tab" aria-controls="nav-current-upload" aria-selected="false">Upload</a>
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">
-                                                <!--Instructions Current-->
+                                                    <!--Instructions Current-->
                                                     <div class="tab-pane fade show active" id="nav-current-instructions" role="tabpanel" aria-labelledby="nav-current-instructions">
-                                                          
+
                                                     </div>
-                                                <!--end Instructions Current-->
-                                                <!--Upload Current-->
+                                                    <!--end Instructions Current-->
+                                                    <!--Upload Current-->
                                                     <div class="tab-pane fade" id="nav-current-upload" role="tabpanel" aria-labelledby="nav-current-upload">
                                                         <div class="container">
-                                                            <form method="post"  enctype="multipart/form-data" id="bulkUploadCurrent">
+                                                            <form method="post" enctype="multipart/form-data" id="bulkUploadCurrent">
                                                                 <br>
-                                                                <div class="form-row"> 
-                                                                <?php
+                                                                <div class="form-row">
+                                                                    <?php
                                                                     include_once("../config.php");
                                                                     $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
                                                                     $result = mysqli_query($conn, $sql);
-                                                                    $row=mysqli_fetch_assoc($result);
-                                                                    $sem_dropdown="";
+                                                                    $row = mysqli_fetch_assoc($result);
+                                                                    $sem_dropdown = "";
                                                                     // while ($row = mysqli_fetch_assoc($result)) {
-                                                                    if($row['sem_type']=='EVEN'){
-                                                                        for($sem_start=2;$sem_start<=8;$sem_start+=2){
-                                                                            $sem_dropdown.= "<option>" . $sem_start . "</option>";
+                                                                    if ($row['sem_type'] == 'EVEN') {
+                                                                        for ($sem_start = 2; $sem_start <= 8; $sem_start += 2) {
+                                                                            $sem_dropdown .= "<option>" . $sem_start . "</option>";
                                                                         }
-                                                                    $temp=explode('-',$row['academic_year'])[0];
-                                                                    $temp+=1;
-                                                                    $temp2="".($temp+1);
-                                                                    }else{
-                                                                        for($sem_start=1;$sem_start<=8;$sem_start+=2){
-                                                                            $sem_dropdown.= "<option>" . $sem_start . "</option>";
+                                                                        $temp = explode('-', $row['academic_year'])[0];
+                                                                        $temp += 1;
+                                                                        $temp2 = "" . ($temp + 1);
+                                                                    } else {
+                                                                        for ($sem_start = 1; $sem_start <= 8; $sem_start += 2) {
+                                                                            $sem_dropdown .= "<option>" . $sem_start . "</option>";
                                                                         }
                                                                     }
-                                                                    $year_val=$row['academic_year'];
+                                                                    $year_val = $row['academic_year'];
                                                                     echo '
                                                                     <div class="form-group col-md-6">
                                                                         <label for="sem_current"><b>Semester</b></label>
                                                                         <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
                                                                         <select class="form-control" required id="sem_current" name="sem">
-                                                                        '.$sem_dropdown.'
+                                                                        ' . $sem_dropdown . '
                                                                         </select>
                                                                     </div>
                                                                     <div class="form-group col-md-6">
                                                                         <label for="year_current"><b>Year</b></label>
-                                                                        <input type="text" class="form-control" required id="year_current" name="year_disabled" placeholder="Year" value="'.$year_val.'" disabled>
-                                                                        <input type="hidden" class="form-control" name="year" value="'.$year_val.'">
+                                                                        <input type="text" class="form-control" required id="year_current" name="year_disabled" placeholder="Year" value="' . $year_val . '" disabled>
+                                                                        <input type="hidden" class="form-control" name="year" value="' . $year_val . '">
                                                                     </div>';
-                                                                ?>
+                                                                    ?>
                                                                 </div>
                                                                 <div id="bulk_current_fields">
-                                                                    <label for=""><h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6></label>
+                                                                    <label for="">
+                                                                        <h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6>
+                                                                    </label>
                                                                     <label for=""><small><b>Note:</b>The following fields should be column names in excel sheet</small></label>
                                                                     <div class="card-header py-3">
                                                                         <div class="form-row">
@@ -229,8 +230,8 @@ include('../includes/header.php');
                                                                                 <label for="cname_current"><b>Course Name</b></label>
                                                                                 <input type="text" class="form-control" id="cname_current" placeholder="" name="cname" value="cname" required>
                                                                             </div>
-                                                                        </div>   
-                                                                        <div class="form-row"> 
+                                                                        </div>
+                                                                        <div class="form-row">
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="cid_current"><b>Course ID</b></label>
                                                                                 <input type="text" class="form-control" id="cid_current" placeholder="" name="cid" value="cid" required>
@@ -260,23 +261,22 @@ include('../includes/header.php');
                                                                 </div>
                                                                 <br>
                                                                 <div class="form-group files color">
-                                                                        <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
-                                                                        <script type="text/javascript" language="javascript">
+                                                                    <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
+                                                                    <script type="text/javascript" language="javascript">
                                                                         function checkfile(sender) {
                                                                             var validExts = new Array(".xlsx", ".xls");
                                                                             var fileExt = sender.value;
                                                                             fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
                                                                             if (validExts.indexOf(fileExt) < 0) {
-                                                                            alert("Invalid file selected, valid files are of " +
+                                                                                alert("Invalid file selected, valid files are of " +
                                                                                     validExts.toString() + " types.");
-                                                                            return false;
-                                                                            }
-                                                                            else return true;
+                                                                                return false;
+                                                                            } else return true;
                                                                         }
-                                                                        </script>
-                                                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required/>
-                                                                        <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
-                                                                    </div>
+                                                                    </script>
+                                                                    <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+                                                                    <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                                                </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                                                     <button type="submit" class="btn btn-primary" id="upload_current" name="save_changes">Upload</button>
@@ -284,8 +284,8 @@ include('../includes/header.php');
                                                             </form>
                                                         </div>
                                                     </div>
-                                                <!--end Upload Current-->
-                                                
+                                                    <!--end Upload Current-->
+
                                                     <!-- <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                                         <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
@@ -355,13 +355,13 @@ include('../includes/header.php');
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="col text-right" id ="delete_selected_current_div">
+
+                                <div class="col text-right" id="delete_selected_current_div">
                                     <button type="button" class="btn btn-danger" id="delete_selected_current_btn" name="delete_selected_current">
                                         <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
                                     </button>
-                                </div>    
-                             </div>
+                                </div>
+                            </div>
                         </div>
                         <br>
                         <table class="table table-bordered table-responsive" id="dataTable-current" width="100%" cellspacing="0">
@@ -411,7 +411,7 @@ include('../includes/header.php');
                         <div class="card-header py-3">
                             <div class="row align-items-center">
                                 <!-- Add course -->
-                                <div class="col text-right" id ="addCurrentCoursebtn" style="display:block">
+                                <div class="col text-right" id="addCurrentCoursebtn" style="display:block">
                                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#addCurrentCourse">
                                         <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course
                                     </button>
@@ -442,40 +442,40 @@ include('../includes/header.php');
                                                         <span id="add_upcoming_cid_error" class="text-danger"></span>
                                                     </div>
                                                     <?php
-                                                            include_once("../config.php");
-                                                            $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
-                                                            $result = mysqli_query($conn, $sql);
-                                                            $row=mysqli_fetch_assoc($result);
-                                                            $sem_dropdown="";
-                                                            // while ($row = mysqli_fetch_assoc($result)) {
-                                                            if($row['sem_type']=='EVEN'){
-                                                                for($sem_start=1;$sem_start<=8;$sem_start+=2){
-                                                                    $sem_dropdown.= "<option>" . $sem_start . "</option>";
-                                                                }
-                                                            $temp=explode('-',$row['academic_year'])[0];
-                                                            $temp+=1;
-                                                            $temp2="".($temp+1);
-                                                            $year_val=$temp."-".substr($temp2,2);
-                                                            }else{
-                                                                for($sem_start=2;$sem_start<=8;$sem_start+=2){
-                                                                    $sem_dropdown.= "<option>" . $sem_start . "</option>";
-                                                                }
-                                                                $year_val=$row['academic_year'];
-                                                            }
+                                                    include_once("../config.php");
+                                                    $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+                                                    $result = mysqli_query($conn, $sql);
+                                                    $row = mysqli_fetch_assoc($result);
+                                                    $sem_dropdown = "";
+                                                    // while ($row = mysqli_fetch_assoc($result)) {
+                                                    if ($row['sem_type'] == 'EVEN') {
+                                                        for ($sem_start = 1; $sem_start <= 8; $sem_start += 2) {
+                                                            $sem_dropdown .= "<option>" . $sem_start . "</option>";
+                                                        }
+                                                        $temp = explode('-', $row['academic_year'])[0];
+                                                        $temp += 1;
+                                                        $temp2 = "" . ($temp + 1);
+                                                        $year_val = $temp . "-" . substr($temp2, 2);
+                                                    } else {
+                                                        for ($sem_start = 2; $sem_start <= 8; $sem_start += 2) {
+                                                            $sem_dropdown .= "<option>" . $sem_start . "</option>";
+                                                        }
+                                                        $year_val = $row['academic_year'];
+                                                    }
                                                     echo '
                                                     <div class="form-row">
                                                         <div class="form-group col-md-6">
                                                             <label for="exampleInputSemester"><b>Semester</b></label>
                                                             <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
                                                             <select class="form-control" required id="exampleInputSemester" name="sem">
-                                                            '.$sem_dropdown.'
+                                                            ' . $sem_dropdown . '
                                                             </select>
                                                             <span id="add_upcoming_cid_error" class="text-danger"></span>
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label for="exampleInputYear"><b>Year</b></label>
-                                                            <input type="text" class="form-control" required id="exampleInputYear" name="year" placeholder="Year" value="'.$year_val.'" disabled>
-                                                            <input type="hidden" class="form-control" required id="exampleInputYear_submit" name="year" value="'.$year_val.'">
+                                                            <input type="text" class="form-control" required id="exampleInputYear" name="year" placeholder="Year" value="' . $year_val . '" disabled>
+                                                            <input type="hidden" class="form-control" required id="exampleInputYear_submit" name="year" value="' . $year_val . '">
                                                         </div>
                                                     </div>';
                                                     ?>
@@ -496,10 +496,10 @@ include('../includes/header.php');
                                                             <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
                                                         </div>
                                                         ';
-                                                        $c++;
-                                                    }
-                                                    ?>
-                                                       <!-- </select> -->
+                                                            $c++;
+                                                        }
+                                                        ?>
+                                                        <!-- </select> -->
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-6">
@@ -520,7 +520,7 @@ include('../includes/header.php');
                                                     </div>
                                                     <?php
                                                     include_once('../config.php');
-                                                    $sql = "SELECT * FROM department WHERE dept_id NOT IN (".$exclude_dept.")";
+                                                    $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
                                                     $result = mysqli_query($conn, $sql);
                                                     $c = 8;
                                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -592,59 +592,61 @@ include('../includes/header.php');
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                         <a class="nav-item nav-link active" id="nav-upcoming-instructions-tab" data-toggle="tab" href="#nav-upcoming-instructions" role="tab" aria-controls="nav-upcoming-instructions" aria-selected="true">Instructions</a>
-                                                        <a class="nav-item nav-link" id="nav-upcoming-upload-tab" data-toggle="tab" href="#nav-upcoming-upload" role="tab" aria-controls="nav-upcoming-upload" aria-selected="false">Upload</a>                                                    
+                                                        <a class="nav-item nav-link" id="nav-upcoming-upload-tab" data-toggle="tab" href="#nav-upcoming-upload" role="tab" aria-controls="nav-upcoming-upload" aria-selected="false">Upload</a>
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">
-                                                <!--Instructions Upcoming-->
+                                                    <!--Instructions Upcoming-->
                                                     <div class="tab-pane fade show active" id="nav-upcoming-instructions" role="tabpanel" aria-labelledby="nav-upcoming-instructions">
-                                                          
+
                                                     </div>
-                                                <!--end Instructions Upcoming-->
-                                                <!--Upload Upcoming-->
+                                                    <!--end Instructions Upcoming-->
+                                                    <!--Upload Upcoming-->
                                                     <div class="tab-pane fade" id="nav-upcoming-upload" role="tabpanel" aria-labelledby="nav-upcoming-upload">
                                                         <div class="container">
                                                             <form method="post" method="POST" enctype="multipart/form-data" id="bulkUploadUpcoming">
                                                                 <br>
-                                                                <div class="form-row"> 
-                                                                <?php
+                                                                <div class="form-row">
+                                                                    <?php
                                                                     include_once("../config.php");
                                                                     $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
                                                                     $result = mysqli_query($conn, $sql);
-                                                                    $row=mysqli_fetch_assoc($result);
-                                                                    $sem_dropdown="";
+                                                                    $row = mysqli_fetch_assoc($result);
+                                                                    $sem_dropdown = "";
                                                                     // while ($row = mysqli_fetch_assoc($result)) {
-                                                                    if($row['sem_type']=='EVEN'){
-                                                                        for($sem_start=1;$sem_start<=8;$sem_start+=2){
-                                                                            $sem_dropdown.= "<option>" . $sem_start . "</option>";
+                                                                    if ($row['sem_type'] == 'EVEN') {
+                                                                        for ($sem_start = 1; $sem_start <= 8; $sem_start += 2) {
+                                                                            $sem_dropdown .= "<option>" . $sem_start . "</option>";
                                                                         }
-                                                                    $temp=explode('-',$row['academic_year'])[0];
-                                                                    $temp+=1;
-                                                                    $temp2="".($temp+1);
-                                                                    $year_val=$temp."-".substr($temp2,2);
-                                                                    }else{
-                                                                        for($sem_start=2;$sem_start<=8;$sem_start+=2){
-                                                                            $sem_dropdown.= "<option>" . $sem_start . "</option>";
+                                                                        $temp = explode('-', $row['academic_year'])[0];
+                                                                        $temp += 1;
+                                                                        $temp2 = "" . ($temp + 1);
+                                                                        $year_val = $temp . "-" . substr($temp2, 2);
+                                                                    } else {
+                                                                        for ($sem_start = 2; $sem_start <= 8; $sem_start += 2) {
+                                                                            $sem_dropdown .= "<option>" . $sem_start . "</option>";
                                                                         }
-                                                                        $year_val=$row['academic_year'];
+                                                                        $year_val = $row['academic_year'];
                                                                     }
                                                                     echo '
                                                                     <div class="form-group col-md-6">
                                                                         <label for="sem_upcoming"><b>Semester</b></label>
                                                                         <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
                                                                         <select class="form-control" required id="sem_upcoming" name="sem">
-                                                                        '.$sem_dropdown.'
+                                                                        ' . $sem_dropdown . '
                                                                         </select>
                                                                     </div>
                                                                     <div class="form-group col-md-6">
                                                                         <label for="year_upcoming"><b>Year</b></label>
-                                                                        <input type="text" class="form-control" required id="year_upcoming" name="year_disabled" placeholder="Year" value="'.$year_val.'" disabled>
-                                                                        <input type="hidden" class="form-control" name="year" value="'.$year_val.'">
+                                                                        <input type="text" class="form-control" required id="year_upcoming" name="year_disabled" placeholder="Year" value="' . $year_val . '" disabled>
+                                                                        <input type="hidden" class="form-control" name="year" value="' . $year_val . '">
                                                                     </div>';
-                                                                ?>
+                                                                    ?>
                                                                 </div>
                                                                 <div id="bulk_upcoming_fields">
-                                                                    <label for=""><h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6></label>
+                                                                    <label for="">
+                                                                        <h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6>
+                                                                    </label>
                                                                     <label for=""><small><b>Note:</b>The following fields should be column names in excel sheet</small></label>
                                                                     <div class="card-header py-3">
                                                                         <div class="form-row">
@@ -652,8 +654,8 @@ include('../includes/header.php');
                                                                                 <label for="cname_upcoming"><b>Course Name</b></label>
                                                                                 <input type="text" class="form-control" id="cname_upcoming" placeholder="" name="cname" value="cname" required>
                                                                             </div>
-                                                                        </div>   
-                                                                        <div class="form-row"> 
+                                                                        </div>
+                                                                        <div class="form-row">
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="cid_upcoming"><b>Course ID</b></label>
                                                                                 <input type="text" class="form-control" id="cid_upcoming" placeholder="" name="cid" value="cid" required>
@@ -683,32 +685,31 @@ include('../includes/header.php');
                                                                 </div>
                                                                 <br>
                                                                 <div class="form-group files color">
-                                                                        <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
-                                                                        <script type="text/javascript" language="javascript">
+                                                                    <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
+                                                                    <script type="text/javascript" language="javascript">
                                                                         function checkfile(sender) {
                                                                             var validExts = new Array(".xlsx", ".xls");
                                                                             var fileExt = sender.value;
                                                                             fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
                                                                             if (validExts.indexOf(fileExt) < 0) {
-                                                                            alert("Invalid file selected, valid files are of " +
+                                                                                alert("Invalid file selected, valid files are of " +
                                                                                     validExts.toString() + " types.");
-                                                                            return false;
-                                                                            }
-                                                                            else return true;
+                                                                                return false;
+                                                                            } else return true;
                                                                         }
-                                                                        </script>
-                                                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required/>
-                                                                        <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
-                                                                    </div>
+                                                                    </script>
+                                                                    <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+                                                                    <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                                                </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"  data-dismiss="modal" name="close">Close</button>
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                                                     <button type="submit" class="btn btn-primary" id="upload_upcoming" name="save_changes">Upload</button>
                                                                 </div>
                                                             </form>
                                                         </div>
                                                     </div>
-                                                <!--end Upload Upcoming-->
-                                                
+                                                    <!--end Upload Upcoming-->
+
                                                     <!-- <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                                         <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
@@ -779,53 +780,53 @@ include('../includes/header.php');
                                     </div>
                                 </div>
                                 <!-- Multiple deletion-->
-                                <div class="col text-right" id ="delete_selected_upcoming_div">
-                                    <button type="button" class="btn btn-danger" id="delete_selected_upcoming_btn"  name="delete_selected_current">
-                                         <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
-                                     </button>
+                                <div class="col text-right" id="delete_selected_upcoming_div">
+                                    <button type="button" class="btn btn-danger" id="delete_selected_upcoming_btn" name="delete_selected_current">
+                                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                                    </button>
                                 </div>
                             </div>
                         </div>
                         <br>
                         <!-- <div class="table-responsive"> -->
-                            <table class="table table-bordered table-responsive" id="dataTable-upcoming" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="select_all_upcoming_page">
-                                                <label class="custom-control-label" for="select_all_upcoming_page"></label>
-                                            </div>
-                                        </th>
-                                        <th>Course Name</th>
-                                        <th>Course ID</th>
-                                        <th>Sem</th>
-                                        <th>Academic Year</th>
-                                        <th>Floating Department</th>
-                                        <th>Departments Applicable</th>
-                                        <th>Max</th>
-                                        <th>Min</th>
-                                        <th>Allocate faculty</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th>Course Name</th>
-                                        <th>Course ID</th>
-                                        <th>Sem</th>
-                                        <th>Academic Year</th>
-                                        <th>Floating Department</th>
-                                        <th>Departments Applicable</th>
-                                        <th>Max</th>
-                                        <th>Min</th>
-                                        <th>Allocate faculty</th>
-                                        <th>Action</th>
+                        <table class="table table-bordered table-responsive" id="dataTable-upcoming" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="select_all_upcoming_page">
+                                            <label class="custom-control-label" for="select_all_upcoming_page"></label>
+                                        </div>
+                                    </th>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Sem</th>
+                                    <th>Academic Year</th>
+                                    <th>Floating Department</th>
+                                    <th>Departments Applicable</th>
+                                    <th>Max</th>
+                                    <th>Min</th>
+                                    <th>Allocate faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Sem</th>
+                                    <th>Academic Year</th>
+                                    <th>Floating Department</th>
+                                    <th>Departments Applicable</th>
+                                    <th>Max</th>
+                                    <th>Min</th>
+                                    <th>Allocate faculty</th>
+                                    <th>Action</th>
 
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                </tr>
+                            </tfoot>
+                        </table>
                         <!-- </div> -->
                     </div>
                     <!--Upcoming end-->
@@ -851,21 +852,21 @@ include('../includes/header.php');
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                         <a class="nav-item nav-link active" id="nav-previous-instructions-tab" data-toggle="tab" href="#nav-previous-instructions" role="tab" aria-controls="nav-previous-instructions" aria-selected="true">Instructions</a>
-                                                        <a class="nav-item nav-link" id="nav-previous-upload-tab" data-toggle="tab" href="#nav-previous-upload" role="tab" aria-controls="nav-previous-upload" aria-selected="false">Upload</a>                                                    
+                                                        <a class="nav-item nav-link" id="nav-previous-upload-tab" data-toggle="tab" href="#nav-previous-upload" role="tab" aria-controls="nav-previous-upload" aria-selected="false">Upload</a>
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">
-                                                <!--Instructions previous-->
+                                                    <!--Instructions previous-->
                                                     <div class="tab-pane fade show active" id="nav-previous-instructions" role="tabpanel" aria-labelledby="nav-previous-instructions">
-                                                          
+
                                                     </div>
-                                                <!--end Instructions previous-->
-                                                <!--Upload previous-->
+                                                    <!--end Instructions previous-->
+                                                    <!--Upload previous-->
                                                     <div class="tab-pane fade" id="nav-previous-upload" role="tabpanel" aria-labelledby="nav-previous-upload">
                                                         <div class="container">
                                                             <form method="post" method="POST" enctype="multipart/form-data" id="bulkUploadPrevious">
                                                                 <br>
-                                                                <div class="form-row"> 
+                                                                <div class="form-row">
                                                                     <div class="form-group col-md-6">
                                                                         <label for="sem_previous"><b>Semester</b></label>
                                                                         <!-- <input type="text" class="form-control" required id="exampleInputSemester" name="sem" placeholder="Semester"> -->
@@ -883,27 +884,29 @@ include('../includes/header.php');
                                                                     <div class="form-group col-md-6">
                                                                         <label for="year_previous"><b>Year</b></label>
                                                                         <select class="form-control" name="year" id="year_previous">
-                                                                        <?php
+                                                                            <?php
                                                                             $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
                                                                             $result = mysqli_query($conn, $sql);
-                                                                            $row=mysqli_fetch_assoc($result);
-                                                                            $year=$row['academic_year'];
-                                                                            for($i=0;$i<4;$i++){
-                                                                                echo '<option>'.$year.'</option>';
-                                                                                $temp=explode('-',$year)[0];
-                                                                                $temp-=1;
-                                                                                $temp2="".($temp+1);
-                                                                                $year=$temp."-".substr($temp2,2);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $year = $row['academic_year'];
+                                                                            for ($i = 0; $i < 4; $i++) {
+                                                                                echo '<option>' . $year . '</option>';
+                                                                                $temp = explode('-', $year)[0];
+                                                                                $temp -= 1;
+                                                                                $temp2 = "" . ($temp + 1);
+                                                                                $year = $temp . "-" . substr($temp2, 2);
                                                                             }
-                                                                        ?>
+                                                                            ?>
                                                                         </select>
                                                                         <!-- <input type="text" class="form-control" required id="year_previous" name="year_disabled" placeholder="Year" value="'.$year_val.'" disabled>
                                                                         <input type="hidden" class="form-control" name="year" value="'.$year_val.'"> -->
                                                                     </div>
-                                                                
+
                                                                 </div>
                                                                 <div id="bulk_previous_fields">
-                                                                    <label for=""><h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6></label>
+                                                                    <label for="">
+                                                                        <h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6>
+                                                                    </label>
                                                                     <label for=""><small><b>Note:</b>The following fields should be column names in excel sheet</small></label>
                                                                     <div class="card-header py-3">
                                                                         <div class="form-row">
@@ -911,8 +914,8 @@ include('../includes/header.php');
                                                                                 <label for="cname_previous"><b>Course Name</b></label>
                                                                                 <input type="text" class="form-control" id="cname_previous" placeholder="" name="cname" value="cname" required>
                                                                             </div>
-                                                                        </div>   
-                                                                        <div class="form-row"> 
+                                                                        </div>
+                                                                        <div class="form-row">
                                                                             <div class="form-group col-md-6">
                                                                                 <label for="cid_previous"><b>Course ID</b></label>
                                                                                 <input type="text" class="form-control" id="cid_previous" placeholder="" name="cid" value="cid" required>
@@ -942,23 +945,22 @@ include('../includes/header.php');
                                                                 </div>
                                                                 <br>
                                                                 <div class="form-group files color">
-                                                                        <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
-                                                                        <script type="text/javascript" language="javascript">
+                                                                    <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
+                                                                    <script type="text/javascript" language="javascript">
                                                                         function checkfile(sender) {
                                                                             var validExts = new Array(".xlsx", ".xls");
                                                                             var fileExt = sender.value;
                                                                             fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
                                                                             if (validExts.indexOf(fileExt) < 0) {
-                                                                            alert("Invalid file selected, valid files are of " +
+                                                                                alert("Invalid file selected, valid files are of " +
                                                                                     validExts.toString() + " types.");
-                                                                            return false;
-                                                                            }
-                                                                            else return true;
+                                                                                return false;
+                                                                            } else return true;
                                                                         }
-                                                                        </script>
-                                                                        <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required/>
-                                                                        <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
-                                                                    </div>
+                                                                    </script>
+                                                                    <input type="file" name="Uploadfile" class="form-control" onchange="checkfile(this);" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+                                                                    <label for=""><b>Accepted formats .xls,.xlsx only.</b></label>
+                                                                </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                                                     <button type="submit" class="btn btn-primary" name="save_changes" id="upload_previous">Upload</button>
@@ -966,8 +968,8 @@ include('../includes/header.php');
                                                             </form>
                                                         </div>
                                                     </div>
-                                                <!--end Upload previous-->
-                                                
+                                                    <!--end Upload previous-->
+
                                                     <!-- <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                                         <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
@@ -1037,8 +1039,8 @@ include('../includes/header.php');
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col text-right" id ="delete_selected_previous_div">
-                                    <button type="button" class="btn btn-danger" id="delete_selected_previous_btn"  name="delete_selected_previous">
+                                <div class="col text-right" id="delete_selected_previous_div">
+                                    <button type="button" class="btn btn-danger" id="delete_selected_previous_btn" name="delete_selected_previous">
                                         <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
                                     </button>
                                 </div>
@@ -1046,46 +1048,46 @@ include('../includes/header.php');
                         </div>
                         <br>
                         <!-- <div class="table-responsive"> -->
-                            <table class="table table-bordered table-responsive" id="dataTable-previous" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="select_all_previous_page">
-                                                <label class="custom-control-label" for="select_all_previous_page"></label>
-                                            </div>
-                                        </th>
-                                        <th>Course Name</th>
-                                        <th>Course ID</th>
-                                        <th>Sem</th>
-                                        <th>Academic Year</th>
-                                        <th>Floating Dept.</th>
-                                        <th>Dept. Applicable</th>
-                                        <th>Max</th>
-                                        <th>Min</th>
-                                        <th>Students Allocated</th>
-                                        <th>Allocate faculty</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th>Course Name</th>
-                                        <th>Course ID</th>
-                                        <th>Sem</th>
-                                        <th>Academic Year</th>
-                                        <th>Floating Dept.</th>
-                                        <th>Dept. Applicable</th>
-                                        <th>Max</th>
-                                        <th>Min</th>
-                                        <th>Students Allocated</th>
-                                        <th>Allocate faculty</th>
-                                        <th>Action</th>
+                        <table class="table table-bordered table-responsive" id="dataTable-previous" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="select_all_previous_page">
+                                            <label class="custom-control-label" for="select_all_previous_page"></label>
+                                        </div>
+                                    </th>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Sem</th>
+                                    <th>Academic Year</th>
+                                    <th>Floating Dept.</th>
+                                    <th>Dept. Applicable</th>
+                                    <th>Max</th>
+                                    <th>Min</th>
+                                    <th>Students Allocated</th>
+                                    <th>Allocate faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Sem</th>
+                                    <th>Academic Year</th>
+                                    <th>Floating Dept.</th>
+                                    <th>Dept. Applicable</th>
+                                    <th>Max</th>
+                                    <th>Min</th>
+                                    <th>Students Allocated</th>
+                                    <th>Allocate faculty</th>
+                                    <th>Action</th>
 
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                </tr>
+                            </tfoot>
+                        </table>
                         <!-- </div> -->
                     </div>
                     <!--Update end-->
@@ -1241,111 +1243,111 @@ include('../includes/header.php');
     }
 
     var activeTab = "current"
-$(document).ready(function(){
-    loadCurrent();
-    $('#uploadCurrent').on('hidden.bs.modal',function (e) {
-        document.querySelector("#bulkUploadCurrent").reset();
-        $("#upload_current").text("Upload")
-        $("#upload_current").attr("disabled",false);
+    $(document).ready(function() {
+        loadCurrent();
+        $('#uploadCurrent').on('hidden.bs.modal', function(e) {
+            document.querySelector("#bulkUploadCurrent").reset();
+            $("#upload_current").text("Upload")
+            $("#upload_current").attr("disabled", false);
+        });
+        $('#uploadUpcoming').on('hidden.bs.modal', function(e) {
+            document.querySelector("#bulkUploadUpcoming").reset();
+            $("#upload_upcoming").text("Upload")
+            $("#upload_upcoming").attr("disabled", false);
+        });
+        $('#uploadPrevious').on('hidden.bs.modal', function(e) {
+            document.querySelector("#bulkUploadPrevious").reset();
+            $("#upload_previous").text("Upload")
+            $("#upload_previous").attr("disabled", false);
+        });
     });
-    $('#uploadUpcoming').on('hidden.bs.modal',function (e) {
-        document.querySelector("#bulkUploadUpcoming").reset();
-        $("#upload_upcoming").text("Upload")
-        $("#upload_upcoming").attr("disabled",false);
-    });
-    $('#uploadPrevious').on('hidden.bs.modal',function (e) {
-        document.querySelector("#bulkUploadPrevious").reset();
-        $("#upload_previous").text("Upload")
-        $("#upload_previous").attr("disabled",false);
-    });
-});
-function findByAttr(array,attr_name,value){
-    var list_index_attr_val=[]
-    for(var i = 0; i < array.length; i += 1) {
-        if(array[i][attr_name] === value) {
-            list_index_attr_val.push(i)
-        }
-    }
-    return list_index_attr_val
-}
-// ************Current Course Section**************
 
-$("#bulkUploadCurrent").submit(function(e) {
-    e.preventDefault();  
-    form=this;  
-    var formData = new FormData(this);
-    $("#upload_current").attr("disabled",true);
-    $("#upload_current").text("Uploading...")
-    $.ajax({
-        url: "audit_course/bulkUpload/current_audit_upload.php",
-        type: 'POST',
-        data: formData,
-        success: function (data) {
-            if($.trim(data)=="Successful"){
-                $("#upload_current").text("Uploaded Successfully")
-                loadCurrent();
-            }else{
-                $("#upload_current").text("Upload Failed")
-                alert(data);
+    function findByAttr(array, attr_name, value) {
+        var list_index_attr_val = []
+        for (var i = 0; i < array.length; i += 1) {
+            if (array[i][attr_name] === value) {
+                list_index_attr_val.push(i)
             }
-            // form.reset();
-        },
-        cache: false,
-        contentType: false,
-        processData: false
-    });
-})
-$("#select_all_current_page").click(function(e){
-            //   var row=$(this).closest('tr')
-    if($(this).is(":checked")){    
-        $("#dataTable-current tbody tr").addClass("selected table-secondary");
-        $(".selectrow_current").attr("checked",true);
-    }else{
-        $(".selectrow_current").attr("checked",false);
-        $("#dataTable-current tbody tr").removeClass("selected table-secondary");
-    }
-            //   row.toggleClass('selected table-secondary')
-})
-$("#delete_selected_current_btn").click(function(e){
-    alert("You have selected "+$("#dataTable-current tbody tr.selected").length+" record(s) for deletion");
-    var delete_rows=$("#dataTable-current").DataTable().rows('.selected').data()
-    var delete_data={}
-    for(var i=0;i<delete_rows.length;i++){
-        baseData={}
-        baseData['cid']=delete_rows[i].cid
-        baseData['sem']=delete_rows[i].sem
-        delete_data[i]=baseData
-        // console.log(baseData);
-    }
-    var actual_data={}
-    actual_data['type']='current'
-    actual_data['delete_data']=delete_data
-    actual_delete_data_json=JSON.stringify(actual_data)
-    console.log(actual_delete_data_json)
-    $.ajax({
-        type: "POST",
-        url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
-        data: actual_delete_data_json, 
-        success: function(data)
-        {
-            // console.log(data)
-            $("#dataTable-current").DataTable().draw(false);
         }
-    })
-})
+        return list_index_attr_val
+    }
+    // ************Current Course Section**************
 
-function getFilters() {
+    $("#bulkUploadCurrent").submit(function(e) {
+        e.preventDefault();
+        form = this;
+        var formData = new FormData(this);
+        $("#upload_current").attr("disabled", true);
+        $("#upload_current").text("Uploading...")
+        $.ajax({
+            url: "audit_course/bulkUpload/current_audit_upload.php",
+            type: 'POST',
+            data: formData,
+            success: function(data) {
+                if ($.trim(data) == "Successful") {
+                    $("#upload_current").text("Uploaded Successfully")
+                    loadCurrent();
+                } else {
+                    $("#upload_current").text("Upload Failed")
+                    alert(data);
+                }
+                // form.reset();
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    })
+    $("#select_all_current_page").click(function(e) {
+        //   var row=$(this).closest('tr')
+        if ($(this).is(":checked")) {
+            $("#dataTable-current tbody tr").addClass("selected table-secondary");
+            $(".selectrow_current").attr("checked", true);
+        } else {
+            $(".selectrow_current").attr("checked", false);
+            $("#dataTable-current tbody tr").removeClass("selected table-secondary");
+        }
+        //   row.toggleClass('selected table-secondary')
+    })
+    $("#delete_selected_current_btn").click(function(e) {
+        alert("You have selected " + $("#dataTable-current tbody tr.selected").length + " record(s) for deletion");
+        var delete_rows = $("#dataTable-current").DataTable().rows('.selected').data()
+        var delete_data = {}
+        for (var i = 0; i < delete_rows.length; i++) {
+            baseData = {}
+            baseData['cid'] = delete_rows[i].cid
+            baseData['sem'] = delete_rows[i].sem
+            delete_data[i] = baseData
+            // console.log(baseData);
+        }
+        var actual_data = {}
+        actual_data['type'] = 'current'
+        actual_data['delete_data'] = delete_data
+        actual_delete_data_json = JSON.stringify(actual_data)
+        console.log(actual_delete_data_json)
+        $.ajax({
+            type: "POST",
+            url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
+            data: actual_delete_data_json,
+            success: function(data) {
+                // console.log(data)
+                $("#dataTable-current").DataTable().draw(false);
+            }
+        })
+    })
+
+    function getFilters() {
         const filters = $("#filter_courses_form").serializeArray();
-        
+
         let normalizedFilters = {};
         for (filter of filters) {
             switch (filter.name) {
                 case "filter_academic_year":
                     if (filter.value != "") {
-                        normalizedFilters.start_year = filter.value
+                        normalizedFilters.academic_year = filter.value
                     }
                     break;
-               
+
                 case "filter_semester[]":
                     if (!normalizedFilters.semesters) {
                         normalizedFilters.semesters = []
@@ -1363,1524 +1365,1703 @@ function getFilters() {
         console.log(normalizedFilters);
         return normalizedFilters
     }
-    
+
     $("#filter_courses_form").submit(function(e) {
         e.preventDefault();
         $(`#dataTable-${activeTab}`).DataTable().ajax.reload(false);
         $("#exampleModalCenter2").modal("hide")
     })
 
-    function clearFilters(){
+    function clearFilters() {
         $('#filter_courses_form').trigger('reset');
     }
 
     $("#clear-filters").click(function(e) {
         clearFilters();
-        
+
         $(`#dataTable-${activeTab}`).DataTable().ajax.reload(false);
     });
 
-function loadCurrent(){
-    // document.querySelector("#addCoursebtn").style.display="none"
-    $('#dataTable-current').DataTable({
-      processing: true,
-      serverSide: true,
-      destroy:true,
-      serverMethod: 'post',
-      aaSorting:[],
-      ajax: {
-          'url':'audit_course/loadInfo/current_audit.php',
-          "data": function(d) {
+    function loadCurrent() {
+        // document.querySelector("#addCoursebtn").style.display="none"
+        $('#dataTable-current').DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            serverMethod: 'post',
+            aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: "current-audit-courses-data",
+                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: "current-audit-courses-data",
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                },
+            }],
+            ajax: {
+                'url': 'audit_course/loadInfo/current_audit.php',
+                "data": function(d) {
                     d.filters = getFilters();
                     return d
                 }
-      },
-      fnDrawCallback:function(){
-          $(".action-btn").on('click',loadModalCurrent)
-          $(".allocate-btn").on('click',loadAllocateModalCurrent);
-          $(".selectrow_current").attr("disabled",true);
-          $("th").removeClass('selectbox_current_td');
-          $(".selectbox_current_td").click(function(e){
-              var row=$(this).closest('tr')
-              var checkbox = $(this).find('input');
-              checkbox.attr("checked", !checkbox.attr("checked"));
-              row.toggleClass('selected table-secondary')
-              if($("#dataTable-current tbody tr.selected").length!=$("#dataTable-current tbody tr").length){
-                $("#select_all_current_page").prop("checked",true)
-                $("#select_all_current_page").prop("checked",false)
-              }else{
-                $("#select_all_current_page").prop("checked",false)
-                $("#select_all_current_page").prop("checked",true)
-              }
-          })
-      },
-      columns: [
-         { data: 'select-cbox'},
-         { data: 'cname' },
-         { data: 'cid' },
-         { data: 'sem' },
-         { data: 'dept_name' },
-         { data: 'dept_applicable' },
-         { data: 'max' },
-         { data: 'min' },
-         { data: 'no_of_allocated' },
-         { data: 'allocate_faculty' },
-         { data: 'action' },
-      ],
-      columnDefs: [ {
-        targets: [0,5,8,9,10], // column index (start from 0)
-        orderable: false, // set orderable false for selected columns
-     },
-     {className:"selectbox_current_td",targets:[0]},
-     { className: "cname", "targets": [ 1 ] },
-        // { className: "cid", "targets": [ 1 ] },
-        // { className: "sem", "targets": [ 2 ] },
-        // { className: "dept_name", "targets": [ 3 ] },
-        // { className: "dept_applicable", "targets": [ 4 ] },
-        // { className: "max", "targets": [ 5 ] },
-        // { className: "min", "targets": [ 6 ] }
-     ],
-   });  
-}
+            },
+            fnDrawCallback: function() {
+                $(".action-btn").on('click', loadModalCurrent)
+                $(".allocate-btn").on('click', loadAllocateModalCurrent);
+                $(".selectrow_current").attr("disabled", true);
+                $("th").removeClass('selectbox_current_td');
+                $(".selectbox_current_td").click(function(e) {
+                    var row = $(this).closest('tr')
+                    var checkbox = $(this).find('input');
+                    checkbox.attr("checked", !checkbox.attr("checked"));
+                    row.toggleClass('selected table-secondary')
+                    if ($("#dataTable-current tbody tr.selected").length != $("#dataTable-current tbody tr").length) {
+                        $("#select_all_current_page").prop("checked", true)
+                        $("#select_all_current_page").prop("checked", false)
+                    } else {
+                        $("#select_all_current_page").prop("checked", false)
+                        $("#select_all_current_page").prop("checked", true)
+                    }
+                })
+            },
+            columns: [{
+                    data: 'select-cbox'
+                },
+                {
+                    data: 'cname'
+                },
+                {
+                    data: 'cid'
+                },
+                {
+                    data: 'sem'
+                },
+                {
+                    data: 'dept_name'
+                },
+                {
+                    data: 'dept_applicable'
+                },
+                {
+                    data: 'max'
+                },
+                {
+                    data: 'min'
+                },
+                {
+                    data: 'no_of_allocated'
+                },
+                {
+                    data: 'allocate_faculty'
+                },
+                {
+                    data: 'action'
+                },
+            ],
+            columnDefs: [{
+                    targets: [0, 5, 8, 9, 10], // column index (start from 0)
+                    orderable: false, // set orderable false for selected columns
+                },
+                {
+                    className: "selectbox_current_td",
+                    targets: [0]
+                },
+                {
+                    className: "cname",
+                    "targets": [1]
+                },
+                // { className: "cid", "targets": [ 1 ] },
+                // { className: "sem", "targets": [ 2 ] },
+                // { className: "dept_name", "targets": [ 3 ] },
+                // { className: "dept_applicable", "targets": [ 4 ] },
+                // { className: "max", "targets": [ 5 ] },
+                // { className: "min", "targets": [ 6 ] }
+            ],
+        });
+    }
 
-function loadAllocateModalCurrent(){
-    var target_row = $(this).closest("tr");
-    // var btn=$(this);
-    var aPos = $("#dataTable-current").dataTable().fnGetPosition(target_row.get(0)); 
-    var courseData=$('#dataTable-current').DataTable().row(aPos).data()
-    // delete courseData.action
-    // delete courseData.allocate_faculty
-    var json_courseData=JSON.stringify(courseData)
-    // console.log(json_courseData)
-    $.ajax({
-        type: "POST",
-        url: "audit_course/loadModal/current_audit_allocate_modal.php",
-        // data: form_serialize, 
-        // dataType: "json",
-        data: json_courseData,
-        success: function(output)
-        {
-            // $("#"+x).text("Deleted Successfully");
-            target_row.append(output);
+    function loadAllocateModalCurrent() {
+        var target_row = $(this).closest("tr");
+        // var btn=$(this);
+        var aPos = $("#dataTable-current").dataTable().fnGetPosition(target_row.get(0));
+        var courseData = $('#dataTable-current').DataTable().row(aPos).data()
+        // delete courseData.action
+        // delete courseData.allocate_faculty
+        var json_courseData = JSON.stringify(courseData)
+        // console.log(json_courseData)
+        $.ajax({
+            type: "POST",
+            url: "audit_course/loadModal/current_audit_allocate_modal.php",
+            // data: form_serialize, 
+            // dataType: "json",
+            data: json_courseData,
+            success: function(output) {
+                // $("#"+x).text("Deleted Successfully");
+                target_row.append(output);
 
-            $('#allocate-modal').modal('show')
-                $(document).on('hidden.bs.modal', '#allocate-modal', function () {
-                    $("#allocate-modal").remove(); 
+                $('#allocate-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#allocate-modal', function() {
+                    $("#allocate-modal").remove();
                     $("#deleteFacultyModal").remove();
                 });
 
-            $('#allocate_faculty_audit').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#allocate_faculty_audit_btn").attr('name'), value: $("#allocate_faculty_audit_btn").attr('value') });
-                if(form_serialize[3].value != null) {
-                    $("#allocate_faculty_audit_btn").text("Allocating...");
-                    $("#allocate_faculty_audit_btn").attr("disabled",true);
-                    $.ajax({
-                        type: "POST",
-                        url: "ic_queries/allocate_faculty_queries.php",
-                        data: form_serialize, 
-                        success: function(data)
-                        {
-                            var z = data.split("+");
-                            $("#allocate_faculty_audit_btn").text("Allocated Successfully");
-                            $("#allocate_faculty_audit_btn").text("Allocate");
-                            $("#allocate_faculty_audit_btn").attr("disabled",false);
-                            $(".faculty_div").html(z[1]);
-                            $('#temp_allocated_faculty').val(z[0]);
-                            $('#hiddenemailid').val("null");
-                            $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+                $('#allocate_faculty_audit').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#allocate_faculty_audit_btn").attr('name'),
+                        value: $("#allocate_faculty_audit_btn").attr('value')
+                    });
+                    if (form_serialize[3].value != null) {
+                        $("#allocate_faculty_audit_btn").text("Allocating...");
+                        $("#allocate_faculty_audit_btn").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "ic_queries/allocate_faculty_queries.php",
+                            data: form_serialize,
+                            success: function(data) {
+                                var z = data.split("+");
+                                $("#allocate_faculty_audit_btn").text("Allocated Successfully");
+                                $("#allocate_faculty_audit_btn").text("Allocate");
+                                $("#allocate_faculty_audit_btn").attr("disabled", false);
+                                $(".faculty_div").html(z[1]);
+                                $('#temp_allocated_faculty').val(z[0]);
+                                $('#hiddenemailid').val("null");
+                                $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
 
-                        }
+                            }
                         });
-                }
-            });
-
-            $('#deleteFacultyModal').on('show.bs.modal', function (event) {
-              let email_id = $(event.relatedTarget).data('email_id') 
-              $(this).find('.modal-body #email_id').val(email_id)
-              let cid = $(event.relatedTarget).data('cid') 
-              $(this).find('.modal-body #cid').val(cid)
-              let sem = $(event.relatedTarget).data('sem') 
-              $(this).find('.modal-body #sem').val(sem)
-              let year = $(event.relatedTarget).data('year') 
-              $(this).find('.modal-body #year').val(year)
-
-              $('#newModalUnallocate').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#faculty_unallocate_btn").attr('name'), value: $("#faculty_unallocate_btn").attr('value') });
-                $("#faculty_unallocate_btn").text("Deleting...");
-                $("#faculty_unallocate_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/allocate_faculty_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        var z = data.split("+");
-                        $('#deleteFacultyModal').modal('hide');
-                        $("#faculty_unallocate_btn").text("Delete");
-                        $("#faculty_unallocate_btn").attr("disabled",false);
-                        $(".faculty_div").html(z[1]);
-                        $('#temp_allocated_faculty').val(z[0]);
-                        $('#hiddenemailid').val("null");
-                        $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
                     }
+                });
+
+                $('#deleteFacultyModal').on('show.bs.modal', function(event) {
+                    let email_id = $(event.relatedTarget).data('email_id')
+                    $(this).find('.modal-body #email_id').val(email_id)
+                    let cid = $(event.relatedTarget).data('cid')
+                    $(this).find('.modal-body #cid').val(cid)
+                    let sem = $(event.relatedTarget).data('sem')
+                    $(this).find('.modal-body #sem').val(sem)
+                    let year = $(event.relatedTarget).data('year')
+                    $(this).find('.modal-body #year').val(year)
+
+                    $('#newModalUnallocate').submit(function(e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var form_serialize = form.serializeArray(); // serializes the form's elements.
+                        form_serialize.push({
+                            name: $("#faculty_unallocate_btn").attr('name'),
+                            value: $("#faculty_unallocate_btn").attr('value')
+                        });
+                        $("#faculty_unallocate_btn").text("Deleting...");
+                        $("#faculty_unallocate_btn").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "ic_queries/allocate_faculty_queries.php",
+                            data: form_serialize,
+                            success: function(data) {
+                                var z = data.split("+");
+                                $('#deleteFacultyModal').modal('hide');
+                                $("#faculty_unallocate_btn").text("Delete");
+                                $("#faculty_unallocate_btn").attr("disabled", false);
+                                $(".faculty_div").html(z[1]);
+                                $('#temp_allocated_faculty').val(z[0]);
+                                $('#hiddenemailid').val("null");
+                                $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                            }
+                        });
                     });
-            });
 
-            });
+                });
 
-            $('.showtext').click(function(e) {
-                if(document.querySelector("#show").style.display=="none")
-                    document.querySelector("#show").style.display="inline"
-                else
-                    document.querySelector("#show").style.display="none"
-            });
-            $('#search_text').keyup(function() {
-                var txt = $(this).val();
-                var txt2 = $('#temp_allocated_faculty').val();
-                if(txt == '') {
-                    $('#result').html('');
-                } else {
-                    $('#result').html('');
-                    $.ajax({
-                        url: "audit_course/loadModal/fetch_faculties.php",
-                        method: "post",
-                        data: {search:txt, allocated:txt2},
-                        dataType: "text",
-                        success: function(data) {
-                            $('#result').html(data);
-                            $('.option-selected').click(function(e) {
-                                var x = $(this).val();
-                                var y = $(this).prev();
-                                $('#hiddenemailid').val(y.val());
-                                $('.showtext').html(x.concat(' <i class="fa fa-caret-down"></i>'));
-                                document.querySelector("#show").style.display="none";
-                                $('#search_text').val("");
-                                $('#result').html('');
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
-}
+                $('.showtext').click(function(e) {
+                    if (document.querySelector("#show").style.display == "none")
+                        document.querySelector("#show").style.display = "inline"
+                    else
+                        document.querySelector("#show").style.display = "none"
+                });
+                $('#search_text').keyup(function() {
+                    var txt = $(this).val();
+                    var txt2 = $('#temp_allocated_faculty').val();
+                    if (txt == '') {
+                        $('#result').html('');
+                    } else {
+                        $('#result').html('');
+                        $.ajax({
+                            url: "audit_course/loadModal/fetch_faculties.php",
+                            method: "post",
+                            data: {
+                                search: txt,
+                                allocated: txt2
+                            },
+                            dataType: "text",
+                            success: function(data) {
+                                $('#result').html(data);
+                                $('.option-selected').click(function(e) {
+                                    var x = $(this).val();
+                                    var y = $(this).prev();
+                                    $('#hiddenemailid').val(y.val());
+                                    $('.showtext').html(x.concat(' <i class="fa fa-caret-down"></i>'));
+                                    document.querySelector("#show").style.display = "none";
+                                    $('#search_text').val("");
+                                    $('#result').html('');
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 
-function loadModalCurrent(){
-    var target_row = $(this).closest("tr"); // this line did the trick
+    function loadModalCurrent() {
+        var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
-    // var btn=$(this);
-    var aPos = $("#dataTable-current").dataTable().fnGetPosition(target_row.get(0)); 
-    var courseData=$('#dataTable-current').DataTable().row(aPos).data()
-    // delete courseData.action
-    // delete courseData.allocate_faculty
-    var json_courseData=JSON.stringify(courseData)
-    // console.log(json_courseData)
-    $.ajax({
-        type: "POST",
-        url: "audit_course/loadModal/current_audit_modal.php",
-        // data: form_serialize, 
-        // dataType: "json",
-        data: json_courseData,
-        success: function(output)
-        {
-            // $("#"+x).text("Deleted Successfully");
-            target_row.append(output);
-            $('#update-del-modal').modal('show')
-                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
+        // var btn=$(this);
+        var aPos = $("#dataTable-current").dataTable().fnGetPosition(target_row.get(0));
+        var courseData = $('#dataTable-current').DataTable().row(aPos).data()
+        // delete courseData.action
+        // delete courseData.allocate_faculty
+        var json_courseData = JSON.stringify(courseData)
+        // console.log(json_courseData)
+        $.ajax({
+            type: "POST",
+            url: "audit_course/loadModal/current_audit_modal.php",
+            // data: form_serialize, 
+            // dataType: "json",
+            data: json_courseData,
+            success: function(output) {
+                // $("#"+x).text("Deleted Successfully");
+                target_row.append(output);
+                $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function() {
                     $("#update-del-modal").remove();
                     $("#deleteSimilarCourseModal").remove();
                 });
-            $('#delete_course_form').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
-                $("#delete_course_btn").text("Deleting...");
-                $("#delete_course_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addcourse_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        //    alert(data); // show response from the php script.
-                        $("#delete_course_btn").text("Deleted Successfully");
-                        var row=$("#update-del-modal").closest('tr');
-                        var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0)); 
-                        $('#update-del-modal').modal('hide');
-                        $('body').removeClass('modal-open');
-                        $('.modal-backdrop').remove();
-                        // row.remove();
-                        $("#dataTable-current").DataTable().row(aPos).remove().draw(false);
-                        // console.log(aPos);
-                        // console.log(row)
-                    }
+                $('#delete_course_form').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#delete_course_btn").attr('name'),
+                        value: $("#delete_course_btn").attr('value')
                     });
-            });
-            $('#update_course_form').submit(function(e){
-                update_course_form_current(e);
-                // $('#update-del-modal').modal('hide');
-            });
-
-            $('#add_new_similar_course_btn').click(function(e) {
-                if(document.querySelector(".temporarydiv").style.display=="none")
-                    document.querySelector(".temporarydiv").style.display="inline"
-            });
-
-            $('#add_similar_course').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#add_new_similar_course_btn").attr('name'), value: $("#add_new_similar_course_btn").attr('value') });
-                $("#add_new_similar_course_btn").text("Allocating...");
-                $("#add_new_similar_course_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addcourse_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        var z = data.split("+");
-                        //$('#deleteSimilarCourseModal').modal('hide');
-                        $("#add_new_similar_course_btn").text("Allocate");
-                        $("#add_new_similar_course_btn").attr("disabled",false);
-                        $(".faculty_div").html(z[1]);
-                        document.querySelector(".temporarydiv").style.display="none"
-                        $('.tempcid').val('');
-                        $('.tempyear').val('');
-                        $('.tempsem').val('');
-                        //$('#temp_allocated_faculty').val(z[0]);
-                        //$('#hiddenemailid').val("null");
-                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
-                    }
+                    $("#delete_course_btn").text("Deleting...");
+                    $("#delete_course_btn").attr("disabled", true);
+                    $.ajax({
+                        type: "POST",
+                        url: "ic_queries/addcourse_queries.php",
+                        data: form_serialize,
+                        success: function(data) {
+                            //    alert(data); // show response from the php script.
+                            $("#delete_course_btn").text("Deleted Successfully");
+                            var row = $("#update-del-modal").closest('tr');
+                            var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0));
+                            $('#update-del-modal').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            // row.remove();
+                            $("#dataTable-current").DataTable().row(aPos).remove().draw(false);
+                            // console.log(aPos);
+                            // console.log(row)
+                        }
                     });
-            });
+                });
+                $('#update_course_form').submit(function(e) {
+                    update_course_form_current(e);
+                    // $('#update-del-modal').modal('hide');
+                });
 
-            $('#deleteSimilarCourseModal').on('show.bs.modal', function (event) {
+                $('#add_new_similar_course_btn').click(function(e) {
+                    if (document.querySelector(".temporarydiv").style.display == "none")
+                        document.querySelector(".temporarydiv").style.display = "inline"
+                });
 
-              let oldyear = $(event.relatedTarget).data('oldyear')
-              $(this).find('.modal-body #oldyear').val(oldyear)
-              let oldcid = $(event.relatedTarget).data('oldcid') 
-              $(this).find('.modal-body #oldcid').val(oldcid)
-              let oldsem = $(event.relatedTarget).data('oldsem') 
-              $(this).find('.modal-body #oldsem').val(oldsem)
-
-              let newyear = $(event.relatedTarget).data('newyear') 
-              $(this).find('.modal-body #newyear').val(newyear)
-              let newcid = $(event.relatedTarget).data('newcid') 
-              $(this).find('.modal-body #newcid').val(newcid)
-              let newsem = $(event.relatedTarget).data('newsem') 
-              $(this).find('.modal-body #newsem').val(newsem)
-              
-
-              $('#newModalRemoveCourse').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#course_remove_btn").attr('name'), value: $("#course_remove_btn").attr('value') });
-                $("#course_remove_btn").text("Removing...");
-                $("#course_remove_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addcourse_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        var z = data.split("+");
-                        $('#deleteSimilarCourseModal').modal('hide');
-                        $("#course_remove_btn").text("Remove");
-                        $("#course_remove_btn").attr("disabled",false);
-                        $(".faculty_div").html(z[1]);
-                        //$('#temp_allocated_faculty').val(z[0]);
-                        //$('#hiddenemailid').val("null");
-                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
-                    }
+                $('#add_similar_course').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#add_new_similar_course_btn").attr('name'),
+                        value: $("#add_new_similar_course_btn").attr('value')
                     });
-            });
+                    $("#add_new_similar_course_btn").text("Allocating...");
+                    $("#add_new_similar_course_btn").attr("disabled", true);
+                    $.ajax({
+                        type: "POST",
+                        url: "ic_queries/addcourse_queries.php",
+                        data: form_serialize,
+                        success: function(data) {
+                            var z = data.split("+");
+                            //$('#deleteSimilarCourseModal').modal('hide');
+                            $("#add_new_similar_course_btn").text("Allocate");
+                            $("#add_new_similar_course_btn").attr("disabled", false);
+                            $(".faculty_div").html(z[1]);
+                            document.querySelector(".temporarydiv").style.display = "none"
+                            $('.tempcid').val('');
+                            $('.tempyear').val('');
+                            $('.tempsem').val('');
+                            //$('#temp_allocated_faculty').val(z[0]);
+                            //$('#hiddenemailid').val("null");
+                            //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
 
-            });
-        }
-    });
-}
-function update_course_form_current(e){
-    e.preventDefault();
-    var form = $('#update_course_form');
-    var form_serialize=form.serializeArray();// serializes the form's elements.
-    // console.log(form_serialize)
-    form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
-    $("#update_course_btn").text("Updating...");
-    $("#update_course_btn").attr("disabled",true);
-    $.ajax({
-    type: "POST",
-    url: "ic_queries/addcourse_queries.php",
-    data: form_serialize, 
-    success: function(data)
-    {
-        // alert(data); // show response from the php script.
-        if(data === "Exists_cid"){
-            $('#error_cid').text('*This course already exists in this Semester');
-            // $('#error_sem').text('*This course already exists in this Semester');
-            $("#update_course_btn").text("Update");
-            $("#update_course_btn").attr("disabled", false);
-        }else if(data === "Max_error"){
-            $('#error_max').text('*Max value is less than Min');
-            $("#update_course_btn").text("Update");
-            $("#update_course_btn").attr("disabled", false);
-        }
-        else{
-            $("#update_course_btn").text("Updated Successfully");
-            var row=$("#update-del-modal").closest('tr');
-            var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0));
-            var temp = $("#dataTable-current").DataTable().row(aPos).data();
-            // console.log(temp)
-            console.log(form_serialize)
-            temp['cname'] = form_serialize[findByAttr(form_serialize,'name','coursename')].value;
-            temp['cid']=form_serialize[findByAttr(form_serialize,'name','courseidnew')].value;
-            temp['sem']=form_serialize[findByAttr(form_serialize,'name','semnew')].value;
-            // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
-            var x="";
-            var index;
-            var floatingDeptIndex=findByAttr(form_serialize,'name','floating_check_dept[]')
-            for(index of floatingDeptIndex){
-                x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
-                x = x.concat(", ");
+                        }
+                    });
+                });
+
+                $('#deleteSimilarCourseModal').on('show.bs.modal', function(event) {
+
+                    let oldyear = $(event.relatedTarget).data('oldyear')
+                    $(this).find('.modal-body #oldyear').val(oldyear)
+                    let oldcid = $(event.relatedTarget).data('oldcid')
+                    $(this).find('.modal-body #oldcid').val(oldcid)
+                    let oldsem = $(event.relatedTarget).data('oldsem')
+                    $(this).find('.modal-body #oldsem').val(oldsem)
+
+                    let newyear = $(event.relatedTarget).data('newyear')
+                    $(this).find('.modal-body #newyear').val(newyear)
+                    let newcid = $(event.relatedTarget).data('newcid')
+                    $(this).find('.modal-body #newcid').val(newcid)
+                    let newsem = $(event.relatedTarget).data('newsem')
+                    $(this).find('.modal-body #newsem').val(newsem)
+
+
+                    $('#newModalRemoveCourse').submit(function(e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var form_serialize = form.serializeArray(); // serializes the form's elements.
+                        form_serialize.push({
+                            name: $("#course_remove_btn").attr('name'),
+                            value: $("#course_remove_btn").attr('value')
+                        });
+                        $("#course_remove_btn").text("Removing...");
+                        $("#course_remove_btn").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "ic_queries/addcourse_queries.php",
+                            data: form_serialize,
+                            success: function(data) {
+                                var z = data.split("+");
+                                $('#deleteSimilarCourseModal').modal('hide');
+                                $("#course_remove_btn").text("Remove");
+                                $("#course_remove_btn").attr("disabled", false);
+                                $(".faculty_div").html(z[1]);
+                                //$('#temp_allocated_faculty').val(z[0]);
+                                //$('#hiddenemailid').val("null");
+                                //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                            }
+                        });
+                    });
+
+                });
             }
-            x = x.substr(0, x.length - 2);
-            temp['dept_name']=x;
-            x="";
-            var deptApplicableIndex=findByAttr(form_serialize,'name','check_dept[]')
-            for(index of deptApplicableIndex){
-                x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
-                x = x.concat(", ");
-            }
-            x = x.substr(0, x.length - 2);
-            temp['dept_applicable']=x;
-            temp['max']=form_serialize[findByAttr(form_serialize,'name','max')].value;
-            temp['min']=form_serialize[findByAttr(form_serialize,'name','min')].value;
-            console.log(temp)
-            $('#dataTable-current').dataTable().fnUpdate(temp,aPos,undefined,false);
-            $('.action-btn').off('click')
-            $('.action-btn').on('click',loadModalCurrent)
-            // $("#dataTable-current").DataTable().row(aPos).draw(false);
-            $(".selectrow_current").attr("disabled",true);
-            $('#error_cid').remove();
-            $('#error_max').remove();
-        }
+        });
     }
-    });
-}
-$("#dataTable-current").on('click','td.cname',function(){
-    var tr = $(this).closest('tr');
-        var row = $("#dataTable-current").DataTable().row( tr );
- 
+
+    function update_course_form_current(e) {
+        e.preventDefault();
+        var form = $('#update_course_form');
+        var form_serialize = form.serializeArray(); // serializes the form's elements.
+        // console.log(form_serialize)
+        form_serialize.push({
+            name: $("#update_course_btn").attr('name'),
+            value: $("#update_course_btn").attr('value')
+        });
+        $("#update_course_btn").text("Updating...");
+        $("#update_course_btn").attr("disabled", true);
+        $.ajax({
+            type: "POST",
+            url: "ic_queries/addcourse_queries.php",
+            data: form_serialize,
+            success: function(data) {
+                // alert(data); // show response from the php script.
+                if (data === "Exists_cid") {
+                    $('#error_cid').text('*This course already exists in this Semester');
+                    // $('#error_sem').text('*This course already exists in this Semester');
+                    $("#update_course_btn").text("Update");
+                    $("#update_course_btn").attr("disabled", false);
+                } else if (data === "Max_error") {
+                    $('#error_max').text('*Max value is less than Min');
+                    $("#update_course_btn").text("Update");
+                    $("#update_course_btn").attr("disabled", false);
+                } else {
+                    $("#update_course_btn").text("Updated Successfully");
+                    var row = $("#update-del-modal").closest('tr');
+                    var aPos = $("#dataTable-current").dataTable().fnGetPosition(row.get(0));
+                    var temp = $("#dataTable-current").DataTable().row(aPos).data();
+                    // console.log(temp)
+                    console.log(form_serialize)
+                    temp['cname'] = form_serialize[findByAttr(form_serialize, 'name', 'coursename')].value;
+                    temp['cid'] = form_serialize[findByAttr(form_serialize, 'name', 'courseidnew')].value;
+                    temp['sem'] = form_serialize[findByAttr(form_serialize, 'name', 'semnew')].value;
+                    // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
+                    var x = "";
+                    var index;
+                    var floatingDeptIndex = findByAttr(form_serialize, 'name', 'floating_check_dept[]')
+                    for (index of floatingDeptIndex) {
+                        x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+                        x = x.concat(", ");
+                    }
+                    x = x.substr(0, x.length - 2);
+                    temp['dept_name'] = x;
+                    x = "";
+                    var deptApplicableIndex = findByAttr(form_serialize, 'name', 'check_dept[]')
+                    for (index of deptApplicableIndex) {
+                        x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+                        x = x.concat(", ");
+                    }
+                    x = x.substr(0, x.length - 2);
+                    temp['dept_applicable'] = x;
+                    temp['max'] = form_serialize[findByAttr(form_serialize, 'name', 'max')].value;
+                    temp['min'] = form_serialize[findByAttr(form_serialize, 'name', 'min')].value;
+                    console.log(temp)
+                    $('#dataTable-current').dataTable().fnUpdate(temp, aPos, undefined, false);
+                    $('.action-btn').off('click')
+                    $('.action-btn').on('click', loadModalCurrent)
+                    // $("#dataTable-current").DataTable().row(aPos).draw(false);
+                    $(".selectrow_current").attr("disabled", true);
+                    $('#error_cid').remove();
+                    $('#error_max').remove();
+                }
+            }
+        });
+    }
+    $("#dataTable-current").on('click', 'td.cname', function() {
+        var tr = $(this).closest('tr');
+        var row = $("#dataTable-current").DataTable().row(tr);
+
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown table-warning');
-        }
-        else {
+        } else {
             // Open this row
-            var data={}
-            data['cid']=row.data()['cid'];
-            data['sem']=row.data()['sem'];
-            data['type']='current'
-            data_json=JSON.stringify(data)
+            var data = {}
+            data['cid'] = row.data()['cid'];
+            data['sem'] = row.data()['sem'];
+            data['type'] = 'current'
+            data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
                 type: "POST",
                 url: "loadAdditionalInfo/additional_info_audit_course.php",
-                data: data_json, 
-                success: function(response)
-                {
-                row.child(response).show();
-                tr.addClass('shown table-warning');
+                data: data_json,
+                success: function(response) {
+                    row.child(response).show();
+                    tr.addClass('shown table-warning');
                 }
             });
             // row.child("<b>Hello</b>").show();
         }
-})
-
-// ***********Upcoming course Section************
-$("#bulkUploadUpcoming").submit(function(e) {
-    e.preventDefault();  
-    form=this;  
-    var formData = new FormData(this);
-    $("#upload_upcoming").attr("disabled",true);
-    $("#upload_upcoming").text("Uploading...")
-    $.ajax({
-        url: "audit_course/bulkUpload/upcoming_audit_upload.php",
-        type: 'POST',
-        data: formData,
-        success: function (data) {
-            if($.trim(data)=="Successful"){
-                $("#upload_upcoming").text("Uploaded Successfully")
-                loadUpcoming();
-            }else{
-                $("#upload_upcoming").text("Upload Failed")
-                alert(data);
-            }
-            // form.reset();
-        },
-        cache: false,
-        contentType: false,
-        processData: false
-    });
-})
-$("#select_all_upcoming_page").click(function(e){
-            //   var row=$(this).closest('tr')
-    if($(this).is(":checked")){    
-        $("#dataTable-upcoming tbody tr").addClass("selected table-secondary");
-        $(".selectrow_upcoming").attr("checked",true);
-    }else{
-        $(".selectrow_upcoming").attr("checked",false);
-        $("#dataTable-upcoming tbody tr").removeClass("selected table-secondary");
-    }
-            //   row.toggleClass('selected table-secondary')
-})
-$("#delete_selected_upcoming_btn").click(function(e){
-    alert("You have selected "+$("#dataTable-upcoming tbody tr.selected").length+" record(s) for deletion");
-    var delete_rows=$("#dataTable-upcoming").DataTable().rows('.selected').data()
-    var delete_data={}
-    for(var i=0;i<delete_rows.length;i++){
-        baseData={}
-        baseData['cid']=delete_rows[i].cid
-        baseData['sem']=delete_rows[i].sem
-        baseData['year']=delete_rows[i].year
-        delete_data[i]=baseData
-        // console.log(baseData);
-    }
-    var actual_data={}
-    actual_data['type']='upcoming'
-    actual_data['delete_data']=delete_data
-    actual_delete_data_json=JSON.stringify(actual_data)
-    console.log(actual_delete_data_json)
-    $.ajax({
-        type: "POST",
-        url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
-        data: actual_delete_data_json, 
-        success: function(data)
-        {
-            // console.log(data)
-            $("#dataTable-upcoming").DataTable().draw(false);
-        }
     })
-})
-function loadUpcoming(){
-    // document.querySelector("#addCoursebtn").style.display="block"
-    $('#dataTable-upcoming').DataTable({
-      processing: true,
-      serverSide: true,
-      destroy:true,
-      serverMethod: 'post',
-      aaSorting:[],
-      ajax: {
-          'url':'audit_course/loadInfo/upcoming_audit.php',
-          "data": function(d) {
+
+    // ***********Upcoming course Section************
+    $("#bulkUploadUpcoming").submit(function(e) {
+        e.preventDefault();
+        form = this;
+        var formData = new FormData(this);
+        $("#upload_upcoming").attr("disabled", true);
+        $("#upload_upcoming").text("Uploading...")
+        $.ajax({
+            url: "audit_course/bulkUpload/upcoming_audit_upload.php",
+            type: 'POST',
+            data: formData,
+            success: function(data) {
+                if ($.trim(data) == "Successful") {
+                    $("#upload_upcoming").text("Uploaded Successfully")
+                    loadUpcoming();
+                } else {
+                    $("#upload_upcoming").text("Upload Failed")
+                    alert(data);
+                }
+                // form.reset();
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    })
+    $("#select_all_upcoming_page").click(function(e) {
+        //   var row=$(this).closest('tr')
+        if ($(this).is(":checked")) {
+            $("#dataTable-upcoming tbody tr").addClass("selected table-secondary");
+            $(".selectrow_upcoming").attr("checked", true);
+        } else {
+            $(".selectrow_upcoming").attr("checked", false);
+            $("#dataTable-upcoming tbody tr").removeClass("selected table-secondary");
+        }
+        //   row.toggleClass('selected table-secondary')
+    })
+    $("#delete_selected_upcoming_btn").click(function(e) {
+        alert("You have selected " + $("#dataTable-upcoming tbody tr.selected").length + " record(s) for deletion");
+        var delete_rows = $("#dataTable-upcoming").DataTable().rows('.selected').data()
+        var delete_data = {}
+        for (var i = 0; i < delete_rows.length; i++) {
+            baseData = {}
+            baseData['cid'] = delete_rows[i].cid
+            baseData['sem'] = delete_rows[i].sem
+            baseData['year'] = delete_rows[i].year
+            delete_data[i] = baseData
+            // console.log(baseData);
+        }
+        var actual_data = {}
+        actual_data['type'] = 'upcoming'
+        actual_data['delete_data'] = delete_data
+        actual_delete_data_json = JSON.stringify(actual_data)
+        console.log(actual_delete_data_json)
+        $.ajax({
+            type: "POST",
+            url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
+            data: actual_delete_data_json,
+            success: function(data) {
+                // console.log(data)
+                $("#dataTable-upcoming").DataTable().draw(false);
+            }
+        })
+    })
+
+    function loadUpcoming() {
+        // document.querySelector("#addCoursebtn").style.display="block"
+        $('#dataTable-upcoming').DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            serverMethod: 'post',
+            aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: "upcoming-audit-courses-data",
+                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: "upcoming-audit-courses-data",
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                },
+            }],
+            ajax: {
+                'url': 'audit_course/loadInfo/upcoming_audit.php',
+                "data": function(d) {
                     d.filters = getFilters();
                     return d
                 }
-      },
-      fnDrawCallback:function(){
-          $(".action-btn").on('click',loadModalUpcoming);
-          $(".allocate-btn").on('click',loadAllocateModalUpcoming);
-          $(".selectrow_upcoming").attr("disabled",true);
-          $("th").removeClass('selectbox_upcoming_td');
-          $(".selectbox_upcoming_td").click(function(e){
-              var row=$(this).closest('tr')
-              var checkbox = $(this).find('input');
-              checkbox.attr("checked", !checkbox.attr("checked"));
-              row.toggleClass('selected table-secondary')
-              if($("#dataTable-upcoming tbody tr.selected").length!=$("#dataTable-upcoming tbody tr").length){
-                $("#select_all_upcoming_page").prop("checked",true)
-                $("#select_all_upcoming_page").prop("checked",false)
-              }else{
-                $("#select_all_upcoming_page").prop("checked",false)
-                $("#select_all_upcoming_page").prop("checked",true)
-              }
-          })
+            },
+            fnDrawCallback: function() {
+                $(".action-btn").on('click', loadModalUpcoming);
+                $(".allocate-btn").on('click', loadAllocateModalUpcoming);
+                $(".selectrow_upcoming").attr("disabled", true);
+                $("th").removeClass('selectbox_upcoming_td');
+                $(".selectbox_upcoming_td").click(function(e) {
+                    var row = $(this).closest('tr')
+                    var checkbox = $(this).find('input');
+                    checkbox.attr("checked", !checkbox.attr("checked"));
+                    row.toggleClass('selected table-secondary')
+                    if ($("#dataTable-upcoming tbody tr.selected").length != $("#dataTable-upcoming tbody tr").length) {
+                        $("#select_all_upcoming_page").prop("checked", true)
+                        $("#select_all_upcoming_page").prop("checked", false)
+                    } else {
+                        $("#select_all_upcoming_page").prop("checked", false)
+                        $("#select_all_upcoming_page").prop("checked", true)
+                    }
+                })
 
-      },
-      columns: [
-         { data: 'select-cbox'},
-         { data: 'cname' },
-         { data: 'cid' },
-         { data: 'sem' },
-         { data: 'year' },
-         { data: 'dept_name' },
-         { data: 'dept_applicable' },
-         { data: 'max' },
-         { data: 'min' },
-         { data: 'allocate_faculty' },
-         { data: 'action' },
-      ],
-      columnDefs: [ {
-        targets: [0,6,9,10], // column index (start from 0)
-        orderable: false, // set orderable false for selected columns
-     },
-     {className:"selectbox_upcoming_td",targets:[0]},
-     { className: "cname", "targets": [ 1 ] },
-     ]
-   });
-}
+            },
+            columns: [{
+                    data: 'select-cbox'
+                },
+                {
+                    data: 'cname'
+                },
+                {
+                    data: 'cid'
+                },
+                {
+                    data: 'sem'
+                },
+                {
+                    data: 'year'
+                },
+                {
+                    data: 'dept_name'
+                },
+                {
+                    data: 'dept_applicable'
+                },
+                {
+                    data: 'max'
+                },
+                {
+                    data: 'min'
+                },
+                {
+                    data: 'allocate_faculty'
+                },
+                {
+                    data: 'action'
+                },
+            ],
+            columnDefs: [{
+                    targets: [0, 6, 9, 10], // column index (start from 0)
+                    orderable: false, // set orderable false for selected columns
+                },
+                {
+                    className: "selectbox_upcoming_td",
+                    targets: [0]
+                },
+                {
+                    className: "cname",
+                    "targets": [1]
+                },
+            ]
+        });
+    }
 
-function loadAllocateModalUpcoming(){
-    var target_row = $(this).closest("tr"); // this line did the trick
+    function loadAllocateModalUpcoming() {
+        var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
-    // var btn=$(this);
-    var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(target_row.get(0)); 
-    var courseData=$('#dataTable-upcoming').DataTable().row(aPos).data()
-    // delete courseData.action
-    // delete courseData.allocate_faculty
-    var json_courseData=JSON.stringify(courseData)
-    // console.log(json_courseData)
-    $.ajax({
-        type: "POST",
-        url: "audit_course/loadModal/upcoming_audit_allocate_modal.php",
-        // data: form_serialize, 
-        // dataType: "json",
-        data: json_courseData,
-        success: function(output)
-        {
-            // $("#"+x).text("Deleted Successfully");
-            target_row.append(output);
-            $('#deleteFacultyModal').on('shown.bs.modal', function (e) {
-              // $("#allocate-modal").css({ backdrop-filter: none });
-            })
+        // var btn=$(this);
+        var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(target_row.get(0));
+        var courseData = $('#dataTable-upcoming').DataTable().row(aPos).data()
+        // delete courseData.action
+        // delete courseData.allocate_faculty
+        var json_courseData = JSON.stringify(courseData)
+        // console.log(json_courseData)
+        $.ajax({
+            type: "POST",
+            url: "audit_course/loadModal/upcoming_audit_allocate_modal.php",
+            // data: form_serialize, 
+            // dataType: "json",
+            data: json_courseData,
+            success: function(output) {
+                // $("#"+x).text("Deleted Successfully");
+                target_row.append(output);
+                $('#deleteFacultyModal').on('shown.bs.modal', function(e) {
+                    // $("#allocate-modal").css({ backdrop-filter: none });
+                })
 
-            //when modal closes
-            $('#deleteFacultyModal').on('hidden.bs.modal', function (e) {
-              // $("#allocate-modal").css({ opacity: 1 });
-            })
+                //when modal closes
+                $('#deleteFacultyModal').on('hidden.bs.modal', function(e) {
+                    // $("#allocate-modal").css({ opacity: 1 });
+                })
 
-            $('#allocate-modal').modal('show')
-                $(document).on('hidden.bs.modal', '#allocate-modal', function () {
-                    $("#allocate-modal").remove(); 
+                $('#allocate-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#allocate-modal', function() {
+                    $("#allocate-modal").remove();
                     $("#deleteFacultyModal").remove();
                 });
 
-            $('#allocate_faculty_audit').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#allocate_faculty_audit_btn").attr('name'), value: $("#allocate_faculty_audit_btn").attr('value') });
-                if(form_serialize[3].value != null) {
-                    $("#allocate_faculty_audit_btn").text("Allocating...");
-                    $("#allocate_faculty_audit_btn").attr("disabled",true);
-                    $.ajax({
-                        type: "POST",
-                        url: "ic_queries/allocate_faculty_queries.php",
-                        data: form_serialize, 
-                        success: function(data)
-                        {
-                            var z = data.split("+");
-                            $("#allocate_faculty_audit_btn").text("Allocated Successfully");
-                            $("#allocate_faculty_audit_btn").text("Allocate");
-                            $("#allocate_faculty_audit_btn").attr("disabled",false);
-                            $(".faculty_div").html(z[1]);
-                            $('#temp_allocated_faculty').val(z[0]);
-                            $('#hiddenemailid').val("null");
-                            $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+                $('#allocate_faculty_audit').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#allocate_faculty_audit_btn").attr('name'),
+                        value: $("#allocate_faculty_audit_btn").attr('value')
+                    });
+                    if (form_serialize[3].value != null) {
+                        $("#allocate_faculty_audit_btn").text("Allocating...");
+                        $("#allocate_faculty_audit_btn").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "ic_queries/allocate_faculty_queries.php",
+                            data: form_serialize,
+                            success: function(data) {
+                                var z = data.split("+");
+                                $("#allocate_faculty_audit_btn").text("Allocated Successfully");
+                                $("#allocate_faculty_audit_btn").text("Allocate");
+                                $("#allocate_faculty_audit_btn").attr("disabled", false);
+                                $(".faculty_div").html(z[1]);
+                                $('#temp_allocated_faculty').val(z[0]);
+                                $('#hiddenemailid').val("null");
+                                $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
 
-                        }
+                            }
                         });
-                }
-            });
-
-            $('#deleteFacultyModal').on('show.bs.modal', function (event) {
-              let email_id = $(event.relatedTarget).data('email_id') 
-              $(this).find('.modal-body #email_id').val(email_id)
-              let cid = $(event.relatedTarget).data('cid') 
-              $(this).find('.modal-body #cid').val(cid)
-              let sem = $(event.relatedTarget).data('sem') 
-              $(this).find('.modal-body #sem').val(sem)
-              let year = $(event.relatedTarget).data('year') 
-              $(this).find('.modal-body #year').val(year)
-
-              $('#newModalUnallocate').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#faculty_unallocate_btn").attr('name'), value: $("#faculty_unallocate_btn").attr('value') });
-                $("#faculty_unallocate_btn").text("Deleting...");
-                $("#faculty_unallocate_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/allocate_faculty_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        var z = data.split("+");
-                        $('#deleteFacultyModal').modal('hide');
-                        $("#faculty_unallocate_btn").text("Delete");
-                        $("#faculty_unallocate_btn").attr("disabled",false);
-                        $(".faculty_div").html(z[1]);
-                        $('#temp_allocated_faculty').val(z[0]);
-                        $('#hiddenemailid').val("null");
-                        $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
                     }
+                });
+
+                $('#deleteFacultyModal').on('show.bs.modal', function(event) {
+                    let email_id = $(event.relatedTarget).data('email_id')
+                    $(this).find('.modal-body #email_id').val(email_id)
+                    let cid = $(event.relatedTarget).data('cid')
+                    $(this).find('.modal-body #cid').val(cid)
+                    let sem = $(event.relatedTarget).data('sem')
+                    $(this).find('.modal-body #sem').val(sem)
+                    let year = $(event.relatedTarget).data('year')
+                    $(this).find('.modal-body #year').val(year)
+
+                    $('#newModalUnallocate').submit(function(e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var form_serialize = form.serializeArray(); // serializes the form's elements.
+                        form_serialize.push({
+                            name: $("#faculty_unallocate_btn").attr('name'),
+                            value: $("#faculty_unallocate_btn").attr('value')
+                        });
+                        $("#faculty_unallocate_btn").text("Deleting...");
+                        $("#faculty_unallocate_btn").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "ic_queries/allocate_faculty_queries.php",
+                            data: form_serialize,
+                            success: function(data) {
+                                var z = data.split("+");
+                                $('#deleteFacultyModal').modal('hide');
+                                $("#faculty_unallocate_btn").text("Delete");
+                                $("#faculty_unallocate_btn").attr("disabled", false);
+                                $(".faculty_div").html(z[1]);
+                                $('#temp_allocated_faculty').val(z[0]);
+                                $('#hiddenemailid').val("null");
+                                $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                            }
+                        });
                     });
-            });
 
-            });
+                });
 
-            $('.showtext').click(function(e) {
-                if(document.querySelector("#show").style.display=="none")
-                    document.querySelector("#show").style.display="inline"
-                else
-                    document.querySelector("#show").style.display="none"
-            });
-            $('#search_text').keyup(function() {
-                var txt = $(this).val();
-                var txt2 = $('#temp_allocated_faculty').val();
-                if(txt == '') {
-                    $('#result').html('');
-                } else {
-                    $('#result').html('');
-                    $.ajax({
-                        url: "audit_course/loadModal/fetch_faculties.php",
-                        method: "post",
-                        data: {search:txt, allocated:txt2},
-                        dataType: "text",
-                        success: function(data) {
-                            $('#result').html(data);
-                            $('.option-selected').click(function(e) {
-                                var x = $(this).val();
-                                var y = $(this).prev();
-                                $('#hiddenemailid').val(y.val());
-                                $('.showtext').html(x.concat(' <i class="fa fa-caret-down"></i>'));
-                                document.querySelector("#show").style.display="none";
-                                $('#search_text').val("");
-                                $('#result').html('');
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
-}
+                $('.showtext').click(function(e) {
+                    if (document.querySelector("#show").style.display == "none")
+                        document.querySelector("#show").style.display = "inline"
+                    else
+                        document.querySelector("#show").style.display = "none"
+                });
+                $('#search_text').keyup(function() {
+                    var txt = $(this).val();
+                    var txt2 = $('#temp_allocated_faculty').val();
+                    if (txt == '') {
+                        $('#result').html('');
+                    } else {
+                        $('#result').html('');
+                        $.ajax({
+                            url: "audit_course/loadModal/fetch_faculties.php",
+                            method: "post",
+                            data: {
+                                search: txt,
+                                allocated: txt2
+                            },
+                            dataType: "text",
+                            success: function(data) {
+                                $('#result').html(data);
+                                $('.option-selected').click(function(e) {
+                                    var x = $(this).val();
+                                    var y = $(this).prev();
+                                    $('#hiddenemailid').val(y.val());
+                                    $('.showtext').html(x.concat(' <i class="fa fa-caret-down"></i>'));
+                                    document.querySelector("#show").style.display = "none";
+                                    $('#search_text').val("");
+                                    $('#result').html('');
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 
-function loadModalUpcoming(){
-    var target_row = $(this).closest("tr"); // this line did the trick
+    function loadModalUpcoming() {
+        var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
-    // var btn=$(this);
-    var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(target_row.get(0)); 
-    var courseData=$('#dataTable-upcoming').DataTable().row(aPos).data()
-    // delete courseData.action
-    // delete courseData.allocate_faculty
-    var json_courseData=JSON.stringify(courseData)
-    // console.log(json_courseData)
-    $.ajax({
-        type: "POST",
-        url: "audit_course/loadModal/upcoming_audit_modal.php",
-        // data: form_serialize, 
-        // dataType: "json",
-        data: json_courseData,
-        success: function(output)
-        {
-            // $("#"+x).text("Deleted Successfully");
-            target_row.append(output);
-            $('#update-del-modal').modal('show')
-                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
-                    $("#update-del-modal").remove(); 
+        // var btn=$(this);
+        var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(target_row.get(0));
+        var courseData = $('#dataTable-upcoming').DataTable().row(aPos).data()
+        // delete courseData.action
+        // delete courseData.allocate_faculty
+        var json_courseData = JSON.stringify(courseData)
+        // console.log(json_courseData)
+        $.ajax({
+            type: "POST",
+            url: "audit_course/loadModal/upcoming_audit_modal.php",
+            // data: form_serialize, 
+            // dataType: "json",
+            data: json_courseData,
+            success: function(output) {
+                // $("#"+x).text("Deleted Successfully");
+                target_row.append(output);
+                $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function() {
+                    $("#update-del-modal").remove();
                     $("#deleteSimilarCourseModal").remove();
                 });
-            $('#delete_course_form').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
-                $("#delete_course_btn").text("Deleting...");
-                $("#delete_course_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addcourse_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        //    alert(data); // show response from the php script.
-                        $("#delete_course_btn").text("Deleted Successfully");
-                        var row=$("#update-del-modal").closest('tr');
-                        var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(row.get(0)); 
-                        $('#update-del-modal').modal('hide');
-                        $('body').removeClass('modal-open');
-                        $('.modal-backdrop').remove();
-                        // row.remove();
-                        $("#dataTable-upcoming").DataTable().row(aPos).remove().draw(false);
-                        // console.log(aPos);
-                        // console.log(row)
-                    }
+                $('#delete_course_form').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#delete_course_btn").attr('name'),
+                        value: $("#delete_course_btn").attr('value')
                     });
-            });
-            $('#update_course_form').submit(function(e){
-                update_course_form_upcoming(e);
-                // $('#update-del-modal').modal('hide');
+                    $("#delete_course_btn").text("Deleting...");
+                    $("#delete_course_btn").attr("disabled", true);
+                    $.ajax({
+                        type: "POST",
+                        url: "ic_queries/addcourse_queries.php",
+                        data: form_serialize,
+                        success: function(data) {
+                            //    alert(data); // show response from the php script.
+                            $("#delete_course_btn").text("Deleted Successfully");
+                            var row = $("#update-del-modal").closest('tr');
+                            var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(row.get(0));
+                            $('#update-del-modal').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            // row.remove();
+                            $("#dataTable-upcoming").DataTable().row(aPos).remove().draw(false);
+                            // console.log(aPos);
+                            // console.log(row)
+                        }
+                    });
+                });
+                $('#update_course_form').submit(function(e) {
+                    update_course_form_upcoming(e);
+                    // $('#update-del-modal').modal('hide');
                 });
 
-            $('#add_new_similar_course_btn').click(function(e) {
-                if(document.querySelector(".temporarydiv").style.display=="none")
-                    document.querySelector(".temporarydiv").style.display="inline"
-            });
+                $('#add_new_similar_course_btn').click(function(e) {
+                    if (document.querySelector(".temporarydiv").style.display == "none")
+                        document.querySelector(".temporarydiv").style.display = "inline"
+                });
 
-            $('#add_similar_course').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#add_new_similar_course_btn").attr('name'), value: $("#add_new_similar_course_btn").attr('value') });
-                $("#add_new_similar_course_btn").text("Allocating...");
-                $("#add_new_similar_course_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addcourse_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        var z = data.split("+");
-                        //$('#deleteSimilarCourseModal').modal('hide');
-                        $("#add_new_similar_course_btn").text("Allocate");
-                        $("#add_new_similar_course_btn").attr("disabled",false);
-                        $(".faculty_div").html(z[1]);
-                        document.querySelector(".temporarydiv").style.display="none"
-                        $('.tempcid').val('');
-                        $('.tempyear').val('');
-                        $('.tempsem').val('');
-                        //$('#temp_allocated_faculty').val(z[0]);
-                        //$('#hiddenemailid').val("null");
-                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
-                    }
+                $('#add_similar_course').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#add_new_similar_course_btn").attr('name'),
+                        value: $("#add_new_similar_course_btn").attr('value')
                     });
-            });
+                    $("#add_new_similar_course_btn").text("Allocating...");
+                    $("#add_new_similar_course_btn").attr("disabled", true);
+                    $.ajax({
+                        type: "POST",
+                        url: "ic_queries/addcourse_queries.php",
+                        data: form_serialize,
+                        success: function(data) {
+                            var z = data.split("+");
+                            //$('#deleteSimilarCourseModal').modal('hide');
+                            $("#add_new_similar_course_btn").text("Allocate");
+                            $("#add_new_similar_course_btn").attr("disabled", false);
+                            $(".faculty_div").html(z[1]);
+                            document.querySelector(".temporarydiv").style.display = "none"
+                            $('.tempcid').val('');
+                            $('.tempyear').val('');
+                            $('.tempsem').val('');
+                            //$('#temp_allocated_faculty').val(z[0]);
+                            //$('#hiddenemailid').val("null");
+                            //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
 
-            $('#deleteSimilarCourseModal').on('show.bs.modal', function (event) {
-
-              let oldyear = $(event.relatedTarget).data('oldyear')
-              $(this).find('.modal-body #oldyear').val(oldyear)
-              let oldcid = $(event.relatedTarget).data('oldcid') 
-              $(this).find('.modal-body #oldcid').val(oldcid)
-              let oldsem = $(event.relatedTarget).data('oldsem') 
-              $(this).find('.modal-body #oldsem').val(oldsem)
-
-              let newyear = $(event.relatedTarget).data('newyear') 
-              $(this).find('.modal-body #newyear').val(newyear)
-              let newcid = $(event.relatedTarget).data('newcid') 
-              $(this).find('.modal-body #newcid').val(newcid)
-              let newsem = $(event.relatedTarget).data('newsem') 
-              $(this).find('.modal-body #newsem').val(newsem)
-              
-
-              $('#newModalRemoveCourse').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#course_remove_btn").attr('name'), value: $("#course_remove_btn").attr('value') });
-                $("#course_remove_btn").text("Removing...");
-                $("#course_remove_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addcourse_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        var z = data.split("+");
-                        $('#deleteSimilarCourseModal').modal('hide');
-                        $("#course_remove_btn").text("Remove");
-                        $("#course_remove_btn").attr("disabled",false);
-                        $(".faculty_div").html(z[1]);
-                        //$('#temp_allocated_faculty').val(z[0]);
-                        //$('#hiddenemailid').val("null");
-                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
-                    }
+                        }
                     });
-            });
+                });
 
-            });
-        }
-    });
-}
+                $('#deleteSimilarCourseModal').on('show.bs.modal', function(event) {
 
-function update_course_form_upcoming(e){
-    e.preventDefault();
-    var form = $('#update_course_form');
-    var form_serialize=form.serializeArray();// serializes the form's elements.
-    // console.log(form_serialize)
-    form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
-    $("#update_course_btn").text("Updating...");
-    $("#update_course_btn").attr("disabled",true);
-    $.ajax({
-    type: "POST",
-    url: "ic_queries/addcourse_queries.php",
-    data: form_serialize, 
-    success: function(data)
-    {
-        //    alert(data); // show response from the php script.
-        if(data === "Exists_cid"){
-            $('#error_cid_upcoming').text('*This course already exists in this Semester');
-            // $('#error_sem').text('*This course already exists in this Semester');
-            $("#update_course_btn").text("Update");
-            $("#update_course_btn").attr("disabled", false);
-        }else if(data === "Max_error"){
-            $('#error_max_upcoming').text('*Max value is less than Min');
-            $("#update_course_btn").text("Update");
-            $("#update_course_btn").attr("disabled", false);
-        }else{
-            $("#update_course_btn").text("Updated Successfully");
-            var row=$("#update-del-modal").closest('tr');
-            var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(row.get(0));
-            var temp = $("#dataTable-upcoming").DataTable().row(aPos).data();
-            // console.log(temp)
-            console.log(form_serialize)
-            temp['cname'] = form_serialize[findByAttr(form_serialize,'name','coursename')].value;
-            temp['cid']=form_serialize[findByAttr(form_serialize,'name','courseidnew')].value;
-            temp['sem']=form_serialize[findByAttr(form_serialize,'name','semnew')].value;
-            temp['year']=form_serialize[findByAttr(form_serialize,'name','year')].value;
-            // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
-            var x="";
-            var index;
-            var floatingDeptIndex=findByAttr(form_serialize,'name','floating_check_dept[]')
-            for(index of floatingDeptIndex){
-                x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
-                x = x.concat(", ");
+                    let oldyear = $(event.relatedTarget).data('oldyear')
+                    $(this).find('.modal-body #oldyear').val(oldyear)
+                    let oldcid = $(event.relatedTarget).data('oldcid')
+                    $(this).find('.modal-body #oldcid').val(oldcid)
+                    let oldsem = $(event.relatedTarget).data('oldsem')
+                    $(this).find('.modal-body #oldsem').val(oldsem)
+
+                    let newyear = $(event.relatedTarget).data('newyear')
+                    $(this).find('.modal-body #newyear').val(newyear)
+                    let newcid = $(event.relatedTarget).data('newcid')
+                    $(this).find('.modal-body #newcid').val(newcid)
+                    let newsem = $(event.relatedTarget).data('newsem')
+                    $(this).find('.modal-body #newsem').val(newsem)
+
+
+                    $('#newModalRemoveCourse').submit(function(e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var form_serialize = form.serializeArray(); // serializes the form's elements.
+                        form_serialize.push({
+                            name: $("#course_remove_btn").attr('name'),
+                            value: $("#course_remove_btn").attr('value')
+                        });
+                        $("#course_remove_btn").text("Removing...");
+                        $("#course_remove_btn").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "ic_queries/addcourse_queries.php",
+                            data: form_serialize,
+                            success: function(data) {
+                                var z = data.split("+");
+                                $('#deleteSimilarCourseModal').modal('hide');
+                                $("#course_remove_btn").text("Remove");
+                                $("#course_remove_btn").attr("disabled", false);
+                                $(".faculty_div").html(z[1]);
+                                //$('#temp_allocated_faculty').val(z[0]);
+                                //$('#hiddenemailid').val("null");
+                                //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                            }
+                        });
+                    });
+
+                });
             }
-            x = x.substr(0, x.length - 2);
-            temp['dept_name']=x;
-            x="";
-            var deptApplicableIndex=findByAttr(form_serialize,'name','check_dept[]')
-            for(index of deptApplicableIndex){
-                x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
-                x = x.concat(", ");
-            }
-            x = x.substr(0, x.length - 2);
-            temp['dept_applicable']=x;
-            temp['max']=form_serialize[findByAttr(form_serialize,'name','max')].value;
-            temp['min']=form_serialize[findByAttr(form_serialize,'name','min')].value;
-            console.log(temp)
-            $('#dataTable-upcoming').dataTable().fnUpdate(temp,aPos,undefined,false);
-            $('.action-btn').off('click')
-            $('.action-btn').on('click',loadModalUpcoming)
-            $(".selectrow_upcoming").attr("disabled",true);
-            $('#error_cid_upcoming').remove();
-            $('#error_max_upcoming').remove();
-            // $("#dataTable-current").DataTable().row(aPos).draw(false);
-        }
+        });
     }
-    });
-}
-$("#dataTable-upcoming").on('click','td.cname',function(){
-    var tr = $(this).closest('tr');
-        var row = $("#dataTable-upcoming").DataTable().row( tr );
- 
+
+    function update_course_form_upcoming(e) {
+        e.preventDefault();
+        var form = $('#update_course_form');
+        var form_serialize = form.serializeArray(); // serializes the form's elements.
+        // console.log(form_serialize)
+        form_serialize.push({
+            name: $("#update_course_btn").attr('name'),
+            value: $("#update_course_btn").attr('value')
+        });
+        $("#update_course_btn").text("Updating...");
+        $("#update_course_btn").attr("disabled", true);
+        $.ajax({
+            type: "POST",
+            url: "ic_queries/addcourse_queries.php",
+            data: form_serialize,
+            success: function(data) {
+                //    alert(data); // show response from the php script.
+                if (data === "Exists_cid") {
+                    $('#error_cid_upcoming').text('*This course already exists in this Semester');
+                    // $('#error_sem').text('*This course already exists in this Semester');
+                    $("#update_course_btn").text("Update");
+                    $("#update_course_btn").attr("disabled", false);
+                } else if (data === "Max_error") {
+                    $('#error_max_upcoming').text('*Max value is less than Min');
+                    $("#update_course_btn").text("Update");
+                    $("#update_course_btn").attr("disabled", false);
+                } else {
+                    $("#update_course_btn").text("Updated Successfully");
+                    var row = $("#update-del-modal").closest('tr');
+                    var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(row.get(0));
+                    var temp = $("#dataTable-upcoming").DataTable().row(aPos).data();
+                    // console.log(temp)
+                    console.log(form_serialize)
+                    temp['cname'] = form_serialize[findByAttr(form_serialize, 'name', 'coursename')].value;
+                    temp['cid'] = form_serialize[findByAttr(form_serialize, 'name', 'courseidnew')].value;
+                    temp['sem'] = form_serialize[findByAttr(form_serialize, 'name', 'semnew')].value;
+                    temp['year'] = form_serialize[findByAttr(form_serialize, 'name', 'year')].value;
+                    // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
+                    var x = "";
+                    var index;
+                    var floatingDeptIndex = findByAttr(form_serialize, 'name', 'floating_check_dept[]')
+                    for (index of floatingDeptIndex) {
+                        x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+                        x = x.concat(", ");
+                    }
+                    x = x.substr(0, x.length - 2);
+                    temp['dept_name'] = x;
+                    x = "";
+                    var deptApplicableIndex = findByAttr(form_serialize, 'name', 'check_dept[]')
+                    for (index of deptApplicableIndex) {
+                        x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+                        x = x.concat(", ");
+                    }
+                    x = x.substr(0, x.length - 2);
+                    temp['dept_applicable'] = x;
+                    temp['max'] = form_serialize[findByAttr(form_serialize, 'name', 'max')].value;
+                    temp['min'] = form_serialize[findByAttr(form_serialize, 'name', 'min')].value;
+                    console.log(temp)
+                    $('#dataTable-upcoming').dataTable().fnUpdate(temp, aPos, undefined, false);
+                    $('.action-btn').off('click')
+                    $('.action-btn').on('click', loadModalUpcoming)
+                    $(".selectrow_upcoming").attr("disabled", true);
+                    $('#error_cid_upcoming').remove();
+                    $('#error_max_upcoming').remove();
+                    // $("#dataTable-current").DataTable().row(aPos).draw(false);
+                }
+            }
+        });
+    }
+    $("#dataTable-upcoming").on('click', 'td.cname', function() {
+        var tr = $(this).closest('tr');
+        var row = $("#dataTable-upcoming").DataTable().row(tr);
+
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown table-warning');
-        }
-        else {
+        } else {
             // Open this row
-            var data={}
-            data['cid']=row.data()['cid'];
-            data['sem']=row.data()['sem'];
-            data['year']=row.data()['year'];
-            data['type']='upcoming'
-            data_json=JSON.stringify(data)
+            var data = {}
+            data['cid'] = row.data()['cid'];
+            data['sem'] = row.data()['sem'];
+            data['year'] = row.data()['year'];
+            data['type'] = 'upcoming'
+            data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
                 type: "POST",
                 url: "loadAdditionalInfo/additional_info_audit_course.php",
-                data: data_json, 
-                success: function(response)
-                {
-                row.child(response).show();
-                tr.addClass('shown table-warning');
+                data: data_json,
+                success: function(response) {
+                    row.child(response).show();
+                    tr.addClass('shown table-warning');
                 }
             });
             // row.child("<b>Hello</b>").show();
         }
-})
-
-// ***************Previous Course Section**************
-$("#bulkUploadPrevious").submit(function(e) {
-    e.preventDefault();  
-    form=this;  
-    var formData = new FormData(this);
-    $("#upload_previous").attr("disabled",true);
-    $("#upload_previous").text("Uploading...")
-    $.ajax({
-        url: "audit_course/bulkUpload/previous_audit_upload.php",
-        type: 'POST',
-        data: formData,
-        success: function (data) {
-            if($.trim(data)=="Successful"){
-                $("#upload_previous").text("Uploaded Successfully")
-                loadPrevious();
-            }else{
-                $("#upload_previous").text("Upload Failed")
-                alert(data);
-            }
-            // form.reset();
-        },
-        cache: false,
-        contentType: false,
-        processData: false
-    });
-})
-$("#select_all_previous_page").click(function(e){
-            //   var row=$(this).closest('tr')
-    if($(this).is(":checked")){    
-        $("#dataTable-previous tbody tr").addClass("selected table-secondary");
-        $(".selectrow_previous").attr("checked",true);
-    }else{
-        $(".selectrow_previous").attr("checked",false);
-        $("#dataTable-previous tbody tr").removeClass("selected table-secondary");
-    }
-            //   row.toggleClass('selected table-secondary')
-})
-$("#delete_selected_previous_btn").click(function(e){
-    alert("You have selected "+$("#dataTable-previous tbody tr.selected").length+" record(s) for deletion");
-    var delete_rows=$("#dataTable-previous").DataTable().rows('.selected').data()
-    var delete_data={}
-    for(var i=0;i<delete_rows.length;i++){
-        baseData={}
-        baseData['cid']=delete_rows[i].cid
-        baseData['sem']=delete_rows[i].sem
-        baseData['year']=delete_rows[i].year
-        delete_data[i]=baseData
-        // console.log(baseData);
-    }
-    var actual_data={}
-    actual_data['type']='previous'
-    actual_data['delete_data']=delete_data
-    actual_delete_data_json=JSON.stringify(actual_data)
-    console.log(actual_delete_data_json)
-    $.ajax({
-        type: "POST",
-        url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
-        data: actual_delete_data_json, 
-        success: function(data)
-        {
-            // console.log(data)
-            $("#dataTable-previous").DataTable().draw(false);
-        }
     })
-})
-function loadPrevious(){
-    // document.querySelector("#addCoursebtn").style.display="none"
-    $('#dataTable-previous').DataTable({
-      processing: true,
-      serverSide: true,
-      destroy:true,
-      serverMethod: 'post',
-      aaSorting:[],
-      ajax: {
-          'url':'audit_course/loadInfo/previous_audit.php',
-          "data": function(d) {
+
+    // ***************Previous Course Section**************
+    $("#bulkUploadPrevious").submit(function(e) {
+        e.preventDefault();
+        form = this;
+        var formData = new FormData(this);
+        $("#upload_previous").attr("disabled", true);
+        $("#upload_previous").text("Uploading...")
+        $.ajax({
+            url: "audit_course/bulkUpload/previous_audit_upload.php",
+            type: 'POST',
+            data: formData,
+            success: function(data) {
+                if ($.trim(data) == "Successful") {
+                    $("#upload_previous").text("Uploaded Successfully")
+                    loadPrevious();
+                } else {
+                    $("#upload_previous").text("Upload Failed")
+                    alert(data);
+                }
+                // form.reset();
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    })
+    $("#select_all_previous_page").click(function(e) {
+        //   var row=$(this).closest('tr')
+        if ($(this).is(":checked")) {
+            $("#dataTable-previous tbody tr").addClass("selected table-secondary");
+            $(".selectrow_previous").attr("checked", true);
+        } else {
+            $(".selectrow_previous").attr("checked", false);
+            $("#dataTable-previous tbody tr").removeClass("selected table-secondary");
+        }
+        //   row.toggleClass('selected table-secondary')
+    })
+    $("#delete_selected_previous_btn").click(function(e) {
+        alert("You have selected " + $("#dataTable-previous tbody tr.selected").length + " record(s) for deletion");
+        var delete_rows = $("#dataTable-previous").DataTable().rows('.selected').data()
+        var delete_data = {}
+        for (var i = 0; i < delete_rows.length; i++) {
+            baseData = {}
+            baseData['cid'] = delete_rows[i].cid
+            baseData['sem'] = delete_rows[i].sem
+            baseData['year'] = delete_rows[i].year
+            delete_data[i] = baseData
+            // console.log(baseData);
+        }
+        var actual_data = {}
+        actual_data['type'] = 'previous'
+        actual_data['delete_data'] = delete_data
+        actual_delete_data_json = JSON.stringify(actual_data)
+        console.log(actual_delete_data_json)
+        $.ajax({
+            type: "POST",
+            url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
+            data: actual_delete_data_json,
+            success: function(data) {
+                // console.log(data)
+                $("#dataTable-previous").DataTable().draw(false);
+            }
+        })
+    })
+
+    function loadPrevious() {
+        // document.querySelector("#addCoursebtn").style.display="none"
+        $('#dataTable-previous').DataTable({
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            serverMethod: 'post',
+            aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: "previous-audit-courses-data",
+                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: "previous-audit-courses-data",
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                },
+            }],
+            ajax: {
+                'url': 'audit_course/loadInfo/previous_audit.php',
+                "data": function(d) {
                     d.filters = getFilters();
                     return d
                 }
-      },
-      fnDrawCallback:function(){
-          $(".action-btn").on('click',loadModalPrevious);
-          $(".allocate-btn").on('click',loadAllocateModalPrevious);
-          $(".selectrow_previous").attr("disabled",true);
-          $("th").removeClass('selectbox_previous_td');
-          $(".selectbox_previous_td").click(function(e){
-              var row=$(this).closest('tr')
-              var checkbox = $(this).find('input');
-              checkbox.attr("checked", !checkbox.attr("checked"));
-              row.toggleClass('selected table-secondary')
-              if($("#dataTable-previous tbody tr.selected").length!=$("#dataTable-previous tbody tr").length){
-                $("#select_all_previous_page").prop("checked",true)
-                $("#select_all_previous_page").prop("checked",false)
-              }else{
-                $("#select_all_previous_page").prop("checked",false)
-                $("#select_all_previous_page").prop("checked",true)
-              }
-          })
-      },
-      columns: [
-         { data: 'select-cbox'},
-         { data: 'cname' },
-         { data: 'cid' },
-         { data: 'sem' },
-         { data: 'year' },
-         { data: 'dept_name' },
-         { data: 'dept_applicable' },
-         { data: 'max' },
-         { data: 'min' },
-         { data: 'no_of_allocated' },
-         { data: 'allocate_faculty' },
-         { data: 'action' },
-      ],
-      columnDefs: [ {
-        targets: [0,6,10,11], // column index (start from 0)
-        orderable: false, // set orderable false for selected columns
-     },
-     {className:"selectbox_previous_td",targets:[0]},
-     { className: "cname", "targets": [ 1 ] },
-     ]
-   });
-}
+            },
+            fnDrawCallback: function() {
+                $(".action-btn").on('click', loadModalPrevious);
+                $(".allocate-btn").on('click', loadAllocateModalPrevious);
+                $(".selectrow_previous").attr("disabled", true);
+                $("th").removeClass('selectbox_previous_td');
+                $(".selectbox_previous_td").click(function(e) {
+                    var row = $(this).closest('tr')
+                    var checkbox = $(this).find('input');
+                    checkbox.attr("checked", !checkbox.attr("checked"));
+                    row.toggleClass('selected table-secondary')
+                    if ($("#dataTable-previous tbody tr.selected").length != $("#dataTable-previous tbody tr").length) {
+                        $("#select_all_previous_page").prop("checked", true)
+                        $("#select_all_previous_page").prop("checked", false)
+                    } else {
+                        $("#select_all_previous_page").prop("checked", false)
+                        $("#select_all_previous_page").prop("checked", true)
+                    }
+                })
+            },
+            columns: [{
+                    data: 'select-cbox'
+                },
+                {
+                    data: 'cname'
+                },
+                {
+                    data: 'cid'
+                },
+                {
+                    data: 'sem'
+                },
+                {
+                    data: 'year'
+                },
+                {
+                    data: 'dept_name'
+                },
+                {
+                    data: 'dept_applicable'
+                },
+                {
+                    data: 'max'
+                },
+                {
+                    data: 'min'
+                },
+                {
+                    data: 'no_of_allocated'
+                },
+                {
+                    data: 'allocate_faculty'
+                },
+                {
+                    data: 'action'
+                },
+            ],
+            columnDefs: [{
+                    targets: [0, 6, 10, 11], // column index (start from 0)
+                    orderable: false, // set orderable false for selected columns
+                },
+                {
+                    className: "selectbox_previous_td",
+                    targets: [0]
+                },
+                {
+                    className: "cname",
+                    "targets": [1]
+                },
+            ]
+        });
+    }
 
-function loadAllocateModalPrevious(){
-    var target_row = $(this).closest("tr"); // this line did the trick
+    function loadAllocateModalPrevious() {
+        var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
-    var aPos = $("#dataTable-previous").dataTable().fnGetPosition(target_row.get(0)); 
-    var courseData=$('#dataTable-previous').DataTable().row(aPos).data()
-    // delete courseData.action
-    // delete courseData.allocate_faculty
-    var json_courseData=JSON.stringify(courseData)
-    // console.log(json_courseData)
-    $.ajax({
-        type: "POST",
-        url: "audit_course/loadModal/previous_audit_allocate_modal.php",
-        // data: form_serialize, 
-        // dataType: "json",
-        data: json_courseData,
-        success: function(output)
-        {
-            // $("#"+x).text("Deleted Successfully");
-            target_row.append(output);
-            $('#deleteFacultyModal').on('shown.bs.modal', function (e) {
-              // $("#allocate-modal").css({ backdrop-filter: none });
-            })
+        var aPos = $("#dataTable-previous").dataTable().fnGetPosition(target_row.get(0));
+        var courseData = $('#dataTable-previous').DataTable().row(aPos).data()
+        // delete courseData.action
+        // delete courseData.allocate_faculty
+        var json_courseData = JSON.stringify(courseData)
+        // console.log(json_courseData)
+        $.ajax({
+            type: "POST",
+            url: "audit_course/loadModal/previous_audit_allocate_modal.php",
+            // data: form_serialize, 
+            // dataType: "json",
+            data: json_courseData,
+            success: function(output) {
+                // $("#"+x).text("Deleted Successfully");
+                target_row.append(output);
+                $('#deleteFacultyModal').on('shown.bs.modal', function(e) {
+                    // $("#allocate-modal").css({ backdrop-filter: none });
+                })
 
-            //when modal closes
-            $('#deleteFacultyModal').on('hidden.bs.modal', function (e) {
-              // $("#allocate-modal").css({ opacity: 1 });
-            })
+                //when modal closes
+                $('#deleteFacultyModal').on('hidden.bs.modal', function(e) {
+                    // $("#allocate-modal").css({ opacity: 1 });
+                })
 
-            $('#allocate-modal').modal('show')
-                $(document).on('hidden.bs.modal', '#allocate-modal', function () {
-                    $("#allocate-modal").remove(); 
+                $('#allocate-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#allocate-modal', function() {
+                    $("#allocate-modal").remove();
                     $("#deleteFacultyModal").remove();
                 });
 
-            $('#allocate_faculty_audit').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#allocate_faculty_audit_btn").attr('name'), value: $("#allocate_faculty_audit_btn").attr('value') });
-                if(form_serialize[3].value != null) {
-                    $("#allocate_faculty_audit_btn").text("Allocating...");
-                    $("#allocate_faculty_audit_btn").attr("disabled",true);
-                    $.ajax({
-                        type: "POST",
-                        url: "ic_queries/allocate_faculty_queries.php",
-                        data: form_serialize, 
-                        success: function(data)
-                        {
-                            var z = data.split("+");
-                            $("#allocate_faculty_audit_btn").text("Allocated Successfully");
-                            $("#allocate_faculty_audit_btn").text("Allocate");
-                            $("#allocate_faculty_audit_btn").attr("disabled",false);
-                            $(".faculty_div").html(z[1]);
-                            $('#temp_allocated_faculty').val(z[0]);
-                            $('#hiddenemailid').val("null");
-                            $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+                $('#allocate_faculty_audit').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#allocate_faculty_audit_btn").attr('name'),
+                        value: $("#allocate_faculty_audit_btn").attr('value')
+                    });
+                    if (form_serialize[3].value != null) {
+                        $("#allocate_faculty_audit_btn").text("Allocating...");
+                        $("#allocate_faculty_audit_btn").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "ic_queries/allocate_faculty_queries.php",
+                            data: form_serialize,
+                            success: function(data) {
+                                var z = data.split("+");
+                                $("#allocate_faculty_audit_btn").text("Allocated Successfully");
+                                $("#allocate_faculty_audit_btn").text("Allocate");
+                                $("#allocate_faculty_audit_btn").attr("disabled", false);
+                                $(".faculty_div").html(z[1]);
+                                $('#temp_allocated_faculty').val(z[0]);
+                                $('#hiddenemailid').val("null");
+                                $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
 
-                        }
+                            }
                         });
-                }
-            });
-
-            $('#deleteFacultyModal').on('show.bs.modal', function (event) {
-              let email_id = $(event.relatedTarget).data('email_id') 
-              $(this).find('.modal-body #email_id').val(email_id)
-              let cid = $(event.relatedTarget).data('cid') 
-              $(this).find('.modal-body #cid').val(cid)
-              let sem = $(event.relatedTarget).data('sem') 
-              $(this).find('.modal-body #sem').val(sem)
-              let year = $(event.relatedTarget).data('year') 
-              $(this).find('.modal-body #year').val(year)
-
-              $('#newModalUnallocate').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#faculty_unallocate_btn").attr('name'), value: $("#faculty_unallocate_btn").attr('value') });
-                $("#faculty_unallocate_btn").text("Deleting...");
-                $("#faculty_unallocate_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/allocate_faculty_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        var z = data.split("+");
-                        $('#deleteFacultyModal').modal('hide');
-                        $("#faculty_unallocate_btn").text("Delete");
-                        $("#faculty_unallocate_btn").attr("disabled",false);
-                        $(".faculty_div").html(z[1]);
-                        $('#temp_allocated_faculty').val(z[0]);
-                        $('#hiddenemailid').val("null");
-                        $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
                     }
+                });
+
+                $('#deleteFacultyModal').on('show.bs.modal', function(event) {
+                    let email_id = $(event.relatedTarget).data('email_id')
+                    $(this).find('.modal-body #email_id').val(email_id)
+                    let cid = $(event.relatedTarget).data('cid')
+                    $(this).find('.modal-body #cid').val(cid)
+                    let sem = $(event.relatedTarget).data('sem')
+                    $(this).find('.modal-body #sem').val(sem)
+                    let year = $(event.relatedTarget).data('year')
+                    $(this).find('.modal-body #year').val(year)
+
+                    $('#newModalUnallocate').submit(function(e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var form_serialize = form.serializeArray(); // serializes the form's elements.
+                        form_serialize.push({
+                            name: $("#faculty_unallocate_btn").attr('name'),
+                            value: $("#faculty_unallocate_btn").attr('value')
+                        });
+                        $("#faculty_unallocate_btn").text("Deleting...");
+                        $("#faculty_unallocate_btn").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "ic_queries/allocate_faculty_queries.php",
+                            data: form_serialize,
+                            success: function(data) {
+                                var z = data.split("+");
+                                $('#deleteFacultyModal').modal('hide');
+                                $("#faculty_unallocate_btn").text("Delete");
+                                $("#faculty_unallocate_btn").attr("disabled", false);
+                                $(".faculty_div").html(z[1]);
+                                $('#temp_allocated_faculty').val(z[0]);
+                                $('#hiddenemailid').val("null");
+                                $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                            }
+                        });
                     });
-            });
 
-            });
+                });
 
-            $('.showtext').click(function(e) {
-                if(document.querySelector("#show").style.display=="none")
-                    document.querySelector("#show").style.display="inline"
-                else
-                    document.querySelector("#show").style.display="none"
-            });
-            $('#search_text').keyup(function() {
-                var txt = $(this).val();
-                var txt2 = $('#temp_allocated_faculty').val();
-                if(txt == '') {
-                    $('#result').html('');
-                } else {
-                    $('#result').html('');
-                    $.ajax({
-                        url: "audit_course/loadModal/fetch_faculties.php",
-                        method: "post",
-                        data: {search:txt, allocated:txt2},
-                        dataType: "text",
-                        success: function(data) {
-                            $('#result').html(data);
-                            $('.option-selected').click(function(e) {
-                                var x = $(this).val();
-                                var y = $(this).prev();
-                                $('#hiddenemailid').val(y.val());
-                                $('.showtext').html(x.concat(' <i class="fa fa-caret-down"></i>'));
-                                document.querySelector("#show").style.display="none";
-                                $('#search_text').val("");
-                                $('#result').html('');
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
-}
+                $('.showtext').click(function(e) {
+                    if (document.querySelector("#show").style.display == "none")
+                        document.querySelector("#show").style.display = "inline"
+                    else
+                        document.querySelector("#show").style.display = "none"
+                });
+                $('#search_text').keyup(function() {
+                    var txt = $(this).val();
+                    var txt2 = $('#temp_allocated_faculty').val();
+                    if (txt == '') {
+                        $('#result').html('');
+                    } else {
+                        $('#result').html('');
+                        $.ajax({
+                            url: "audit_course/loadModal/fetch_faculties.php",
+                            method: "post",
+                            data: {
+                                search: txt,
+                                allocated: txt2
+                            },
+                            dataType: "text",
+                            success: function(data) {
+                                $('#result').html(data);
+                                $('.option-selected').click(function(e) {
+                                    var x = $(this).val();
+                                    var y = $(this).prev();
+                                    $('#hiddenemailid').val(y.val());
+                                    $('.showtext').html(x.concat(' <i class="fa fa-caret-down"></i>'));
+                                    document.querySelector("#show").style.display = "none";
+                                    $('#search_text').val("");
+                                    $('#result').html('');
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 
-function loadModalPrevious(){
-    var target_row = $(this).closest("tr"); // this line did the trick
+    function loadModalPrevious() {
+        var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
-    var aPos = $("#dataTable-previous").dataTable().fnGetPosition(target_row.get(0)); 
-    var courseData=$('#dataTable-previous').DataTable().row(aPos).data()
-    // delete courseData.action
-    // delete courseData.allocate_faculty
-    var json_courseData=JSON.stringify(courseData)
-    // console.log(json_courseData)
-    $.ajax({
-        type: "POST",
-        url: "audit_course/loadModal/previous_audit_modal.php",
-        // data: form_serialize, 
-        // dataType: "json",
-        data: json_courseData,
-        success: function(output)
-        {
-            // $("#"+x).text("Deleted Successfully");
-            target_row.append(output);
-            $('#update-del-modal').modal('show')
-                $(document).on('hidden.bs.modal', '#update-del-modal', function () {
-                    $("#update-del-modal").remove(); 
+        var aPos = $("#dataTable-previous").dataTable().fnGetPosition(target_row.get(0));
+        var courseData = $('#dataTable-previous').DataTable().row(aPos).data()
+        // delete courseData.action
+        // delete courseData.allocate_faculty
+        var json_courseData = JSON.stringify(courseData)
+        // console.log(json_courseData)
+        $.ajax({
+            type: "POST",
+            url: "audit_course/loadModal/previous_audit_modal.php",
+            // data: form_serialize, 
+            // dataType: "json",
+            data: json_courseData,
+            success: function(output) {
+                // $("#"+x).text("Deleted Successfully");
+                target_row.append(output);
+                $('#update-del-modal').modal('show')
+                $(document).on('hidden.bs.modal', '#update-del-modal', function() {
+                    $("#update-del-modal").remove();
                     $("#deleteSimilarCourseModal").remove();
                 });
-            $('#delete_course_form').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
-                $("#delete_course_btn").text("Deleting...");
-                $("#delete_course_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addcourse_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        //    alert(data); // show response from the php script.
-                        $("#delete_course_btn").text("Deleted Successfully");
-                        var row=$("#update-del-modal").closest('tr');
-                        var aPos = $("#dataTable-previous").dataTable().fnGetPosition(row.get(0)); 
-                        $('#update-del-modal').modal('hide');
-                        $('body').removeClass('modal-open');
-                        $('.modal-backdrop').remove();
-                        // row.remove();
-                        $("#dataTable-previous").DataTable().row(aPos).remove().draw(false);
-                        // console.log(aPos);
-                        // console.log(row)
-                    }
+                $('#delete_course_form').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#delete_course_btn").attr('name'),
+                        value: $("#delete_course_btn").attr('value')
                     });
-            });
-            
-            $('#add_new_similar_course_btn').click(function(e) {
-                if(document.querySelector(".temporarydiv").style.display=="none")
-                    document.querySelector(".temporarydiv").style.display="inline"
-            });
-
-            $('#add_similar_course').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#add_new_similar_course_btn").attr('name'), value: $("#add_new_similar_course_btn").attr('value') });
-                $("#add_new_similar_course_btn").text("Allocating...");
-                $("#add_new_similar_course_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addcourse_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        var z = data.split("+");
-                        //$('#deleteSimilarCourseModal').modal('hide');
-                        $("#add_new_similar_course_btn").text("Allocate");
-                        $("#add_new_similar_course_btn").attr("disabled",false);
-                        $(".faculty_div").html(z[1]);
-                        document.querySelector(".temporarydiv").style.display="none"
-                        $('.tempcid').val('');
-                        $('.tempyear').val('');
-                        $('.tempsem').val('');
-                        //$('#temp_allocated_faculty').val(z[0]);
-                        //$('#hiddenemailid').val("null");
-                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
-                    }
+                    $("#delete_course_btn").text("Deleting...");
+                    $("#delete_course_btn").attr("disabled", true);
+                    $.ajax({
+                        type: "POST",
+                        url: "ic_queries/addcourse_queries.php",
+                        data: form_serialize,
+                        success: function(data) {
+                            //    alert(data); // show response from the php script.
+                            $("#delete_course_btn").text("Deleted Successfully");
+                            var row = $("#update-del-modal").closest('tr');
+                            var aPos = $("#dataTable-previous").dataTable().fnGetPosition(row.get(0));
+                            $('#update-del-modal').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            // row.remove();
+                            $("#dataTable-previous").DataTable().row(aPos).remove().draw(false);
+                            // console.log(aPos);
+                            // console.log(row)
+                        }
                     });
-            });
-
-            $('#deleteSimilarCourseModal').on('show.bs.modal', function (event) {
-
-              let oldyear = $(event.relatedTarget).data('oldyear')
-              $(this).find('.modal-body #oldyear').val(oldyear)
-              let oldcid = $(event.relatedTarget).data('oldcid') 
-              $(this).find('.modal-body #oldcid').val(oldcid)
-              let oldsem = $(event.relatedTarget).data('oldsem') 
-              $(this).find('.modal-body #oldsem').val(oldsem)
-
-              let newyear = $(event.relatedTarget).data('newyear') 
-              $(this).find('.modal-body #newyear').val(newyear)
-              let newcid = $(event.relatedTarget).data('newcid') 
-              $(this).find('.modal-body #newcid').val(newcid)
-              let newsem = $(event.relatedTarget).data('newsem') 
-              $(this).find('.modal-body #newsem').val(newsem)
-              
-
-              $('#newModalRemoveCourse').submit(function(e){
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize=form.serializeArray();// serializes the form's elements.
-                form_serialize.push({ name: $("#course_remove_btn").attr('name'), value: $("#course_remove_btn").attr('value') });
-                $("#course_remove_btn").text("Removing...");
-                $("#course_remove_btn").attr("disabled",true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addcourse_queries.php",
-                    data: form_serialize, 
-                    success: function(data)
-                    {
-                        var z = data.split("+");
-                        $('#deleteSimilarCourseModal').modal('hide');
-                        $("#course_remove_btn").text("Remove");
-                        $("#course_remove_btn").attr("disabled",false);
-                        $(".faculty_div").html(z[1]);
-                        //$('#temp_allocated_faculty').val(z[0]);
-                        //$('#hiddenemailid').val("null");
-                        //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
-                    }
-                    });
-            });
-
-            });
-            $('#update_course_form').submit(function(e){
-                update_course_form_previous(e);
-                // $('#update-del-modal').modal('hide');
                 });
 
-        }
-    });
-}
-function update_course_form_previous(e){
-    e.preventDefault();
-    var form = $('#update_course_form');
-    var form_serialize=form.serializeArray();// serializes the form's elements.
-    // console.log(form_serialize)
-    form_serialize.push({ name: $("#update_course_btn").attr('name'), value: $("#update_course_btn").attr('value') });
-    $("#update_course_btn").text("Updating...");
-    $("#update_course_btn").attr("disabled",true);
-    $.ajax({
-    type: "POST",
-    url: "ic_queries/addcourse_queries.php",
-    data: form_serialize, 
-    success: function(data)
-    {
-        //    alert(data); // show response from the php script.
-        if(data === "Exists_cid"){
-            $('#error_cid_previous').text('*This course already exists in this Semester');
-            // $('#error_sem').text('*This course already exists in this Semester');
-            $("#update_course_btn").text("Update");
-            $("#update_course_btn").attr("disabled", false);
-        }else if(data === "Max_error"){
-            $('#error_max_previous').text('*Max value is less than Min');
-            $("#update_course_btn").text("Update");
-            $("#update_course_btn").attr("disabled", false);
-        }else{
-            $("#update_course_btn").text("Updated Successfully");
-            var row=$("#update-del-modal").closest('tr');
-            var aPos = $("#dataTable-previous").dataTable().fnGetPosition(row.get(0));
-            var temp = $("#dataTable-previous").DataTable().row(aPos).data();
-            // console.log(temp)
-            console.log(form_serialize)
-            temp['cname'] = form_serialize[findByAttr(form_serialize,'name','coursename')].value;
-            temp['cid']=form_serialize[findByAttr(form_serialize,'name','courseidnew')].value;
-            temp['sem']=form_serialize[findByAttr(form_serialize,'name','semnew')].value;
-            temp['year']=form_serialize[findByAttr(form_serialize,'name','year')].value;
-            // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
-            var x="";
-            var index;
-            var floatingDeptIndex=findByAttr(form_serialize,'name','floating_check_dept[]')
-            for(index of floatingDeptIndex){
-                x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
-                x = x.concat(", ");
+                $('#add_new_similar_course_btn').click(function(e) {
+                    if (document.querySelector(".temporarydiv").style.display == "none")
+                        document.querySelector(".temporarydiv").style.display = "inline"
+                });
+
+                $('#add_similar_course').submit(function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var form_serialize = form.serializeArray(); // serializes the form's elements.
+                    form_serialize.push({
+                        name: $("#add_new_similar_course_btn").attr('name'),
+                        value: $("#add_new_similar_course_btn").attr('value')
+                    });
+                    $("#add_new_similar_course_btn").text("Allocating...");
+                    $("#add_new_similar_course_btn").attr("disabled", true);
+                    $.ajax({
+                        type: "POST",
+                        url: "ic_queries/addcourse_queries.php",
+                        data: form_serialize,
+                        success: function(data) {
+                            var z = data.split("+");
+                            //$('#deleteSimilarCourseModal').modal('hide');
+                            $("#add_new_similar_course_btn").text("Allocate");
+                            $("#add_new_similar_course_btn").attr("disabled", false);
+                            $(".faculty_div").html(z[1]);
+                            document.querySelector(".temporarydiv").style.display = "none"
+                            $('.tempcid').val('');
+                            $('.tempyear').val('');
+                            $('.tempsem').val('');
+                            //$('#temp_allocated_faculty').val(z[0]);
+                            //$('#hiddenemailid').val("null");
+                            //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                        }
+                    });
+                });
+
+                $('#deleteSimilarCourseModal').on('show.bs.modal', function(event) {
+
+                    let oldyear = $(event.relatedTarget).data('oldyear')
+                    $(this).find('.modal-body #oldyear').val(oldyear)
+                    let oldcid = $(event.relatedTarget).data('oldcid')
+                    $(this).find('.modal-body #oldcid').val(oldcid)
+                    let oldsem = $(event.relatedTarget).data('oldsem')
+                    $(this).find('.modal-body #oldsem').val(oldsem)
+
+                    let newyear = $(event.relatedTarget).data('newyear')
+                    $(this).find('.modal-body #newyear').val(newyear)
+                    let newcid = $(event.relatedTarget).data('newcid')
+                    $(this).find('.modal-body #newcid').val(newcid)
+                    let newsem = $(event.relatedTarget).data('newsem')
+                    $(this).find('.modal-body #newsem').val(newsem)
+
+
+                    $('#newModalRemoveCourse').submit(function(e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var form_serialize = form.serializeArray(); // serializes the form's elements.
+                        form_serialize.push({
+                            name: $("#course_remove_btn").attr('name'),
+                            value: $("#course_remove_btn").attr('value')
+                        });
+                        $("#course_remove_btn").text("Removing...");
+                        $("#course_remove_btn").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "ic_queries/addcourse_queries.php",
+                            data: form_serialize,
+                            success: function(data) {
+                                var z = data.split("+");
+                                $('#deleteSimilarCourseModal').modal('hide');
+                                $("#course_remove_btn").text("Remove");
+                                $("#course_remove_btn").attr("disabled", false);
+                                $(".faculty_div").html(z[1]);
+                                //$('#temp_allocated_faculty').val(z[0]);
+                                //$('#hiddenemailid').val("null");
+                                //$('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
+
+                            }
+                        });
+                    });
+
+                });
+                $('#update_course_form').submit(function(e) {
+                    update_course_form_previous(e);
+                    // $('#update-del-modal').modal('hide');
+                });
+
             }
-            x = x.substr(0, x.length - 2);
-            temp['dept_name']=x;
-            x="";
-            var deptApplicableIndex=findByAttr(form_serialize,'name','check_dept[]')
-            for(index of deptApplicableIndex){
-                x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
-                x = x.concat(", ");
-            }
-            x = x.substr(0, x.length - 2);
-            temp['dept_applicable']=x;
-            temp['max']=form_serialize[findByAttr(form_serialize,'name','max')].value;
-            temp['min']=form_serialize[findByAttr(form_serialize,'name','min')].value;
-            console.log(temp)
-            $('#dataTable-previous').dataTable().fnUpdate(temp,aPos,undefined,false);
-            $('.action-btn').off('click')
-            $('.action-btn').on('click',loadModalPrevious)
-            $(".selectrow_previous").attr("disabled",true);
-            $('#error_cid_previous').remove();
-            $('#error_max_previous').remove();
-            // $("#dataTable-current").DataTable().row(aPos).draw(false);
-        }
+        });
     }
-    });
-}
-$("#dataTable-previous").on('click','td.cname',function(){
-    var tr = $(this).closest('tr');
-        var row = $("#dataTable-previous").DataTable().row( tr );
- 
+
+    function update_course_form_previous(e) {
+        e.preventDefault();
+        var form = $('#update_course_form');
+        var form_serialize = form.serializeArray(); // serializes the form's elements.
+        // console.log(form_serialize)
+        form_serialize.push({
+            name: $("#update_course_btn").attr('name'),
+            value: $("#update_course_btn").attr('value')
+        });
+        $("#update_course_btn").text("Updating...");
+        $("#update_course_btn").attr("disabled", true);
+        $.ajax({
+            type: "POST",
+            url: "ic_queries/addcourse_queries.php",
+            data: form_serialize,
+            success: function(data) {
+                //    alert(data); // show response from the php script.
+                if (data === "Exists_cid") {
+                    $('#error_cid_previous').text('*This course already exists in this Semester');
+                    // $('#error_sem').text('*This course already exists in this Semester');
+                    $("#update_course_btn").text("Update");
+                    $("#update_course_btn").attr("disabled", false);
+                } else if (data === "Max_error") {
+                    $('#error_max_previous').text('*Max value is less than Min');
+                    $("#update_course_btn").text("Update");
+                    $("#update_course_btn").attr("disabled", false);
+                } else {
+                    $("#update_course_btn").text("Updated Successfully");
+                    var row = $("#update-del-modal").closest('tr');
+                    var aPos = $("#dataTable-previous").dataTable().fnGetPosition(row.get(0));
+                    var temp = $("#dataTable-previous").DataTable().row(aPos).data();
+                    // console.log(temp)
+                    console.log(form_serialize)
+                    temp['cname'] = form_serialize[findByAttr(form_serialize, 'name', 'coursename')].value;
+                    temp['cid'] = form_serialize[findByAttr(form_serialize, 'name', 'courseidnew')].value;
+                    temp['sem'] = form_serialize[findByAttr(form_serialize, 'name', 'semnew')].value;
+                    temp['year'] = form_serialize[findByAttr(form_serialize, 'name', 'year')].value;
+                    // temp['dept_name']=id_to_name_convertor_dept(form_serialize[6].value);
+                    var x = "";
+                    var index;
+                    var floatingDeptIndex = findByAttr(form_serialize, 'name', 'floating_check_dept[]')
+                    for (index of floatingDeptIndex) {
+                        x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+                        x = x.concat(", ");
+                    }
+                    x = x.substr(0, x.length - 2);
+                    temp['dept_name'] = x;
+                    x = "";
+                    var deptApplicableIndex = findByAttr(form_serialize, 'name', 'check_dept[]')
+                    for (index of deptApplicableIndex) {
+                        x = x.concat(id_to_name_convertor_dept(form_serialize[index].value));
+                        x = x.concat(", ");
+                    }
+                    x = x.substr(0, x.length - 2);
+                    temp['dept_applicable'] = x;
+                    temp['max'] = form_serialize[findByAttr(form_serialize, 'name', 'max')].value;
+                    temp['min'] = form_serialize[findByAttr(form_serialize, 'name', 'min')].value;
+                    console.log(temp)
+                    $('#dataTable-previous').dataTable().fnUpdate(temp, aPos, undefined, false);
+                    $('.action-btn').off('click')
+                    $('.action-btn').on('click', loadModalPrevious)
+                    $(".selectrow_previous").attr("disabled", true);
+                    $('#error_cid_previous').remove();
+                    $('#error_max_previous').remove();
+                    // $("#dataTable-current").DataTable().row(aPos).draw(false);
+                }
+            }
+        });
+    }
+    $("#dataTable-previous").on('click', 'td.cname', function() {
+        var tr = $(this).closest('tr');
+        var row = $("#dataTable-previous").DataTable().row(tr);
+
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown table-warning');
-        }
-        else {
+        } else {
             // Open this row
-            var data={}
-            data['cid']=row.data()['cid'];
-            data['sem']=row.data()['sem'];
-            data['year']=row.data()['year'];
-            data['type']='previous'
-            data_json=JSON.stringify(data)
+            var data = {}
+            data['cid'] = row.data()['cid'];
+            data['sem'] = row.data()['sem'];
+            data['year'] = row.data()['year'];
+            data['type'] = 'previous'
+            data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
                 type: "POST",
                 url: "loadAdditionalInfo/additional_info_audit_course.php",
-                data: data_json, 
-                success: function(response)
-                {
-                row.child(response).show();
-                tr.addClass('shown table-warning');
+                data: data_json,
+                success: function(response) {
+                    row.child(response).show();
+                    tr.addClass('shown table-warning');
                 }
             });
             // row.child("<b>Hello</b>").show();
         }
-})
-function id_to_name_convertor_dept(id) {
-    <?php
+    })
+
+    function id_to_name_convertor_dept(id) {
+        <?php
         include_once('../config.php');
-        $sql="SELECT * FROM department";
-        $result=mysqli_query($conn,$sql);
-        while($row=mysqli_fetch_assoc($result)){
-            echo 'if(id=="'.$row['dept_id'].'") return "'.$row['dept_name'].'";';
+        $sql = "SELECT * FROM department";
+        $result = mysqli_query($conn, $sql);
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo 'if(id=="' . $row['dept_id'] . '") return "' . $row['dept_name'] . '";';
         }
-    ?>
+        ?>
         // if(id == "1") return "Comp";
         // if(id == "2") return "ETRX";
         // if(id == "3") return "EXTC";
         // if(id == "4") return "IT";
         // if(id == "5") return "MECH";
-}
+    }
 
-$('#nav-tab').on("click", "a", function (event) {         
-  activeTab = $(this).attr('id').split('-')[1];
-  console.log(activeTab)
-    clearFilters();
-  if(activeTab=='current'){
-      loadCurrent()
-  }else if(activeTab=='upcoming'){
-      loadUpcoming();
-  }else if(activeTab=='previous'){
-      loadPrevious()
-  }
-});
-$("#add_course_form").submit(function(e){
-    e.preventDefault(); // avoid to execute the actual submit of the form.
-    var form = $(this);
-    var form_serialize=form.serializeArray();// serializes the form's elements.
-    form_serialize.push({ name: $("#add_course_btn").attr('name'), value: $("#add_course_btn").attr('value') });
-    $("#add_course_btn").text("Adding...");
-    $("#add_course_btn").attr("disabled",true);
-    $.ajax({
-        type: "POST",
-        url: "ic_queries/addcourse_queries.php",
-        data: form_serialize, 
-        success: function(data)
-        {
-            //alert(data); // show response from the php script.
-            if(data === "add_up_max_error"){
-                $('#add_upcoming_max_error').text('*Max value is less than Min');
-                $("#add_course_btn").text("Add");
-                $("#add_course_btn").attr("disabled", false);
-            }else if(data === "add_up_cid_error"){
-                $('#add_upcoming_cid_error').text('*This course already exists in this Semester');
-                // $('#error_sem').text('*This course already exists in this Semester');
-                $("#add_course_btn").text("Add");
-                $("#add_course_btn").attr("disabled", false);
-            }
-            else{
-                $("#add_course_btn").text("Added Successfully");
-                $('add_upcoming_max_error').remove();
-            }
+    $('#nav-tab').on("click", "a", function(event) {
+        activeTab = $(this).attr('id').split('-')[1];
+        console.log(activeTab)
+        clearFilters();
+        if (activeTab == 'current') {
+            loadCurrent()
+        } else if (activeTab == 'upcoming') {
+            loadUpcoming();
+        } else if (activeTab == 'previous') {
+            loadPrevious()
         }
+    });
+    $("#add_course_form").submit(function(e) {
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+        var form = $(this);
+        var form_serialize = form.serializeArray(); // serializes the form's elements.
+        form_serialize.push({
+            name: $("#add_course_btn").attr('name'),
+            value: $("#add_course_btn").attr('value')
         });
-});
-$("#close_add_course_form").click(function(){
-    document.querySelector("#add_course_form").reset();
-    $("#add_course_btn").text("Add")
-    $("#add_course_btn").attr("disabled",false);
-    $("#map_section").empty();
-    $("#total_prev").val("0");
-    $("#add_prev").hide();
-})
-$("#close_add_form_cross").click(function(){
-    document.querySelector("#add_course_form").reset();
-    $("#add_course_btn").text("Add")
-    $("#add_course_btn").attr("disabled",false);
-    $("#map_section").empty();
-    $("#total_prev").val("0");
-    $("#add_prev").hide();
-})
+        $("#add_course_btn").text("Adding...");
+        $("#add_course_btn").attr("disabled", true);
+        $.ajax({
+            type: "POST",
+            url: "ic_queries/addcourse_queries.php",
+            data: form_serialize,
+            success: function(data) {
+                //alert(data); // show response from the php script.
+                if (data === "add_up_max_error") {
+                    $('#add_upcoming_max_error').text('*Max value is less than Min');
+                    $("#add_course_btn").text("Add");
+                    $("#add_course_btn").attr("disabled", false);
+                } else if (data === "add_up_cid_error") {
+                    $('#add_upcoming_cid_error').text('*This course already exists in this Semester');
+                    // $('#error_sem').text('*This course already exists in this Semester');
+                    $("#add_course_btn").text("Add");
+                    $("#add_course_btn").attr("disabled", false);
+                } else {
+                    $("#add_course_btn").text("Added Successfully");
+                    $('add_upcoming_max_error').remove();
+                }
+            }
+        });
+    });
+    $("#close_add_course_form").click(function() {
+        document.querySelector("#add_course_form").reset();
+        $("#add_course_btn").text("Add")
+        $("#add_course_btn").attr("disabled", false);
+        $("#map_section").empty();
+        $("#total_prev").val("0");
+        $("#add_prev").hide();
+    })
+    $("#close_add_form_cross").click(function() {
+        document.querySelector("#add_course_form").reset();
+        $("#add_course_btn").text("Add")
+        $("#add_course_btn").attr("disabled", false);
+        $("#map_section").empty();
+        $("#total_prev").val("0");
+        $("#add_prev").hide();
+    })
 </script>
 
 <?php include('../includes/footer.php');
