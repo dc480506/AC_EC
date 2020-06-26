@@ -144,7 +144,7 @@ include('../includes/header.php');
                                                         <label for="marks"><b>SGPI</b></label>
                                                         <input type="text" class="form-control" id="marks" name="marks" placeholder="Column name of GPA" value="SGPI" required>
                                                     </div>
-                                            
+
                                                     <div class="form-group col-md-12" id="rollno_div">
                                                         <label for="rollno"><b>Rollno</b></label>
                                                         <input type="text" class="form-control" id="rollno" name="rollno" required placeholder="Column name of Rollno" value="roll_no">
@@ -285,20 +285,19 @@ include('../includes/header.php');
 <!-- /.container-fluid -->
 
 <script type="text/javascript">
-$('input[type=radio][name=column_selection]').change(function() {
-    if (this.value =='rollno') {
-        $("#rollno_div").show();
-        $("#rollno").attr('required',true)
-        $("#email_id_div").hide();
-        $("#email_id").attr('required',false)
-    }
-    else if (this.value == 'email_id') {
-        $("#email_id_div").show();
-        $("#email_id").attr('required',true)
-        $("#rollno_div").hide();
-        $("#rollno").attr('required',false)
-    }
-});
+    $('input[type=radio][name=column_selection]').change(function() {
+        if (this.value == 'rollno') {
+            $("#rollno_div").show();
+            $("#rollno").attr('required', true)
+            $("#email_id_div").hide();
+            $("#email_id").attr('required', false)
+        } else if (this.value == 'email_id') {
+            $("#email_id_div").show();
+            $("#email_id").attr('required', true)
+            $("#rollno_div").hide();
+            $("#rollno").attr('required', false)
+        }
+    });
     $("#bulkUploadCurrent").submit(function(e) {
         e.preventDefault();
         form = this;
@@ -370,6 +369,14 @@ $('input[type=radio][name=column_selection]').change(function() {
             destroy: true,
             serverMethod: 'post',
             aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: "student-marks-data",
+                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+            }],
             ajax: {
                 'url': 'student_mark/loadInfo/marks_info.php'
             },
@@ -418,7 +425,7 @@ $('input[type=radio][name=column_selection]').change(function() {
                 },
             ],
             columnDefs: [{
-                    targets: [0,7], // column index (start from 0)
+                    targets: [0, 7], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
