@@ -12,7 +12,7 @@ if(isset($_POST['order'])){
 }else{
    // $columnName='sem';
    // $columnSortOrder='asc';
-   $orderQuery=' order by sem,rollno asc ';
+   $orderQuery=' order by timestamp,rollno asc ';
 }
 $searchValue = $_POST['search']['value']; // Search value
 
@@ -37,11 +37,12 @@ $yr=$_POST['year'];
 //echo $sem;
 ##Fetch Record
 if($cr<2){
-$sql="select *  
-       from student_preference_audit WHERE year='$yr' AND  sem='$sem' AND currently_active='$cr' and ".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
+$sql="select s.email_id,s.rollno,CONCAT(fname,' ',mname,' ',lname) as full_name, dept_name,spa.timestamp,allocate_status
+   FROM student_preference_audit spa INNER JOIN student s INNER JOIN department d
+   ON s.email_id=spa.email_id AND s.dept_id=d.dept_id WHERE year='$yr' AND  sem='$sem' AND currently_active='$cr' and ".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 }else{
    "select *  
-       from student_preference_audit_log WHERE year='$yr' AND  sem='$sem' AND currently_active='$cr' and ".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
+       from student_preference_audit_log WHERE year='$yr' AND  sem='$sem' and ".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 }
 $studentRecords = mysqli_query($conn, $sql);
 //echo $sql;
@@ -49,9 +50,13 @@ $data = array();
 $count=0;
 $preference_list="";
 while ($row = mysqli_fetch_assoc($studentRecords)) {
-   for ($i = 1; $i <= $row['no_of_valid_preferences']; $i++) {
-      $preference_list.= $row['pref'.$i].'<br>';
-  } 
+//    for ($i = 1; $i <= $row['no_of_valid_preferences']; $i++) {
+//       $preference_list.= $row['pref'.$i].'<br>';
+//   } 
+   $allocate_status="Unallocated";
+   if($row['allocate_status']==1){
+      $allocate_status="Allocated";
+   }
    $data[] = array( 
       // "select-cbox"=>'<input type="checkbox">',
       "select-cbox"=>'<div class="custom-control custom-checkbox">
@@ -59,13 +64,18 @@ while ($row = mysqli_fetch_assoc($studentRecords)) {
                         <label class="custom-control-label" for="selectrow'.$count.'"></label>
                      </div>',
       "email_id"=>$row['email_id'],
-      "sem"=>$row['sem'],
-      "year"=>$row['year'],
+      // "sem"=>$row['sem'],
+      // "year"=>$row['year'],
       "rollno"=>$row['rollno'],
+      "full_name"=>$row['full_name'],
+      "dept_name"=>$row['dept_name'],
       "timestamp"=>$row['timestamp'],
-      "allocate_status"=>$row['allocate_status'],
-      "no_of_valid_preferences"=>$row['no_of_valid_preferences'],
+      "allocate_status"=>$allocate_status,
+      // "no_of_valid_preferences"=>$row['no_of_valid_preferences'],
       "preference_list"=>$preference_list,
+      "view_preference"=>'<button type="button" class="btn btn-primary icon-btn">
+                              <i class="fas fa-list-ol view-pref"></i>
+                           </button>',
       "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn">
                      <i class="fas fa-tools"></i>
                   </button>'
