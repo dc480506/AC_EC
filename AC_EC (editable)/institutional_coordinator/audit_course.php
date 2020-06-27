@@ -1690,6 +1690,52 @@ include('../includes/header.php');
                         document.querySelector(".temporarydiv").style.display = "inline"
                 });
 
+                $("#tempyear").change(function(e) {
+                    const year = $(this).val();
+                    if (year != "") {
+                        $("#tempcid option").not(":first").remove();
+                        $.ajax({
+                            type: "POST",
+                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            data: {
+                                dataFor: "semester",
+                                courseType: "CURRENT",
+                                year: year
+                            },
+                            success: function(data) {
+                                $("#tempsem option").not(":first").remove();
+                                $("#tempsem").append(data)
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
+
+                $("#tempsem").change(function(e) {
+                    const sem = $(this).val();
+                    const year = $("#tempyear").val();
+                    if (year != "" && sem != "") {
+                        $.ajax({
+                            type: "POST",
+                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            data: {
+                                dataFor: "courses",
+                                year: year,
+                                sem: sem
+                            },
+                            success: function(data) {
+                                $("#tempcid option").not(":first").remove();
+                                $("#tempcid").append(data)
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
+
                 $('#add_similar_course').submit(function(e) {
                     e.preventDefault();
                     var form = $(this);
@@ -2246,6 +2292,52 @@ include('../includes/header.php');
                         document.querySelector(".temporarydiv").style.display = "inline"
                 });
 
+                $("#tempyear").change(function(e) {
+                    const year = $(this).val();
+                    if (year != "") {
+                        $("#tempcid option").not(":first").remove();
+                        $.ajax({
+                            type: "POST",
+                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            data: {
+                                dataFor: "semester",
+                                courseType: "CURRENT",
+                                year: year
+                            },
+                            success: function(data) {
+                                $("#tempsem option").not(":first").remove();
+                                $("#tempsem").append(data)
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
+
+                $("#tempsem").change(function(e) {
+                    const sem = $(this).val();
+                    const year = $("#tempyear").val();
+                    if (year != "" && sem != "") {
+                        $.ajax({
+                            type: "POST",
+                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            data: {
+                                dataFor: "courses",
+                                year: year,
+                                sem: sem
+                            },
+                            success: function(data) {
+                                $("#tempcid option").not(":first").remove();
+                                $("#tempcid").append(data)
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
+
                 $('#add_similar_course').submit(function(e) {
                     e.preventDefault();
                     var form = $(this);
@@ -2799,6 +2891,51 @@ include('../includes/header.php');
                     if (document.querySelector(".temporarydiv").style.display == "none")
                         document.querySelector(".temporarydiv").style.display = "inline"
                 });
+                $("#tempyear").change(function(e) {
+                    const year = $(this).val();
+                    if (year != "") {
+                        $("#tempcid option").not(":first").remove();
+                        $.ajax({
+                            type: "POST",
+                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            data: {
+                                dataFor: "semester",
+                                courseType: "CURRENT",
+                                year: year
+                            },
+                            success: function(data) {
+                                $("#tempsem option").not(":first").remove();
+                                $("#tempsem").append(data)
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
+
+                $("#tempsem").change(function(e) {
+                    const sem = $(this).val();
+                    const year = $("#tempyear").val();
+                    if (year != "" && sem != "") {
+                        $.ajax({
+                            type: "POST",
+                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            data: {
+                                dataFor: "courses",
+                                year: year,
+                                sem: sem
+                            },
+                            success: function(data) {
+                                $("#tempcid option").not(":first").remove();
+                                $("#tempcid").append(data)
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
 
                 $('#add_similar_course').submit(function(e) {
                     e.preventDefault();
