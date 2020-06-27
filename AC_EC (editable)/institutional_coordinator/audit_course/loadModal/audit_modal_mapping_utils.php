@@ -18,10 +18,10 @@ if ($dataFor == "semester") {
     $year = $_POST['year'];
     $sem = $_POST['sem'];
     $response = "";
-    $sql = "(select cid,cname from audit_course where year = '" . $year . "' and sem = '" . $sem . "')" . " UNION " . "(select cid,cname from audit_course where year = '" . $year . "' and sem = '" . $sem . "')";
+    $sql = "(select cid,cname from audit_course where year = '" . $year . "' and sem = '" . $sem . "')" . " UNION " . "(select cid,cname from audit_course_log where year = '" . $year . "' and sem = '" . $sem . "')";
     $result = mysqli_query($conn, $sql);
     while ($row = mysqli_fetch_assoc($result)) {
-        $response .= '<option value="' . $row["cid"] . '">' . $row["cname"] . '</option>';
+        $response .= '<option value="' . $row["cid"] . '">' . $row["cname"] . " (" . $row["cid"] . ")" . '</option>';
     }
     echo $response;
 }
