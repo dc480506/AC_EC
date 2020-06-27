@@ -1,6 +1,6 @@
 <?php
-include_once('../../verify.php');
-include_once('../../../config.php');
+include_once('../../../verify.php');
+include_once('../../../../config.php');
 $draw = $_POST['draw'];
 $row = $_POST['start'];
 $rowperpage = $_POST['length']; // Rows display per page
@@ -36,8 +36,13 @@ $yr=$_POST['year'];
 //echo $yr;
 //echo $sem;
 ##Fetch Record
+if($cr<2){
 $sql="select *  
        from student_preference_audit WHERE year='$yr' AND  sem='$sem' AND currently_active='$cr' and ".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
+}else{
+   "select *  
+       from student_preference_audit_log WHERE year='$yr' AND  sem='$sem' AND currently_active='$cr' and ".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
+}
 $studentRecords = mysqli_query($conn, $sql);
 //echo $sql;
 $data = array();

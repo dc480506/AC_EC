@@ -1,27 +1,42 @@
 <?php
-include('../config.php');
-include_once('verify.php');
-include('../includes/header.php');
+include('../../../config.php');
+include_once('../../verify.php');
+if(!isset($_POST['view_response_btn'])){
+    header('Location: ../../../index.php');
+    exit();
+}
+include('includes/header.php');
 ?>
-<?php include('sidebar.php'); ?>
+<?php //include('sidebar.php'); ?>
 
-<?php include('../includes/topbar.php'); ?>
-
+<?php include('includes/topbar1.php'); ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <div class="card shadow mb-4">
-
+    <style type="text/css">
+            .card {
+                position: absolute;
+                top: 80px;
+                left: 0px;
+                width: 100%;
+            }
+        </style>
         <div class="card-header py-3">
             <div class="row align-items-center">
-                <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Responses</h4>
+                <div class="col-md-8 col-lg-7">
+                    <h5 class="font-weight-bold text-primary mb-0">
+                        <?php
+                            if($_POST['type_of_form']=='audit'){
+                                echo "Audit Course Responses: Semester ".$_POST['sem']." and Academic Year ".$_POST['yearb'];
+                            }
+                        ?></h5>
                 </div>
-                <div class="col text-right" id="delete_selected_response_div">
+                <div class="col-md-3 col-lg-3" id="delete_selected_response_div">
                     <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
                         <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Response(s)
                     </button>
                 </div>
-                <div class="col text-right">
+                <div class="col-md-2 col-lg-2">
                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadstudent">
                         <i class="fas fa-upload"></i>
                     </button>
@@ -359,7 +374,7 @@ include('../includes/header.php');
         $("#upload_current").attr("disabled", true);
         $("#upload_current").text("Uploading...")
         $.ajax({
-            url: "view_response/bulkUpload/upload_response_queries_ac.php",
+            url: "bulkUpload/upload_response_queries_ac.php",
             type: 'POST',
             data: formData,
             success: function(data) {
@@ -532,11 +547,12 @@ include('../includes/header.php');
             aaSorting: [],
             ajax: {
                 
-                'url': 'view_response/loadInfo/view_audit.php',
+                'url': 'loadInfo/view_audit.php',
                 'data': {
 					'year':y3,
-                         'sem':sem,
-                        'currently_active':currently_active}
+                    'sem':sem,
+                    'currently_active':currently_active
+                }
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModalCurrent)
@@ -627,7 +643,7 @@ include('../includes/header.php');
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "view_response/loadModal/audit_response_modal.php",
+            url: "loadModal/audit_response_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -721,6 +737,6 @@ include('../includes/header.php');
 </script>
 
 
-<?php include('../includes/footer.php');
-include('../includes/scripts.php');
+<?php include('includes/footer.php');
+include('includes/scripts.php');
 ?>

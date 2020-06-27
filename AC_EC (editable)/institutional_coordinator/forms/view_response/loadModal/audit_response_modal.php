@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
-    include_once('../../../config.php');
+    include_once('../../../../config.php');
     $data = json_decode(file_get_contents("php://input"), true);
     $email_id = mysqli_escape_string($conn, $data['email_id']);
     $rollno = mysqli_escape_string($conn, $data['rollno']);

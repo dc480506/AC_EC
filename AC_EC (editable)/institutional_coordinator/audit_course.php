@@ -1394,7 +1394,7 @@ include('../includes/header.php');
             buttons: [{
                 extend: 'excel',
                 title: "current-audit-courses-data",
-                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
                 className: "btn btn-outline-primary  ",
                 action: newExportAction,
                 exportOptions: {
@@ -1407,7 +1407,7 @@ include('../includes/header.php');
                 className: "btn btn-outline-primary  mx-2",
                 action: newExportAction,
                 exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6]
+                    columns: [1, 2, 3, 4, 5, 6,7,8]
                 },
             }],
             ajax: {
@@ -1992,7 +1992,7 @@ include('../includes/header.php');
             buttons: [{
                 extend: 'excel',
                 title: "upcoming-audit-courses-data",
-                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
                 className: "btn btn-outline-primary  ",
                 action: newExportAction,
                 exportOptions: {
@@ -2005,7 +2005,7 @@ include('../includes/header.php');
                 className: "btn btn-outline-primary  mx-2",
                 action: newExportAction,
                 exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6]
+                    columns: [1, 2, 3, 4, 5, 6,7,8]
                 },
             }],
             ajax: {
@@ -2596,11 +2596,11 @@ include('../includes/header.php');
             buttons: [{
                 extend: 'excel',
                 title: "previous-audit-courses-data",
-                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
                 className: "btn btn-outline-primary  ",
                 action: newExportAction,
                 exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8,9]
                 }
             }, {
                 extend: "pdfHtml5",
@@ -2609,7 +2609,7 @@ include('../includes/header.php');
                 className: "btn btn-outline-primary  mx-2",
                 action: newExportAction,
                 exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6]
+                    columns: [1, 2, 3, 4, 5, 6,7,8,9]
                 },
             }],
             ajax: {
