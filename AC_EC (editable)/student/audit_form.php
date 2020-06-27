@@ -32,7 +32,7 @@ if(mysqli_num_rows($result1)==0)
                         <h1 class="h3 mb-4 text-gray-800">Form</h1>
                     </div>
                     <div class="row align-items-center">
-                        <h6 class="card-description">No Forms Are Floated At The Moment!!!!!!</h6>
+                        <h6 class="card-description" style="color:red;">No Forms Are Floated At The Moment!</h6>
                     </div>
                 </div>
             </div>
@@ -71,6 +71,7 @@ if($row1['start_timestamp']>$today){ ?>
     ::-webkit-scrollbar {
     display: none!important
 }
+
 /* option:disabled{
    color: red;
 } */
@@ -101,8 +102,8 @@ if($row1['start_timestamp']>$today){ ?>
                         <h1 class="h3 mb-4 text-gray-800">Form</h1>
                     </div>
                     <div class="row align-items-center">
-                        <h6 class="card-description"> The current form will open
-                            at<?php echo $row1['start_timestamp']; ?></h6>
+                        <h6 style="color:red" class="card-description"> The current form will open
+                            on <?php echo $row1['start_timestamp']; ?>.</h6>
                     </div>
                 </div>
             </div>
@@ -186,7 +187,7 @@ else{
                         <h1 class="h3 mb-4 text-gray-800">Form</h1>
                     </div>
                     <div class="row align-items-center">
-                        <h6 class="card-description"> Audit Courses </h6>
+                        <h5 class="card-description"> Audit Courses </h5>
                         <br>    
                     </div>
                     <div class="row float-right text-danger" id="response">
@@ -199,8 +200,8 @@ else{
                     <form id="prefForm" onsubmit="return confirmpref();" method="post" action="student_queries/store_preference_audit.php">
                         <?php
                             for($i=1;$i<=$row1['no_of_preferences'];$i++){ ?>
-                        <h4><?php echo "Preference $i"; ?></h4>
-                        <select id="cname<?php echo $i; ?>" class="btn btn-primary dropdown-toggle"
+                        <h4 style="color:gray;"><?php echo "Preference $i"; ?></h4>
+                        <select id="cname<?php echo $i; ?>" class="btn btn-warning dropdown-toggle"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             name="cname<?php echo $i; ?>" style="color:#ffffff;" required>
                             <!-- btn btn-primary dropdown-toggle -->
@@ -239,7 +240,7 @@ else{
     </div>
 
 <!-- confirm modal -->
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -251,7 +252,7 @@ else{
         <div class="modal-body">Are you sure you want to submit the following details?
 
                 <!-- We display the details entered by the user here -->
-                <table class="table">
+                <!-- <table class="table">
                     <tr>
                         <th>ID</th>
                         <td id="cidd"></td>
@@ -271,7 +272,7 @@ else{
         </div>
       </div>
     </div>
-  </div>
+  </div> --> 
 
 </div>
 
@@ -308,18 +309,28 @@ for ($i=1; $i <=$row1['no_of_preferences'] ; $i++) {
                         <h6 class="card-description"> Audit Courses </h6>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body text-center">
+                <h3 style="color:black;">Your submitted preferences <i class="fas fa-clipboard-check"></i></h3>
+                  <br>
                     <?php for($i=1;$i<=$row1['no_of_preferences'];$i++){ ?>
-                    <div class="row">
-                        <?php echo "Preference ".$i."-"; ?>
-                        <br>
-                        <p><?php echo "{$c_name[$i]} ({$c_id[$i]})";?></p>
-                    </div>
+                        <div class="card bg-danger text-white ">
+                        
+                        <div class="card-body shadow mb-1">
+                        <i class="fas fa-check"></i>
+                        <strong>
+                            <?php echo "Preference ".$i." :"; ?>
+                           </strong> 
+                            <?php echo "{$c_name[$i]} ({$c_id[$i]})";?>
+                        
+                            </div>
+                            </div>
                     <?php  } ?>
+                 
+                  
                     <div class="modal-footer">
                         <button type="modify" class="btn btn-primary align-center" name="modify">Modify</button>
                     </div>
-                </div>
+                  </div>
             </div>
         </div>
     </div>
