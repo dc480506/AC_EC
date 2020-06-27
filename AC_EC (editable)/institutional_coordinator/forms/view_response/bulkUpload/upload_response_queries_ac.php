@@ -1,6 +1,6 @@
 <?php
-include_once("../../../config.php");
-include_once("../../verify.php");
+include_once("../../../../config.php");
+include_once("../../../verify.php");
 $sem = mysqli_escape_string($conn, $_POST['semester']);
 $year = mysqli_escape_string($conn, $_POST['year']);
 $type = mysqli_escape_string($conn,$_POST['type']);

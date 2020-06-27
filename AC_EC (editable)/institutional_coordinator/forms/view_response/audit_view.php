@@ -1,27 +1,45 @@
 <?php
-include('../config.php');
-include_once('verify.php');
-include('../includes/header.php');
+include('../../../config.php');
+include_once('../../verify.php');
+if(!isset($_POST['view_response_btn'])){
+    header('Location: ../../../index.php');
+    exit();
+}
+include('includes/header.php');
 ?>
-<?php include('sidebar.php'); ?>
+<?php //include('sidebar.php'); ?>
 
-<?php include('../includes/topbar.php'); ?>
-
+<?php include('includes/topbar1.php'); ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <div class="card shadow mb-4">
-
+    <style type="text/css">
+            .card {
+                position: absolute;
+                top: 80px;
+                left: 0px;
+                width: 100%;
+            }
+            .view-pref{
+                font-size: 1.4em;
+            }
+        </style>
         <div class="card-header py-3">
             <div class="row align-items-center">
-                <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Responses</h4>
+                <div class="col-md-8 col-lg-7">
+                    <h5 class="font-weight-bold text-primary mb-0">
+                        <?php
+                            if($_POST['type_of_form']=='audit'){
+                                echo "Audit Course Responses: Semester ".$_POST['sem']." and Academic Year ".$_POST['yearb'];
+                            }
+                        ?></h5>
                 </div>
-                <div class="col text-right" id="delete_selected_response_div">
+                <div class="col-md-3 col-lg-3" id="delete_selected_response_div">
                     <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
                         <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Response(s)
                     </button>
                 </div>
-                <div class="col text-right">
+                <div class="col-md-2 col-lg-2">
                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadstudent">
                         <i class="fas fa-upload"></i>
                     </button>
@@ -89,7 +107,7 @@ include('../includes/header.php');
                                             <div class="form-group col-md-6">
                                                 <label for="semester"><b>Semester</b></label>
                                                 <?php
-                                                include_once("../config.php");
+                                                include_once("../../../config.php");
                                                 $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
                                                 $result = mysqli_query($conn, $sql);
                                                 $row = mysqli_fetch_assoc($result);
@@ -298,12 +316,19 @@ include('../includes/header.php');
                             text-transform: capitalize;
                             text-align: center;
                         }
+                        .text-success{
+                            color:#2ecc71!important;
+                        }
                     </style>
                 </div>
             </div>
         </div>
 
         <div class="card-body">
+            <div id="response-stats">
+            </div>
+            <br>
+            <p class="text-primary"><b>Collected Responses are as follows: </b></p>
             <table class="table table-bordered table-responsive" id="dataTable-response" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -314,14 +339,16 @@ include('../includes/header.php');
                             </div>
                         </th>
                         <th>Email Address</th>
-                        <th>Semester</th>
-                        <th>Year</th>
+                        <!-- <th>Semester</th>
+                        <th>Year</th> -->
                         <th>Roll Number</th>
-                        <!-- <th>Department</th> -->
+                        <th>Full Name</th>
+                        <th>Student's Department</th>
                         <th>Time Stamp</th>
-                        <th>Allocate Status</th>
-                        <th>No of Valid Preferences</th>
-                        <th>Preference List</th>
+                        <th>Allocation Status</th>
+                        <!-- <th>No of Valid Preferences</th> -->
+                        <!-- <th>Preference List</th> -->
+                        <th>View Preference</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -329,14 +356,16 @@ include('../includes/header.php');
                     <tr>
                         <th></th>
                         <th>Email Address</th>
-                        <th>Semester</th>
-                        <th>Year</th>
+                        <!-- <th>Semester</th>
+                        <th>Year</th> -->
                         <th>Roll Number</th>
-                        <!-- <th>Department</th> -->
+                        <th>Full Name</th>
+                        <th>Student's Department</th>
                         <th>Time Stamp</th>
-                        <th>Allocate Status</th>
-                        <th>No of Valid Preferences</th>
-                        <th>Preference List</th>
+                        <th>Allocation Status</th>
+                        <!-- <th>No of Valid Preferences</th> -->
+                        <!-- <th>Preference List</th> -->
+                        <th>View Preference</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
@@ -359,12 +388,13 @@ include('../includes/header.php');
         $("#upload_current").attr("disabled", true);
         $("#upload_current").text("Uploading...")
         $.ajax({
-            url: "view_response/bulkUpload/upload_response_queries_ac.php",
+            url: "bulkUpload/upload_response_queries_ac.php",
             type: 'POST',
             data: formData,
             success: function(data) {
                 if ($.trim(data) == "Successful") {
                     $("#upload_current").text("Uploaded Successfully")
+                    get_response_stats();
                     loadCurrent();
                 } else {
                     $("#upload_current").text("Upload Failed")
@@ -379,6 +409,7 @@ include('../includes/header.php');
     })
 
     $(document).ready(function() {
+        get_response_stats()
         loadCurrent();
         $('#uploadCurrent').on('hidden.bs.modal', function(e) {
             document.querySelector("#bulkUploadCurrent").reset();
@@ -478,35 +509,41 @@ include('../includes/header.php');
         }
     }
 
-
-
-    $(document).ready(function() {
-        loadCurrent();
-    });
     $("#delete_selected_response_btn").click(function(e) {
         alert("You have selected " + $("#dataTable-response tbody tr.selected").length + " record(s) for deletion");
         var delete_rows = $("#dataTable-response").DataTable().rows('.selected').data()
         var delete_data = {}
+        var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+		var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+		var y3=yr1+"-"+yr2;
+        var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+        var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
         for (var i = 0; i < delete_rows.length; i++) {
             baseData = {}
             baseData['email_id'] = delete_rows[i].email_id
-            baseData['sem'] = delete_rows[i].sem
-            baseData['rollno'] = delete_rows[i].rollno
             delete_data[i] = baseData
             // console.log(baseData);
         }
         var actual_data = {}
-        actual_data['type'] = 'current'
+        actual_data['sem'] = sem
+        actual_data['year'] = y3
+        actual_data['type']='audit'
+        actual_data['currently_active']=currently_active
+        actual_data['no']='0'
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json)
         $.ajax({
             type: "POST",
-            url: "ic_queries/multioperation_queries/delete_multiple_response_ac.php",
+            url: "../../ic_queries/multioperation_queries/delete_multiple_response.php",
             data: actual_delete_data_json,
             success: function(data) {
-                // console.log(data)
+                console.log("Yo")
                 $("#dataTable-response").DataTable().draw(false);
+                get_response_stats();
+            },
+            error:function(){
+                alert("Something went wrong while deleting responses!! Please try again")
             }
         })
     })
@@ -532,11 +569,12 @@ include('../includes/header.php');
             aaSorting: [],
             ajax: {
                 
-                'url': 'view_response/loadInfo/view_audit.php',
+                'url': 'loadInfo/view_audit.php',
                 'data': {
 					'year':y3,
-                         'sem':sem,
-                        'currently_active':currently_active}
+                    'sem':sem,
+                    'currently_active':currently_active
+                }
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModalCurrent)
@@ -563,14 +601,20 @@ include('../includes/header.php');
                 {
                     data: 'email_id'
                 },
-                {
-                    data: 'sem'
-                },
-                {
-                    data: 'year'
-                },
+                // {
+                //     data: 'sem'
+                // },
+                // {
+                //     data: 'year'
+                // },
                 {
                     data: 'rollno'
+                },
+                {
+                    data:'full_name'
+                },
+                {
+                    data:'dept_name'
                 },
                 {
                     data: 'timestamp'
@@ -578,18 +622,21 @@ include('../includes/header.php');
                 {
                     data: 'allocate_status'
                 },
+                // {
+                //     data: 'no_of_valid_preferences'
+                // },
+                // {
+                //     data: 'preference_list'
+                // },
                 {
-                    data: 'no_of_valid_preferences'
-                },
-                {
-                    data: 'preference_list'
+                    data: 'view_preference'
                 },
                 {
                     data: 'action'
                 },
             ],
             columnDefs: [{
-                    targets: [0, 8, 9], // column index (start from 0)
+                    targets: [0, 6,7,8], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
@@ -599,6 +646,10 @@ include('../includes/header.php');
                 {
                     className: "email_id",
                     "targets": [1]
+                },
+                {
+                    className: "view-pref-btn",
+                    "targets": [7]
                 },
             ],
         });
@@ -613,21 +664,51 @@ include('../includes/header.php');
             $("#dataTable-response tbody tr").removeClass("selected table-secondary");
         }
     })
-
+    function get_response_stats(){
+        var data={}
+        var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+		var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+        var y3=yr1+"-"+yr2;
+        var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+        var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
+        data={}
+        data['sem']=sem
+        data['year']=y3
+        data['type']='audit'
+        data['currently_active']=currently_active
+        data['no']='0'
+        var json_data = JSON.stringify(data)
+        $.ajax({
+            type:"POST",
+            url:"response_stats.php",
+            data:json_data,
+            success:function(response){
+                $("#response-stats").html(response)
+            }
+        })
+    }
     function loadModalCurrent() {
         var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
         // var btn=$(this);
+        var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+		var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+        var y3=yr1+"-"+yr2;
+        var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+        var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
         var aPos = $("#dataTable-response").dataTable().fnGetPosition(target_row.get(0));
         var courseData = $('#dataTable-response').DataTable().row(aPos).data()
         // delete courseData.action
         // console.log(courseData)
         // delete courseData.allocate_faculty
+        courseData['sem']=sem;
+        courseData['year']=y3;
+        courseData['currently_active']=currently_active
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "view_response/loadModal/audit_response_modal.php",
+            url: "loadModal/audit_response_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -650,7 +731,7 @@ include('../includes/header.php');
                     $("#delete_response_btn").attr("disabled", true);
                     $.ajax({
                         type: "POST",
-                        url: "ic_queries/audit_view_response_queries.php",
+                        url: "../../ic_queries/view_response_queries.php",
                         data: form_serialize,
                         success: function(data) {
                             //    alert(data); // show response from the php script.
@@ -662,6 +743,7 @@ include('../includes/header.php');
                             $('.modal-backdrop').remove();
                             // row.remove();
                             $("#dataTable-response").DataTable().row(aPos).remove().draw(false);
+                            get_response_stats();
                             // console.log(aPos);
                             // console.log(row)
                         }
@@ -688,7 +770,7 @@ include('../includes/header.php');
         $("#update_response_btn").attr("disabled", true);
         $.ajax({
             type: "POST",
-            url: "ic_queries/audit_view_response_queries.php",
+            url: "../../ic_queries/view_response_queries.php",
             data: form_serialize,
             success: function(data) {
                 if (data === "Exists") {
@@ -718,9 +800,53 @@ include('../includes/header.php');
             }
         });
     }
+    $("#dataTable-response").on('click','td.view-pref-btn',function(){
+    var tr = $(this).closest('tr');
+        var row = $("#dataTable-response").DataTable().row( tr );
+ 
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown table-warning');
+        }
+        else {
+            // Open this row
+            var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+            var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+            var y3=yr1+"-"+yr2;
+            var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+            var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
+            var data={}
+            data['email_id']=row.data()['email_id'];
+            data['type']='audit'
+            data['sem']=sem
+            data['year']=y3
+            data['currently_active']=currently_active
+            data['nop']=<?php echo $pref;?>;
+            data_json=JSON.stringify(data)
+            console.log(data_json)
+            $.ajax({
+                type: "POST",
+                url: "loadPrefList.php",
+                data: data_json, 
+                beforeSend:function(){
+                    row.child('Loading... <img src="../../../vendor/img/ajax-loader.gif" alt="loading" id="img-spinner">').show();
+                    tr.addClass('shown table-warning');
+                },
+                success: function(response)
+                {
+                row.child(response).show();
+                },
+                error:function(){
+                    row.child("Cannot load preferences at the moment").show();
+                }
+            });
+            // row.child("<b>Hello</b>").show();
+        }
+    })
 </script>
 
 
-<?php include('../includes/footer.php');
-include('../includes/scripts.php');
+<?php include('includes/footer.php');
+include('includes/scripts.php');
 ?>
