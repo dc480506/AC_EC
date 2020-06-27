@@ -316,12 +316,19 @@ include('includes/header.php');
                             text-transform: capitalize;
                             text-align: center;
                         }
+                        .text-success{
+                            color:#2ecc71!important;
+                        }
                     </style>
                 </div>
             </div>
         </div>
 
         <div class="card-body">
+            <div id="response-stats">
+            </div>
+            <br>
+            <p class="text-primary"><b>Collected Responses are as follows: </b></p>
             <table class="table table-bordered table-responsive" id="dataTable-response" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -387,6 +394,7 @@ include('includes/header.php');
             success: function(data) {
                 if ($.trim(data) == "Successful") {
                     $("#upload_current").text("Uploaded Successfully")
+                    get_response_stats();
                     loadCurrent();
                 } else {
                     $("#upload_current").text("Upload Failed")
@@ -401,6 +409,7 @@ include('includes/header.php');
     })
 
     $(document).ready(function() {
+        get_response_stats()
         loadCurrent();
         $('#uploadCurrent').on('hidden.bs.modal', function(e) {
             document.querySelector("#bulkUploadCurrent").reset();
@@ -504,26 +513,37 @@ include('includes/header.php');
         alert("You have selected " + $("#dataTable-response tbody tr.selected").length + " record(s) for deletion");
         var delete_rows = $("#dataTable-response").DataTable().rows('.selected').data()
         var delete_data = {}
+        var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+		var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+		var y3=yr1+"-"+yr2;
+        var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+        var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
         for (var i = 0; i < delete_rows.length; i++) {
             baseData = {}
             baseData['email_id'] = delete_rows[i].email_id
-            baseData['sem'] = delete_rows[i].sem
-            baseData['rollno'] = delete_rows[i].rollno
             delete_data[i] = baseData
             // console.log(baseData);
         }
         var actual_data = {}
-        actual_data['type'] = 'current'
+        actual_data['sem'] = sem
+        actual_data['year'] = y3
+        actual_data['type']='audit'
+        actual_data['currently_active']=currently_active
+        actual_data['no']='0'
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json)
         $.ajax({
             type: "POST",
-            url: "ic_queries/multioperation_queries/delete_multiple_response_ac.php",
+            url: "../../ic_queries/multioperation_queries/delete_multiple_response.php",
             data: actual_delete_data_json,
             success: function(data) {
-                // console.log(data)
+                console.log("Yo")
                 $("#dataTable-response").DataTable().draw(false);
+                get_response_stats();
+            },
+            error:function(){
+                alert("Something went wrong while deleting responses!! Please try again")
             }
         })
     })
@@ -644,7 +664,29 @@ include('includes/header.php');
             $("#dataTable-response tbody tr").removeClass("selected table-secondary");
         }
     })
-
+    function get_response_stats(){
+        var data={}
+        var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+		var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+        var y3=yr1+"-"+yr2;
+        var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+        var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
+        data={}
+        data['sem']=sem
+        data['year']=y3
+        data['type']='audit'
+        data['currently_active']=currently_active
+        data['no']='0'
+        var json_data = JSON.stringify(data)
+        $.ajax({
+            type:"POST",
+            url:"response_stats.php",
+            data:json_data,
+            success:function(response){
+                $("#response-stats").html(response)
+            }
+        })
+    }
     function loadModalCurrent() {
         var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
@@ -661,6 +703,7 @@ include('includes/header.php');
         // delete courseData.allocate_faculty
         courseData['sem']=sem;
         courseData['year']=y3;
+        courseData['currently_active']=currently_active
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
@@ -688,7 +731,7 @@ include('includes/header.php');
                     $("#delete_response_btn").attr("disabled", true);
                     $.ajax({
                         type: "POST",
-                        url: "ic_queries/audit_view_response_queries.php",
+                        url: "../../ic_queries/view_response_queries.php",
                         data: form_serialize,
                         success: function(data) {
                             //    alert(data); // show response from the php script.
@@ -700,6 +743,7 @@ include('includes/header.php');
                             $('.modal-backdrop').remove();
                             // row.remove();
                             $("#dataTable-response").DataTable().row(aPos).remove().draw(false);
+                            get_response_stats();
                             // console.log(aPos);
                             // console.log(row)
                         }
@@ -726,7 +770,7 @@ include('includes/header.php');
         $("#update_response_btn").attr("disabled", true);
         $.ajax({
             type: "POST",
-            url: "ic_queries/audit_view_response_queries.php",
+            url: "../../ic_queries/view_response_queries.php",
             data: form_serialize,
             success: function(data) {
                 if (data === "Exists") {
@@ -778,16 +822,20 @@ include('includes/header.php');
             data['sem']=sem
             data['year']=y3
             data['currently_active']=currently_active
+            data['nop']=<?php echo $pref;?>;
             data_json=JSON.stringify(data)
             console.log(data_json)
             $.ajax({
                 type: "POST",
                 url: "loadPrefList.php",
                 data: data_json, 
+                beforeSend:function(){
+                    row.child('Loading... <img src="../../../vendor/img/ajax-loader.gif" alt="loading" id="img-spinner">').show();
+                    tr.addClass('shown table-warning');
+                },
                 success: function(response)
                 {
                 row.child(response).show();
-                tr.addClass('shown table-warning');
                 },
                 error:function(){
                     row.child("Cannot load preferences at the moment").show();

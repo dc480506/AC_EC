@@ -1,6 +1,9 @@
 <?php
 include_once('../../../verify.php');
 include_once('../../../../config.php');
+$sem=$_POST['sem'];
+$cr=$_POST['currently_active'];
+$yr=$_POST['year'];
 $draw = $_POST['draw'];
 $row = $_POST['start'];
 $rowperpage = $_POST['length']; // Rows display per page
@@ -19,20 +22,27 @@ $searchValue = $_POST['search']['value']; // Search value
 ## Search 
 $searchQuery = "1";
 if($searchValue != ''){
-   $searchQuery = " (email_id like '%".$searchValue."%' or sem like '%".$searchValue."%' or year like '%".$searchValue."%' or rollno like '%".$searchValue."%' or timestamp like '%".$searchValue."%' or allocate_status like '%".$searchValue."%' or no_of_valid_preferences like '%".$searchValue."%' ) ";
+   $searchQuery = " (s.email_id like '%".$searchValue."%'  or s.rollno like '%".$searchValue."%' or s.fname like '%".$searchValue."%' or s.mname like '%".$searchValue."%' or s.lname like '%".$searchValue."%') ";
 }
 
 ## Total number of records without filtering
-$sel = mysqli_query($conn,"select count(*) as totalcount from student_preference_audit");
+if($cr<2){
+   $sel = mysqli_query($conn,"select count(*) as totalcount from student_preference_audit WHERE year='$yr' AND  sem='$sem'");
+}else{
+   $sel = mysqli_query($conn,"select count(*) as totalcount from student_preference_audit_log WHERE year='$yr' AND  sem='$sem'");
+}
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
-$sel = mysqli_query($conn,"select count(*) as totalcountfilters from student_preference_audit WHERE ".$searchQuery);
+if($cr<2){
+   $sel = mysqli_query($conn,"select count(*) as totalcountfilters from student_preference_audit spa 
+                  INNER JOIN student s ON s.email_id=spa.email_id  WHERE year='$yr' AND  sem='$sem' AND ".$searchQuery);
+}else{
+   $sel = mysqli_query($conn,"select count(*) as totalcountfilters from student_preference_audit_log spa 
+            INNER JOIN student s ON s.email_id=spa.email_id  WHERE year='$yr' AND  sem='$sem' AND ".$searchQuery);
+}
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
-$sem=$_POST['sem'];
-$cr=$_POST['currently_active'];
-$yr=$_POST['year'];
 //echo $yr;
 //echo $sem;
 ##Fetch Record
@@ -41,8 +51,9 @@ $sql="select s.email_id,s.rollno,CONCAT(fname,' ',mname,' ',lname) as full_name,
    FROM student_preference_audit spa INNER JOIN student s INNER JOIN department d
    ON s.email_id=spa.email_id AND s.dept_id=d.dept_id WHERE year='$yr' AND  sem='$sem' AND currently_active='$cr' and ".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 }else{
-   "select *  
-       from student_preference_audit_log WHERE year='$yr' AND  sem='$sem' and ".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
+   $sql="select s.email_id,s.rollno,CONCAT(fname,' ',mname,' ',lname) as full_name, dept_name,spa.timestamp,allocate_status
+   FROM student_preference_audit_log spa INNER JOIN student s INNER JOIN department d
+   ON s.email_id=spa.email_id AND s.dept_id=d.dept_id WHERE year='$yr' AND  sem='$sem' and ".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 }
 $studentRecords = mysqli_query($conn, $sql);
 //echo $sql;
