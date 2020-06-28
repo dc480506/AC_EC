@@ -364,9 +364,9 @@ $output=shell_exec($cmd." 2>&1");
                         echo "
                         {
                             data: 'gpa'
-                        },";
+                        }";
                     }
-                ?>
+                ?>,
                 {
                     data: 'timestamp'
                 },
@@ -376,14 +376,15 @@ $output=shell_exec($cmd." 2>&1");
             ],
             columnDefs: [{
                 orderable: false ,
+                targets:
                 <?php
                     if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
                     echo "
-                    targets:[3,6],
+                      [3,6],
                     ";
                     }else{
                     echo "
-                    targets: [3,5],
+                     [3,5],
                     ";
                     }
                 ?>
@@ -424,9 +425,9 @@ $output=shell_exec($cmd." 2>&1");
                         echo "
                         {
                             data: 'gpa'
-                        },";
+                        }";
                     }
-                ?>
+                ?>,
                 {
                     data: 'timestamp'
                 },

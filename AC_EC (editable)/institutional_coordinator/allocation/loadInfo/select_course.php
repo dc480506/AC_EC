@@ -48,9 +48,11 @@ $totalStudentCount=$res['totalStudentCount'];
 //        GROUP BY 'all') as app 
 //        from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 "
 //        .$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
-$sql="select cid,cname,max,min,
-(select count(*) as firstprefCount from student_preference_audit spa where ac.cid=spa.pref1) as firstcount,
-round((select count(*)/{$totalStudentCount}*100 as firstpercentCount from student_preference_audit spa where ac.cid=spa.pref1),2) as firstpercent 
+$sql="select cid,cname,max,min,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM ".$_SESSION['type']."_course_floating_dept afd 
+INNER JOIN department d ON afd.dept_id=d.dept_id WHERE ac.cid=afd.cid AND ac.sem=afd.sem AND ac.year=afd.year
+GROUP BY 'all') as offering_dept,
+(select count(*) as firstprefCount from {$_SESSION['student_pref']} spa where ac.cid=spa.pref1) as firstcount,
+round((select count(*)/{$totalStudentCount}*100 as firstpercentCount from {$_SESSION['student_pref']} spa where ac.cid=spa.pref1),2) as firstpercent 
 from {$_SESSION['course_table']} ac WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}'".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
@@ -70,6 +72,7 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
                      </div>',
       "cname"=>'<span class='.$color.'>'.$row['cname'].'</span>',
       "cid"=>'<span class='.$color.'>'.$row['cid'].'</span>',
+      "offering_dept"=>'<span class='.$color.'>'.$row['offering_dept'].'</span>',
       "max"=>'<span class='.$color.'>'.$row['max'].'</span>',
       "min"=>'<span class='.$color.'>'.$row['min'].'</span>',
       "firstpercent"=>'<span class='.$color.'>'.$row['firstpercent'].'</span>',

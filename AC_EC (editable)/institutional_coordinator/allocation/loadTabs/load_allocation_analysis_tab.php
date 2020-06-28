@@ -44,6 +44,7 @@ $output=shell_exec($cmd." 2>&1");
                     </th>
                     <th>Course Name</th>
                     <th>Course ID</th>
+                    <th>Offering Dept.</th>
                     <th>MIN Students</th>
                     <th>MAX Students</th>
                     <th>No of Students Allocated</th>
@@ -57,6 +58,7 @@ $output=shell_exec($cmd." 2>&1");
                     <th></th>
                     <th>Course Name</th>
                     <th>Course ID</th>
+                    <th>Offering Dept.</th>
                     <th>MIN Students</th>
                     <th>MAX Students</th>
                     <th>No of Students Allocated</th>
@@ -101,6 +103,34 @@ $output=shell_exec($cmd." 2>&1");
             ajax: {
                 'url': '../allocation/loadInfo/course_analysis.php'
             },
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: `<?php 
+                if($_SESSION['type']=='audit'){
+                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-Course-Stats";
+                }
+                ?>`,
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6,7,8]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: `<?php 
+                if($_SESSION['type']=='audit'){
+                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-Course-Stats";
+                }
+                ?>`,
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6,7,8]
+                },
+            }],
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModalCurrent)
                 $(".selectrow").attr("disabled", true);
@@ -128,6 +158,9 @@ $output=shell_exec($cmd." 2>&1");
                 },
                 {
                     data: 'cid'
+                },
+                {
+                    data: 'offering_dept'
                 },
                 {
                     data: 'min'

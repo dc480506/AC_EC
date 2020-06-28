@@ -132,6 +132,7 @@
                                     </th>
                                     <th>Course Name</th>
                                     <th>Course ID</th>
+                                    <th>Offering Dept.</th>
                                     <th>MIN Students</th>
                                     <th>MAX Students</th>
                                     <th>1st Preference %</th>
@@ -144,6 +145,7 @@
                                     <th></th>
                                     <th>Course Name</th>
                                     <th>Course ID</th>
+                                    <th>Offering Dept.</th>
                                     <th>MIN Students</th>
                                     <th>MAX Students</th>
                                     <th>1st Preference %</th>
@@ -182,6 +184,34 @@
             aaSorting: [],
             pageLength:50,
             // paging:false,
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: `<?php 
+                if($_SESSION['type']=='audit'){
+                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-First-Preference-Stats";
+                }
+                ?>`,
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6,7]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: `<?php 
+                if($_SESSION['type']=='audit'){
+                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-First-Preference-Stats";
+                }
+                ?>`,
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6,7]
+                },
+            }],
             ajax: {
                 'url': '../allocation/loadInfo/select_course.php'
             },
@@ -212,6 +242,9 @@
                 },
                 {
                     data: 'cid'
+                },
+                {
+                    data: 'offering_dept'
                 },
                 {
                     data: 'min'
