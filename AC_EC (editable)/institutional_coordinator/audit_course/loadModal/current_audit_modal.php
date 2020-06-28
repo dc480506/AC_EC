@@ -138,6 +138,18 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
     $years .= "<option value='" . $row['year'] . "'>" . $row['year'] . "</option>";
   }
 
+  $syllabusQuery = 'select syllabus_path from audit_course where cid = "' . $cid . '"';
+  $syllabus_path = mysqli_fetch_assoc(mysqli_query($conn, $syllabusQuery))['syllabus_path'];
+  $removeSyllabusForm = "";
+  if ($syllabus_path != "")
+    $removeSyllabusForm = '<form id = "remove_syllabus_form">
+    <input type="hidden" name="cid" value="' . $cid . '">
+    <input type="hidden" name="syllabus_path" value="' . $syllabus_path . '">
+    <input type="hidden" name="type" value="CURRENT">
+    <button type="submit" class="btn btn-danger" id="remove_syllabus_btn" name="remove_syllabus">Remove Existing</button>
+    <br><br>
+     </form>';
+
   echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
               <div class="modal-dialog modal-lg modal-dialog-centered"  role="document">
                 <div class="modal-content">
@@ -275,7 +287,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                         </div>
                       <!--end Map-->
 
-                      <div class="tab-pane fade show" id="nav-syllabus" role="tabpanel" aria-labelledby="nav-syllabus-tab">
+                      <div class="tab-pane fade show" id="nav-syllabus" role="tabpanel" aria-labelledby="nav-syllabus-tab"><br>
+                      ' . $removeSyllabusForm . '
                        <form id="upload_syllabus" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="year" value="' . $year . '"/>
                           <input type="hidden" name="sem" value="' . $sem . '"/>
@@ -287,6 +300,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           </div>
 
                            <button type="submit" class="btn btn-primary" id="upload_syllabus_btn" name="upload_syllabus">upload</button>
+                           <br/>
                           </form>
                       </div>
 

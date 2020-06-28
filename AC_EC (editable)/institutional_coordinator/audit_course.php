@@ -1761,6 +1761,21 @@ include('../includes/header.php');
                             console.log(e);
                         }
                     })
+                });
+                $("#remove_syllabus_form").submit(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        method: "POST",
+                        url: "ic_queries/remove_syllabus.php",
+                        data: $(this).serializeArray(),
+                        success: function(data) {
+                            console.log(data);
+                        },
+                        error: function(e) {
+                            console.log(e);
+                        }
+                    })
+
                 })
 
                 $('#add_similar_course').submit(function(e) {
@@ -2387,6 +2402,21 @@ include('../includes/header.php');
                         }
                     })
                 })
+                $("#remove_syllabus_form").submit(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        method: "POST",
+                        url: "ic_queries/remove_syllabus.php",
+                        data: $(this).serializeArray(),
+                        success: function(data) {
+                            console.log(data);
+                        },
+                        error: function(e) {
+                            console.log(e);
+                        }
+                    })
+
+                })
 
                 $('#add_similar_course').submit(function(e) {
                     e.preventDefault();
@@ -3008,6 +3038,21 @@ include('../includes/header.php');
                             console.log(e);
                         }
                     })
+                })
+                $("#remove_syllabus_form").submit(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        method: "POST",
+                        url: "ic_queries/remove_syllabus.php",
+                        data: $(this).serializeArray(),
+                        success: function(data) {
+                            console.log(data);
+                        },
+                        error: function(e) {
+                            console.log(e);
+                        }
+                    })
+
                 })
 
                 $('#add_similar_course').submit(function(e) {

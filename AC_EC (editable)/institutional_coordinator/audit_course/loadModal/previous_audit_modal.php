@@ -127,6 +127,18 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
     $years .= "<option value='" . $row['year'] . "'>" . $row['year'] . "</option>";
   }
 
+  $syllabusQuery = 'select syllabus_path from audit_course_log where cid = "' . $cid . '"';
+  $syllabus_path = mysqli_fetch_assoc(mysqli_query($conn, $syllabusQuery))['syllabus_path'];
+  $removeSyllabusForm = "";
+  if ($syllabus_path != "")
+    $removeSyllabusForm = '<form id = "remove_syllabus_form">
+    <input type="hidden" name="cid" value="' . $cid . '">
+    <input type="hidden" name="syllabus_path" value="' . $syllabus_path . '">
+    <input type="hidden" name="type" value="PREVIOUS">
+    <button type="submit" class="btn btn-danger" id="remove_syllabus_btn" name="remove_syllabus">Remove Existing</button>
+    <br><br>
+     </form>';
+
   // $dept_div .= '<div class="form-group">
   //                 <label for="exampleInputDepartment"><b>Floating Department</b></label>
   //                 <select class="form-control" required name="dept_id">';
@@ -274,6 +286,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                         </div>
                       <!--end Map-->
                       <div class="tab-pane fade show" id="nav-syllabus" role="tabpanel" aria-labelledby="nav-syllabus-tab">
+                      ' . $removeSyllabusForm . '
                        <form id="upload_syllabus" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="year" value="' . $year . '"/>
                           <input type="hidden" name="sem" value="' . $sem . '"/>
