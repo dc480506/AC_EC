@@ -151,6 +151,7 @@ else{
 
     //session variable to store end timestamp
     $_SESSION['endTime']=$row1['end_timestamp'];
+    $endTime = new DateTime($_SESSION['endTime']);
     $sem=$row1['sem'];
     $year=$row1['year'];
     $_SESSION['year']=$year;
@@ -327,9 +328,9 @@ for ($i=1; $i <=$row1['no_of_preferences'] ; $i++) {
                     <?php  } ?>
                  
                   
-                    <div class="modal-footer">
+                    <!-- <div class="modal-footer">
                         <button type="modify" class="btn btn-primary align-center" name="modify">Modify</button>
-                    </div>
+                    </div> -->
                   </div>
             </div>
         </div>
@@ -433,14 +434,64 @@ $(".dropdown-toggle").eq(0).trigger('change');
 
 <script src="https://kit.fontawesome.com/57397afa58.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <!-- ajax to update timer dynamically -->
+       
         <script type="text/javascript">
-           setInterval(() => {
-               var xmlhttp=new XMLHttpRequest();
-               xmlhttp.open("GET","timer.php",false);
-               xmlhttp.send(null);
-               document.getElementById("response").innerHTML=xmlhttp.responseText;
-           }, 1000);
+        var m=new Date("<?php echo " ". date_format($endTime,"Y m d H:i:s") ?>");
+        console.log(m);
+        // var countDownDate = new Date("June 28, 2020 13:59:00").getTime();
+        var countDownDate=(m.getTime());
+        
+        var x = setInterval(function() {
+        // Get today's date and time
+        var now1 = new Date();
+        var now=now1.getTime();
+        
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now; 
+        console.log(distance);
+        if(now<countDownDate || (distance>-1000) )
+        {
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+        document.getElementById("response").innerHTML = `<p style="font-size:17px;"><i class="fas fa-stopwatch" style="font-size:30px;"></i>&nbsp;`+ "Form closes in " +days+" days, "  + hours + " hours, "
+        + minutes + " minutes " +"and " +seconds + " seconds.";   
+        // if(distance==0)
+        // {
+        //     console.log("here");
+        //     document.getElementById("response").innerHTML = "Expired";
+        //     window.location.reload();
+        // }
+        console.log("now1:"+now1);
+        console.log(m);
+        var res=(now1.toString()).localeCompare(m.toString());
+
+        if (distance > 0 && distance<1000) {
+            console.log("ho");
+            // window.location.reload();
+            document.getElementById("response").innerHTML = "";   
+              
+        }
+
+        else if(res==0)
+        {
+            console.log("hi");
+            window.location.reload();
+            document.getElementById("response").innerHTML = "";   
+            clearInterval(x); 
+        }
+    }   
+        }, 1000);
+        //    setInterval(() => {
+        //        var xmlhttp=new XMLHttpRequest();
+        //        xmlhttp.open("GET","timer.php",false);
+        //        xmlhttp.send(null);
+        //        document.getElementById("response").innerHTML=xmlhttp.responseText;
+        //    }, 1000);
+       
            var ar=[];
             $('#ResetForm').click(function() {
                 // console.log("hiiiii0");
