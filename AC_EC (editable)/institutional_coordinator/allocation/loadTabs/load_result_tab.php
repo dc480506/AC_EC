@@ -235,6 +235,7 @@ $output=shell_exec($cmd." 2>&1");
                                 <tr>
                                     <th>Course Name</th>
                                     <th>Course ID</th>
+                                    <th>Offering Dept.</th>
                                     <th>Min</th>
                                     <th>Max</th>
                                     <th>No of Students Allocated</th>
@@ -245,6 +246,7 @@ $output=shell_exec($cmd." 2>&1");
                                 <tr>
                                     <th>Course Name</th>
                                     <th>Course ID</th>
+                                    <th>Offering Dept.</th>
                                     <th>Min</th>
                                     <th>Max</th>
                                     <th>No of Students Allocated</th>
@@ -455,6 +457,34 @@ $output=shell_exec($cmd." 2>&1");
             destroy: true,
             serverMethod: 'post',
             aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: `<?php 
+                if($_SESSION['type']=='audit'){
+                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-Final-Allocation-Course-Stats";
+                }
+                ?>`,
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [0,1, 2, 3, 4, 5]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: `<?php 
+                if($_SESSION['type']=='audit'){
+                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-Final-Allocation-Course-Stats";
+                }
+                ?>`,
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [0,1, 2, 3, 4, 5]
+                },
+            }],
             ajax: {
                 'url': '../allocation/loadInfo/result_tab/course_status.php'
             },
@@ -465,9 +495,9 @@ $output=shell_exec($cmd." 2>&1");
                 {
                     data: 'cid'
                 },
-                // {
-                //     data: 'dept_name'
-                // },
+                {
+                    data: 'offering_dept'
+                },
                 {
                     data: 'min'
                 },
@@ -482,10 +512,10 @@ $output=shell_exec($cmd." 2>&1");
                 }
             ],
             columnDefs: [{
-                    targets: [5], // column index (start from 0)
+                    targets: [6], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
-                { className: "view_analysis", "targets": [ 5 ] },
+                { className: "view_analysis", "targets": [ 6 ] },
             ],
            })
     }
@@ -550,7 +580,7 @@ $output=shell_exec($cmd." 2>&1");
     })
 
     $("#dataTable-courses").on('click','td.view_analysis',function(){
-    var tr = $(this).closest('tr');
+        var tr = $(this).closest('tr');
         var row = $("#dataTable-courses").DataTable().row( tr );
  
         if (row.child.isShown()) {

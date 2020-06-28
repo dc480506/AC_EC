@@ -24,7 +24,7 @@
         `cid` varchar(30) NOT NULL,
         `sem` int(11) NOT NULL,
         `year` varchar(8) NOT NULL,
-        `cname` varchar(50) NOT NULL,
+        `cname` varchar(100) NOT NULL,
         `currently_active` tinyint(4) NOT NULL DEFAULT 0,
         `min` int(11) NOT NULL,
         `max` int(11) NOT NULL,
