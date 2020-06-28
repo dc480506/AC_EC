@@ -204,10 +204,23 @@ include('includes/header.php');
                                                 </div>
                                                 <div class="form-row mt-4">
                                                     <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
-                                                        <label class="form-check-label" for="exampleCheck">Add preference column name</label>
+                                                        <!-- <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()"> -->
+                                                        <p class="text-primary">Add Preference column names</p>
                                                         <!-- </div> -->
-                                                        <div id="map_section" style="display: none;">
+                                                        <div id="map_section">
+                                                        <?php
+                                                           for($i=1;$i<=$_POST['no_of_preferences'];$i++){
+                                                               echo '
+                                                               <div id="pref_'.$i.'" >
+                                                                <div class="form-group" id="pref_field1_ '.$i.'" style="display: block;">
+                                                                    <label for="pref_field1"><b>Preference Number '.$i.'</b></label>
+                                                                    <input type="text" class="form-control prefid"  required id="pref_id'.$i.'" name="prefid'.$i.'" value="pref'.$i.'" placeholder="Enter the column name of preference number '.$i.'">
+                                                                </div>
+                                                            </div>
+                                                               ';
+                                                           }
+                                                        ?>
+                                                            
                                                         </div>
                                                         <div class="form-group">
                                                             <!-- <button type="button" id="add_pref" class="btn btn-primary" style="display: none;">Add</button> -->
@@ -219,7 +232,7 @@ include('includes/header.php');
                                                                 </span>
                                                                 <span class="text">Add</span>
                                                             </button>
-                                                            <input type="hidden" value="0" id="total_pref" name="total_pref">
+                                                            <input type="hidden" value="<?php echo $_POST['no_of_preferences']?>" id="total_pref" name="total_pref">
                                                         </div>
                                                     </div>
                                                 </div>
