@@ -1597,7 +1597,7 @@ include('../includes/header.php');
                     else
                         document.querySelector("#show").style.display = "none"
                 });
-                $('#search_text').keyup(function() {
+                $('#search_text').keyup(debounce(function() {
                     var txt = $(this).val();
                     var txt2 = $('#temp_allocated_faculty').val();
                     if (txt == '') {
@@ -1626,7 +1626,7 @@ include('../includes/header.php');
                             }
                         });
                     }
-                });
+                }, 300));
             }
         });
     }
@@ -2222,7 +2222,7 @@ include('../includes/header.php');
                     else
                         document.querySelector("#show").style.display = "none"
                 });
-                $('#search_text').keyup(function() {
+                $('#search_text').keyup(debounce(function() {
                     var txt = $(this).val();
                     var txt2 = $('#temp_allocated_faculty').val();
                     if (txt == '') {
@@ -2251,7 +2251,7 @@ include('../includes/header.php');
                             }
                         });
                     }
-                });
+                }, 300));
             }
         });
     }
@@ -2850,7 +2850,7 @@ include('../includes/header.php');
                     else
                         document.querySelector("#show").style.display = "none"
                 });
-                $('#search_text').keyup(function() {
+                $('#search_text').keyup(debounce(function() {
                     var txt = $(this).val();
                     var txt2 = $('#temp_allocated_faculty').val();
                     if (txt == '') {
@@ -2873,13 +2873,13 @@ include('../includes/header.php');
                                     $('#hiddenemailid').val(y.val());
                                     $('.showtext').html(x.concat(' <i class="fa fa-caret-down"></i>'));
                                     document.querySelector("#show").style.display = "none";
-                                    $('#search_text').val("");
+                                    $('# _text').val("");
                                     $('#result').html('');
                                 });
                             }
                         });
                     }
-                });
+                }, 300));
             }
         });
     }
