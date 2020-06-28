@@ -1755,10 +1755,10 @@ include('../includes/header.php');
                         cache: false,
                         processData: false,
                         success: function(data) {
-                            console.log(data);
+                            $("#update-del-modal").modal('hide');
                         },
                         error: function(e) {
-                            console.log(e);
+                            window.alert(e);
                         }
                     })
                 });
@@ -1769,10 +1769,10 @@ include('../includes/header.php');
                         url: "ic_queries/remove_syllabus.php",
                         data: $(this).serializeArray(),
                         success: function(data) {
-                            console.log(data);
+                            $("#remove_syllabus_form *").hide();
                         },
                         error: function(e) {
-                            console.log(e);
+                            window.alert(e);
                         }
                     })
 
@@ -2395,10 +2395,10 @@ include('../includes/header.php');
                         cache: false,
                         processData: false,
                         success: function(data) {
-                            console.log(data);
+                            $("#update-del-modal").modal('hide');
                         },
                         error: function(e) {
-                            console.log(e);
+                            window.alert(e);
                         }
                     })
                 })
@@ -2409,11 +2409,12 @@ include('../includes/header.php');
                         url: "ic_queries/remove_syllabus.php",
                         data: $(this).serializeArray(),
                         success: function(data) {
-                            console.log(data);
+                            $("#remove_syllabus_form *").hide();
                         },
                         error: function(e) {
-                            console.log(e);
+                            window.alert(e);
                         }
+
                     })
 
                 })
@@ -3032,10 +3033,10 @@ include('../includes/header.php');
                         cache: false,
                         processData: false,
                         success: function(data) {
-                            console.log(data);
+                            $("#update-del-modal").modal('hide');
                         },
                         error: function(e) {
-                            console.log(e);
+                            window.alert(e);
                         }
                     })
                 })
@@ -3046,10 +3047,10 @@ include('../includes/header.php');
                         url: "ic_queries/remove_syllabus.php",
                         data: $(this).serializeArray(),
                         success: function(data) {
-                            console.log(data);
+                            $("#remove_syllabus_form *").hide();
                         },
                         error: function(e) {
-                            console.log(e);
+                            window.alert(e);
                         }
                     })
 
