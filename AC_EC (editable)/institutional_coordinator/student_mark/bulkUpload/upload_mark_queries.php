@@ -18,11 +18,6 @@ include_once("../../verify.php");
         // $command = escapeshellcmd($cmd);
         // echo $cmd;
         $output = shell_exec($cmd." 2>&1");
-        //echo $output;
-        if(strpos($output,"Duplicate entry")){
-    echo "Import Unsuccessful as adding caused duplicate entries";
-}else{
-    echo $output;
-}
+        echo $output;
         exit();
 ?>

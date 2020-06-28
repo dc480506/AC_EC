@@ -47,10 +47,7 @@ $args .= '"]';
 $cmd = 'python student_preference.py ' . $args;
 // echo $cmd;
 $output = shell_exec($cmd . " 2>&1");
-if (strpos($output, "Duplicate entry")) {
-    echo "Import Unsuccessful as adding caused duplicate entries";
-} else {
-    echo $output;
-}
+echo $output;
+
 exit();
 ?>
