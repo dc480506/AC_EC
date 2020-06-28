@@ -123,7 +123,7 @@ underflow_stu_list=[]
 
 # print("After 1st iteration:")
 for cid,v in courses.items():
-	if(len(stu_course[cid])<v[0] and (len(stu_course[cid])!=0)):
+	if(len(stu_course[cid])<v[0]):
 		under.append(cid)
 		underflow_stu_list.extend(x for x in stu_course[cid])
 		count2=count2+1
