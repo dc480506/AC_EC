@@ -48,7 +48,10 @@ $totalStudentCount=$res['totalStudentCount'];
 //        GROUP BY 'all') as app 
 //        from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 "
 //        .$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
-$sql="select ct.cname,ct.cid,ct.max,ct.min,ct.no_of_allocated,cai.status,cai.no_of_hits from {$_SESSION['course_table']} ct INNER JOIN {$_SESSION['course_allocate_info']} cai ON ct.cid=cai.cid AND ct.sem=cai.sem AND ct.year=cai.year WHERE ct.sem='{$_SESSION['sem']}' and ct.year='{$_SESSION['year']}'".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
+$sql="select ct.cname,ct.cid,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM ".$_SESSION['type']."_course_floating_dept afd 
+INNER JOIN department d ON afd.dept_id=d.dept_id WHERE ct.cid=afd.cid AND ct.sem=afd.sem AND ct.year=afd.year
+GROUP BY 'all') as offering_dept,
+ ct.max,ct.min,ct.no_of_allocated,cai.status,cai.no_of_hits from {$_SESSION['course_table']} ct INNER JOIN {$_SESSION['course_allocate_info']} cai ON ct.cid=cai.cid AND ct.sem=cai.sem AND ct.year=cai.year WHERE ct.sem='{$_SESSION['sem']}' and ct.year='{$_SESSION['year']}'".$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;
@@ -74,6 +77,7 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
                      </div>',
       "cname"=>'<span class='.$color.'>'.$row['cname'].'</span>',
       "cid"=>'<span class='.$color.'>'.$row['cid'].'</span>',
+      "offering_dept"=>'<span class='.$color.'>'.$row['offering_dept'].'</span>',
       "max"=>'<span class='.$color.'>'.$row['max'].'</span>',
       "min"=>'<span class='.$color.'>'.$row['min'].'</span>',
       "no_of_allocated"=>'<span class='.$color.'>'.$row['no_of_allocated'].'</span>',
