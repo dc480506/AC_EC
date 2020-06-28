@@ -139,7 +139,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   }
 
   echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-dialog modal-lg modal-dialog-centered"  role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalCenterTitle1">Action</h5>
@@ -152,7 +152,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                           <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
                           <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a> 
-                          <a class="nav-item nav-link" id="nav-map-tab" data-toggle="tab" href="#nav-map" role="tab" aria-controls="nav-map" aria-selected="false">Similar Previous Courses</a>                        
+                          <a class="nav-item nav-link" id="nav-map-tab" data-toggle="tab" href="#nav-map" role="tab" aria-controls="nav-map" aria-selected="false">Similar Previous Courses</a> 
+                          <a class="nav-item nav-link" id="nav-map-tab" data-toggle="tab" href="#nav-syllabus" role="tab" aria-controls="nav-syllabus" aria-selected="false">Upload Syllabus</a>                        
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -273,6 +274,23 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           </form>
                         </div>
                       <!--end Map-->
+
+                      <div class="tab-pane fade show" id="nav-syllabus" role="tabpanel" aria-labelledby="nav-syllabus-tab">
+                       <form id="upload_syllabus" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="year" value="' . $year . '"/>
+                          <input type="hidden" name="sem" value="' . $sem . '"/>
+                          <input type="hidden" name="cid" value="' . $cid . '"/>
+                          <input type="hidden" name="cname" value="' . $cname . '"/>
+
+                          <div class="form-group files color">                                                          
+                              <input type="file" name="UploadSyllabusfile" class="form-control" required />
+                          </div>
+
+                           <button type="submit" class="btn btn-primary" id="upload_syllabus_btn" name="upload_syllabus">upload</button>
+                          </form>
+                      </div>
+
+
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                           <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>

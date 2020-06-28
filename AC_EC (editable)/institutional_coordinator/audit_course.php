@@ -760,6 +760,10 @@ include('../includes/header.php');
                                                     background-color: #f1f1f1;
                                                 }
 
+                                                .modal-lg {
+                                                    width: 600px
+                                                }
+
                                                 .files:before {
                                                     position: absolute;
                                                     bottom: 10px;
@@ -1736,6 +1740,29 @@ include('../includes/header.php');
                     }
                 })
 
+                $("#upload_syllabus").submit(function(e) {
+                    e.preventDefault();
+                    console.log("abcd")
+                    var data = new FormData(this);
+                    data.append("upload_syllabus", true);
+                    data.append("courseType", "CURRENT");
+                    $.ajax({
+                        method: "POST",
+                        enctype: 'multipart/form-data',
+                        url: "ic_queries/upload_syllabus.php",
+                        data: data,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(data) {
+                            console.log(data);
+                        },
+                        error: function(e) {
+                            console.log(e);
+                        }
+                    })
+                })
+
                 $('#add_similar_course').submit(function(e) {
                     e.preventDefault();
                     var form = $(this);
@@ -2338,6 +2365,29 @@ include('../includes/header.php');
                     }
                 })
 
+                $("#upload_syllabus").submit(function(e) {
+                    e.preventDefault();
+                    console.log("abcd")
+                    var data = new FormData(this);
+                    data.append("upload_syllabus", true);
+                    data.append("courseType", "UPCOMING");
+                    $.ajax({
+                        method: "POST",
+                        enctype: 'multipart/form-data',
+                        url: "ic_queries/upload_syllabus.php",
+                        data: data,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(data) {
+                            console.log(data);
+                        },
+                        error: function(e) {
+                            console.log(e);
+                        }
+                    })
+                })
+
                 $('#add_similar_course').submit(function(e) {
                     e.preventDefault();
                     var form = $(this);
@@ -2935,6 +2985,29 @@ include('../includes/header.php');
                             }
                         })
                     }
+                })
+
+                $("#upload_syllabus").submit(function(e) {
+                    e.preventDefault();
+                    console.log("abcd")
+                    var data = new FormData(this);
+                    data.append("upload_syllabus", true);
+                    data.append("courseType", "PREVIOUS");
+                    $.ajax({
+                        method: "POST",
+                        enctype: 'multipart/form-data',
+                        url: "ic_queries/upload_syllabus.php",
+                        data: data,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(data) {
+                            console.log(data);
+                        },
+                        error: function(e) {
+                            console.log(e);
+                        }
+                    })
                 })
 
                 $('#add_similar_course').submit(function(e) {
