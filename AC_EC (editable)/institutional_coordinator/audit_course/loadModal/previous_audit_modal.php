@@ -296,8 +296,12 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <div class="form-group files color">                                                          
                               <input type="file" name="UploadSyllabusfile" class="form-control" required />
                           </div>
-
-                           <button type="submit" class="btn btn-primary" id="upload_syllabus_btn" name="upload_syllabus">upload</button>
+                             <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary" id="upload_syllabus_btn" name="upload_syllabus">upload</button>
+                            <div class="progress w-50 mx-2" style="display:none;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
+                              </div>
+                          </div>
                           </form>
                       </div>
                       <div class="modal-footer">
