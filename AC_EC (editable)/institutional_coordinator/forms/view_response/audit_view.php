@@ -424,7 +424,7 @@ include('includes/header.php');
     $(document).ready(function() {
         get_response_stats()
         loadCurrent();
-        $('#uploadCurrent').on('hidden.bs.modal', function(e) {
+        $('#uploadstudent').on('hidden.bs.modal', function(e) {
             document.querySelector("#bulkUploadCurrent").reset();
             $("#upload_current").text("Upload")
             $("#upload_current").attr("disabled", false);
