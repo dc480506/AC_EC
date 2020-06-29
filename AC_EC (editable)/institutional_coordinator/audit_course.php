@@ -1597,7 +1597,7 @@ include('../includes/header.php');
                     else
                         document.querySelector("#show").style.display = "none"
                 });
-                $('#search_text').keyup(function() {
+                $('#search_text').keyup(debounce(function() {
                     var txt = $(this).val();
                     var txt2 = $('#temp_allocated_faculty').val();
                     if (txt == '') {
@@ -1626,7 +1626,7 @@ include('../includes/header.php');
                             }
                         });
                     }
-                });
+                }, 300));
             }
         });
     }
@@ -1747,6 +1747,7 @@ include('../includes/header.php');
                     data.append("upload_syllabus", true);
                     data.append("courseType", "CURRENT");
                     $.ajax({
+
                         method: "POST",
                         enctype: 'multipart/form-data',
                         url: "ic_queries/upload_syllabus.php",
@@ -1754,13 +1755,42 @@ include('../includes/header.php');
                         contentType: false,
                         cache: false,
                         processData: false,
+                        xhr: function() {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener("progress", function(evt) {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = ((evt.loaded / evt.total) * 100);
+                                    $('#upload_syllabus .progress-bar').css('width', percentComplete + '%').attr('aria-valuenow', percentComplete);
+                                    console.log(percentComplete)
+                                }
+                            }, false);
+                            return xhr;
+                        },
+                        beforeSend: function() {
+                            $('#upload_syllabus .progress').show();
+                        },
                         success: function(data) {
-                            console.log(data);
+                            $("#upload_syllabus_btn").html('uploaded successfully').attr('disabled', true)
                         },
                         error: function(e) {
-                            console.log(e);
+                            window.alert(e);
                         }
                     })
+                });
+                $("#remove_syllabus_form").submit(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        method: "POST",
+                        url: "ic_queries/remove_syllabus.php",
+                        data: $(this).serializeArray(),
+                        success: function(data) {
+                            $("#remove_syllabus_form *").hide();
+                        },
+                        error: function(e) {
+                            window.alert(e);
+                        }
+                    })
+
                 })
 
                 $('#add_similar_course').submit(function(e) {
@@ -2222,7 +2252,7 @@ include('../includes/header.php');
                     else
                         document.querySelector("#show").style.display = "none"
                 });
-                $('#search_text').keyup(function() {
+                $('#search_text').keyup(debounce(function() {
                     var txt = $(this).val();
                     var txt2 = $('#temp_allocated_faculty').val();
                     if (txt == '') {
@@ -2251,7 +2281,7 @@ include('../includes/header.php');
                             }
                         });
                     }
-                });
+                }, 300));
             }
         });
     }
@@ -2379,13 +2409,43 @@ include('../includes/header.php');
                         contentType: false,
                         cache: false,
                         processData: false,
+                        xhr: function() {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener("progress", function(evt) {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = ((evt.loaded / evt.total) * 100);
+                                    $('#upload_syllabus .progress-bar').css('width', percentComplete + '%').attr('aria-valuenow', percentComplete);
+                                    console.log(percentComplete)
+                                }
+                            }, false);
+                            return xhr;
+                        },
+                        beforeSend: function() {
+                            $('#upload_syllabus .progress').show();
+                        },
                         success: function(data) {
-                            console.log(data);
+                            $("#upload_syllabus_btn").html('uploaded successfully').attr('disabled', true)
                         },
                         error: function(e) {
-                            console.log(e);
+                            window.alert(e);
                         }
                     })
+                })
+                $("#remove_syllabus_form").submit(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        method: "POST",
+                        url: "ic_queries/remove_syllabus.php",
+                        data: $(this).serializeArray(),
+                        success: function(data) {
+                            $("#remove_syllabus_form *").hide();
+                        },
+                        error: function(e) {
+                            window.alert(e);
+                        }
+
+                    })
+
                 })
 
                 $('#add_similar_course').submit(function(e) {
@@ -2850,7 +2910,7 @@ include('../includes/header.php');
                     else
                         document.querySelector("#show").style.display = "none"
                 });
-                $('#search_text').keyup(function() {
+                $('#search_text').keyup(debounce(function() {
                     var txt = $(this).val();
                     var txt2 = $('#temp_allocated_faculty').val();
                     if (txt == '') {
@@ -2873,13 +2933,13 @@ include('../includes/header.php');
                                     $('#hiddenemailid').val(y.val());
                                     $('.showtext').html(x.concat(' <i class="fa fa-caret-down"></i>'));
                                     document.querySelector("#show").style.display = "none";
-                                    $('#search_text').val("");
+                                    $('# _text').val("");
                                     $('#result').html('');
                                 });
                             }
                         });
                     }
-                });
+                }, 300));
             }
         });
     }
@@ -3001,13 +3061,42 @@ include('../includes/header.php');
                         contentType: false,
                         cache: false,
                         processData: false,
+                        xhr: function() {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener("progress", function(evt) {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = ((evt.loaded / evt.total) * 100);
+                                    $('#upload_syllabus .progress-bar').css('width', percentComplete + '%').attr('aria-valuenow', percentComplete);
+                                    console.log(percentComplete)
+                                }
+                            }, false);
+                            return xhr;
+                        },
+                        beforeSend: function() {
+                            $('#upload_syllabus .progress').show();
+                        },
                         success: function(data) {
-                            console.log(data);
+                            $("#upload_syllabus_btn").html('uploaded successfully').attr('disabled', true)
                         },
                         error: function(e) {
-                            console.log(e);
+                            window.alert(e);
                         }
                     })
+                })
+                $("#remove_syllabus_form").submit(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        method: "POST",
+                        url: "ic_queries/remove_syllabus.php",
+                        data: $(this).serializeArray(),
+                        success: function(data) {
+                            $("#remove_syllabus_form *").hide();
+                        },
+                        error: function(e) {
+                            window.alert(e);
+                        }
+                    })
+
                 })
 
                 $('#add_similar_course').submit(function(e) {

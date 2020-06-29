@@ -126,6 +126,18 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
     $years .= "<option value='" . $row['year'] . "'>" . $row['year'] . "</option>";
   }
 
+  $syllabusQuery = 'select syllabus_path from audit_course where cid = "' . $cid . '"';
+  $syllabus_path = mysqli_fetch_assoc(mysqli_query($conn, $syllabusQuery))['syllabus_path'];
+  $removeSyllabusForm = "";
+  if ($syllabus_path != "")
+    $removeSyllabusForm = '<form id = "remove_syllabus_form">
+    <input type="hidden" name="cid" value="' . $cid . '">
+    <input type="hidden" name="syllabus_path" value="' . $syllabus_path . '">
+    <input type="hidden" name="type" value="UPCOMING">
+    <button type="submit" class="btn btn-danger" id="remove_syllabus_btn" name="remove_syllabus">Remove Existing</button>
+    <br><br>
+     </form>';
+
 
   // $dept_div .= '<div class="form-group">
   //                 <label for="exampleInputDepartment"><b>Floating Department</b></label>
@@ -139,7 +151,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   // }
   // $dept_div .= '</select></div>';
   echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalCenterTitle1">Action</h5>
@@ -274,19 +286,24 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                         </div>
                       <!--end Map-->
 
-                      <div class="tab-pane fade show" id="nav-syllabus" role="tabpanel" aria-labelledby="nav-syllabus-tab">
+                      <div class="tab-pane fade show" id="nav-syllabus" role="tabpanel" aria-labelledby="nav-syllabus-tab"><br>
+                      ' . $removeSyllabusForm . '
                        <form id="upload_syllabus" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="year" value="' . $year . '"/>
                           <input type="hidden" name="sem" value="' . $sem . '"/>
                           <input type="hidden" name="cid" value="' . $cid . '"/>
                           <input type="hidden" name="cname" value="' . $cname . '"/>
 
-                          <div class="form-group files color">                                                          
+                         <div class="form-group files color">                                                          
                               <input type="file" name="UploadSyllabusfile" class="form-control" required />
                           </div>
-
-                           <button type="submit" class="btn btn-primary" id="upload_syllabus_btn" name="upload_syllabus">upload</button>
-                          </form>
+                             <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary" id="upload_syllabus_btn" name="upload_syllabus">upload</button>
+                            <div class="progress w-50 mx-2" style="display:none;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
+                              </div>
+                          </div>
+                           </form>
                       </div>
 
 
