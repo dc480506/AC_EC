@@ -8,7 +8,7 @@ $sem = $_POST["sem"];
 $uploadedFile = $_FILES['UploadSyllabusfile'];
 $ext = pathinfo($_FILES["UploadSyllabusfile"]["name"])['extension'];
 
-$rel_dir_path = "syllabus/" . $year . "/" . $sem;
+$rel_dir_path = "syllabus/audit_course/" . $year . "/" . $sem;
 $rel_file_path = $rel_dir_path . "/" . $cid . "_" . $cname . "." . $ext;
 $target_location_dir = $base_dir . $rel_dir_path;
 if (!is_dir($target_location_dir)) {
