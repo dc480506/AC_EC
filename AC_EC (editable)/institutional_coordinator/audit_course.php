@@ -1747,6 +1747,7 @@ include('../includes/header.php');
                     data.append("upload_syllabus", true);
                     data.append("courseType", "CURRENT");
                     $.ajax({
+
                         method: "POST",
                         enctype: 'multipart/form-data',
                         url: "ic_queries/upload_syllabus.php",
@@ -1754,8 +1755,22 @@ include('../includes/header.php');
                         contentType: false,
                         cache: false,
                         processData: false,
+                        xhr: function() {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener("progress", function(evt) {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = ((evt.loaded / evt.total) * 100);
+                                    $('#upload_syllabus .progress-bar').css('width', percentComplete + '%').attr('aria-valuenow', percentComplete);
+                                    console.log(percentComplete)
+                                }
+                            }, false);
+                            return xhr;
+                        },
+                        beforeSend: function() {
+                            $('#upload_syllabus .progress').show();
+                        },
                         success: function(data) {
-                            $("#update-del-modal").modal('hide');
+                            $("#upload_syllabus_btn").html('uploaded successfully').attr('disabled', true)
                         },
                         error: function(e) {
                             window.alert(e);
@@ -2394,8 +2409,22 @@ include('../includes/header.php');
                         contentType: false,
                         cache: false,
                         processData: false,
+                        xhr: function() {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener("progress", function(evt) {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = ((evt.loaded / evt.total) * 100);
+                                    $('#upload_syllabus .progress-bar').css('width', percentComplete + '%').attr('aria-valuenow', percentComplete);
+                                    console.log(percentComplete)
+                                }
+                            }, false);
+                            return xhr;
+                        },
+                        beforeSend: function() {
+                            $('#upload_syllabus .progress').show();
+                        },
                         success: function(data) {
-                            $("#update-del-modal").modal('hide');
+                            $("#upload_syllabus_btn").html('uploaded successfully').attr('disabled', true)
                         },
                         error: function(e) {
                             window.alert(e);
@@ -3032,8 +3061,22 @@ include('../includes/header.php');
                         contentType: false,
                         cache: false,
                         processData: false,
+                        xhr: function() {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener("progress", function(evt) {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = ((evt.loaded / evt.total) * 100);
+                                    $('#upload_syllabus .progress-bar').css('width', percentComplete + '%').attr('aria-valuenow', percentComplete);
+                                    console.log(percentComplete)
+                                }
+                            }, false);
+                            return xhr;
+                        },
+                        beforeSend: function() {
+                            $('#upload_syllabus .progress').show();
+                        },
                         success: function(data) {
-                            $("#update-del-modal").modal('hide');
+                            $("#upload_syllabus_btn").html('uploaded successfully').attr('disabled', true)
                         },
                         error: function(e) {
                             window.alert(e);
