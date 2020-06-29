@@ -53,7 +53,15 @@ try:
 		#print(rollno)
 		values=(insert_col_name,sem,year,marks,insert_col_name)
 		#executing query
-		cursor.execute(insert,values)
+		try:
+			cursor.execute(insert,values)
+		except Exception as e:
+			if "foreign key constraint fails" in str(e):
+				print(argument[mapper['insert_by']]+": "+str(insert_col_name)+" is not/(if present, wrong) in student table.")
+			elif "Duplicate entry" in str(e):
+				print(argument[mapper['insert_by']]+": "+str(insert_col_name)+" has a duplicate value.")
+			print("The upload was unsuccessful.")
+			sys.exit(0)
 except Exception as e:
     print(str(e))
     sys.exit(0)
