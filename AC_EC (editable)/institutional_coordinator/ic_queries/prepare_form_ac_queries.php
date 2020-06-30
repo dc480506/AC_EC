@@ -37,7 +37,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         VALUES('$sem','$year','$no','$type','$curr_sem','$email','$timestamp','$start_timestamp','$end_timestamp','$nop');";
 
 
-        $applicabelDeptSql = "";
+
 
         $newsql = "INSERT INTO student_form(`sem`,`year`,`no`,`form_type`,`email_id`)
          SELECT '$sem','$year','$no','$type',email_id FROM student WHERE current_sem='$curr_sem' and dept_id in  (" . implode(",", $dept_applicable) . ");";
@@ -78,15 +78,24 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $nop = mysqli_escape_string($conn, $_POST['nop']);
         $sem = mysqli_escape_string($conn, $_POST['sem']);
         $year = mysqli_escape_string($conn, $_POST['year']);
+        // die($year);
         $start_date = mysqli_escape_string($conn, $_POST['start_date']);
         $start_time = mysqli_escape_string($conn, $_POST['start_time']);
         $start_timestamp = $start_date . " " . $start_time;
         $end_date = mysqli_escape_string($conn, $_POST['end_date']);
         $end_time = mysqli_escape_string($conn, $_POST['end_time']);
+        $dept_applicable = $_POST['dept_applicable'];
         $end_timestamp = $end_date . " " . $end_time;
         $sql = "UPDATE form SET no_of_preferences='$nop',start_timestamp='$start_timestamp',
         end_timestamp='$end_timestamp' WHERE sem='$sem' AND year='$year' AND form_type='audit'";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+        $deleteApplicableDepts = "delete from form_applicable_dept where sem='$sem' and year='$year' and form_type='audit'";
+        mysqli_query($conn, $deleteApplicableDepts) or die(mysqli_error($conn));
+        foreach ($dept_applicable as $dept_id) {
+            $applicabelDeptSql = "INSERT INTO form_applicable_dept(sem,year,no,form_type, dept_id) VALUES ('$sem','$year','0','audit','$dept_id');";
+            mysqli_query($conn, $applicabelDeptSql) or die(mysqli_error($conn) . $applicabelDeptSql);
+        }
         header("Location: ../prepare_form_ac.php");
     }
 }

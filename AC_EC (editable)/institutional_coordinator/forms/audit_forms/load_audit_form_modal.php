@@ -12,8 +12,17 @@ $end_time = mysqli_escape_string($conn, $data['end_time']);
 $no_of_preferences = mysqli_escape_string($conn, $data['no_of_preferences']);
 $form_status = mysqli_escape_string($conn, $data['form_status']);
 
-// $applicabeDepartmentsSql = 'select dept_id,dept_name , (if((select count(*) from audit_course_applicable_dept acd inner join department d on acd.dept_id = d.dept_id where acd.dept_id=outerDept.dept_id and acd.sem="' . $sem . '" and acd.year="' . $year . '" and form_type="audit")) > 0) as is_applicable from department as outerDept';
-
+$applicabeDepartmentsSql = 'select dept_id,dept_name , (if((select count(*) from form_applicable_dept acd inner join department d on acd.dept_id = d.dept_id where acd.dept_id=outerDept.dept_id and acd.sem="' . $sem . '" and acd.year="' . $year . '" and form_type="audit") > 0,"checked","")) as is_applicable from department as outerDept';
+$result = mysqli_query($conn, $applicabeDepartmentsSql);
+$depts = "";
+$c = 1;
+while ($row = mysqli_fetch_assoc($result)) {
+    $depts .= '<div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" ' . $row['is_applicable'] . ' class="custom-control-input" id="dept_applicable_cb' . $c . '"  name="dept_applicable[]" value="' . $row['dept_id'] . '">
+            <label class="custom-control-label" for="dept_applicable_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+        </div>';
+    $c++;
+}
 $tabs = '<a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
          <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>';
 $show_allocate = false;
@@ -75,7 +84,7 @@ echo '
                                             <input type="number" required class="form-control" disabled value="' . $curr_sem . '">
                                         </div>
                                     </div>
-                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
@@ -91,6 +100,12 @@ echo '
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                        <label for=""><b>Departments Applicable</b></label>
+                                        <br>
+                                        ' . $depts . '
+
+                                    </div>
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
