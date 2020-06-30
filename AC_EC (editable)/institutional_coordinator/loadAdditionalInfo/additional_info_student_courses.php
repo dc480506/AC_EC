@@ -6,8 +6,8 @@ include_once('../verify.php');
 
 
 <?php
-include('../../includes/header.php');
-include('../../includes/topbar1.php'); ?>
+include('includes/header.php');
+ include('includes/topbar1.php'); ?>
 
 <?php
 
@@ -45,7 +45,7 @@ include('../../includes/topbar1.php'); ?>
                 </style>
 
                 <div class="col-md-4 text-right">
-                    <a id="go-back" href="addstudent.php" >  
+                    <a id="go-back" href="../addstudent.php" >  
                         <button  class="btn btn-danger btn-icon-split" style="width:120px">
                         <span class="icon text-white-50 pull-left">
                          <i class="fas fa-angle-double-left"></i>
@@ -186,6 +186,7 @@ include('../../includes/topbar1.php'); ?>
    
     <!-- /.container-fluid -->
 
-    <?php include('../../includes/footer.php');
-    include('../../includes/scripts.php');
+    <?php 
+    include('includes/footer.php');
+    include('includes/scripts.php');
     ?>
