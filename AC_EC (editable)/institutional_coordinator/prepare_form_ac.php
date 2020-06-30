@@ -149,6 +149,7 @@ include('../includes/header.php');
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
+                            <th>Departments</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
                             <th>End Date</th>
@@ -165,6 +166,7 @@ include('../includes/header.php');
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
+                            <th>Departments</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
                             <th>End Date</th>
@@ -325,6 +327,9 @@ include('../includes/header.php');
                 },
                 {
                     data: 'curr_sem'
+                },
+                {
+                    data: 'departments'
                 },
                 {
                     data: 'start_date'
