@@ -81,7 +81,7 @@ echo '
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label for="exampleInputCurrSem"><b>Opening Semester</b></label>
-                                            <input type="number" required class="form-control" disabled value="' . $curr_sem . '">
+                                            <input type="number" required class="form-control" name="curr_sem" disabled value="' . $curr_sem . '">
                                         </div>
                                     </div>
                                 </div>

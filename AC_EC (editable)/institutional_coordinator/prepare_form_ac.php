@@ -52,7 +52,7 @@ include('../includes/header.php');
                                 </div>
                                 <br>
                                 <label for=""><small><b>Note:</b>2 hours time will be added to start time if current date and time is selected.</small></label>
-                                <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
+                                <form id="create-form" action="ic_queries/prepare_form_ac_queries.php" method="POST">
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
@@ -208,7 +208,7 @@ include('../includes/header.php');
             url: "ic_queries/multioperation_queries/delete_multiple_form_ac.php",
             data: actual_delete_data_json,
             success: function(data) {
-                // console.log(data)
+                console.log(data)
                 $("#dataTable-form").DataTable().draw(false);
             }
         })
@@ -272,6 +272,19 @@ include('../includes/header.php');
     //     else
     //         document.querySelector("#exampleInputCurrSem").value = newval;
     // }
+
+    $("#create-form").submit(function(e) {
+        e.preventDefault;
+        $.ajax({
+            method: "POST",
+            url: "ic_queries/prepare_form_ac_queries.php",
+            data: $(this).serializeArray(),
+            success: function(e) {
+                $('#createForm').modal("hide");
+                $('#dataTable-form').DataTable().draw(false);
+            }
+        })
+    })
     $(document).ready(function() {
         loadForms();
         // $('#uploadCurrent').on('hidden.bs.modal',function (e) {
@@ -377,6 +390,8 @@ include('../includes/header.php');
             ],
         });
     }
+
+    $()
 
     function loadModal() {
         var target_row = $(this).closest("tr"); // this line did the trick
