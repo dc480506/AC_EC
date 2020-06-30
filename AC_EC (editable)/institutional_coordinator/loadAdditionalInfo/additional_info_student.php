@@ -14,21 +14,9 @@
         $row=mysqli_fetch_assoc($result);
         $timestamp=date_format(date_create($row['timestamp']),'d-M-Y h:i:s A');
         $adding_email_id=$row['adding_email_id'];
-       
-        // $sql="SELECT post,fname,mname,lname,faculty_code FROM faculty_audit fa INNER JOIN faculty f ON fa.cid='$cid' AND fa.sem='$sem' AND fa.year='$year' AND fa.email_id=f.email_id";
-        // $result=mysqli_query($conn,$sql);
-        // $faculty_info="";
-        // if(mysqli_num_rows($result)==0){
-        //     $faculty_info="<p><i><small>No faculties found for this course</small></i></p>";
-        // }else{
-        //     $i=1;
-        //     while($row=mysqli_fetch_assoc($result)){
-        //         $faculty_info.="<p><small>".$i.") ".$row['post'].". ".$row['fname']." ".$row['mname']." ".$row['lname']." (".$row['faculty_code'].")</small></p>";
-        //         $i++;
-        //     }
-        // }
+        $_SESSION['email_id']=$email_id;
         echo '
-            <div class="form-row">
+            <div class="form-row px-auto">
                 <div class="form-group col-md-4">
                     <label for="added_by"><b>Added by: </b></label>
                     <small><span>'.$adding_email_id.'</span></small>
@@ -37,18 +25,18 @@
                     <label for="added_on"><b>Added on: </b></label>
                     <small><span>'.$timestamp.'</span></small>
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="profile"><b>Profile: </b></label>
-                    <a href="#">View</a>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="Courses_info"><b>Courses Info: </b></label>
-                    <a href="#">View</a>
+                
+                <div class="form-group col-md-4">  
+                <a href="loadAdditionalInfo/additional_info_student_courses.php">          
+                    <button type="submit" class="btn btn-primary" onClick="myfun()" role="button" id="student_courses">View Courses Info</button>    
+                </a>  
                 </div>
             </div>
         ';
     }
  }
 ?>
+
+
+
+
