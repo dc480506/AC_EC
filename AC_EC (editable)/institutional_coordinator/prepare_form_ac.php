@@ -21,11 +21,6 @@ include('../includes/header.php');
                 <div class="col">
                     <h4 class="font-weight-bold text-primary mb-0">Audit Course Form Records</h4>
                 </div>
-                <div class="col text-right">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
-                        <i class="fas fa-filter"></i>
-                    </button>
-                </div>
             </div>
         </div>
         <div class="card-body">
@@ -44,7 +39,7 @@ include('../includes/header.php');
                         <i class="fas fa-plus"></i> Create Form
                     </button>
                 </div>
-                
+
                 <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="createForm" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -58,27 +53,57 @@ include('../includes/header.php');
                                 <br>
                                 <label for=""><small><b>Note:</b>2 hours time will be added to start time if current date and time is selected.</small></label>
                                 <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
-                                    <div class="form-group">
-                                        <label for="exampleInputPreference"><b>No of Preferences</b></label>
-                                        <input type="number" required class="form-control" id="exampleInputPreference" name="nop" maxlength="1" minlength="1"   
-                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="NumbersOnly(this)">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputPreference"><b>No of Preferences</b></label>
+                                                <input type="number" required class="form-control" id="exampleInputPreference" name="nop" maxlength="1" minlength="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="NumbersOnly(this)">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputYear"><b>Year</b></label>
+                                                <input type="year" required class="form-control" id="exampleInputYear" placeholder="Eg: 2019-20" maxlength="7" minlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" name="year">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputSem"><b>Floating Semester</b></label>
-                                        <input type="number" required class="form-control" id="exampleInputSem" min="1" max="8" maxlength="1" 
-                                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
-                                            onkeyup="SemestersOnly(this)"  name="sem">
+                                        <label for=""><b>Departments Applicable</b></label>
+                                        <br>
+                                        <!-- <select class="form-control" required name="dept">-->
+                                        <?php
+                                        include_once('../config.php');
+                                        $sql = "SELECT * FROM department";
+                                        $result = mysqli_query($conn, $sql);
+                                        $c = 8;
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo '
+                                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" checked class="custom-control-input" id="dept_applicable_cb' . $c . '"  name="dept_applicable[]" value="' . $row['dept_id'] . '">
+                                                            <label class="custom-control-label" for="dept_applicable_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                        </div>
+                                                        ';
+                                            $c++;
+                                        }
+                                        ?>
+
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputYear"><b>Year</b></label>
-                                        <input type="year" required class="form-control" id="exampleInputYear" placeholder="Eg: 2019-20" maxlength="7" minlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" name="year">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputSem"><b>Floating Semester</b></label>
+                                                <input type="number" required class="form-control" id="exampleInputSem" min="1" max="8" maxlength="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="SemestersOnly(this)" name="sem">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputCurrSem"><b>Opening Semester</b></label>
+                                                <input type="number" required class="form-control" id="exampleInputCurrSem" name="curr_sem" min="1" max="8" maxlength="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="SemestersOnly(this)">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputCurrSem"><b>Opening Semester</b></label>
-                                        <input type="number" required class="form-control" id="exampleInputCurrSem" name="curr_sem" min="1" max="8" maxlength="1" 
-                                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
-                                            onkeyup="SemestersOnly(this)">
-                                    </div>
+
+
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
@@ -158,7 +183,6 @@ include('../includes/header.php');
 
 <!-- /.container-fluid -->
 <script>
-    
     $("#delete_selected_response_btn").click(function(e) {
         alert("You have selected " + $("#dataTable-form tbody tr.selected").length + " record(s) for deletion");
         var delete_rows = $("#dataTable-form").DataTable().rows('.selected').data()
@@ -188,22 +212,21 @@ include('../includes/header.php');
         })
     })
 
-     function NumbersOnly(input)
-    {
-        var regex =/[a-z]/;
-        input.value = input.value.replace(regex,"");
+    function NumbersOnly(input) {
+        var regex = /[a-z]/;
+        input.value = input.value.replace(regex, "");
     }
-    function SemestersOnly(input)
-    {
+
+    function SemestersOnly(input) {
         var regex = /[^1-8]/;
-        input.value = input.value.replace(regex,"");
+        input.value = input.value.replace(regex, "");
         newval = document.querySelector("#exampleInputSem").value - 1;
-        
-        if (newval < 0 && newval == -1)
-        {
-            document.querySelector("#exampleInputCurrSem").value = "";}
-        else{
-            document.querySelector("#exampleInputCurrSem").value = newval;}
+
+        if (newval < 0 && newval == -1) {
+            document.querySelector("#exampleInputCurrSem").value = "";
+        } else {
+            document.querySelector("#exampleInputCurrSem").value = newval;
+        }
     }
 
     $(function() {
@@ -273,7 +296,7 @@ include('../includes/header.php');
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModal)
-                
+
 
                 $(".selectrow_current").attr("disabled", true);
                 $("th").removeClass('selectbox_current_td');
@@ -324,11 +347,12 @@ include('../includes/header.php');
                 {
                     data: 'action'
                 },
-                {  data: 'view'},
+                {
+                    data: 'view'
+                },
             ],
             columnDefs: [{
-                    targets: [0, 3, 4, 5, 6, 7, 8, 9, 10,11
-                ], // column index (start from 0)
+                    targets: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
@@ -416,15 +440,6 @@ include('../includes/header.php');
             }
         });
     }
-
-
-
-
-
-
-
-
-
 </script>
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');
