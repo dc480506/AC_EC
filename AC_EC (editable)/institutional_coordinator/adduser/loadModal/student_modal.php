@@ -87,7 +87,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="year_of_admission"><b>Year</b></label>
-                                            <select class="form-control" name="yearnew" id="year_new">';
+                                            <select class="form-control" name="year_of_admission_new" id="year_of_admission_new">';
                                             $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
                                             $result = mysqli_query($conn, $sql);
                                             $row = mysqli_fetch_assoc($result);
@@ -98,17 +98,20 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                               $temp += 1;
                                               $temp2 = "" . ($temp + 1);
                                               $year1 = $temp . "-" . substr($temp2, 2);
-                                              echo '<option>' . $year1 . '</option>';
+                                              $year1_value=$temp;
+                                              echo '<option>' . $year1_value . '</option>';
                                             }
                                             for ($i = 0; $i < 4; $i++) {
                                               if ($year == $year1) {
-                                                $year_dropdown .= "<option selected>" . $year1 . "</option>";
+                                                $year_dropdown .= "<option selected>" . $year1_value . "</option>";
                                               }
-                                              echo '<option>' . $year2 . '</option>';
                                               $temp = explode('-', $year2)[0];
+                                              $year2_value = $temp;
                                               $temp -= 1;
                                               $temp2 = "" . ($temp + 1);
                                               $year2 = $temp . "-" . substr($temp2, 2);
+                                            //   $year2_value = $temp;
+                                              echo '<option>' . $year2_value . '</option>';
                                             }
                                           
                                             echo '</select>
@@ -132,7 +135,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="current_sem"><b>Semester</b></label>
-                                            <select class="form-control" name="semnew" id="sem_new">';
+                                            <select class="form-control" required="required" name="current_sem_new" id="current_sem_new">';
                                                 $i = 1;
                                                 for ($i = 1; $i <= 8; $i++) {
                                                     echo '<option value="';
@@ -144,9 +147,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                                     echo $i;
                                                     echo '</option>';
                                                 }
-                                                echo '</select>
-                                            <input type="hidden" class="form-control" required="required" placeholder="Semester" name="current_sem_new" value="' . $current_sem  . '">
-                                            
+                                                echo '</select>                                            
                                         </div>                                    
                                     </div>
                                     

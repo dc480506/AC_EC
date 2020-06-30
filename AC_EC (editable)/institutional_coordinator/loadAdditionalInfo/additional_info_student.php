@@ -27,7 +27,7 @@
                 </div>
                 
                 <div class="form-group col-md-4">  
-                <a href="additional_info_student_courses.php">          
+                <a href="loadAdditionalInfo/additional_info_student_courses.php">          
                     <button type="submit" class="btn btn-primary" onClick="myfun()" role="button" id="student_courses">View Courses Info</button>    
                 </a>  
                 </div>
