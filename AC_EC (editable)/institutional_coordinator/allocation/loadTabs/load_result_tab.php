@@ -17,11 +17,15 @@ $output=shell_exec($cmd." 2>&1");
     .accordion-toggle.open{
         background-color: #ffcccc;
     }
-    #spinner{
+    #spinner_prev{
         position: fixed;
-        top:50%;
+        top: 50%;
         left:50%;
-        display: none;
+        transform: translate(-50%,-50%);
+        border: 1px solid black;
+        border-radius: 0.2em;
+        padding: 1em;
+        background-color: whitesmoke;
     }
 </style>
 <br>
@@ -266,7 +270,8 @@ $output=shell_exec($cmd." 2>&1");
             <button type="submit" class="btn btn-primary align-center" id="complete_btn" name="Complete">Complete</button>
         </div>
     </form>
-    <div id="spinner">
+    <div id="spinner_prev" style="display: none;">
+        <label class="text-dark">Navigating to 1st Iteration Allocation Analysis</label>
         <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
     </div>
 </div>
@@ -637,7 +642,7 @@ $output=shell_exec($cmd." 2>&1");
             data:data_serialize,
             method:"POST",
             success:function(html){
-                $("#spinner").hide()
+                $("#spinner_prev").hide()
                 $("#nav-result-tab").removeClass("disabled")
                 $("#nav-tabContent").html(html)
                 $("#nav-result-tab").addClass("active")
@@ -645,7 +650,7 @@ $output=shell_exec($cmd." 2>&1");
             beforeSend:function(){
             //Loader daalna hai baadme
             $("#complete_allocation").css("opacity",0.3)
-            $('#spinner').show();
+            $('#spinner_prev').show();
             $('#complete_btn').attr('disabled',true);
             $('#prev_btn').attr('disabled',true);
             },

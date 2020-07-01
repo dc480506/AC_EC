@@ -12,9 +12,22 @@ include('../includes/header.php');
         color: #2ecc71 !important;
 
     }
+    #spinner{
+        /* position: fixed;
+        left: 50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+        z-index: 5;
+        height: auto; */
+        padding: 0.75em;
+        border: 0.25px solid black;
+        border-radius: 0.2em;
+        background-color: #ffffff;
+        display: none;
+    }
 </style>
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container-fluid" id="form_section">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row align-items-center">
@@ -73,7 +86,7 @@ include('../includes/header.php');
                                         <!-- <select class="form-control" required name="dept">-->
                                         <?php
                                         include_once('../config.php');
-                                        $sql = "SELECT * FROM department";
+                                        $sql = "SELECT * FROM department WHERE dept_id NOT IN (".$exclude_dept.")";
                                         $result = mysqli_query($conn, $sql);
                                         $c = 8;
                                         while ($row = mysqli_fetch_assoc($result)) {
@@ -126,9 +139,14 @@ include('../includes/header.php');
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="spinner">
+                                        <label class="text-dark">Getting things ready. This may take some time</label>
+                                        <!-- <br> -->
+                                        <img src="../vendor/img/ajax-loader.gif" alt="loading" id="img-spinner">
+                                    </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                        <button type="submit" class="btn btn-primary align-center" name="createForm">Create Form</button>
+                                        <button type="submit" class="btn btn-primary align-center" id="create_form_btn" name="createForm">Create Form</button>
                                     </div>
                                 </form>
                             </div>
@@ -149,7 +167,7 @@ include('../includes/header.php');
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
-                            <th>Departments</th>
+                            <th>Dept. Applicable</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
                             <th>End Date</th>
@@ -166,7 +184,7 @@ include('../includes/header.php');
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
-                            <th>Departments</th>
+                            <th>Dept. Applicable</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
                             <th>End Date</th>
@@ -285,13 +303,20 @@ include('../includes/header.php');
             method: "POST",
             url: "ic_queries/prepare_form_ac_queries.php",
             data: data,
+            beforeSend:function(){
+                $("#spinner").show()
+                $("#create_form_btn").text("Creating...")
+                $("#create_form_btn").attr("disabled",true)
+            },
             success: function(data) {
-                if (data == "done") {
+                if ($.trim(data) == "done") {
                     $('#dataTable-form').DataTable().draw(false);
+                    $("#create_form_btn").text("Created Successfully")
                 } else {
                     window.alert(data);
+                    $("#create_form_btn").text("Creation Failed")
                 }
-                $('#createForm').modal("hide");
+                $('#spinner').hide();
             }
         })
     });
@@ -299,16 +324,11 @@ include('../includes/header.php');
 
     $(document).ready(function() {
         loadForms();
-        // $('#uploadCurrent').on('hidden.bs.modal',function (e) {
-        //     document.querySelector("#bulkUploadCurrent").reset();
-        //     $("#upload_current").text("Upload")
-        //     $("#upload_current").attr("disabled",false);
-        // });
-        // $('#uploadUpcoming').on('hidden.bs.modal',function (e) {
-        //     document.querySelector("#bulkUploadUpcoming").reset();
-        //     $("#upload_upcoming").text("Upload")
-        //     $("#upload_upcoming").attr("disabled",false);
-        // });
+        $('#createForm').on('hidden.bs.modal',function (e) {
+            document.querySelector("#create-form").reset();
+            $("#create_form_btn").text("Create Form")
+            $("#create_form_btn").attr("disabled",false);
+        });
     })
 
     function loadForms() {
@@ -323,8 +343,6 @@ include('../includes/header.php');
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModal)
-
-
                 $(".selectrow_current").attr("disabled", true);
                 $("th").removeClass('selectbox_current_td');
                 $(".selectbox_current_td").click(function(e) {
@@ -382,7 +400,7 @@ include('../includes/header.php');
                 },
             ],
             columnDefs: [{
-                    targets: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11], // column index (start from 0)
+                    targets: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11,12], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {

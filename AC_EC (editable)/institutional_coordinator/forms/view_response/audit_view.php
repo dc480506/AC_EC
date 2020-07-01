@@ -338,6 +338,26 @@ include('includes/header.php');
         </div>
 
         <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-4 col-md-4">
+                    <label class="font-weight-bold text-info mb-0" style="font-size:1.04em">
+                        No. of Preferences:  <?php echo '<span style="font-size:0.9em;">'.$_POST['no_of_preferences']."</span>";?>
+                    </label>
+                </div>
+                <div class="col-md-4 col-md-4">
+                    <label class="font-weight-bold text-info mb-0" style="font-size:1.04em">
+                        Applicable Department(s):  
+                        <?php 
+                        include_once('../../../config.php');
+                        $res=mysqli_query($conn,"SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') as dept FROM form_applicable_dept 
+                                NATURAL JOIN department WHERE form_type='audit' AND sem='{$_POST['sem']}' AND year='{$_POST['yearb']}'");
+                        $depts=mysqli_fetch_assoc($res);
+                         echo'<span style="font-size:0.9em;">'.$depts['dept']."</span>";
+                         ?>
+                    </label>
+                </div>
+            </div>
+            <br>
             <div id="response-stats">
             </div>
             <br>
