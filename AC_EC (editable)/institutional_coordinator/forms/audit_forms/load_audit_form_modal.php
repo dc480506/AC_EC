@@ -49,7 +49,7 @@ echo '
                     <div class="tab-content" id="nav-tabContent">
                         <!--Deletion-->
                         <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
-                            <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
+                            <form action="ic_queries/prepare_form_ac_queries.php" id="delete-form" method="POST">
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">
                                         <i class="text-danger">*This will delete all the information related to the Form including responses 
@@ -69,7 +69,7 @@ echo '
                         <!--end Deletion-->
                         <!--Update-->
                         <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
-                            <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
+                            <form action="ic_queries/prepare_form_ac_queries.php" id="update-form" method="POST">
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">

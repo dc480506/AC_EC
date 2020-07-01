@@ -3,8 +3,8 @@ session_start();
 if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
     include_once('../../config.php');
     // echo "Hi";
+    // die(json_encode($_POST));
     if (isset($_POST['createForm'])) {
-
         $nop = mysqli_escape_string($conn, $_POST['nop']);
         $sem = mysqli_escape_string($conn, $_POST['sem']);
         $year = mysqli_escape_string($conn, $_POST['year']);
@@ -61,21 +61,20 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
 
 
         if (!mysqli_commit($conn)) {
-            header("Location: ../prepare_form_ac.php");
+            echo "error";
             // mysqli_autocommit($conn,TRUE);
             exit();
         }
         mysqli_close($conn);
         // mysqli_autocommit($conn,TRUE);
-        header("Location: ../prepare_form_ac.php");
+        echo " done";
     } else if (isset($_POST['deleteForm'])) {
         $sem = mysqli_escape_string($conn, $_POST['sem']);
         $year = mysqli_escape_string($conn, $_POST['year']);
         $sql = "DELETE FROM form WHERE sem='$sem' AND year='$year' AND form_type= 'audit'";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
-        header("Location: ../prepare_form_ac.php");
+        echo 'done';
     } else if (isset($_POST['modifyForm'])) {
-
         $nop = mysqli_escape_string($conn, $_POST['nop']);
         $sem = mysqli_escape_string($conn, $_POST['sem']);
         $curr_sem = intval($sem) - 1;
@@ -126,6 +125,6 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
          SELECT '$sem','$year','0', 'audit',email_id , dept_id FROM student WHERE current_sem='$curr_sem' and dept_id in  ('" . implode("','", $added_depts) . "');";
         mysqli_query($conn, $newsql) or die(mysqli_error($conn) . $newsql);
 
-        header("Location: ../prepare_form_ac.php");
+        echo "done";
     }
 }
