@@ -108,14 +108,12 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                 array_push($added_depts, $dept);
             }
         }
-
-
-
-
-        $deleteApplicableDepts = "delete from form_applicable_dept where sem = '$sem' and year = '$year' and form_type = 'audit' and  dept_id in  ('" . implode("','", $deleted_depts) . "');";
-        mysqli_query($conn, $deleteApplicableDepts) or die(mysqli_error($conn) . $deleteApplicableDepts);
-        $deleteApplicablestudents = "delete from student_form where sem = '$sem' and year = '$year' and form_type = 'audit' and dept_id in  ('" . implode("','", $deleted_depts) . "');";
-        mysqli_query($conn, $deleteApplicablestudents) or die(mysqli_error($conn) . $deleteApplicablestudents);
+        if(!empty($deleted_depts)){
+            $deleteApplicableDepts = "delete from form_applicable_dept where sem = '$sem' and year = '$year' and form_type = 'audit' and  dept_id in  ('" . implode("','", $deleted_depts) . "');";
+            mysqli_query($conn, $deleteApplicableDepts) or die(mysqli_error($conn) . $deleteApplicableDepts);
+            $deleteApplicablestudents = "delete from student_form where sem = '$sem' and year = '$year' and form_type = 'audit' and dept_id in  ('" . implode("','", $deleted_depts) . "');";
+            mysqli_query($conn, $deleteApplicablestudents) or die(mysqli_error($conn) . $deleteApplicablestudents);
+        }
         foreach ($added_depts as $dept_id) {
             $applicabelDeptSql = "INSERT INTO form_applicable_dept(sem,year,no,form_type, dept_id) VALUES ('$sem','$year','0','audit','$dept_id');";
             mysqli_query($conn, $applicabelDeptSql) or die(mysqli_error($conn) . $applicabelDeptSql);
