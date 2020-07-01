@@ -39,9 +39,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
 
 
 
-        $newsql = "INSERT INTO student_form(`sem`,`year`,`no`,`form_type`,`email_id`)
-         SELECT '$sem','$year','$no','$type',email_id FROM student WHERE current_sem='$curr_sem' and dept_id in  (" . implode(",", $dept_applicable) . ");";
-
+        $newsql = "INSERT INTO student_form(`sem`,`year`,`no`,`form_type`,`email_id`,`dept_id`)
+         SELECT '$sem','$year','$no','$type',email_id, dept_id FROM student WHERE current_sem='$curr_sem' and dept_id in  (" . implode(",", $dept_applicable) . ");";
         $hidesql = "INSERT INTO hide_student_audit_course (`email_id`,`cid`,`sem`,`year`,`cname`) 
         SELECT s.email_id,a.newcid,a.newsem,a.newyear,ac.cname from audit_map as a 
         inner join (SELECT email_id,cid,sem,year FROM student_audit 
@@ -53,6 +52,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
         mysqli_query($conn, $newsql) or die(mysqli_error($conn));
         mysqli_query($conn, $hidesql) or die(mysqli_error($conn));
+
 
         foreach ($dept_applicable as $dept_id) {
             $applicabelDeptSql = "INSERT INTO form_applicable_dept(sem,year,no,form_type, dept_id) VALUES ('$sem','$year','$no','$type','$dept_id');";
@@ -75,9 +75,11 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
         header("Location: ../prepare_form_ac.php");
     } else if (isset($_POST['modifyForm'])) {
+
         $nop = mysqli_escape_string($conn, $_POST['nop']);
         $sem = mysqli_escape_string($conn, $_POST['sem']);
-        $curr_sem = mysqli_escape_string($conn, $_POST['curr_sem']);
+        $curr_sem = intval($sem) - 1;
+
         $year = mysqli_escape_string($conn, $_POST['year']);
         // die($year);
         $start_date = mysqli_escape_string($conn, $_POST['start_date']);
@@ -108,22 +110,21 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             }
         }
 
-        foreach ($dept_applicable as $dept) {
-        }
 
-        $delete_student_form_entries_query = "delete from student_form sf inner join form_applicable_dept fad on (sf.sem = fad.sem and sf.no=afd.no and sf.form_type = fad.form_type and sf.year = fad.year) where fad.dept_id in (" . implode(",", $deleted_depts) . ");";
-        mysqli_query($conn, $delete_student_form_entries_query) or die(mysqli_error($conn));
 
-        // $deleteApplicableDepts = "delete from form_applicable_dept where sem='$sem' and year='$year' and form_type='audit' and  dept_id in  (" . implode(",", $deleted_depts) . ");";
-        // mysqli_query($conn, $deleteApplicableDepts) or die(mysqli_error($conn));
+
+        $deleteApplicableDepts = "delete from form_applicable_dept where sem = '$sem' and year = '$year' and form_type = 'audit' and  dept_id in  ('" . implode("','", $deleted_depts) . "');";
+        mysqli_query($conn, $deleteApplicableDepts) or die(mysqli_error($conn) . $deleteApplicableDepts);
+        $deleteApplicablestudents = "delete from student_form where sem = '$sem' and year = '$year' and form_type = 'audit' and dept_id in  ('" . implode("','", $deleted_depts) . "');";
+        mysqli_query($conn, $deleteApplicablestudents) or die(mysqli_error($conn) . $deleteApplicablestudents);
         foreach ($added_depts as $dept_id) {
             $applicabelDeptSql = "INSERT INTO form_applicable_dept(sem,year,no,form_type, dept_id) VALUES ('$sem','$year','0','audit','$dept_id');";
             mysqli_query($conn, $applicabelDeptSql) or die(mysqli_error($conn) . $applicabelDeptSql);
         }
 
-        $newsql = "INSERT INTO student_form(`sem`,`year`,`no`,`form_type`,`email_id`)
-         SELECT '$sem','$year','$no','$type',email_id FROM student WHERE current_sem='$curr_sem' and dept_id in  (" . implode(",", $added_depts) . ");";
-        mysqli_query($conn, $newsql) or die(mysqli_error($conn));
+        $newsql = "INSERT INTO student_form(`sem`,`year`,`no`,`form_type`,`email_id`,`dept_id`)
+         SELECT '$sem','$year','0', 'audit',email_id , dept_id FROM student WHERE current_sem='$curr_sem' and dept_id in  ('" . implode("','", $added_depts) . "');";
+        mysqli_query($conn, $newsql) or die(mysqli_error($conn) . $newsql);
 
         header("Location: ../prepare_form_ac.php");
     }
