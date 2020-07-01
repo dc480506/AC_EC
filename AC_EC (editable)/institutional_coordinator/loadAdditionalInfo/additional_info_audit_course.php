@@ -9,6 +9,11 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $result = mysqli_query($conn, "select academic_year from current_sem_info WHERE currently_active=1");
         $row = mysqli_fetch_assoc($result);
         $year = $row['academic_year'];
+        $_SESSION['cid']=$cid;
+        $_SESSION['sem']=$sem;
+        $_SESSION['year']=$year;
+        $_SESSION['active']=1;
+
         $sql = "SELECT timestamp,email_id,syllabus_path FROM audit_course WHERE cid='$cid' AND sem='$sem' AND year='$year'";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
@@ -75,8 +80,9 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="added_by"><b>Enrolled Students: </b></label>
-                    <a href="#"><small>View</small></a>
+                    <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
+                    <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+                    </a>
                 </div>
             </div>
         ';
@@ -84,6 +90,10 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $cid = $data['cid'];
         $sem = $data['sem'];
         $year = $data['year'];
+        $_SESSION['cid']=$cid;
+        $_SESSION['sem']=$sem;
+        $_SESSION['year']=$year;
+        $_SESSION['active']=0;
         $sql = "SELECT timestamp,email_id,syllabus_path FROM audit_course WHERE cid='$cid' AND sem='$sem' AND year='$year'";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
@@ -150,8 +160,9 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="added_by"><b>Enrolled Students: </b></label>
-                    <a href="#"><small>View</small></a>
+                    <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
+                    <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+                    </a>
                 </div>
             </div>
         ';
@@ -159,6 +170,10 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $cid = $data['cid'];
         $sem = $data['sem'];
         $year = $data['year'];
+        $_SESSION['cid']=$cid;
+        $_SESSION['sem']=$sem;
+        $_SESSION['year']=$year;
+        $_SESSION['active']=2;
         $sql = "SELECT timestamp,email_id,syllabus_path FROM audit_course_log WHERE cid='$cid' AND sem='$sem' AND year='$year'";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
@@ -222,8 +237,9 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="added_by"><b>Enrolled Students: </b></label>
-                    <a href="#"><small>View</small></a>
+                    <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
+                    <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+                    </a>
                 </div>
             </div>
         ';
