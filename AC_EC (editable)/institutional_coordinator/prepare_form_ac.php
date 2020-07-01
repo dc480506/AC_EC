@@ -52,7 +52,7 @@ include('../includes/header.php');
                                 </div>
                                 <br>
                                 <label for=""><small><b>Note:</b>2 hours time will be added to start time if current date and time is selected.</small></label>
-                                <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
+                                <form id="create-form" action="ic_queries/prepare_form_ac_queries.php" method="POST">
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
@@ -208,7 +208,7 @@ include('../includes/header.php');
             url: "ic_queries/multioperation_queries/delete_multiple_form_ac.php",
             data: actual_delete_data_json,
             success: function(data) {
-                // console.log(data)
+                console.log(data)
                 $("#dataTable-form").DataTable().draw(false);
             }
         })
@@ -272,6 +272,31 @@ include('../includes/header.php');
     //     else
     //         document.querySelector("#exampleInputCurrSem").value = newval;
     // }
+
+    $("#create-form").submit(function(e) {
+        e.preventDefault();
+        var data = $(this).serializeArray();
+        data.push({
+            name: "createForm",
+            value: "1"
+        });
+
+        $.ajax({
+            method: "POST",
+            url: "ic_queries/prepare_form_ac_queries.php",
+            data: data,
+            success: function(data) {
+                if (data == "done") {
+                    $('#dataTable-form').DataTable().draw(false);
+                } else {
+                    window.alert(data);
+                }
+                $('#createForm').modal("hide");
+            }
+        })
+    });
+
+
     $(document).ready(function() {
         loadForms();
         // $('#uploadCurrent').on('hidden.bs.modal',function (e) {
@@ -378,6 +403,8 @@ include('../includes/header.php');
         });
     }
 
+    $()
+
     function loadModal() {
         var target_row = $(this).closest("tr"); // this line did the trick
         // console.log(target_row)
@@ -410,37 +437,56 @@ include('../includes/header.php');
                 $(document).on('hidden.bs.modal', '#form_modal', function() {
                     $("#form_modal").remove();
                 });
-                // $('#delete_course_form').submit(function(e){
-                //     e.preventDefault();
-                //     var form = $(this);
-                //     var form_serialize=form.serializeArray();// serializes the form's elements.
-                //     form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
-                //     $("#delete_course_btn").text("Deleting...");
-                //     $("#delete_course_btn").attr("disabled",true);
-                //     $.ajax({
-                //         type: "POST",
-                //         url: "ic_queries/addcourse_queries.php",
-                //         data: form_serialize, 
-                //         success: function(data)
-                //         {
-                //             //    alert(data); // show response from the php script.
-                //             $("#delete_course_btn").text("Deleted Successfully");
-                //             var row=$("#update-del-modal").closest('tr');
-                //             var aPos = $("#dataTable-previous").dataTable().fnGetPosition(row.get(0)); 
-                //             $('#update-del-modal').modal('hide');
-                //             $('body').removeClass('modal-open');
-                //             $('.modal-backdrop').remove();
-                //             // row.remove();
-                //             $("#dataTable-previous").DataTable().row(aPos).remove().draw(false);
-                //             // console.log(aPos);
-                //             // console.log(row)
-                //         }
-                //         });
-                // });
-                // $('#update_course_form').submit(function(e){
-                //     update_course_form_previous(e);
-                //     // $('#update-del-modal').modal('hide');
-                //     });
+
+                $("#update-form").submit(function(e) {
+                    e.preventDefault();
+                    var data = $(this).serializeArray();
+                    data.push({
+                        name: "modifyForm",
+                        value: "1"
+                    });
+
+                    console.log(data);
+                    $.ajax({
+                        method: "POST",
+                        url: "ic_queries/prepare_form_ac_queries.php",
+                        data: data,
+                        success: function(data) {
+                            console.log(data)
+                            if (data == "done") {
+                                $('#dataTable-form').DataTable().draw(false);
+                            } else {
+                                window.alert(data);
+                            }
+                            $('#form_modal').modal("hide");
+                        }
+                    })
+                });
+
+                $("#delete-form").submit(function(e) {
+                    e.preventDefault();
+                    var data = $(this).serializeArray();
+                    data.push({
+                        name: "deleteForm",
+                        value: "1"
+                    });
+
+                    console.log(data);
+                    $.ajax({
+                        method: "POST",
+                        url: "ic_queries/prepare_form_ac_queries.php",
+                        data: data,
+                        success: function(data) {
+                            console.log(data)
+                            if (data == "done") {
+                                $('#dataTable-form').DataTable().draw(false);
+                            } else {
+                                window.alert(data);
+                            }
+                            $('#form_modal').modal("hide");
+                        }
+                    })
+                });
 
             }
         });
