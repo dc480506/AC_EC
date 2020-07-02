@@ -48,6 +48,7 @@
     </form>
 </div>
 <div id="spinner" style="display: none;">
+    <label class="text-dark">Preparing Environment. This may take some time</label>
     <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
 </div>
 <style type="text/css">
@@ -55,6 +56,11 @@
         position: fixed;
         top: 50%;
         left:50%;
+        transform: translate(-50%,-50%);
+        border: 1px solid black;
+        border-radius: 0.2em;
+        padding: 1em;
+        background-color: whitesmoke;
     }
 </style>
 <script>

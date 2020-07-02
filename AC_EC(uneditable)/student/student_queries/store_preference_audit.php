@@ -1,10 +1,13 @@
 <?php
 include('../../config.php');
 include('../verify.php');
+echo "hello there";
+echo $_POST['submit'];
 if(isset($_POST['submit']))
 {
     $cname="";
     $prefs="";
+    
     for($i=1;$i<$_SESSION['no_of_preferences'];$i++)
         {
         $cname.="'".$_POST['cname'.$i.'']."',";    

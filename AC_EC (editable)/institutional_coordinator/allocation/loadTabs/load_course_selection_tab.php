@@ -273,7 +273,7 @@
                 },
             ],
             columnDefs: [{
-                    targets: [0,7], // column index (start from 0)
+                    targets: [0,8], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {

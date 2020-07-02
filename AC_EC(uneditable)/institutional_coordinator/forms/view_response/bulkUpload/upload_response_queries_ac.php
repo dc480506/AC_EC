@@ -1,6 +1,6 @@
 <?php
-include_once("../../../config.php");
-include_once("../../verify.php");
+include_once("../../../../config.php");
+include_once("../../../verify.php");
 $sem = mysqli_escape_string($conn, $_POST['semester']);
 $year = mysqli_escape_string($conn, $_POST['year']);
 $type = mysqli_escape_string($conn,$_POST['type']);
@@ -47,10 +47,7 @@ $args .= '"]';
 $cmd = 'python student_preference.py ' . $args;
 // echo $cmd;
 $output = shell_exec($cmd . " 2>&1");
-if (strpos($output, "Duplicate entry")) {
-    echo "Import Unsuccessful as adding caused duplicate entries";
-} else {
-    echo $output;
-}
+echo $output;
+
 exit();
 ?>

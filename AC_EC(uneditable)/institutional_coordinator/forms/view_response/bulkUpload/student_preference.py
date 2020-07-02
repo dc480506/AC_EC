@@ -123,7 +123,15 @@ try:
 		#execution of query
 		# print(values)
 		cursor.execute(update_student_form,values)
-		cursor.execute(insertform,values2)
+		try:
+			cursor.execute(insertform,values2)
+		except Exception as e:
+			if "foreign key constraint fails" in str(e):
+				print("Email: "+email+" Rollno: "+str(int(rollno))+" is not/(if present, wrong value) in student table.")
+			elif "Duplicate entry" in str(e):
+				print("Email: "+email+" Rollno: "+str(int(rollno))+" has a duplicate entry.")
+			print("The upload was unsuccessful.")
+			sys.exit(0)
 except Exception as e:
     print(str(e))
     sys.exit(0)
