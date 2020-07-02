@@ -44,6 +44,7 @@ $output=shell_exec($cmd." 2>&1");
                     </th>
                     <th>Course Name</th>
                     <th>Course ID</th>
+                    <th>Offering Dept.</th>
                     <th>MIN Students</th>
                     <th>MAX Students</th>
                     <th>No of Students Allocated</th>
@@ -57,6 +58,7 @@ $output=shell_exec($cmd." 2>&1");
                     <th></th>
                     <th>Course Name</th>
                     <th>Course ID</th>
+                    <th>Offering Dept.</th>
                     <th>MIN Students</th>
                     <th>MAX Students</th>
                     <th>No of Students Allocated</th>
@@ -74,13 +76,27 @@ $output=shell_exec($cmd." 2>&1");
 </form>
             </div>
             <div id="spinner" style="display: none;">
+                <label class="text-dark">Generating Final Results. This may take some time </label>
+                <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
+            </div>
+            <div id="spinner_prev" style="display: none;">
+                <label class="text-dark">Navigating to Course Selection</label>
+                <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
+            </div>
+            <div id="spinner_reallocate" style="display: none;">
+                <label class="text-dark">Regenerating Results for 1st iteration</label>
                 <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
             </div>
             <style type="text/css">
-                #spinner{
+                 #spinner,#spinner_prev,#spinner_reallocate{
                     position: fixed;
                     top: 50%;
                     left:50%;
+                    transform: translate(-50%,-50%);
+                    border: 1px solid black;
+                    border-radius: 0.2em;
+                    padding: 1em;
+                    background-color: whitesmoke;
                 }
             </style>
 <script type="text/javascript">
@@ -101,6 +117,34 @@ $output=shell_exec($cmd." 2>&1");
             ajax: {
                 'url': '../allocation/loadInfo/course_analysis.php'
             },
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: `<?php 
+                if($_SESSION['type']=='audit'){
+                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-Course-Stats";
+                }
+                ?>`,
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6,7,8]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: `<?php 
+                if($_SESSION['type']=='audit'){
+                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-Course-Stats";
+                }
+                ?>`,
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6,7,8]
+                },
+            }],
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModalCurrent)
                 $(".selectrow").attr("disabled", true);
@@ -130,6 +174,9 @@ $output=shell_exec($cmd." 2>&1");
                     data: 'cid'
                 },
                 {
+                    data: 'offering_dept'
+                },
+                {
                     data: 'min'
                 },
                 {
@@ -149,7 +196,7 @@ $output=shell_exec($cmd." 2>&1");
                 },
             ],
             columnDefs: [{
-                    targets: [0,8], // column index (start from 0)
+                    targets: [0,9], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
@@ -335,14 +382,14 @@ $("#course_analysis").submit(function(e){
         $.ajax({
             url:'../allocation/loadTabs/load_course_selection_tab.php',
             success:function(html){
-                $("#spinner").hide()
+                $("#spinner_prev").hide()
                 $("#nav-course-tab").removeClass("disabled")
                 $("#nav-tabContent").html(html)
                 $("#nav-course-tab").addClass("active")
             },
             beforeSend:function(){
             //Loader daalna hai baadme
-            $('#spinner').show();
+            $('#spinner_prev').show();
             $('#next_btn').attr('disabled',true);
             $('#prev_btn').attr('disabled',true);
             $("#reallocate").attr('disabled',true);
@@ -354,13 +401,13 @@ $("#course_analysis").submit(function(e){
         $.ajax({
             url:'../allocation/loadTabs/load_allocation_analysis_tab.php',
             success:function(html){
-                $("#spinner").hide()
+                $("#spinner_reallocate").hide()
                 $("#nav-tabContent").html(html)
             },
             beforeSend:function(){
             //Loader daalna hai baadme
             $("#course_analysis").css("opacity",0.3)
-            $('#spinner').show();
+            $('#spinner_reallocate').show();
             $('#next_btn').attr('disabled',true);
             $('#prev_btn').attr('disabled',true);
             $("#reallocate").attr('disabled',true);

@@ -32,7 +32,11 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 //$prefas=1/$totalStudentCount;
 ## Fetch records
-$sql="SELECT cname,cid,max,min,no_of_allocated FROM `{$_SESSION['course_table']}` WHERE 1 "
+$sql="SELECT cname,cid,
+(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM ".$_SESSION['type']."_course_floating_dept afd 
+INNER JOIN department d ON afd.dept_id=d.dept_id WHERE ct.cid=afd.cid AND ct.sem=afd.sem AND ct.year=afd.year
+GROUP BY 'all') as offering_dept,
+  max,min,no_of_allocated FROM `{$_SESSION['course_table']}` ct WHERE 1 "
     .$searchQuery.$orderQuery." limit ".$row.",".$rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
@@ -47,6 +51,7 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
         // "select-cbox"=>'<input type="checkbox">',
         "cname"=>'<h6 class="font-weight-bold '.$color.' mb-0">'.$row['cname'].'</h6>',
         "cid"=>'<h6 class="font-weight-bold '.$color.' mb-0">'.$row['cid'].'</h6>',
+        "offering_dept"=>'<h6 class="font-weight-bold '.$color.' mb-0">'.$row['offering_dept'].'</h6>',
         "max"=>'<h6 class="font-weight-bold '.$color.' mb-0">'.$row['max'].'</h6>',
         "min"=>'<h6 class="font-weight-bold '.$color.' mb-0">'.$row['min'].'</h6>',
         "no_of_allocated"=>'<h6 class="font-weight-bold '.$color.' mb-0">'.$row['no_of_allocated'].'</h6>',

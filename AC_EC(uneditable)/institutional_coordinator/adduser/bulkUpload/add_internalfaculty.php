@@ -18,10 +18,10 @@ $timestamp=date("Y-m-d H:i:s");
 $cmd='python internalfaculty.py "'.$_SESSION['email'].'" "'.$timestamp.'" "'.$fname.'" "'.$mname.'" "'.$lname.'" "'.$eid.'" "'.$fcode.'" "'.$emailid.'" "'.$department.'" "'.$post.'" "'.$servername.'" "'.$target_location.'" "'.$username.'" "'.$dbname.'" "'.$password.'"';
 //echo $cmd;
  $output = shell_exec($cmd);
-        //echo $output;
- if(strpos($output,"Duplicate entry")){
-    echo "Import Unsuccessful as adding caused duplicate entries";
-}else{
-    echo $output;
-}
+ echo $output;
+//  if(strpos($output,"Duplicate entry")){
+//     echo "Import Unsuccessful as adding caused duplicate entries";
+// }else{
+//     echo $output;
+// }
         ?>

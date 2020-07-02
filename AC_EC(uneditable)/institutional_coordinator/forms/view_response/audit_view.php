@@ -1,27 +1,45 @@
 <?php
-include('../config.php');
-include_once('verify.php');
-include('../includes/header.php');
+include('../../../config.php');
+include_once('../../verify.php');
+if(!isset($_POST['view_response_btn'])){
+    header('Location: ../../../index.php');
+    exit();
+}
+include('includes/header.php');
 ?>
-<?php include('sidebar.php'); ?>
+<?php //include('sidebar.php'); ?>
 
-<?php include('../includes/topbar.php'); ?>
-
+<?php include('includes/topbar1.php'); ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <div class="card shadow mb-4">
-
+    <style type="text/css">
+            .card {
+                position: absolute;
+                top: 80px;
+                left: 0px;
+                width: 100%;
+            }
+            .view-pref{
+                font-size: 1.4em;
+            }
+        </style>
         <div class="card-header py-3">
             <div class="row align-items-center">
-                <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Responses</h4>
+                <div class="col-md-8 col-lg-7">
+                    <h5 class="font-weight-bold text-primary mb-0">
+                        <?php
+                            if($_POST['type_of_form']=='audit'){
+                                echo "Audit Course Responses: Semester ".$_POST['sem']." and Academic Year ".$_POST['yearb'];
+                            }
+                        ?></h5>
                 </div>
-                <div class="col text-right" id="delete_selected_response_div">
+                <div class="col-md-3 col-lg-3" id="delete_selected_response_div">
                     <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
                         <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Response(s)
                     </button>
                 </div>
-                <div class="col text-right">
+                <div class="col-md-2 col-lg-2">
                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadstudent">
                         <i class="fas fa-upload"></i>
                     </button>
@@ -89,53 +107,69 @@ include('../includes/header.php');
                                             <div class="form-group col-md-6">
                                                 <label for="semester"><b>Semester</b></label>
                                                 <?php
-                                                include_once("../config.php");
+                                                include_once("../../../config.php");
                                                 $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
                                                 $result = mysqli_query($conn, $sql);
                                                 $row = mysqli_fetch_assoc($result);
-                                                $sem_dropdown = "";
+                                                $sem=mysqli_escape_string($conn,$_POST['sem']);
                                                 // while ($row = mysqli_fetch_assoc($result)) {
-                                                for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
+                                                // for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
 
-                                                    $sem_dropdown .= "<option>" . $sem_start . "</option>";
-                                                }
-                                                echo '<select class="form-control" required id="semester" name="semester">
-                                                    ' . $sem_dropdown . '
-                                                </select>'
+                                                //     $sem_dropdown .= "<option>" . $sem_start . "</option>";
+                                                // }
+                                                // echo '<select class="form-control" required id="semester" name="semester">
+                                                //     ' . $sem_dropdown . '
+                                                // </select>'
+
+                                                echo '<input class="form-control" id="semester" name="semester" value="'.$sem. '" disabled>' ;
+                                                echo '<input class="form-control" type="hidden" id="semester" name="semester" value="'.$sem.'">';
+
                                                 ?>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="year"><b>Year</b></label>
-                                                <select class="form-control" name="year" id="year">
+                                                <!-- <select class="form-control" name="year" id="year"> -->
                                                     <?php
                                                     $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
                                                     $result = mysqli_query($conn, $sql);
                                                     $row = mysqli_fetch_assoc($result);
-                                                    $year1 = $row['academic_year'];
-                                                    $year2 = $row['academic_year'];
-                                                    for ($i = 0; $i < 2; $i++) {
-                                                        $temp = explode('-', $year1)[0];
-                                                        $temp += 1;
-                                                        $temp2 = "" . ($temp + 1);
-                                                        $year1 = $temp . "-" . substr($temp2, 2);
-                                                        echo '<option>' . $year1 . '</option>';
-                                                    }
-                                                    for ($i = 0; $i < 4; $i++) {
 
-                                                        echo '<option>' . $year2 . '</option>';
-                                                        $temp = explode('-', $year2)[0];
-                                                        $temp -= 1;
-                                                        $temp2 = "" . ($temp + 1);
-                                                        $year2 = $temp . "-" . substr($temp2, 2);
-                                                    }
-                                                    echo '</select>';
+                                                    $yr1=mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);
+                                                    $yr2=mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);
+                                                    
+
+                                                    echo '<input class="form-control" id="year" name="year" value="'.$yr1.'-'.$yr2. '" disabled>' ;
+                                                    echo '<input class="form-control" type="hidden" id="year" name="year" value="'.$yr1.'-'.$yr2. '">'; 
+
+                                                    // $year1 = $row['academic_year'];
+                                                    // $year2 = $row['academic_year'];
+                                                    // for ($i = 0; $i < 2; $i++) {
+                                                    //     $temp = explode('-', $year1)[0];
+                                                    //     $temp += 1;
+                                                    //     $temp2 = "" . ($temp + 1);
+                                                    //     $year1 = $temp . "-" . substr($temp2, 2);
+                                                    //     echo '<option>' . $year1 . '</option>';
+                                                    // }
+                                                    // for ($i = 0; $i < 4; $i++) {
+
+                                                    //     echo '<option>' . $year2 . '</option>';
+                                                    //     $temp = explode('-', $year2)[0];
+                                                    //     $temp -= 1;
+                                                    //     $temp2 = "" . ($temp + 1);
+                                                    //     $year2 = $temp . "-" . substr($temp2, 2);
+                                                    // }
+                                                    // echo '</select>';
                                                     ?>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="npre"><b>Number of valid Preferences</b></label>
-                                                <input type="number" class="form-control" id="npre" placeholder="No. of valid Preferences" name="npre" min=0 oninput="validity.valid||(value='');" required>
+                                                <?php
+                                                $pref=mysqli_escape_string($conn,$_POST['no_of_preferences']);
+                                                echo '<input type="text" class="form-control" id="npre" name="npre" value="'.$pref.'" disabled>' ;
+                                                echo '<input type="hidden" class="form-control" id="npre" name="npre" value="'.$pref.'">' ; ?>
+                                                <!-- <input type="number" class="form-control" id="npre" placeholder="No. of valid Preferences" name="npre" min=0 oninput="validity.valid||(value='');" required> -->
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -170,10 +204,23 @@ include('../includes/header.php');
                                                 </div>
                                                 <div class="form-row mt-4">
                                                     <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
-                                                        <label class="form-check-label" for="exampleCheck">Add preference column name</label>
+                                                        <!-- <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()"> -->
+                                                        <p class="text-primary">Add Preference column names</p>
                                                         <!-- </div> -->
-                                                        <div id="map_section" style="display: none;">
+                                                        <div id="map_section">
+                                                        <?php
+                                                           for($i=1;$i<=$_POST['no_of_preferences'];$i++){
+                                                               echo '
+                                                               <div id="pref_'.$i.'" >
+                                                                <div class="form-group" id="pref_field1_ '.$i.'" style="display: block;">
+                                                                    <label for="pref_field1"><b>Preference Number '.$i.'</b></label>
+                                                                    <input type="text" class="form-control prefid"  required id="pref_id'.$i.'" name="prefid'.$i.'" value="pref'.$i.'" placeholder="Enter the column name of preference number '.$i.'">
+                                                                </div>
+                                                            </div>
+                                                               ';
+                                                           }
+                                                        ?>
+                                                            
                                                         </div>
                                                         <div class="form-group">
                                                             <!-- <button type="button" id="add_pref" class="btn btn-primary" style="display: none;">Add</button> -->
@@ -185,7 +232,7 @@ include('../includes/header.php');
                                                                 </span>
                                                                 <span class="text">Add</span>
                                                             </button>
-                                                            <input type="hidden" value="0" id="total_pref" name="total_pref">
+                                                            <input type="hidden" value="<?php echo $_POST['no_of_preferences']?>" id="total_pref" name="total_pref">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -282,12 +329,39 @@ include('../includes/header.php');
                             text-transform: capitalize;
                             text-align: center;
                         }
+                        .text-success{
+                            color:#2ecc71!important;
+                        }
                     </style>
                 </div>
             </div>
         </div>
 
         <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-4 col-md-4">
+                    <label class="font-weight-bold text-info mb-0" style="font-size:1.04em">
+                        No. of Preferences:  <?php echo '<span style="font-size:0.9em;">'.$_POST['no_of_preferences']."</span>";?>
+                    </label>
+                </div>
+                <div class="col-md-4 col-md-4">
+                    <label class="font-weight-bold text-info mb-0" style="font-size:1.04em">
+                        Applicable Department(s):  
+                        <?php 
+                        include_once('../../../config.php');
+                        $res=mysqli_query($conn,"SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') as dept FROM form_applicable_dept 
+                                NATURAL JOIN department WHERE form_type='audit' AND sem='{$_POST['sem']}' AND year='{$_POST['yearb']}'");
+                        $depts=mysqli_fetch_assoc($res);
+                         echo'<span style="font-size:0.9em;">'.$depts['dept']."</span>";
+                         ?>
+                    </label>
+                </div>
+            </div>
+            <br>
+            <div id="response-stats">
+            </div>
+            <br>
+            <p class="text-primary"><b>Collected Responses are as follows: </b></p>
             <table class="table table-bordered table-responsive" id="dataTable-response" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -298,14 +372,16 @@ include('../includes/header.php');
                             </div>
                         </th>
                         <th>Email Address</th>
-                        <th>Semester</th>
-                        <th>Year</th>
+                        <!-- <th>Semester</th>
+                        <th>Year</th> -->
                         <th>Roll Number</th>
-                        <!-- <th>Department</th> -->
+                        <th>Full Name</th>
+                        <th>Student's Department</th>
                         <th>Time Stamp</th>
-                        <th>Allocate Status</th>
-                        <th>No of Valid Preferences</th>
-                        <th>Preference List</th>
+                        <th>Allocation Status</th>
+                        <!-- <th>No of Valid Preferences</th> -->
+                        <!-- <th>Preference List</th> -->
+                        <th>View Preference</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -313,14 +389,16 @@ include('../includes/header.php');
                     <tr>
                         <th></th>
                         <th>Email Address</th>
-                        <th>Semester</th>
-                        <th>Year</th>
+                        <!-- <th>Semester</th>
+                        <th>Year</th> -->
                         <th>Roll Number</th>
-                        <!-- <th>Department</th> -->
+                        <th>Full Name</th>
+                        <th>Student's Department</th>
                         <th>Time Stamp</th>
-                        <th>Allocate Status</th>
-                        <th>No of Valid Preferences</th>
-                        <th>Preference List</th>
+                        <th>Allocation Status</th>
+                        <!-- <th>No of Valid Preferences</th> -->
+                        <!-- <th>Preference List</th> -->
+                        <th>View Preference</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
@@ -343,12 +421,13 @@ include('../includes/header.php');
         $("#upload_current").attr("disabled", true);
         $("#upload_current").text("Uploading...")
         $.ajax({
-            url: "view_response/bulkUpload/upload_response_queries_ac.php",
+            url: "bulkUpload/upload_response_queries_ac.php",
             type: 'POST',
             data: formData,
             success: function(data) {
                 if ($.trim(data) == "Successful") {
                     $("#upload_current").text("Uploaded Successfully")
+                    get_response_stats();
                     loadCurrent();
                 } else {
                     $("#upload_current").text("Upload Failed")
@@ -363,8 +442,9 @@ include('../includes/header.php');
     })
 
     $(document).ready(function() {
+        get_response_stats()
         loadCurrent();
-        $('#uploadCurrent').on('hidden.bs.modal', function(e) {
+        $('#uploadstudent').on('hidden.bs.modal', function(e) {
             document.querySelector("#bulkUploadCurrent").reset();
             $("#upload_current").text("Upload")
             $("#upload_current").attr("disabled", false);
@@ -462,35 +542,41 @@ include('../includes/header.php');
         }
     }
 
-
-
-    $(document).ready(function() {
-        loadCurrent();
-    });
     $("#delete_selected_response_btn").click(function(e) {
         alert("You have selected " + $("#dataTable-response tbody tr.selected").length + " record(s) for deletion");
         var delete_rows = $("#dataTable-response").DataTable().rows('.selected').data()
         var delete_data = {}
+        var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+		var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+		var y3=yr1+"-"+yr2;
+        var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+        var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
         for (var i = 0; i < delete_rows.length; i++) {
             baseData = {}
             baseData['email_id'] = delete_rows[i].email_id
-            baseData['sem'] = delete_rows[i].sem
-            baseData['rollno'] = delete_rows[i].rollno
             delete_data[i] = baseData
             // console.log(baseData);
         }
         var actual_data = {}
-        actual_data['type'] = 'current'
+        actual_data['sem'] = sem
+        actual_data['year'] = y3
+        actual_data['type']='audit'
+        actual_data['currently_active']=currently_active
+        actual_data['no']='0'
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json)
         $.ajax({
             type: "POST",
-            url: "ic_queries/multioperation_queries/delete_multiple_response_ac.php",
+            url: "../../ic_queries/multioperation_queries/delete_multiple_response.php",
             data: actual_delete_data_json,
             success: function(data) {
-                // console.log(data)
+                console.log("Yo")
                 $("#dataTable-response").DataTable().draw(false);
+                get_response_stats();
+            },
+            error:function(){
+                alert("Something went wrong while deleting responses!! Please try again")
             }
         })
     })
@@ -498,6 +584,16 @@ include('../includes/header.php');
 
     function loadCurrent() {
         // document.querySelector("#addCoursebtn").style.display="none"
+        var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+		var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+		var y3=yr1+"-"+yr2;
+        var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+        var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
+        
+        // console.log(y3);
+        // console.log(sem);
+        // console.log(currently_active);
+
         $('#dataTable-response').DataTable({
             processing: true,
             serverSide: true,
@@ -505,7 +601,13 @@ include('../includes/header.php');
             serverMethod: 'post',
             aaSorting: [],
             ajax: {
-                'url': 'view_response/loadInfo/view_audit.php'
+                
+                'url': 'loadInfo/view_audit.php',
+                'data': {
+					'year':y3,
+                    'sem':sem,
+                    'currently_active':currently_active
+                }
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModalCurrent)
@@ -532,14 +634,20 @@ include('../includes/header.php');
                 {
                     data: 'email_id'
                 },
-                {
-                    data: 'sem'
-                },
-                {
-                    data: 'year'
-                },
+                // {
+                //     data: 'sem'
+                // },
+                // {
+                //     data: 'year'
+                // },
                 {
                     data: 'rollno'
+                },
+                {
+                    data:'full_name'
+                },
+                {
+                    data:'dept_name'
                 },
                 {
                     data: 'timestamp'
@@ -547,18 +655,21 @@ include('../includes/header.php');
                 {
                     data: 'allocate_status'
                 },
+                // {
+                //     data: 'no_of_valid_preferences'
+                // },
+                // {
+                //     data: 'preference_list'
+                // },
                 {
-                    data: 'no_of_valid_preferences'
-                },
-                {
-                    data: 'preference_list'
+                    data: 'view_preference'
                 },
                 {
                     data: 'action'
                 },
             ],
             columnDefs: [{
-                    targets: [0, 8, 9], // column index (start from 0)
+                    targets: [0, 6,7,8], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
@@ -568,6 +679,10 @@ include('../includes/header.php');
                 {
                     className: "email_id",
                     "targets": [1]
+                },
+                {
+                    className: "view-pref-btn",
+                    "targets": [7]
                 },
             ],
         });
@@ -582,21 +697,51 @@ include('../includes/header.php');
             $("#dataTable-response tbody tr").removeClass("selected table-secondary");
         }
     })
-
+    function get_response_stats(){
+        var data={}
+        var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+		var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+        var y3=yr1+"-"+yr2;
+        var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+        var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
+        data={}
+        data['sem']=sem
+        data['year']=y3
+        data['type']='audit'
+        data['currently_active']=currently_active
+        data['no']='0'
+        var json_data = JSON.stringify(data)
+        $.ajax({
+            type:"POST",
+            url:"response_stats.php",
+            data:json_data,
+            success:function(response){
+                $("#response-stats").html(response)
+            }
+        })
+    }
     function loadModalCurrent() {
         var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
         // var btn=$(this);
+        var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+		var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+        var y3=yr1+"-"+yr2;
+        var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+        var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
         var aPos = $("#dataTable-response").dataTable().fnGetPosition(target_row.get(0));
         var courseData = $('#dataTable-response').DataTable().row(aPos).data()
         // delete courseData.action
         // console.log(courseData)
         // delete courseData.allocate_faculty
+        courseData['sem']=sem;
+        courseData['year']=y3;
+        courseData['currently_active']=currently_active
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "view_response/loadModal/audit_response_modal.php",
+            url: "loadModal/audit_response_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -619,7 +764,7 @@ include('../includes/header.php');
                     $("#delete_response_btn").attr("disabled", true);
                     $.ajax({
                         type: "POST",
-                        url: "ic_queries/audit_view_response_queries.php",
+                        url: "../../ic_queries/view_response_queries.php",
                         data: form_serialize,
                         success: function(data) {
                             //    alert(data); // show response from the php script.
@@ -631,6 +776,7 @@ include('../includes/header.php');
                             $('.modal-backdrop').remove();
                             // row.remove();
                             $("#dataTable-response").DataTable().row(aPos).remove().draw(false);
+                            get_response_stats();
                             // console.log(aPos);
                             // console.log(row)
                         }
@@ -657,7 +803,7 @@ include('../includes/header.php');
         $("#update_response_btn").attr("disabled", true);
         $.ajax({
             type: "POST",
-            url: "ic_queries/audit_view_response_queries.php",
+            url: "../../ic_queries/view_response_queries.php",
             data: form_serialize,
             success: function(data) {
                 if (data === "Exists") {
@@ -687,9 +833,53 @@ include('../includes/header.php');
             }
         });
     }
+    $("#dataTable-response").on('click','td.view-pref-btn',function(){
+    var tr = $(this).closest('tr');
+        var row = $("#dataTable-response").DataTable().row( tr );
+ 
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown table-warning');
+        }
+        else {
+            // Open this row
+            var yr1=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[0]);?>;
+            var yr2=<?php echo mysqli_escape_string($conn,explode("-",$_POST['yearb'])[1]);?>;
+            var y3=yr1+"-"+yr2;
+            var sem=<?php echo mysqli_escape_string($conn,$_POST['sem']);?>;
+            var currently_active=<?php echo mysqli_escape_string($conn,$_POST['currently_active']);?>;
+            var data={}
+            data['email_id']=row.data()['email_id'];
+            data['type']='audit'
+            data['sem']=sem
+            data['year']=y3
+            data['currently_active']=currently_active
+            data['nop']=<?php echo $pref;?>;
+            data_json=JSON.stringify(data)
+            console.log(data_json)
+            $.ajax({
+                type: "POST",
+                url: "loadPrefList.php",
+                data: data_json, 
+                beforeSend:function(){
+                    row.child('Loading... <img src="../../../vendor/img/ajax-loader.gif" alt="loading" id="img-spinner">').show();
+                    tr.addClass('shown table-warning');
+                },
+                success: function(response)
+                {
+                row.child(response).show();
+                },
+                error:function(){
+                    row.child("Cannot load preferences at the moment").show();
+                }
+            });
+            // row.child("<b>Hello</b>").show();
+        }
+    })
 </script>
 
 
-<?php include('../includes/footer.php');
-include('../includes/scripts.php');
+<?php include('includes/footer.php');
+include('includes/scripts.php');
 ?>

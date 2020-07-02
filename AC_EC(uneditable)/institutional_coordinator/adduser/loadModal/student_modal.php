@@ -87,7 +87,34 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="year_of_admission"><b>Year</b></label>
-                                            <input type="text" class="form-control" required="required" placeholder="eg..0000" name="year_of_admission_new" minlength="4" maxlength="4" value="'. $year_of_admission.'">
+                                            <select class="form-control" name="year_of_admission_new" id="year_of_admission_new">';
+                                            $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
+                                            $result = mysqli_query($conn, $sql);
+                                            $row = mysqli_fetch_assoc($result);
+                                            $year1 = $row['academic_year'];
+                                            $year2 = $row['academic_year'];
+                                            for ($i = 0; $i < 2; $i++) {
+                                              $temp = explode('-', $year1)[0];
+                                              $temp += 1;
+                                              $temp2 = "" . ($temp + 1);
+                                              $year1 = $temp . "-" . substr($temp2, 2);
+                                              $year1_value=$temp;
+                                              echo '<option>' . $year1_value . '</option>';
+                                            }
+                                            for ($i = 0; $i < 4; $i++) {
+                                              if ($year == $year1) {
+                                                $year_dropdown .= "<option selected>" . $year1_value . "</option>";
+                                              }
+                                              $temp = explode('-', $year2)[0];
+                                              $year2_value = $temp;
+                                              $temp -= 1;
+                                              $temp2 = "" . ($temp + 1);
+                                              $year2 = $temp . "-" . substr($temp2, 2);
+                                            //   $year2_value = $temp;
+                                              echo '<option>' . $year2_value . '</option>';
+                                            }
+                                          
+                                            echo '</select>
                                             <input type="hidden" class="form-control"  name="year_of_admission_old" value="' . $year_of_admission. '">
                                         </div>  
                                     </div>
@@ -108,9 +135,19 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="current_sem"><b>Semester</b></label>
-                                            <input type="number" class="form-control" required="required" name="current_sem_new" placeholder="eg..1" min="1" max="8" maxlength="1" 
-                                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
-                                            onkeyup="SemestersOnly(this) "value="' . $current_sem . '">
+                                            <select class="form-control" required="required" name="current_sem_new" id="current_sem_new">';
+                                                $i = 1;
+                                                for ($i = 1; $i <= 8; $i++) {
+                                                    echo '<option value="';
+                                                    echo $i;
+                                                    echo '"';
+                                                    if ($i == $current_sem )
+                                                    echo ' selected';
+                                                    echo ">";
+                                                    echo $i;
+                                                    echo '</option>';
+                                                }
+                                                echo '</select>                                            
                                         </div>                                    
                                     </div>
                                     

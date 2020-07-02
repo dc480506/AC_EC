@@ -65,7 +65,15 @@ try:
         post=data.cell(x,header_id[sys.argv[mapper['post_col']].lower()]).value
         # print(post)
         values=(email,fcode,fname,mname,lname,eid,dept_id,post,added,timestamp)
-        cursor.execute(insert_faculty,values)
+        try:
+            cursor.execute(insert_faculty,values)
+        except Exception as e:
+            if "Duplicate entry" in str(e):
+                print("Email: "+email+" Short name: "+str(fcode)+" Employee id: "+str(int(eid))+" Department id: "+str(int(dept_id))+" has duplicate entry.")
+            elif "foreign key constraint fails" in str(e):
+                print("Department id: "+str(int(dept_id))+ "does not exist/(if present, wrong value) in the table.")
+            print("The upload was unsuccessful.")
+            sys.exit(0)
 except Exception as e:
     print(str(e))
     sys.exit(0)

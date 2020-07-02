@@ -139,7 +139,7 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Email ID</th>
                                     <th>Roll No</th>
                                     <th>Full Name</th>
-                                    <th>Department</th>
+                                    <th>Student's Dept.</th>
                                     <?php
                                         if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
                                             echo '<th>GPA</th>';
@@ -154,7 +154,7 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Email ID</th>
                                     <th>Roll No</th>
                                     <th>Full Name</th>
-                                    <th>Department</th>
+                                    <th>Student's Dept.</th>
                                     <?php
                                         if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
                                             echo '<th>GPA</th>';
@@ -186,7 +186,7 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Email ID</th>
                                     <th>Roll No</th>
                                     <th>Full Name</th>
-                                    <th>Department</th>
+                                    <th>Student's Dept.</th>
                                     <?php
                                         if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
                                             echo '<th>GPA</th>';
@@ -202,7 +202,7 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Email ID</th>
                                     <th>Roll No</th>
                                     <th>Full Name</th>
-                                    <th>Department</th>
+                                    <th>Student's Dept.</th>
                                     <?php
                                         if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
                                             echo '<th>GPA</th>';

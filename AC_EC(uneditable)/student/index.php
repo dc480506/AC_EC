@@ -26,7 +26,7 @@ include('../includes/header.php');
             ?>
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title text-info mb-4">My Profile</h4>
+                    <h3 class="card-title text-info mb-4">My Profile</h3>
                     <div class="row">
                         <div class="col-md-4">
                             <img src="../vendor/img/person1.jpg" class="rounded-circle mx-auto d-block mb-4" alt="..." width="100em" height="100em">
@@ -52,7 +52,7 @@ include('../includes/header.php');
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-12">
-                            <h3 class="mb-0"><strong>My Current Course</strong></h3>
+                            <h4 class="mb-0"><strong>My Current Course</strong></h4>
                         </div>
                     </div>
                 </div>
@@ -64,13 +64,16 @@ include('../includes/header.php');
                 <div class="card-body">
                     <form class="forms-sample mt-4" action="">
                         <p class="card-description">
-                            <h5><strong> Audit Course </strong></h5>
+                            <h4><strong> Audit Course </strong></h4>
                         </p>
                         <?php 
                         $sql="SELECT ac.cname,sa.sem,(SELECT count(*) FROM student_audit sa WHERE currently_active=1 AND sa.cid=ac.cid) as no_of_allocated,sa.complete_status,ac.year FROM audit_course AS ac INNER Join student_audit AS sa on sa.cid=ac.cid AND sa.sem=ac.sem AND ac.year=sa.year WHERE sa.email_id='{$_SESSION['email']}' AND sa.currently_active='1'";
                             $result= mysqli_query($conn,$sql);
                             if(mysqli_num_rows($result)==0)
-                            { echo 'no current courses';}
+                            { 
+                                ?><h5 style="color:red;"> <?php echo 'No courses available currently';?>&nbsp;<i class="fas fa-times"></i></h5>
+                                <?php 
+                                }
                         else{
                             $row= mysqli_fetch_array($result,MYSQLI_ASSOC);
                             $count= mysqli_num_rows($result);

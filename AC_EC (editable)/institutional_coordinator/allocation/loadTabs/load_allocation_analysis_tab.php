@@ -196,7 +196,7 @@ $output=shell_exec($cmd." 2>&1");
                 },
             ],
             columnDefs: [{
-                    targets: [0,8], // column index (start from 0)
+                    targets: [0,9], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
