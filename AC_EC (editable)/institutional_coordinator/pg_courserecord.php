@@ -21,15 +21,25 @@ include('../includes/header.php');
             </div>
         </div>
         <div class="card-body">
-            <form action="#">
+            <form action="courses.php" method="POST">
                 <div class="form-group">
                     <div class="form-group">
                         <h5><label for="exampleFormControlSelect1">Select Course:</label></h5>
                         <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Audit Course</option>
-                            <option>Interdisciplinary Course</option>
-                            <option>Close Elective Course</option>
-                            <option>Open Elective Course</option>
+                        <?php  
+                            $query ='SELECT name FROM course_types WHERE program="PG"';
+                            $coursetypes = mysqli_query($conn, $query);
+                            $rowcount = mysqli_num_rows($coursetypes);
+                            echo $row['name'];
+                            while($row = mysqli_fetch_array($coursetypes))
+                            {
+                                $storeArray[]=$row['name'];
+                            }
+                            for($i=0;$i<$rowcount;$i++)
+                            {
+                                echo'<option value="'.$storeArray[$i].'">'.$storeArray[$i].'</option>';
+                            }
+                        ?>
                         </select>
                     </div>
                     <div class="form-group row">
