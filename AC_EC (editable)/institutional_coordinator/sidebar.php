@@ -35,6 +35,16 @@
       </div>
     </div>
   </li>
+  
+<!-- changed -->
+ <!-- Divider -->
+ <hr class="sidebar-divider">
+<li class="nav-item">
+    <a class="nav-link" href="addnewcourse.php">
+    <i class="fas fa-book"></i>
+      <span>Add new course</span></a>
+  </li>
+
 
   <hr class="sidebar-divider">
 
