@@ -35,14 +35,14 @@
       </div>
     </div>
   </li>
-  
-<!-- changed -->
- <!-- Divider -->
- <hr class="sidebar-divider">
-<li class="nav-item">
-    <a class="nav-link" href="addnewcourse.php">
-    <i class="fas fa-book"></i>
-      <span>Add new course</span></a>
+
+  <!-- changed -->
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  <li class="nav-item">
+    <a class="nav-link" href="addnewcourseType.php">
+      <i class="fas fa-book"></i>
+      <span>Add new course Type</span></a>
   </li>
 
 
@@ -69,8 +69,8 @@
   <hr class="sidebar-divider">
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages10" aria-expanded="true" aria-controls="collapseUtilities">
-    <i class="fas fa-user-graduate"></i>
-    <span>Student Allocation</span></a>
+      <i class="fas fa-user-graduate"></i>
+      <span>Student Allocation</span></a>
     </a>
     <div id="collapsePages10" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
@@ -100,12 +100,12 @@
     </div>
   </li>
 
-  
+
   <hr class="sidebar-divider">
   <!-- Nav Item - Pages Collapse Menu -->
   <li class="nav-item">
     <a class="nav-link" href="upload_marks.php">
-    <i class="fas fa-file"></i>
+      <i class="fas fa-file"></i>
 
       <span>Marks</span></a>
   </li>
