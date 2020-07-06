@@ -48,7 +48,7 @@ include('../includes/header.php');
                                         <select class="form-control" id="program" name="program" required>
                                             <option value="UG">UG</option>
                                             <option value="PG">PG</option>
-                                            <option value="Ph.D">Ph.D</option>
+                                            <option value="PHD">PHD</option>
                                         </select>
                                         <!-- <span id="add_upcoming_cid_error" class="text-danger"></span> -->
                                     </div>
@@ -87,7 +87,7 @@ include('../includes/header.php');
                                         <select disabled class="form-control" id="program" name="program" required>
                                             <option value="UG">UG</option>
                                             <option value="PG">PG</option>
-                                            <option value="Ph.D">Ph.D</option>
+                                            <option value="PHD">PHD</option>
                                         </select>
 
                                     </div>
