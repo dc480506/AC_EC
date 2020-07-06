@@ -17,11 +17,15 @@ $output=shell_exec($cmd." 2>&1");
     .accordion-toggle.open{
         background-color: #ffcccc;
     }
-    #spinner{
+    #spinner_prev{
         position: fixed;
-        top:50%;
+        top: 50%;
         left:50%;
-        display: none;
+        transform: translate(-50%,-50%);
+        border: 1px solid black;
+        border-radius: 0.2em;
+        padding: 1em;
+        background-color: whitesmoke;
     }
 </style>
 <br>
@@ -135,7 +139,7 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Email ID</th>
                                     <th>Roll No</th>
                                     <th>Full Name</th>
-                                    <th>Department</th>
+                                    <th>Student's Dept.</th>
                                     <?php
                                         if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
                                             echo '<th>GPA</th>';
@@ -150,7 +154,7 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Email ID</th>
                                     <th>Roll No</th>
                                     <th>Full Name</th>
-                                    <th>Department</th>
+                                    <th>Student's Dept.</th>
                                     <?php
                                         if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
                                             echo '<th>GPA</th>';
@@ -182,7 +186,7 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Email ID</th>
                                     <th>Roll No</th>
                                     <th>Full Name</th>
-                                    <th>Department</th>
+                                    <th>Student's Dept.</th>
                                     <?php
                                         if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
                                             echo '<th>GPA</th>';
@@ -198,7 +202,7 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Email ID</th>
                                     <th>Roll No</th>
                                     <th>Full Name</th>
-                                    <th>Department</th>
+                                    <th>Student's Dept.</th>
                                     <?php
                                         if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
                                             echo '<th>GPA</th>';
@@ -235,6 +239,7 @@ $output=shell_exec($cmd." 2>&1");
                                 <tr>
                                     <th>Course Name</th>
                                     <th>Course ID</th>
+                                    <th>Offering Dept.</th>
                                     <th>Min</th>
                                     <th>Max</th>
                                     <th>No of Students Allocated</th>
@@ -245,6 +250,7 @@ $output=shell_exec($cmd." 2>&1");
                                 <tr>
                                     <th>Course Name</th>
                                     <th>Course ID</th>
+                                    <th>Offering Dept.</th>
                                     <th>Min</th>
                                     <th>Max</th>
                                     <th>No of Students Allocated</th>
@@ -264,7 +270,8 @@ $output=shell_exec($cmd." 2>&1");
             <button type="submit" class="btn btn-primary align-center" id="complete_btn" name="Complete">Complete</button>
         </div>
     </form>
-    <div id="spinner">
+    <div id="spinner_prev" style="display: none;">
+        <label class="text-dark">Navigating to 1st Iteration Allocation Analysis</label>
         <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
     </div>
 </div>
@@ -364,9 +371,9 @@ $output=shell_exec($cmd." 2>&1");
                         echo "
                         {
                             data: 'gpa'
-                        },";
+                        }";
                     }
-                ?>
+                ?>,
                 {
                     data: 'timestamp'
                 },
@@ -376,14 +383,15 @@ $output=shell_exec($cmd." 2>&1");
             ],
             columnDefs: [{
                 orderable: false ,
+                targets:
                 <?php
                     if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
                     echo "
-                    targets:[3,6],
+                      [3,6],
                     ";
                     }else{
                     echo "
-                    targets: [3,5],
+                     [3,5],
                     ";
                     }
                 ?>
@@ -424,9 +432,9 @@ $output=shell_exec($cmd." 2>&1");
                         echo "
                         {
                             data: 'gpa'
-                        },";
+                        }";
                     }
-                ?>
+                ?>,
                 {
                     data: 'timestamp'
                 },
@@ -454,6 +462,34 @@ $output=shell_exec($cmd." 2>&1");
             destroy: true,
             serverMethod: 'post',
             aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: `<?php 
+                if($_SESSION['type']=='audit'){
+                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-Final-Allocation-Course-Stats";
+                }
+                ?>`,
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [0,1, 2, 3, 4, 5]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: `<?php 
+                if($_SESSION['type']=='audit'){
+                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-Final-Allocation-Course-Stats";
+                }
+                ?>`,
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [0,1, 2, 3, 4, 5]
+                },
+            }],
             ajax: {
                 'url': '../allocation/loadInfo/result_tab/course_status.php'
             },
@@ -464,9 +500,9 @@ $output=shell_exec($cmd." 2>&1");
                 {
                     data: 'cid'
                 },
-                // {
-                //     data: 'dept_name'
-                // },
+                {
+                    data: 'offering_dept'
+                },
                 {
                     data: 'min'
                 },
@@ -481,10 +517,10 @@ $output=shell_exec($cmd." 2>&1");
                 }
             ],
             columnDefs: [{
-                    targets: [5], // column index (start from 0)
+                    targets: [6], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
-                { className: "view_analysis", "targets": [ 5 ] },
+                { className: "view_analysis", "targets": [ 6 ] },
             ],
            })
     }
@@ -549,7 +585,7 @@ $output=shell_exec($cmd." 2>&1");
     })
 
     $("#dataTable-courses").on('click','td.view_analysis',function(){
-    var tr = $(this).closest('tr');
+        var tr = $(this).closest('tr');
         var row = $("#dataTable-courses").DataTable().row( tr );
  
         if (row.child.isShown()) {
@@ -606,7 +642,7 @@ $output=shell_exec($cmd." 2>&1");
             data:data_serialize,
             method:"POST",
             success:function(html){
-                $("#spinner").hide()
+                $("#spinner_prev").hide()
                 $("#nav-result-tab").removeClass("disabled")
                 $("#nav-tabContent").html(html)
                 $("#nav-result-tab").addClass("active")
@@ -614,7 +650,7 @@ $output=shell_exec($cmd." 2>&1");
             beforeSend:function(){
             //Loader daalna hai baadme
             $("#complete_allocation").css("opacity",0.3)
-            $('#spinner').show();
+            $('#spinner_prev').show();
             $('#complete_btn').attr('disabled',true);
             $('#prev_btn').attr('disabled',true);
             },

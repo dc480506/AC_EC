@@ -163,7 +163,7 @@ for k,v in courses.items():
 	if(len(stu_course[k])>v[1]):
 		over.append(k)
 		count1=count1+1
-	if(len(stu_course[k])<v[0] and (len(stu_course[k])!=0)):
+	if(len(stu_course[k])<v[0]):
 		under.append(k)
 		underflow_stu_list.extend(x for x in stu_course[k])
 		count2=count2+1

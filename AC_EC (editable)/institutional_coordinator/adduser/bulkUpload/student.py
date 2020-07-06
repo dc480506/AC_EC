@@ -58,7 +58,15 @@ try:
 		#print(current_sem)
 		values=(email,rollno,fname,mname,lname,year_of_admission,dept,current_sem,ts,added_by)
 		#executing query
-		cursor.execute(insert,values)
+		try:
+			cursor.execute(insert,values)
+		except Exception as e:
+			if "Duplicate entry" in str(e):
+				print("Email: "+email+" Rollno: "+str(int(rollno))+" has duplicate entry.")
+			elif "foreign key constraint fails" in str(e):
+				print("Department id: "+str(int(dept))+" does not exist/(if present, wrong value) in the table.")
+			print("The upload was unsuccessful.")
+			sys.exit(0)
 except Exception as e:
     print(str(e))
     sys.exit(0)

@@ -12,19 +12,27 @@ include('../includes/header.php');
         color: #2ecc71 !important;
 
     }
+    #spinner{
+        /* position: fixed;
+        left: 50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+        z-index: 5;
+        height: auto; */
+        padding: 0.75em;
+        border: 0.25px solid black;
+        border-radius: 0.2em;
+        background-color: #ffffff;
+        display: none;
+    }
 </style>
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container-fluid" id="form_section">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
                     <h4 class="font-weight-bold text-primary mb-0">Audit Course Form Records</h4>
-                </div>
-                <div class="col text-right">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
-                        <i class="fas fa-filter"></i>
-                    </button>
                 </div>
             </div>
         </div>
@@ -44,7 +52,7 @@ include('../includes/header.php');
                         <i class="fas fa-plus"></i> Create Form
                     </button>
                 </div>
-                
+
                 <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="createForm" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -57,28 +65,58 @@ include('../includes/header.php');
                                 </div>
                                 <br>
                                 <label for=""><small><b>Note:</b>2 hours time will be added to start time if current date and time is selected.</small></label>
-                                <form action="ic_queries/prepare_form_ac_queries.php" method="POST">
-                                    <div class="form-group">
-                                        <label for="exampleInputPreference"><b>No of Preferences</b></label>
-                                        <input type="number" required class="form-control" id="exampleInputPreference" name="nop" maxlength="1" minlength="1"   
-                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="NumbersOnly(this)">
+                                <form id="create-form" action="ic_queries/prepare_form_ac_queries.php" method="POST">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputPreference"><b>No of Preferences</b></label>
+                                                <input type="number" required class="form-control" id="exampleInputPreference" name="nop" maxlength="1" minlength="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="NumbersOnly(this)">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputYear"><b>Year</b></label>
+                                                <input type="year" required class="form-control" id="exampleInputYear" placeholder="Eg: 2019-20" maxlength="7" minlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" name="year">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputSem"><b>Floating Semester</b></label>
-                                        <input type="number" required class="form-control" id="exampleInputSem" min="1" max="8" maxlength="1" 
-                                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
-                                            onkeyup="SemestersOnly(this)"  name="sem">
+                                        <label for=""><b>Departments Applicable</b></label>
+                                        <br>
+                                        <!-- <select class="form-control" required name="dept">-->
+                                        <?php
+                                        include_once('../config.php');
+                                        $sql = "SELECT * FROM department WHERE dept_id NOT IN (".$exclude_dept.")";
+                                        $result = mysqli_query($conn, $sql);
+                                        $c = 8;
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo '
+                                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" checked class="custom-control-input" id="dept_applicable_cb' . $c . '"  name="dept_applicable[]" value="' . $row['dept_id'] . '">
+                                                            <label class="custom-control-label" for="dept_applicable_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                        </div>
+                                                        ';
+                                            $c++;
+                                        }
+                                        ?>
+
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputYear"><b>Year</b></label>
-                                        <input type="year" required class="form-control" id="exampleInputYear" placeholder="Eg: 2019-20" maxlength="7" minlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" name="year">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputSem"><b>Floating Semester</b></label>
+                                                <input type="number" required class="form-control" id="exampleInputSem" min="1" max="8" maxlength="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="SemestersOnly(this)" name="sem">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputCurrSem"><b>Opening Semester</b></label>
+                                                <input type="number" required class="form-control" id="exampleInputCurrSem" name="curr_sem" min="1" max="8" maxlength="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeyup="SemestersOnly(this)">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputCurrSem"><b>Opening Semester</b></label>
-                                        <input type="number" required class="form-control" id="exampleInputCurrSem" name="curr_sem" min="1" max="8" maxlength="1" 
-                                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
-                                            onkeyup="SemestersOnly(this)">
-                                    </div>
+
+
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
@@ -101,9 +139,14 @@ include('../includes/header.php');
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="spinner">
+                                        <label class="text-dark">Getting things ready. This may take some time</label>
+                                        <!-- <br> -->
+                                        <img src="../vendor/img/ajax-loader.gif" alt="loading" id="img-spinner">
+                                    </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                        <button type="submit" class="btn btn-primary align-center" name="createForm">Create Form</button>
+                                        <button type="submit" class="btn btn-primary align-center" id="create_form_btn" name="createForm">Create Form</button>
                                     </div>
                                 </form>
                             </div>
@@ -124,6 +167,7 @@ include('../includes/header.php');
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
+                            <th>Dept. Applicable</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
                             <th>End Date</th>
@@ -131,6 +175,7 @@ include('../includes/header.php');
                             <th>No of Preferences</th>
                             <th>Form Status</th>
                             <th>Action</th>
+                            <th>View responses</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -139,6 +184,7 @@ include('../includes/header.php');
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
+                            <th>Dept. Applicable</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
                             <th>End Date</th>
@@ -146,6 +192,7 @@ include('../includes/header.php');
                             <th>No of Preferences</th>
                             <th>Form Status</th>
                             <th>Action</th>
+                            <th>View responses</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -156,7 +203,6 @@ include('../includes/header.php');
 
 <!-- /.container-fluid -->
 <script>
-    
     $("#delete_selected_response_btn").click(function(e) {
         alert("You have selected " + $("#dataTable-form tbody tr.selected").length + " record(s) for deletion");
         var delete_rows = $("#dataTable-form").DataTable().rows('.selected').data()
@@ -180,28 +226,27 @@ include('../includes/header.php');
             url: "ic_queries/multioperation_queries/delete_multiple_form_ac.php",
             data: actual_delete_data_json,
             success: function(data) {
-                // console.log(data)
+                console.log(data)
                 $("#dataTable-form").DataTable().draw(false);
             }
         })
     })
 
-     function NumbersOnly(input)
-    {
-        var regex =/[a-z]/;
-        input.value = input.value.replace(regex,"");
+    function NumbersOnly(input) {
+        var regex = /[a-z]/;
+        input.value = input.value.replace(regex, "");
     }
-    function SemestersOnly(input)
-    {
+
+    function SemestersOnly(input) {
         var regex = /[^1-8]/;
-        input.value = input.value.replace(regex,"");
+        input.value = input.value.replace(regex, "");
         newval = document.querySelector("#exampleInputSem").value - 1;
-        
-        if (newval < 0 && newval == -1)
-        {
-            document.querySelector("#exampleInputCurrSem").value = "";}
-        else{
-            document.querySelector("#exampleInputCurrSem").value = newval;}
+
+        if (newval < 0 && newval == -1) {
+            document.querySelector("#exampleInputCurrSem").value = "";
+        } else {
+            document.querySelector("#exampleInputCurrSem").value = newval;
+        }
     }
 
     $(function() {
@@ -245,18 +290,45 @@ include('../includes/header.php');
     //     else
     //         document.querySelector("#exampleInputCurrSem").value = newval;
     // }
+
+    $("#create-form").submit(function(e) {
+        e.preventDefault();
+        var data = $(this).serializeArray();
+        data.push({
+            name: "createForm",
+            value: "1"
+        });
+
+        $.ajax({
+            method: "POST",
+            url: "ic_queries/prepare_form_ac_queries.php",
+            data: data,
+            beforeSend:function(){
+                $("#spinner").show()
+                $("#create_form_btn").text("Creating...")
+                $("#create_form_btn").attr("disabled",true)
+            },
+            success: function(data) {
+                if ($.trim(data) == "done") {
+                    $('#dataTable-form').DataTable().draw(false);
+                    $("#create_form_btn").text("Created Successfully")
+                } else {
+                    window.alert(data);
+                    $("#create_form_btn").text("Creation Failed")
+                }
+                $('#spinner').hide();
+            }
+        })
+    });
+
+
     $(document).ready(function() {
         loadForms();
-        // $('#uploadCurrent').on('hidden.bs.modal',function (e) {
-        //     document.querySelector("#bulkUploadCurrent").reset();
-        //     $("#upload_current").text("Upload")
-        //     $("#upload_current").attr("disabled",false);
-        // });
-        // $('#uploadUpcoming').on('hidden.bs.modal',function (e) {
-        //     document.querySelector("#bulkUploadUpcoming").reset();
-        //     $("#upload_upcoming").text("Upload")
-        //     $("#upload_upcoming").attr("disabled",false);
-        // });
+        $('#createForm').on('hidden.bs.modal',function (e) {
+            document.querySelector("#create-form").reset();
+            $("#create_form_btn").text("Create Form")
+            $("#create_form_btn").attr("disabled",false);
+        });
     })
 
     function loadForms() {
@@ -300,6 +372,9 @@ include('../includes/header.php');
                     data: 'curr_sem'
                 },
                 {
+                    data: 'departments'
+                },
+                {
                     data: 'start_date'
                 },
                 {
@@ -320,9 +395,12 @@ include('../includes/header.php');
                 {
                     data: 'action'
                 },
+                {
+                    data: 'view'
+                },
             ],
             columnDefs: [{
-                    targets: [0, 3, 4, 5, 6, 7, 8, 9, 10], // column index (start from 0)
+                    targets: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11,12], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
@@ -342,6 +420,8 @@ include('../includes/header.php');
             ],
         });
     }
+
+    $()
 
     function loadModal() {
         var target_row = $(this).closest("tr"); // this line did the trick
@@ -375,37 +455,56 @@ include('../includes/header.php');
                 $(document).on('hidden.bs.modal', '#form_modal', function() {
                     $("#form_modal").remove();
                 });
-                // $('#delete_course_form').submit(function(e){
-                //     e.preventDefault();
-                //     var form = $(this);
-                //     var form_serialize=form.serializeArray();// serializes the form's elements.
-                //     form_serialize.push({ name: $("#delete_course_btn").attr('name'), value: $("#delete_course_btn").attr('value') });
-                //     $("#delete_course_btn").text("Deleting...");
-                //     $("#delete_course_btn").attr("disabled",true);
-                //     $.ajax({
-                //         type: "POST",
-                //         url: "ic_queries/addcourse_queries.php",
-                //         data: form_serialize, 
-                //         success: function(data)
-                //         {
-                //             //    alert(data); // show response from the php script.
-                //             $("#delete_course_btn").text("Deleted Successfully");
-                //             var row=$("#update-del-modal").closest('tr');
-                //             var aPos = $("#dataTable-previous").dataTable().fnGetPosition(row.get(0)); 
-                //             $('#update-del-modal').modal('hide');
-                //             $('body').removeClass('modal-open');
-                //             $('.modal-backdrop').remove();
-                //             // row.remove();
-                //             $("#dataTable-previous").DataTable().row(aPos).remove().draw(false);
-                //             // console.log(aPos);
-                //             // console.log(row)
-                //         }
-                //         });
-                // });
-                // $('#update_course_form').submit(function(e){
-                //     update_course_form_previous(e);
-                //     // $('#update-del-modal').modal('hide');
-                //     });
+
+                $("#update-form").submit(function(e) {
+                    e.preventDefault();
+                    var data = $(this).serializeArray();
+                    data.push({
+                        name: "modifyForm",
+                        value: "1"
+                    });
+
+                    console.log(data);
+                    $.ajax({
+                        method: "POST",
+                        url: "ic_queries/prepare_form_ac_queries.php",
+                        data: data,
+                        success: function(data) {
+                            console.log(data)
+                            if (data == "done") {
+                                $('#dataTable-form').DataTable().draw(false);
+                            } else {
+                                window.alert(data);
+                            }
+                            $('#form_modal').modal("hide");
+                        }
+                    })
+                });
+
+                $("#delete-form").submit(function(e) {
+                    e.preventDefault();
+                    var data = $(this).serializeArray();
+                    data.push({
+                        name: "deleteForm",
+                        value: "1"
+                    });
+
+                    console.log(data);
+                    $.ajax({
+                        method: "POST",
+                        url: "ic_queries/prepare_form_ac_queries.php",
+                        data: data,
+                        success: function(data) {
+                            console.log(data)
+                            if (data == "done") {
+                                $('#dataTable-form').DataTable().draw(false);
+                            } else {
+                                window.alert(data);
+                            }
+                            $('#form_modal').modal("hide");
+                        }
+                    })
+                });
 
             }
         });

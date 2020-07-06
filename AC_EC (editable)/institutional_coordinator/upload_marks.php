@@ -120,6 +120,18 @@ include('../includes/header.php');
                                                     ?>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-switch">
+                                                <input type="radio" class="custom-control-input" id="radio_rollno" required name="column_selection" value="rollno" checked>
+                                                <label class="custom-control-label" for="radio_rollno">Import using Rollno</label>
+                                            </div>
+                                            <br>
+                                            <div class="custom-control custom-switch">
+                                                <input type="radio" class="custom-control-input" id="radio_email" name="column_selection" value="email_id">
+                                                <label class="custom-control-label" for="radio_email">Import using Email ID</label>
+                                            </div>
+                                        </div>
+                                        <br>
                                         <div id="bulk_current_fields">
                                             <label for="">
                                                 <h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6>
@@ -127,13 +139,19 @@ include('../includes/header.php');
                                             <label for=""><small><b>Note:</b>The following fields should be column names in excel sheet</small></label>
                                             <div class="card-header py-3">
                                                 <div class="form-row">
+
                                                     <div class="form-group col-md-12">
-                                                        <label for="marks"><b>GPA</b></label>
-                                                        <input type="text" class="form-control" id="marks" name="marks" placeholder="Column name of GPA" required>
+                                                        <label for="marks"><b>SGPI</b></label>
+                                                        <input type="text" class="form-control" id="marks" name="marks" placeholder="Column name of GPA" value="SGPI" required>
                                                     </div>
-                                                    <div class="form-group col-md-12">
+
+                                                    <div class="form-group col-md-12" id="rollno_div">
+                                                        <label for="rollno"><b>Rollno</b></label>
+                                                        <input type="text" class="form-control" id="rollno" name="rollno" required placeholder="Column name of Rollno" value="roll_no">
+                                                    </div>
+                                                    <div class="form-group col-md-12" id="email_id_div" style="display: none;">
                                                         <label for="email_id"><b>Email</b></label>
-                                                        <input type="text" class="form-control" id="email_id" name="email_id" placeholder="Column name of Email" required>
+                                                        <input type="text" class="form-control" id="email_id" name="email_id" placeholder="Column name of Email" value="username">
                                                     </div>
                                                 </div>
                                             </div>
@@ -241,6 +259,7 @@ include('../includes/header.php');
                         </th>
                         <th>Email Address</th>
                         <th>Roll Number</th>
+                        <th>Full Name</th>
                         <th>Semester</th>
                         <th>Year</th>
                         <th>GPA</th>
@@ -252,6 +271,7 @@ include('../includes/header.php');
                         <th></th>
                         <th>Email Address</th>
                         <th>Roll Number</th>
+                        <th>Full Name</th>
                         <th>Semester</th>
                         <th>Year</th>
                         <th>GPA</th>
@@ -265,6 +285,19 @@ include('../includes/header.php');
 <!-- /.container-fluid -->
 
 <script type="text/javascript">
+    $('input[type=radio][name=column_selection]').change(function() {
+        if (this.value == 'rollno') {
+            $("#rollno_div").show();
+            $("#rollno").attr('required', true)
+            $("#email_id_div").hide();
+            $("#email_id").attr('required', false)
+        } else if (this.value == 'email_id') {
+            $("#email_id_div").show();
+            $("#email_id").attr('required', true)
+            $("#rollno_div").hide();
+            $("#rollno").attr('required', false)
+        }
+    });
     $("#bulkUploadCurrent").submit(function(e) {
         e.preventDefault();
         form = this;
@@ -293,15 +326,11 @@ include('../includes/header.php');
 
     $(document).ready(function() {
         loadCurrent();
-        $('#uploadCurrent').on('hidden.bs.modal', function(e) {
+        $('#uploadstudent').on('hidden.bs.modal', function(e) {
             document.querySelector("#bulkUploadCurrent").reset();
             $("#upload_current").text("Upload")
             $("#upload_current").attr("disabled", false);
         });
-    });
-
-    $(document).ready(function() {
-        loadCurrent();
     });
     $("#delete_selected_response_btn").click(function(e) {
         alert("You have selected " + $("#dataTable-marks tbody tr.selected").length + " record(s) for deletion");
@@ -340,6 +369,26 @@ include('../includes/header.php');
             destroy: true,
             serverMethod: 'post',
             aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: "student-marks-data",
+                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: "student-marks-data",
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                },
+            }],
             ajax: {
                 'url': 'student_mark/loadInfo/marks_info.php'
             },
@@ -372,6 +421,9 @@ include('../includes/header.php');
                     data: 'rollno'
                 },
                 {
+                    data: 'fullname'
+                },
+                {
                     data: 'sem'
                 },
                 {
@@ -385,7 +437,7 @@ include('../includes/header.php');
                 },
             ],
             columnDefs: [{
-                    targets: [0,6], // column index (start from 0)
+                    targets: [0, 7], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {

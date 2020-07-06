@@ -230,10 +230,10 @@ include('../includes/header.php');
                                             <?php
                                             include_once("../config.php");
                                             $sql = "SELECT * FROM department";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    while ($row = mysqli_fetch_assoc($result)) {
-                                                        echo '<option value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
-                                                    }
+                                            $result = mysqli_query($conn, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo '<option value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                            }
                                             ?>
                                         </select>
                                         <!-- <input type="text" class="form-control" id="department" name="department" placeholder="department"> -->
@@ -267,33 +267,54 @@ include('../includes/header.php');
                     <div class="modal-body">
                         <!-- Table -->
 
-                        <form class="forms-sample" method="POST" action="">
+                        <form class="forms-sample" id="filter_faculty_form" method="POST" action="">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck4" onclick="disp4()">
-                                <label class="form-check-label" for="exampleFormControlSelect4">Post</label>
-                                <select class="form-control" style="display: none" id="exampleFormControlSelect4" name="post">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
+                                <label for="">Department</label>
+                                <br>
+                                <?php
+                                $dept_names = array();
+                                $email = $_SESSION['email'];
+                                $department = 'department';
+                                $query = "SELECT distinct(dept_name) FROM department";
+                                if ($result = mysqli_query($conn, $query)) {
+                                    $rowcount = mysqli_num_rows($result);
+                                    while ($row = mysqli_fetch_array($result)) {
+                                        $dept_name = $row['dept_name'];
+                                        echo '<div class="custom-control custom-checkbox custom-control-inline">
+                                                    <input type="checkbox" name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
+                                                    <label class="custom-control-label" for="filter_dept_' . $dept_name . '">' . $dept_name . '</label>
+                                                </div>';
+                                    }
+                                }
+                                ?>
                             </div>
+                            <br />
+
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck5" onclick="disp5()">
-                                <label class="form-check-label" for="exampleFormControlSelect5">Department</label>
-                                <select class="form-control" style="display: none" id="exampleFormControlSelect5" name="dept_name">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
+                                <label for="">Post</label>
+                                <br>
+                                <?php
+                                $posts = array();
+                                $email = $_SESSION['email'];
+
+                                $query = "SELECT distinct(post) FROM faculty";
+                                if ($result = mysqli_query($conn, $query)) {
+                                    $rowcount = mysqli_num_rows($result);
+                                    while ($row = mysqli_fetch_array($result)) {
+                                        $post = $row['post'];
+                                        echo '<div class="custom-control custom-checkbox custom-control-inline">
+                                                    <input type="checkbox" name="filter_post[]" class="custom-control-input" value="' . $post . '" id="filter_post_' . $post . '">
+                                                    <label class="custom-control-label" for="filter_post_' . $post . '">' . $post . '</label>
+                                                </div>';
+                                    }
+                                }
+                                ?>
                             </div>
 
                             <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary" id="clear-filters" name="clear">clear filters</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                <button type="submit" class="btn btn-outline-primary" name="filter">Filter</button>
+                                <button type="submit" class="btn btn-primary" name="filter">Filter</button>
                             </div>
                         </form>
                     </div>
@@ -376,6 +397,30 @@ include('../includes/header.php');
         });
     });
 
+    function getFilters() {
+        const filters = $("#filter_faculty_form").serializeArray();
+        let normalizedFilters = {};
+        for (filter of filters) {
+            switch (filter.name) {
+
+                case "filter_post[]":
+                    if (!normalizedFilters.post) {
+                        normalizedFilters.post = []
+                    }
+                    normalizedFilters.post.push(filter.value)
+                    break;
+                case "filter_dept[]":
+                    if (!normalizedFilters.depts) {
+                        normalizedFilters.depts = []
+                    }
+                    normalizedFilters.depts.push(filter.value)
+                    break;
+            }
+        }
+        console.log(normalizedFilters);
+        return normalizedFilters
+    }
+
     //DATATABLE CREATE
     function loadCurrent() {
         // document.querySelector("#addCoursebtn").style.display="none"
@@ -385,8 +430,32 @@ include('../includes/header.php');
             destroy: true,
             serverMethod: 'post',
             aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: "internal-faculty-data",
+                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                }
+            }, {
+                extend: "pdfHtml5",
+                title: "internal-faculty-data",
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                },
+            }],
             ajax: {
-                'url': 'adduser/loadInfo/add_internalfaculty.php'
+                'url': 'adduser/loadInfo/add_internalfaculty.php',
+                "data": function(d) {
+                    d.filters = getFilters();
+                    return d
+                }
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModalCurrent)
@@ -522,6 +591,12 @@ include('../includes/header.php');
         });
     }
 
+    $("#filter_faculty_form").submit(function(e) {
+        e.preventDefault();
+        $('#dataTable-internal').DataTable().ajax.reload(false);
+        $("#exampleModalCenter1").modal("hide")
+    })
+
     function update_internal_faculty(e) {
         e.preventDefault();
         var form = $('#update_internal_faculty');
@@ -540,20 +615,19 @@ include('../includes/header.php');
             success: function(data) {
                 // alert(data); // show response from the php script.
                 // console.log(data)
-                if(data === "Exists_email_id"){
+                if (data === "Exists_email_id") {
                     $('#error_email_id').text('*This data already exists');
                     $("#update_internal_faculty_btn").text("Update");
                     $("#update_internal_faculty_btn").attr("disabled", false);
-                }else  if(data === "Exists_faculty_code"){
+                } else if (data === "Exists_faculty_code") {
                     $('#error_faculty_code').text('*This data already exists');
                     $("#update_internal_faculty_btn").text("Update");
                     $("#update_internal_faculty_btn").attr("disabled", false);
-                }else  if(data === "Exists_employee_id"){
+                } else if (data === "Exists_employee_id") {
                     $('#error_employee_id').text('*This data already exists');
                     $("#update_internal_faculty_btn").text("Update");
                     $("#update_internal_faculty_btn").attr("disabled", false);
-                }
-                else{
+                } else {
                     $("#update_internal_faculty_btn").text("Updated Successfully");
                     var row = $("#update-del-modal").closest('tr');
                     var aPos = $("#dataTable-internal").dataTable().fnGetPosition(row.get(0));
@@ -653,6 +727,11 @@ include('../includes/header.php');
         })
     })
 
+    $("#clear-filters").click(function(e) {
+        $('#filter_faculty_form').trigger('reset');
+
+        $('#dataTable-internal').DataTable().ajax.reload(false);
+    });
 </script>
 
 <?php include('../includes/footer.php');

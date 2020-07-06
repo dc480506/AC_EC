@@ -518,7 +518,7 @@ include('../includes/header.php');
                     break;
             }
         }
-        console.log(normalizedFilters);
+
         return normalizedFilters
     }
 
@@ -530,6 +530,26 @@ include('../includes/header.php');
             destroy: true,
             serverMethod: 'post',
             aaSorting: [],
+            dom: '<"d-flex justify-content-between"fBl>tip',
+            buttons: [{
+                extend: 'excel',
+                title: "student-data",
+                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                className: "btn btn-outline-primary  ",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                },
+            }, {
+                extend: "pdfHtml5",
+                title: "student-data",
+                text: '<span> <i class="fas fa-download "></i> PDF</span>',
+                className: "btn btn-outline-primary  mx-2",
+                action: newExportAction,
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6]
+                },
+            }],
             ajax: {
                 'url': 'adduser/loadInfo/add_student.php',
                 "data": function(d) {
@@ -703,17 +723,13 @@ include('../includes/header.php');
 
     $("#filter_student_form").submit(function(e) {
         e.preventDefault();
-        $('#dataTable-student').DataTable().ajax.reload(false).draw();
+        $('#dataTable-student').DataTable().ajax.reload(false);
         $("#exampleModalCenter1").modal("hide")
     })
 
     $("#clear-filters").click(function(e) {
-        $(':input', '#filter_student_form')
-            .not(':button, :submit, :reset, :hidden')
-            .val('')
-            .prop('checked', false)
-            .prop('selected', false);
-        $('#dataTable-student').DataTable().ajax.reload(false).draw();
+        $('#filter_student_form').trigger('reset');
+        $('#dataTable-student').DataTable().ajax.reload(false);
     });
 
     function update_student(e) {
