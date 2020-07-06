@@ -48,10 +48,16 @@
     <div id="collapsePages4" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <!-- <a class="collapse-item" href="addcourse_ac.php">Audit Course</a> -->
-        <a class="collapse-item" href="audit_course.php">Audit Course</a>
+
+        <a class="collapse-item" href="ug_courserecord.php">UG</a>
+        <a class="collapse-item" href="pg_courserecord.php">PG</a>
+        <a class="collapse-item" href="phd_courserecord.php">PhD</a> 
+        
+
+        <!-- <a class="collapse-item" href="audit_course.php">Audit Course</a>
         <a class="collapse-item" href="addcourse_idc.php">Interdisciplinary Course</a>
         <a class="collapse-item" href="addcourse_cec.php">Close Elective Course</a>
-        <a class="collapse-item" href="addcourse_oec.php">Open Elective Course</a>
+        <a class="collapse-item" href="addcourse_oec.php">Open Elective Course</a> -->
       </div>
     </div>
   </li>
