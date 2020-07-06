@@ -38,6 +38,16 @@
     </div>
   </li>
 
+  <!-- changed -->
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  <li class="nav-item">
+    <a class="nav-link" href="addnewcourseType.php">
+      <i class="fas fa-book"></i>
+      <span>Add new course Type</span></a>
+  </li>
+
+
   <hr class="sidebar-divider">
 
   <!-- Nav Item - Utilities Collapse Menu -->
