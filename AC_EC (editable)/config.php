@@ -14,4 +14,4 @@ $hash_key="35621";
 if($conn->connect_error)
 {
 	die("Connection: ".$conn->connect_error);
-}?>
+}

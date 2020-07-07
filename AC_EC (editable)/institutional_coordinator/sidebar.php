@@ -1,4 +1,6 @@
 <!-- Sidebar -->
+
+
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
@@ -36,6 +38,16 @@
     </div>
   </li>
 
+  <!-- changed -->
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  <li class="nav-item">
+    <a class="nav-link" href="addnewcourseType.php">
+      <i class="fas fa-book"></i>
+      <span>Add new course Type</span></a>
+  </li>
+
+
   <hr class="sidebar-divider">
 
   <!-- Nav Item - Utilities Collapse Menu -->
@@ -48,10 +60,16 @@
     <div id="collapsePages4" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <!-- <a class="collapse-item" href="addcourse_ac.php">Audit Course</a> -->
-        <a class="collapse-item" href="audit_course.php">Audit Course</a>
+
+        <a class="collapse-item" href="courses_landing.php?program=UG">UG</a>
+        <a class="collapse-item" href="courses_landing.php?program=PG">PG</a>
+        <a class="collapse-item" href="courses_landing.phpp?program=PHD">PHD</a>
+
+
+        <!-- <a class="collapse-item" href="audit_course.php">Audit Course</a>
         <a class="collapse-item" href="addcourse_idc.php">Interdisciplinary Course</a>
         <a class="collapse-item" href="addcourse_cec.php">Close Elective Course</a>
-        <a class="collapse-item" href="addcourse_oec.php">Open Elective Course</a>
+        <a class="collapse-item" href="addcourse_oec.php">Open Elective Course</a> -->
       </div>
     </div>
   </li>
@@ -59,8 +77,8 @@
   <hr class="sidebar-divider">
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages10" aria-expanded="true" aria-controls="collapseUtilities">
-    <i class="fas fa-user-graduate"></i>
-    <span>Student Allocation</span></a>
+      <i class="fas fa-user-graduate"></i>
+      <span>Student Allocation</span></a>
     </a>
     <div id="collapsePages10" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
@@ -90,12 +108,12 @@
     </div>
   </li>
 
-  
+
   <hr class="sidebar-divider">
   <!-- Nav Item - Pages Collapse Menu -->
   <li class="nav-item">
     <a class="nav-link" href="upload_marks.php">
-    <i class="fas fa-file"></i>
+      <i class="fas fa-file"></i>
 
       <span>Marks</span></a>
   </li>
@@ -111,6 +129,9 @@
 </ul>
 <!-- End of Sidebar -->
 <!-- Content Wrapper -->
+
+
+
 <div id="content-wrapper" class="d-flex flex-column">
 
   <!-- Main Content -->

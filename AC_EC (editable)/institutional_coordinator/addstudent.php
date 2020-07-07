@@ -83,8 +83,18 @@ include('../includes/header.php');
                                 <div class="tab-pane fade" id="nav-students-upload" role="tabpanel" aria-labelledby="nav-students-upload">
                                     <div class="container">
                                         <form method="POST" enctype="multipart/form-data" id="bulkUploadstudent">
-                                            <label for="">
+                                            <div class="form-row">
                                                 <br>
+                                                <div class="form-group col-md-12">
+                                                    <label for="rno"><b>Program</b></label>
+                                                    <select class="form-control" id="program" name="program" required>
+                                                        <option value="UG">UG</option>
+                                                        <option value="PG">PG</option>
+                                                        <option value="Ph.D">Ph.D</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <label for="">
                                                 <h6>Information for mapping Data from excel sheet to Database</h6>
                                             </label>
                                             <div class="form-row mt-4">
@@ -652,7 +662,7 @@ include('../includes/header.php');
                     $("#upload_student").text("Upload Failed")
                     alert(data);
                 }
-                // form.reset();
+                form.reset();
             },
             cache: false,
             contentType: false,
