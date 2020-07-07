@@ -7,6 +7,12 @@ include('../includes/header.php');
 
 <?php include('../includes/topbar.php'); ?>
 
+<?php
+$course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
+$sql = "select name from course_types where id='$course_type_id'";
+$course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
+?>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -15,7 +21,7 @@ include('../includes/header.php');
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Audit Course Records</h4>
+                    <h4 class="font-weight-bold text-primary mb-0"><?php echo $course_type_name ?> records</h4>
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
@@ -1281,10 +1287,12 @@ include('../includes/header.php');
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
+        formData.append("program", "<?php echo $_POST['program']; ?>")
+        formData.append("course_type_id", "<?php echo $course_type_id; ?>")
         $("#upload_current").attr("disabled", true);
         $("#upload_current").text("Uploading...")
         $.ajax({
-            url: "audit_course/bulkUpload/current_audit_upload.php",
+            url: "course/bulkUpload/current_course_upload.php",
             type: 'POST',
             data: formData,
             success: function(data) {
@@ -1415,9 +1423,11 @@ include('../includes/header.php');
                 },
             }],
             ajax: {
-                'url': 'audit_course/loadInfo/current_audit.php',
+                'url': 'course/loadInfo/current_courses.php',
                 "data": function(d) {
                     d.filters = getFilters();
+                    d.program = "<?php echo $_POST['program']; ?>";
+                    d.course_type_id = "<?php echo $course_type_id; ?>"
                     return d
                 }
             },
@@ -1507,7 +1517,7 @@ include('../includes/header.php');
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "audit_course/loadModal/current_audit_allocate_modal.php",
+            url: "course/loadModal/current_audit_allocate_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -1605,7 +1615,7 @@ include('../includes/header.php');
                     } else {
                         $('#result').html('');
                         $.ajax({
-                            url: "audit_course/loadModal/fetch_faculties.php",
+                            url: "course/loadModal/fetch_faculties.php",
                             method: "post",
                             data: {
                                 search: txt,
@@ -1643,7 +1653,7 @@ include('../includes/header.php');
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "audit_course/loadModal/current_audit_modal.php",
+            url: "course/loadModal/current_audit_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -1700,7 +1710,7 @@ include('../includes/header.php');
                         $("#tempcid option").not(":first").remove();
                         $.ajax({
                             type: "POST",
-                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/audit_modal_mapping_utils.php",
                             data: {
                                 dataFor: "semester",
                                 courseType: "CURRENT",
@@ -1723,7 +1733,7 @@ include('../includes/header.php');
                     if (year != "" && sem != "") {
                         $.ajax({
                             type: "POST",
-                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/audit_modal_mapping_utils.php",
                             data: {
                                 dataFor: "courses",
                                 year: year,
@@ -1977,10 +1987,12 @@ include('../includes/header.php');
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
+        formData.append("program", "<?php echo $_POST['program']; ?>")
+        formData.append("course_type_id", "<?php echo $course_type_id; ?>")
         $("#upload_upcoming").attr("disabled", true);
         $("#upload_upcoming").text("Uploading...")
         $.ajax({
-            url: "audit_course/bulkUpload/upcoming_audit_upload.php",
+            url: "course/bulkUpload/upcoming_course_upload.php",
             type: 'POST',
             data: formData,
             success: function(data) {
@@ -2066,9 +2078,11 @@ include('../includes/header.php');
                 },
             }],
             ajax: {
-                'url': 'audit_course/loadInfo/upcoming_audit.php',
+                'url': 'course/loadInfo/upcoming_courses.php',
                 "data": function(d) {
                     d.filters = getFilters();
+                    d.program = "<?php echo $_POST['program']; ?>";
+                    d.course_type_id = "<?php echo $course_type_id; ?>"
                     return d
                 }
             },
@@ -2154,7 +2168,7 @@ include('../includes/header.php');
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "audit_course/loadModal/upcoming_audit_allocate_modal.php",
+            url: "course/loadModal/upcoming_audit_allocate_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -2260,7 +2274,7 @@ include('../includes/header.php');
                     } else {
                         $('#result').html('');
                         $.ajax({
-                            url: "audit_course/loadModal/fetch_faculties.php",
+                            url: "course/loadModal/fetch_faculties.php",
                             method: "post",
                             data: {
                                 search: txt,
@@ -2298,7 +2312,7 @@ include('../includes/header.php');
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "audit_course/loadModal/upcoming_audit_modal.php",
+            url: "course/loadModal/upcoming_audit_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -2355,7 +2369,7 @@ include('../includes/header.php');
                         $("#tempcid option").not(":first").remove();
                         $.ajax({
                             type: "POST",
-                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/audit_modal_mapping_utils.php",
                             data: {
                                 dataFor: "semester",
                                 courseType: "CURRENT",
@@ -2378,7 +2392,7 @@ include('../includes/header.php');
                     if (year != "" && sem != "") {
                         $.ajax({
                             type: "POST",
-                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/audit_modal_mapping_utils.php",
                             data: {
                                 dataFor: "courses",
                                 year: year,
@@ -2634,10 +2648,11 @@ include('../includes/header.php');
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
+
         $("#upload_previous").attr("disabled", true);
         $("#upload_previous").text("Uploading...")
         $.ajax({
-            url: "audit_course/bulkUpload/previous_audit_upload.php",
+            url: "course/bulkUpload/previous_course_upload.php",
             type: 'POST',
             data: formData,
             success: function(data) {
@@ -2723,9 +2738,11 @@ include('../includes/header.php');
                 },
             }],
             ajax: {
-                'url': 'audit_course/loadInfo/previous_audit.php',
+                'url': 'course/loadInfo/previous_courses.php',
                 "data": function(d) {
                     d.filters = getFilters();
+                    d.program = "<?php echo $_POST['program']; ?>";
+                    d.course_type_id = "<?php echo $course_type_id; ?>"
                     return d
                 }
             },
@@ -2812,7 +2829,7 @@ include('../includes/header.php');
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "audit_course/loadModal/previous_audit_allocate_modal.php",
+            url: "course/loadModal/previous_audit_allocate_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -2918,7 +2935,7 @@ include('../includes/header.php');
                     } else {
                         $('#result').html('');
                         $.ajax({
-                            url: "audit_course/loadModal/fetch_faculties.php",
+                            url: "course/loadModal/fetch_faculties.php",
                             method: "post",
                             data: {
                                 search: txt,
@@ -2955,7 +2972,7 @@ include('../includes/header.php');
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "audit_course/loadModal/previous_audit_modal.php",
+            url: "course/loadModal/previous_audit_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -3007,7 +3024,7 @@ include('../includes/header.php');
                         $("#tempcid option").not(":first").remove();
                         $.ajax({
                             type: "POST",
-                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/audit_modal_mapping_utils.php",
                             data: {
                                 dataFor: "semester",
                                 courseType: "CURRENT",
@@ -3030,7 +3047,7 @@ include('../includes/header.php');
                     if (year != "" && sem != "") {
                         $.ajax({
                             type: "POST",
-                            url: "audit_course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/audit_modal_mapping_utils.php",
                             data: {
                                 dataFor: "courses",
                                 year: year,
