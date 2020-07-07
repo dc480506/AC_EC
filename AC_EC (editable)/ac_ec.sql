@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2020 at 11:14 AM
+-- Generation Time: Jul 06, 2020 at 06:57 PM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.6
+-- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,359 +25,121 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `audit_course`
+-- Table structure for table `course`
 --
 
-CREATE TABLE `audit_course` (
+CREATE TABLE `course` (
   `cid` varchar(30) NOT NULL,
   `sem` int(11) NOT NULL,
   `year` varchar(8) NOT NULL,
+  `course_type_id` int(11) NOT NULL,
   `cname` varchar(50) NOT NULL,
+  `program` varchar(3) DEFAULT NULL,
   `currently_active` tinyint(4) NOT NULL DEFAULT 0,
   `min` int(11) NOT NULL,
   `max` int(11) NOT NULL,
-  `no_of_allocated` int(11) NOT NULL DEFAULT 0,
   `email_id` varchar(50) NOT NULL,
-  `timestamp` varchar(30) NOT NULL
+  `timestamp` varchar(30) NOT NULL,
+  `syllabus_path` varchar(150) NOT NULL DEFAULT '',
+  `is_gradable` int(1) DEFAULT 1,
+  `upload_timestamp` varchar(30) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `audit_course`
---
-
-INSERT INTO `audit_course` (`cid`, `sem`, `year`, `cname`, `currently_active`, `min`, `max`, `no_of_allocated`, `email_id`, `timestamp`) VALUES
-('2UST511', 5, '2020-21', 'Mobile Application Development  - iOS platform', 0, 10, 20, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST512', 5, '2020-21', 'Mobile Application Development - Flutter', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST513', 5, '2020-21', 'VR and AR Engine Development', 0, 10, 20, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST514', 5, '2020-21', 'Python for Data Science', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST521', 5, '2020-21', 'Microcontroller & Applications (Lab course)', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST522', 5, '2020-21', '3D Printing Technology', 0, 10, 30, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST523', 5, '2020-21', 'FPGA Design', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST524', 5, '2020-21', 'Linear algebra for Machine Learning ', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST531', 5, '2020-21', 'Deep learning and Fuzzy Logic', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST532', 5, '2020-21', 'R Programming for data analysis ', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST533', 5, '2020-21', 'Data Networking-I (CISCO ACADEMY)', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST534', 5, '2020-21', 'Consumer Electronics ', 0, 10, 80, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST541', 5, '2020-21', 'Development with Go', 0, 10, 20, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST542', 5, '2020-21', 'Development with Ruby rails', 0, 10, 20, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST543', 5, '2020-21', 'Cyber Security', 0, 10, 80, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST544', 5, '2020-21', 'Software Test Automation with Selenium', 0, 10, 20, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST551', 5, '2020-21', 'Sensors and Actuators', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST552', 5, '2020-21', 'Introduction to Automobile Systems', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST553', 5, '2020-21', 'Electric Vehicle ', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST561', 5, '2020-21', 'Numerical Methods for Engineers', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST562', 5, '2020-21', 'Material Chemistry for Engineers', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('2UST563', 5, '2020-21', 'Solar Photovoltaics – Principles and Applications', 0, 10, 40, 0, 'IC@somaiya.edu', '2020-05-31 19:18:54'),
-('UCEC4544', 4, '2019-20', 'Basic Of Python', 1, 20, 40, 0, 'IC@somaiya.edu', '2020-05-09 20:05:50'),
-('UCEC6739', 4, '2019-20', 'Python for Data Science', 1, 40, 80, 0, 'IC@somaiya.edu', '2020-05-04 18:35:52'),
-('UCEC7636', 4, '2019-20', 'DBMS', 1, 15, 20, 0, 'IC@somaiya.edu', '2020-03-31 01:07:27'),
-('UCEC7637', 4, '2019-20', 'BCT', 1, 30, 40, 0, 'IC@somaiya.edu', '2020-03-31 01:08:42'),
-('UCEC76385', 5, '2019-20', 'Business Analysis', 1, 20, 30, 0, 'IC@somaiya.edu', '2020-03-31 01:09:36'),
-('UCEC78452', 4, '2019-20', 'DC', 1, 30, 50, 0, 'IC@somaiya.edu', '2020-05-09 19:19:50'),
-('UCEC871', 4, '2019-20', 'XYZ', 1, 60, 30, 0, 'IC@somaiya.edu', '2020-05-09 20:05:50'),
-('UCEC8950', 4, '2019-20', 'Python for Data Science', 1, 30, 40, 0, 'IC@somaiya.edu', '2020-03-24 01:01:25'),
-('UCEC9874', 4, '2019-20', 'Machine Learning ', 1, 4, 3, 0, 'IC@somaiya.edu', '2020-03-24 03:23:41');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `audit_course_applicable_dept`
+-- Table structure for table `course_applicable_dept`
 --
 
-CREATE TABLE `audit_course_applicable_dept` (
+CREATE TABLE `course_applicable_dept` (
   `cid` varchar(30) NOT NULL,
+  `sem` int(11) NOT NULL,
+  `year` varchar(8) NOT NULL,
+  `dept_id` int(11) NOT NULL,
+  `course_type_id` int(11) NOT NULL,
+  `program` varchar(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course_applicable_dept_log`
+--
+
+CREATE TABLE `course_applicable_dept_log` (
+  `cid` varchar(30) NOT NULL,
+  `sem` int(11) NOT NULL,
+  `year` varchar(8) NOT NULL,
+  `dept_id` int(11) NOT NULL,
+  `course_type_id` int(11) NOT NULL,
+  `program` varchar(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course_floating_dept`
+--
+
+CREATE TABLE `course_floating_dept` (
+  `cid` varchar(30) NOT NULL,
+  `course_type_id` int(11) NOT NULL,
+  `program` varchar(3) NOT NULL,
   `sem` int(11) NOT NULL,
   `year` varchar(8) NOT NULL,
   `dept_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `audit_course_applicable_dept`
---
-
-INSERT INTO `audit_course_applicable_dept` (`cid`, `sem`, `year`, `dept_id`) VALUES
-('2UST511', 5, '2020-21', 1),
-('2UST511', 5, '2020-21', 2),
-('2UST511', 5, '2020-21', 3),
-('2UST511', 5, '2020-21', 4),
-('2UST511', 5, '2020-21', 5),
-('2UST512', 5, '2020-21', 1),
-('2UST512', 5, '2020-21', 2),
-('2UST512', 5, '2020-21', 3),
-('2UST512', 5, '2020-21', 4),
-('2UST512', 5, '2020-21', 5),
-('2UST513', 5, '2020-21', 1),
-('2UST513', 5, '2020-21', 2),
-('2UST513', 5, '2020-21', 3),
-('2UST513', 5, '2020-21', 4),
-('2UST513', 5, '2020-21', 5),
-('2UST514', 5, '2020-21', 2),
-('2UST514', 5, '2020-21', 3),
-('2UST514', 5, '2020-21', 5),
-('2UST521', 5, '2020-21', 1),
-('2UST521', 5, '2020-21', 2),
-('2UST521', 5, '2020-21', 4),
-('2UST521', 5, '2020-21', 5),
-('2UST522', 5, '2020-21', 1),
-('2UST522', 5, '2020-21', 2),
-('2UST522', 5, '2020-21', 3),
-('2UST522', 5, '2020-21', 4),
-('2UST523', 5, '2020-21', 1),
-('2UST523', 5, '2020-21', 2),
-('2UST523', 5, '2020-21', 4),
-('2UST524', 5, '2020-21', 1),
-('2UST524', 5, '2020-21', 2),
-('2UST524', 5, '2020-21', 3),
-('2UST524', 5, '2020-21', 4),
-('2UST524', 5, '2020-21', 5),
-('2UST531', 5, '2020-21', 1),
-('2UST531', 5, '2020-21', 2),
-('2UST531', 5, '2020-21', 3),
-('2UST531', 5, '2020-21', 4),
-('2UST531', 5, '2020-21', 5),
-('2UST532', 5, '2020-21', 1),
-('2UST532', 5, '2020-21', 2),
-('2UST532', 5, '2020-21', 3),
-('2UST532', 5, '2020-21', 4),
-('2UST532', 5, '2020-21', 5),
-('2UST533', 5, '2020-21', 1),
-('2UST533', 5, '2020-21', 2),
-('2UST533', 5, '2020-21', 3),
-('2UST533', 5, '2020-21', 4),
-('2UST533', 5, '2020-21', 5),
-('2UST534', 5, '2020-21', 1),
-('2UST534', 5, '2020-21', 2),
-('2UST534', 5, '2020-21', 3),
-('2UST534', 5, '2020-21', 4),
-('2UST534', 5, '2020-21', 5),
-('2UST541', 5, '2020-21', 1),
-('2UST541', 5, '2020-21', 2),
-('2UST541', 5, '2020-21', 3),
-('2UST541', 5, '2020-21', 4),
-('2UST541', 5, '2020-21', 5),
-('2UST542', 5, '2020-21', 1),
-('2UST542', 5, '2020-21', 2),
-('2UST542', 5, '2020-21', 3),
-('2UST542', 5, '2020-21', 4),
-('2UST542', 5, '2020-21', 5),
-('2UST543', 5, '2020-21', 1),
-('2UST543', 5, '2020-21', 2),
-('2UST543', 5, '2020-21', 3),
-('2UST543', 5, '2020-21', 4),
-('2UST543', 5, '2020-21', 5),
-('2UST544', 5, '2020-21', 1),
-('2UST544', 5, '2020-21', 2),
-('2UST544', 5, '2020-21', 3),
-('2UST544', 5, '2020-21', 4),
-('2UST544', 5, '2020-21', 5),
-('2UST551', 5, '2020-21', 1),
-('2UST551', 5, '2020-21', 2),
-('2UST551', 5, '2020-21', 3),
-('2UST551', 5, '2020-21', 4),
-('2UST551', 5, '2020-21', 5),
-('2UST552', 5, '2020-21', 1),
-('2UST552', 5, '2020-21', 2),
-('2UST552', 5, '2020-21', 3),
-('2UST552', 5, '2020-21', 4),
-('2UST553', 5, '2020-21', 1),
-('2UST553', 5, '2020-21', 2),
-('2UST553', 5, '2020-21', 3),
-('2UST553', 5, '2020-21', 4),
-('2UST553', 5, '2020-21', 5),
-('2UST561', 5, '2020-21', 1),
-('2UST561', 5, '2020-21', 2),
-('2UST561', 5, '2020-21', 3),
-('2UST561', 5, '2020-21', 4),
-('2UST561', 5, '2020-21', 5),
-('2UST562', 5, '2020-21', 1),
-('2UST562', 5, '2020-21', 2),
-('2UST562', 5, '2020-21', 3),
-('2UST562', 5, '2020-21', 4),
-('2UST562', 5, '2020-21', 5),
-('2UST563', 5, '2020-21', 1),
-('2UST563', 5, '2020-21', 2),
-('2UST563', 5, '2020-21', 3),
-('2UST563', 5, '2020-21', 4),
-('2UST563', 5, '2020-21', 5),
-('UCEC4544', 4, '2019-20', 1),
-('UCEC4544', 4, '2019-20', 2),
-('UCEC4544', 4, '2019-20', 4),
-('UCEC4544', 4, '2019-20', 5),
-('UCEC6739', 4, '2019-20', 1),
-('UCEC6739', 4, '2019-20', 2),
-('UCEC6739', 4, '2019-20', 3),
-('UCEC6739', 4, '2019-20', 5),
-('UCEC7636', 4, '2019-20', 1),
-('UCEC7636', 4, '2019-20', 2),
-('UCEC7636', 4, '2019-20', 3),
-('UCEC7636', 4, '2019-20', 4),
-('UCEC7636', 4, '2019-20', 5),
-('UCEC7637', 4, '2019-20', 1),
-('UCEC7637', 4, '2019-20', 2),
-('UCEC7637', 4, '2019-20', 3),
-('UCEC7637', 4, '2019-20', 4),
-('UCEC7637', 4, '2019-20', 5),
-('UCEC76385', 5, '2019-20', 1),
-('UCEC76385', 5, '2019-20', 2),
-('UCEC76385', 5, '2019-20', 3),
-('UCEC76385', 5, '2019-20', 5),
-('UCEC78452', 4, '2019-20', 1),
-('UCEC78452', 4, '2019-20', 2),
-('UCEC78452', 4, '2019-20', 3),
-('UCEC78452', 4, '2019-20', 4),
-('UCEC78452', 4, '2019-20', 5),
-('UCEC871', 4, '2019-20', 1),
-('UCEC871', 4, '2019-20', 2),
-('UCEC871', 4, '2019-20', 3),
-('UCEC871', 4, '2019-20', 4),
-('UCEC871', 4, '2019-20', 5),
-('UCEC8950', 4, '2019-20', 1),
-('UCEC8950', 4, '2019-20', 2),
-('UCEC8950', 4, '2019-20', 3),
-('UCEC9874', 4, '2019-20', 1),
-('UCEC9874', 4, '2019-20', 2),
-('UCEC9874', 4, '2019-20', 3),
-('UCEC9874', 4, '2019-20', 4),
-('UCEC9874', 4, '2019-20', 5);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `audit_course_applicable_dept_log`
+-- Table structure for table `course_floating_dept_log`
 --
 
-CREATE TABLE `audit_course_applicable_dept_log` (
+CREATE TABLE `course_floating_dept_log` (
   `cid` varchar(30) NOT NULL,
+  `course_type_id` int(11) NOT NULL,
+  `program` varchar(3) NOT NULL,
   `sem` int(11) NOT NULL,
   `year` varchar(8) NOT NULL,
   `dept_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `audit_course_applicable_dept_log`
---
-
-INSERT INTO `audit_course_applicable_dept_log` (`cid`, `sem`, `year`, `dept_id`) VALUES
-('UCEC123', 3, '2018-19', 1),
-('UCEC8785', 3, '2018-19', 1),
-('UCEC123', 3, '2018-19', 2),
-('UCEC8785', 3, '2018-19', 2),
-('UCEC123', 3, '2018-19', 3),
-('UCEC8785', 3, '2018-19', 3),
-('UCEC123', 3, '2018-19', 4),
-('UCEC8785', 3, '2018-19', 4),
-('UCEC123', 3, '2018-19', 5),
-('UCEC8785', 3, '2018-19', 5);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `audit_course_floating_dept`
+-- Table structure for table `course_log`
 --
 
-CREATE TABLE `audit_course_floating_dept` (
-  `cid` varchar(30) NOT NULL,
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `dept_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `audit_course_floating_dept`
---
-
-INSERT INTO `audit_course_floating_dept` (`cid`, `sem`, `year`, `dept_id`) VALUES
-('2UST511', 5, '2020-21', 1),
-('2UST512', 5, '2020-21', 1),
-('2UST513', 5, '2020-21', 1),
-('2UST514', 5, '2020-21', 1),
-('2UST521', 5, '2020-21', 2),
-('2UST522', 5, '2020-21', 2),
-('2UST523', 5, '2020-21', 2),
-('2UST524', 5, '2020-21', 2),
-('2UST531', 5, '2020-21', 3),
-('2UST532', 5, '2020-21', 3),
-('2UST533', 5, '2020-21', 3),
-('2UST534', 5, '2020-21', 3),
-('2UST541', 5, '2020-21', 4),
-('2UST542', 5, '2020-21', 4),
-('2UST543', 5, '2020-21', 4),
-('2UST544', 5, '2020-21', 4),
-('2UST551', 5, '2020-21', 5),
-('2UST552', 5, '2020-21', 5),
-('2UST553', 5, '2020-21', 5),
-('2UST561', 5, '2020-21', 6),
-('2UST562', 5, '2020-21', 6),
-('2UST563', 5, '2020-21', 6),
-('UCEC4544', 4, '2019-20', 1),
-('UCEC6739', 4, '2019-20', 1),
-('UCEC7636', 4, '2019-20', 1),
-('UCEC7637', 4, '2019-20', 2),
-('UCEC76385', 5, '2019-20', 1),
-('UCEC78452', 4, '2019-20', 1),
-('UCEC871', 4, '2019-20', 6),
-('UCEC8950', 4, '2019-20', 1),
-('UCEC8950', 4, '2019-20', 4),
-('UCEC9874', 4, '2019-20', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `audit_course_floating_dept_log`
---
-
-CREATE TABLE `audit_course_floating_dept_log` (
-  `cid` varchar(30) NOT NULL,
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `dept_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `audit_course_floating_dept_log`
---
-
-INSERT INTO `audit_course_floating_dept_log` (`cid`, `sem`, `year`, `dept_id`) VALUES
-('UCEC123', 3, '2018-19', 1),
-('UCEC8785', 3, '2018-19', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `audit_course_log`
---
-
-CREATE TABLE `audit_course_log` (
+CREATE TABLE `course_log` (
   `cid` varchar(15) NOT NULL,
   `sem` int(11) NOT NULL,
   `year` varchar(8) NOT NULL,
+  `course_type_id` int(11) NOT NULL,
   `cname` varchar(50) NOT NULL,
+  `program` varchar(3) DEFAULT NULL,
   `min` int(11) NOT NULL,
   `max` int(11) NOT NULL,
-  `no_of_allocated` int(11) NOT NULL,
   `email_id` varchar(50) NOT NULL,
-  `timestamp` varchar(30) NOT NULL
+  `timestamp` varchar(30) NOT NULL,
+  `syllabus_path` varchar(150) NOT NULL DEFAULT '',
+  `is_gradable` int(1) DEFAULT 1,
+  `upload_timestamp` varchar(30) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `audit_course_log`
---
-
-INSERT INTO `audit_course_log` (`cid`, `sem`, `year`, `cname`, `min`, `max`, `no_of_allocated`, `email_id`, `timestamp`) VALUES
-('UCEC123', 3, '2018-19', 'Introduction to Python', 45, 60, 25, 'IC@somaiya.edu', '2018-05-12 11:10:00'),
-('UCEC8785', 3, '2018-19', 'Python', 3, 2, 35, 'IC@somaiya.edu', '2018-05-12 11:10:00');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `audit_map`
+-- Table structure for table `course_similar_map`
 --
 
-CREATE TABLE `audit_map` (
+CREATE TABLE `course_similar_map` (
   `newcid` varchar(15) NOT NULL,
+  `new_course_type_id` int(11) NOT NULL,
   `newsem` int(11) NOT NULL,
   `newyear` varchar(8) NOT NULL,
   `oldcid` varchar(15) NOT NULL,
+  `old_course_type_id` int(11) NOT NULL,
   `oldsem` int(11) NOT NULL,
   `oldyear` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -384,52 +147,41 @@ CREATE TABLE `audit_map` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `audit_map_log`
+-- Table structure for table `course_similar_map_log`
 --
 
-CREATE TABLE `audit_map_log` (
-  `newcid` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
+CREATE TABLE `course_similar_map_log` (
+  `newcid` varchar(15) NOT NULL,
+  `new_course_type_id` int(11) NOT NULL,
   `newsem` int(11) NOT NULL,
-  `newyear` varchar(8) CHARACTER SET utf8mb4 NOT NULL,
-  `oldcid` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
+  `newyear` varchar(8) NOT NULL,
+  `oldcid` varchar(15) NOT NULL,
+  `old_course_type_id` int(11) NOT NULL,
   `oldsem` int(11) NOT NULL,
-  `oldyear` varchar(8) CHARACTER SET utf8mb4 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `audit_map_log`
---
-
-INSERT INTO `audit_map_log` (`newcid`, `newsem`, `newyear`, `oldcid`, `oldsem`, `oldyear`) VALUES
-('UCEC8785', 3, '2018-19', '2UST533', 3, '2020-21'),
-('UCEC8785', 3, '2018-19', 'UCEC123', 3, '2018-19');
+  `oldyear` varchar(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `closed_elective_dept_form`
+-- Table structure for table `course_types`
 --
 
-CREATE TABLE `closed_elective_dept_form` (
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) CHARACTER SET utf8mb4 NOT NULL,
-  `form_type` varchar(10) CHARACTER SET utf8mb4 NOT NULL,
-  `no` int(11) NOT NULL DEFAULT 0,
-  `dept_id` int(11) NOT NULL,
-  `curr_sem` int(11) NOT NULL,
-  `start_timestamp` varchar(30) CHARACTER SET utf8mb4 NOT NULL,
-  `end_timestamp` varchar(30) CHARACTER SET utf8mb4 NOT NULL,
-  `timestamp_created` varchar(30) CHARACTER SET utf8mb4 NOT NULL,
-  `email_id` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
-  `no_of_preferences` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `course_types` (
+  `id` int(11) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `program` varchar(3) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `closed_elective_dept_form`
+-- Dumping data for table `course_types`
 --
 
-INSERT INTO `closed_elective_dept_form` (`sem`, `year`, `form_type`, `no`, `dept_id`, `curr_sem`, `start_timestamp`, `end_timestamp`, `timestamp_created`, `email_id`, `no_of_preferences`) VALUES
-(4, '2017-18', 'closed ele', 1, 1, 5, '2020-03-30 14:35', '2020-04-03 03:59', '2020-04-01 23:19:52', 'facco@somaiya.edu', 6);
+INSERT INTO `course_types` (`id`, `name`, `program`) VALUES
+(3, 'Audit Course', 'UG'),
+(4, 'OET', 'UG'),
+(5, 'IDC', 'PG'),
+(6, 'elective 1', 'PHD');
 
 -- --------------------------------------------------------
 
@@ -440,7 +192,7 @@ INSERT INTO `closed_elective_dept_form` (`sem`, `year`, `form_type`, `no`, `dept
 CREATE TABLE `current_sem_info` (
   `sem_type` varchar(5) NOT NULL,
   `academic_year` varchar(10) NOT NULL,
-  `started_on` varchar(30) NOT NULL,
+  `started_on` varchar(30) NOT NULL DEFAULT current_timestamp(),
   `ended_on` varchar(30) NOT NULL,
   `email_id` varchar(50) NOT NULL,
   `currently_active` tinyint(4) NOT NULL DEFAULT 1
@@ -461,7 +213,7 @@ INSERT INTO `current_sem_info` (`sem_type`, `academic_year`, `started_on`, `ende
 
 CREATE TABLE `delete_temp_tables` (
   `table_name` varchar(50) NOT NULL,
-  `timestamp_created` varchar(15) NOT NULL
+  `timestamp_created` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -469,18 +221,13 @@ CREATE TABLE `delete_temp_tables` (
 --
 
 INSERT INTO `delete_temp_tables` (`table_name`, `timestamp_created`) VALUES
-('22252f_audit_course', '2020-06-05 15:4'),
-('22252f_student_audit', '2020-06-05 15:4'),
-('336b2f_audit_course', '2020-05-31 21:4'),
-('336b2f_student_audit', '2020-05-31 21:4'),
-('3ad56d_audit_course', '2020-05-31 21:5'),
-('3ad56d_student_audit', '2020-05-31 21:5'),
-('69bc1a_audit_course', '2020-06-01 15:2'),
-('69bc1a_student_audit', '2020-06-01 15:2'),
-('9a3ace_audit_course', '2020-06-01 15:2'),
-('9a3ace_student_audit', '2020-06-01 15:2'),
-('b7e550_audit_course', '2020-06-01 15:3'),
-('b7e550_student_audit', '2020-06-01 15:3');
+('156ea3_audit_app_dept_course', '2020-06-22 20:47:21'),
+('156ea3_audit_course', '2020-06-22 20:47:21'),
+('156ea3_audit_course_info', '2020-06-22 20:47:21'),
+('156ea3_pref_percent', '2020-06-22 20:47:21'),
+('156ea3_pref_student_alloted', '2020-06-22 20:47:21'),
+('156ea3_student_audit', '2020-06-22 20:47:21'),
+('156ea3_student_pref_audit', '2020-06-22 20:47:21');
 
 -- --------------------------------------------------------
 
@@ -557,73 +304,9 @@ CREATE TABLE `faculty` (
 --
 
 INSERT INTO `faculty` (`email_id`, `faculty_code`, `employee_id`, `fname`, `mname`, `lname`, `dept_id`, `post`, `username`, `added_by`, `timestamp`) VALUES
-('a.chachra@somaiya.edu', 'ASC', '160977', 'Prof. Anjali', '', 'Chachra', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('archana.gupta@somaiya.edu', 'AAG', '160893', 'Prof. Archana', '', 'Gupta', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('babaso.aldar@somaiya.edu', 'BDA', '160997', 'Prof. Babaso', '', 'Aldar', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('bhaktiraul@somaiya.edu', 'BNP', '160063', 'Prof. Bhakti', '', 'Palkar', 1, 'Asso. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('bharathihn@somaiya.edu', 'BHN', '160069', 'Prof. Bharathi', '', 'HN', 1, 'Asso. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('deepaksharma@somaiya.edu', 'DHS', '160120', 'Dr. Deepak', '', 'Sharma', 1, 'Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
 ('fac3@somaiya.edu', 'PR', '9', 'PQR', '', '', 2, 'Prof', '', 'IC@somaiya.edu', '2020-05-11 03:29:35'),
 ('faculty1@somaiya.edu', 'fac', '4', 'faculty', '', '', 1, 'Asst Prof', 'faculty', '', ''),
-('faculty2@somaiya.edu', 'fac2', '6', 'faculty2', '', '', 1, 'Prof', '', '', ''),
-('gopal.s@somaiya.edu', 'GSS', '160924', 'Prof. Gopal', '', 'Sonune', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('jyothirao@somaiya.edu', 'JMR', '160730', 'Prof. Jyothi', '', 'Rao', 1, 'Asso. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('jyoti.joglekar@somaiya.edu', 'JVJ', '160993', 'Dr. Jyoti', '', 'Joglekar', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('kavitakelkar@somaiya.edu', 'KMK', '160057', 'Prof. Kavita', '', 'Kelkar', 1, 'Asso. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('manishpotey@somaiya.edu', 'MMP', '160188', 'Dr. Manish', '', 'Potey', 1, 'Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('neelammotwani@somaiya.edu', 'GJS', '160102', 'Prof. Grishma', '', 'Sharma', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('nirmalashinde@somaiya.edu', 'NKS', '160864', 'Prof. Nirmala', '', 'Shinde', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('p.bhangale@somaiya.edu', 'PYB', '160982', 'Prof. Pradnya', '', 'Bhangale', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('poonambhogale@somaiya.edu', 'PMB', '160562', 'Prof. Poonam', '', 'Bhogle', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('pradnyagothmare@somaiya.edu', 'PSG', '160722', 'Prof. Pradnya', '', 'Gotmare', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('prasadinipadwal@somaiya.edu', 'MMK', '160101', 'Prof. Mansi', '', 'Kambli', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('prasannashete@somaiya.edu', 'PJS', '160117', 'Dr. Prasanna', '', 'Shete', 1, 'Asso. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('rajaniaswani@somaiya.edu', 'RMP', '160064', 'Prof. Rajani', '', 'Pamnani', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('rohininair@somaiya.edu', 'RAN', '160615', 'Prof. Rohini', '', 'Nair', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('ruchika.rp@somaiya.edu', 'RRP', '161000', 'Prof. Ruchika', '', 'Patil', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('sheetalpereira@somaiya.edu', 'SIP', '160604', 'Prof. Sheetal', '', 'Pereira', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('shweta.chachra@somaiya.edu', 'SDC', '160885', 'Prof. Shweta', '', 'Chachra', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('smitasankhe@somaiya.edu', 'SRS', '160639', 'Prof. Smita', '', 'Sankhe', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('suchitapatil@somaiya.edu', 'PSP', '160535', 'Prof. Suchita', '', 'Patil', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('swapnil.cp@somaiya.edu', 'SCP', '160989', 'Prof. Swapnil', '', 'Pawar', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('swatimali@somaiya.edu', 'SNM', '160065', 'Prof. Swati', '', 'Mali', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('udayjoshi@somaiya.edu', 'UBJ', '160056', 'Prof. Uday', '', 'Joshi', 1, 'Asso. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('vaibhav.vasani@somaiya.edu', 'VPV', '160999', 'Prof. Vaibhav', '', 'Vasani', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02'),
-('zaheedshaikh@somaiya.edu', 'ZSK', '160825', 'Prof. Zaheed', '', 'Shaikh', 1, 'Asst. Professor', '', 'IC@somaiya.edu', '2020-05-31 22:51:02');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `faculty_audit`
---
-
-CREATE TABLE `faculty_audit` (
-  `email_id` varchar(50) NOT NULL,
-  `cid` varchar(30) NOT NULL,
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `currently_active` tinyint(4) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `faculty_audit`
---
-
-INSERT INTO `faculty_audit` (`email_id`, `cid`, `sem`, `year`, `currently_active`) VALUES
-('a.chachra@somaiya.edu', '2UST563', 5, '2020-21', 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `faculty_audit_log`
---
-
-CREATE TABLE `faculty_audit_log` (
-  `email_id` varchar(50) NOT NULL,
-  `cid` varchar(30) NOT NULL,
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+('faculty2@somaiya.edu', 'fac2', '6', 'faculty2', '', '', 1, 'Prof', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -655,40 +338,38 @@ CREATE TABLE `faculty_coordinator` (
   `dept_id` int(11) NOT NULL,
   `start_date` varchar(15) NOT NULL,
   `end_date` varchar(15) NOT NULL,
-  `hod_id` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `faculty_coordinator`
---
-
-INSERT INTO `faculty_coordinator` (`email_id`, `dept_id`, `start_date`, `end_date`, `hod_id`) VALUES
-('facco_comp@somaiya.edu', 1, '2019-05-03', '2021-04-02', 'hodcomp@somaiya.edu');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `faculty_idc`
---
-
-CREATE TABLE `faculty_idc` (
-  `email_id` varchar(50) NOT NULL,
-  `cid` varchar(30) NOT NULL,
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL
+  `added_by` varchar(50) NOT NULL,
+  `timestamp` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `faculty_idc_log`
+-- Table structure for table `faculty_course_alloted`
 --
 
-CREATE TABLE `faculty_idc_log` (
+CREATE TABLE `faculty_course_alloted` (
   `email_id` varchar(50) NOT NULL,
   `cid` varchar(30) NOT NULL,
+  `course_type_id` int(11) NOT NULL,
   `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL
+  `year` varchar(8) NOT NULL,
+  `currently_active` tinyint(4) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `faculty_course_alloted_log`
+--
+
+CREATE TABLE `faculty_course_alloted_log` (
+  `email_id` varchar(50) NOT NULL,
+  `cid` varchar(30) NOT NULL,
+  `course_type_id` int(11) NOT NULL,
+  `sem` int(11) NOT NULL,
+  `year` varchar(8) NOT NULL,
+  `currently_active` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -698,11 +379,13 @@ CREATE TABLE `faculty_idc_log` (
 --
 
 CREATE TABLE `form` (
+  `form_id` int(11) NOT NULL,
   `sem` int(11) NOT NULL,
   `year` varchar(8) NOT NULL,
-  `no` int(11) NOT NULL DEFAULT 0,
+  `program` varchar(3) DEFAULT NULL,
   `form_type` varchar(10) NOT NULL,
   `curr_sem` int(11) NOT NULL,
+  `currently_active` tinyint(4) NOT NULL DEFAULT 0,
   `start_timestamp` varchar(30) NOT NULL,
   `end_timestamp` varchar(30) NOT NULL,
   `timestamp_created` varchar(30) NOT NULL,
@@ -711,44 +394,38 @@ CREATE TABLE `form` (
   `allocate_status` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `form`
---
-
-INSERT INTO `form` (`sem`, `year`, `no`, `form_type`, `curr_sem`, `start_timestamp`, `end_timestamp`, `timestamp_created`, `email_id`, `no_of_preferences`, `allocate_status`) VALUES
-(3, '2020-21', 0, 'audit', 2, '2020-05-31 06:24', '2020-06-07 08:24', '2020-05-30 03:24:09', 'IC@somaiya.edu', 6, 0),
-(4, '2019-20', 0, 'audit', 3, '2020-05-07 15:01', '2020-05-22 01:00', '2020-05-11 16:21:25', 'IC@somaiya.edu', 5, 0),
-(5, '2019-20', 0, 'audit', 4, '2020-05-29 08:25', '2020-06-03 08:25', '2020-05-30 03:26:00', 'IC@somaiya.edu', 5, 0),
-(5, '2019-20', 0, 'idc', 4, '2020-03-30 02:00', '2020-04-04 00:02', '2020-03-31 16:14:32', 'IC@somaiya.edu', 3, 0),
-(5, '2020-21', 0, 'audit', 4, '2020-05-30 14:37', '2020-05-31 14:32', '2020-05-31 14:37:57', 'IC@somaiya.edu', 8, 0),
-(6, '2019-20', 0, 'audit', 5, '2020-05-07 02:00', '2020-05-10 13:00', '2020-05-06 14:32:15', 'IC@somaiya.edu', 6, 0),
-(7, '2019-20', 0, 'audit', 6, '2020-05-01 02:00', '2020-05-03 13:00', '2020-05-06 14:49:36', 'IC@somaiya.edu', 3, 0),
-(7, '2019-20', 0, 'idc', 6, '2020-04-09 04:00', '2020-04-16 11:00', '2020-04-06 21:55:50', 'IC@somaiya.edu', 6, 0),
-(8, '2019-20', 0, 'audit', 7, '2020-05-02 01:00', '2020-05-04 13:00', '2020-05-05 19:52:20', 'IC@somaiya.edu', 6, 1);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hide_student_audit_course`
+-- Table structure for table `form_applicable_dept`
 --
 
-CREATE TABLE `hide_student_audit_course` (
-  `email_id` varchar(50) NOT NULL,
-  `cid` varchar(15) NOT NULL,
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `cname` varchar(50) NOT NULL
+CREATE TABLE `form_applicable_dept` (
+  `form_id` int(11) NOT NULL,
+  `dept_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hide_student_idc`
+-- Table structure for table `form_course_category_map`
 --
 
-CREATE TABLE `hide_student_idc` (
+CREATE TABLE `form_course_category_map` (
+  `form_id` int(11) NOT NULL,
+  `course_type_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hide_student_course`
+--
+
+CREATE TABLE `hide_student_course` (
   `email_id` varchar(50) NOT NULL,
-  `cid` varchar(30) NOT NULL,
+  `cid` varchar(15) NOT NULL,
+  `course_type_id` int(11) NOT NULL,
   `sem` int(11) NOT NULL,
   `year` varchar(8) NOT NULL,
   `cname` varchar(50) NOT NULL
@@ -761,115 +438,14 @@ CREATE TABLE `hide_student_idc` (
 --
 
 CREATE TABLE `hod` (
-  `email_id` varchar(50) NOT NULL,
+  `hod_email_id` varchar(50) NOT NULL,
+  `faculty_email_id` varchar(50) NOT NULL,
   `dept_id` int(11) NOT NULL,
   `start_date` varchar(15) NOT NULL,
-  `end_date` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `hod`
---
-
-INSERT INTO `hod` (`email_id`, `dept_id`, `start_date`, `end_date`) VALUES
-('hodcomp@somaiya.edu', 1, '12-12-2019', '04-04-2022');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `idc`
---
-
-CREATE TABLE `idc` (
-  `cid` varchar(30) NOT NULL,
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `cname` varchar(50) NOT NULL,
-  `dept_id` int(11) NOT NULL,
-  `email_id` varchar(50) NOT NULL,
-  `max` int(11) NOT NULL,
-  `min` int(11) NOT NULL,
-  `no_of_allocated` int(11) NOT NULL,
+  `end_date` varchar(15) NOT NULL,
+  `added_by` varchar(50) NOT NULL,
   `timestamp` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `idc`
---
-
-INSERT INTO `idc` (`cid`, `sem`, `year`, `cname`, `dept_id`, `email_id`, `max`, `min`, `no_of_allocated`, `timestamp`) VALUES
-('UCEC3547', 5, '2019-20', 'Cyber Security Awareness', 2, 'IC@somaiya.edu', 60, 40, 0, '2020-03-31 16:36:35'),
-('UCEC3645', 5, '2019-20', 'Microprocessor', 1, 'IC@somaiya.edu', 80, 40, 0, '2020-03-24 15:03:53');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `idc_applicable_dept`
---
-
-CREATE TABLE `idc_applicable_dept` (
-  `cid` varchar(30) NOT NULL,
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `dept_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `idc_applicable_dept`
---
-
-INSERT INTO `idc_applicable_dept` (`cid`, `sem`, `year`, `dept_id`) VALUES
-('UCEC3547', 5, '2019-20', 1),
-('UCEC3547', 5, '2019-20', 2),
-('UCEC3547', 5, '2019-20', 3),
-('UCEC3547', 5, '2019-20', 4),
-('UCEC3645', 5, '2019-20', 2),
-('UCEC3645', 5, '2019-20', 4),
-('UCEC3645', 5, '2019-20', 5);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `idc_applicable_dept_log`
---
-
-CREATE TABLE `idc_applicable_dept_log` (
-  `cid` varchar(30) NOT NULL,
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `dept_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `idc_log`
---
-
-CREATE TABLE `idc_log` (
-  `cid` varchar(30) NOT NULL,
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `cname` varchar(50) NOT NULL,
-  `dept_id` int(11) NOT NULL,
-  `email_id` varchar(50) NOT NULL,
-  `max` int(11) NOT NULL,
-  `min` int(11) NOT NULL,
-  `no_of_allocated` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `instituitional_coordinator`
---
-
-CREATE TABLE `instituitional_coordinator` (
-  `email_id` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
-  `start_date` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
-  `end_date` varchar(15) CHARACTER SET utf8mb4 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -912,6 +488,7 @@ CREATE TABLE `student` (
   `lname` varchar(30) NOT NULL,
   `year_of_admission` varchar(8) NOT NULL,
   `dept_id` int(11) NOT NULL,
+  `program` varchar(3) DEFAULT NULL,
   `current_sem` int(11) NOT NULL,
   `form_filled` int(11) NOT NULL DEFAULT 0,
   `adding_email_id` varchar(50) NOT NULL,
@@ -922,721 +499,719 @@ CREATE TABLE `student` (
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`email_id`, `rollno`, `fname`, `mname`, `lname`, `year_of_admission`, `dept_id`, `current_sem`, `form_filled`, `adding_email_id`, `timestamp`) VALUES
-('a.choubey@somaiya.edu', '1813130', 'AMAN', '', 'CHOUBEY', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('a.dautkhane@somaiya.edu', '1813012', 'AADITYA', '', 'DAUTKHANE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('a.mahadevan@somaiya.edu', '1811022', 'AADITYA', '', 'MAHADEVAN', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('a.maru@somaiya.edu', '1813102', 'AAYUSH', '', 'MARU', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('a.pareri@somaiya.edu', '1814111', 'AKASH', '', 'PARERI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('a.shridharani@somaiya.edu', '1812115', 'AKANKSHA', '', 'SHRIDHARANI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('a.venkatadri@somaiya.edu', '1812004', 'ABHISHEK', '', 'VENKATADRI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aaditya.r@somaiya.edu', '1812094', 'AADITYA', '', 'RAJGOR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aafiya.h@somaiya.edu', '1811014', 'AAFIYA', '', 'HUSSAIN', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aagam.mehta@somaiya.edu', '1812104', 'AAGAM', '', 'MEHTA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aaron.cherian@somaiya.edu', '1813069', 'AARON', '', 'CHERIAN', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aayuse.p@somaiya.edu', '1812093', 'AAYUSE', '', 'PANCHAL', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('abhijeet.dwivedi@somaiya.edu', '1813013', 'ABHIJEET', '', 'DWIVEDI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('abhinav.jha@somaiya.edu', '1812029', 'ABHINAV', '', 'JHA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('abhinav.z@somaiya.edu', '1815137', 'ABHINAV', '', 'ZANVAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('abhiram.a@somaiya.edu', '1813001', 'ABHIRAM', '', 'A', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('abhishek.ambekar@somaiya.edu', '1815001', 'ABHISHEK', '', 'AMBEKAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('abhishek.padiya@somaiya.edu', '1812092', 'ABHISHEK', '', 'PADIYA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('abhishek.potdar@somaiya.edu', '1814048', 'ABHISHEK', '', 'POTDAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('adarsh.rj@somaiya.edu', '1814084', 'ADARSH', '', 'JAISWAL', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aditi.joisher@somaiya.edu', '1813086', 'ADITI', '', 'JOISHER', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aditi.kulkarni@somaiya.edu', '1813024', 'ADITI', '', 'KULKARNI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aditya.datar@somaiya.edu', '1814003', 'ADITYA', '', 'DATAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aditya.goud@somaiya.edu', '1812023', 'ADITYA', '', 'GOUD', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aditya.mahesh@somaiya.edu', '1813064', 'ADITYA', '', 'MAHESH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aditya.shenoy@somaiya.edu', '1813057', 'ADITYA', '', 'SHENOY', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aditya.si@somaiya.edu', '1815083', 'ADITYA', '', 'IYER', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aditya.vaishya@somaiya.edu', '1814117', 'ADITYA', '', 'VAISHYA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aditya06@somaiya.edu', '1815124', 'ADITYA', '', 'SHINDE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ahmed.layees@somaiya.edu', '1815033', 'AHMED', '', 'LAYEES', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aiswarya.k@somaiya.edu', '1814122', 'AISWARYA', '', 'KUMAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ajay.bhan@somaiya.edu', '1811128', 'AJAY', '', 'BHAN', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ajinkya.kirkire@somaiya.edu', '1813094', 'AJINKYA', '', 'KIRKIRE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('akash.biradar@somaiya.edu', '1712068', 'AKASH', '', 'BIRADAR', '2017', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('akhil.namboodiri@somaiya.edu', '1814042', 'AKHIL', '', 'NAMBOODIRI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('akshar.barchha@somaiya.edu', '1811067', 'AKSHAR', '', 'BARCHHA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aksharan.g@somaiya.edu', '1812003', 'AKSHARAN', '', 'GANESHAN', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('akshat.ag@somaiya.edu', '1811012', 'AKSHAT', '', 'GANDHI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('akshat.shah2@somaiya.edu', '1812059', 'AKSHAT', '', 'SHAH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('akshata.barne@somaiya.edu', '1812066', 'AKSHATA', '', 'BARNE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('akshit.gs@somaiya.edu', '1811042', 'AKSHIT', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('akshit.sanchala@somaiya.edu', '1814067', 'AKSHIT', '', 'SANCHALA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('akshit.sj@somaiya.edu', '1812034', 'AKSHIT', '', 'JAIN', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('akshit.tayade@somaiya.edu', '1813106', 'AKSHIT', '', 'TAYADE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('alfiza.s@somaiya.edu', '1811118', 'ALFIZA', '', 'SHAIKH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aliasgar.zm@somaiya.edu', '1815037', 'ALIASGAR', '', 'MERCHANT', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aman.desai@somaiya.edu', '1811073', 'AMAN', '', 'DESAI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aman.jg@somaiya.edu', '1815082', 'AMAN', '', 'GUPTA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aman.khakharia@somaiya.edu', '1812033', 'AMAN', '', 'KHAKHARIA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aman.panchal@somaiya.edu', '1815104', 'AMAN', '', 'PANCHAL', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('amanshu.t@somaiya.edu', '1922023', 'AMANSHU', '', 'TIWARI', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('amogh.sinkar@somaiya.edu', '1811056', 'AMOGH', '', 'SINKAR', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('anchal.j@somaiya.edu', '1811015', 'ANCHAL', '', 'JAIN', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aniket.ay@somaiya.edu', '1815067', 'ANIKET', '', 'YADAV', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aniket.bhosale@somaiya.edu', '1811069', 'ANIKET', '', 'BHOSALE', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aniket.choudhar@somaiya.edu', '1812074', 'ANIKET', '', 'CHOUDHAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aniket.ubhare@somaiya.edu', '1812063', 'ANIKET', '', 'UBHARE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aniket05@somaiya.edu', '1811083', 'ANIKET', '', 'JOSHI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('anina.pillai@somaiya.edu', '1811034', 'ANINA', '', 'PILLAI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('anirudh.rn@somaiya.edu', '1815101', 'ANIRUDH', '', 'NAIR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('anjali.gohil@somaiya.edu', '1811080', 'ANJALI', '', 'GOHIL', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ankit.thakker@somaiya.edu', '1811123', 'ANKIT', '', 'THAKKER', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('annas.khan@somaiya.edu', '1812080', 'ANNAS', '', 'KHAN', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('anoushka.p@somaiya.edu', '1813107', 'ANOUSHKA', '', 'PADHI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('anoushka.s@somaiya.edu', '1813121', 'ANOUSHKA', '', 'SHETTY', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ansh.dugar@somaiya.edu', '1814064', 'ANSH', '', 'DUGAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ansh.jain@somaiya.edu', '1811016', 'ANSH', '', 'JAIN', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ansh.mehta@somaiya.edu', '1814090', 'ANSH', '', 'MEHTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('anuj.sarda@somaiya.edu', '1814052', 'ANUJ', '', 'SARDA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('anushka.darade@somaiya.edu', '1814012', 'ANUSHKA', '', 'DARADE', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('anushka.sinha@somaiya.edu', '1813060', 'ANUSHKA', '', 'SINHA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('anuvrat.m@somaiya.edu', '1812042', 'ANUVRAT', '', 'MARATHE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('apoorv.gupta@somaiya.edu', '1814081', 'APOORV', '', 'GUPTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('apoorva.belokar@somaiya.edu', '1815003', 'APOORVA', '', 'BELOKAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('arjun.sehgal@somaiya.edu', '1811041', 'ARJUN', '', 'SEHGAL', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('arkaprava.p@somaiya.edu', '1813109', 'ARKA', '', 'PAL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('arnav.gadre@somaiya.edu', '1812079', 'ARNAV', '', 'GADRE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('aryak.naik@somaiya.edu', '1812068', 'ARYAK', '', 'NAIK', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('asgarali.q@somaiya.edu', '1921004', 'ASGARALI', '', 'QURESHI', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ashesh.z@somaiya.edu', '1815136', 'ASHESH', '', 'ZINJARDE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ashish.khare@somaiya.edu', '1813023', 'ASHISH', '', 'KHARE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ashutosh.rane@somaiya.edu', '1813112', 'ASHUTOSH', '', 'RANE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ashwini.pp@somaiya.edu', '1923009', 'ASHWINI', '', 'PATEL', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ask1@somaiya.edu', '1813025', 'ANIKET', '', 'KULKARNI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('asra.masrat@somaiya.edu', '1924004', 'ASRA', '', 'MASRAT', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('atharva.dave@somaiya.edu', '1814072', 'ATHARVA', '', 'DAVE', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('atharva.humar@somaiya.edu', '1815021', 'ATHARVA', '', 'HUMAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('atharva.kitkaru@somaiya.edu', '1814033', 'ATHARVA', '', 'KITKARU', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('atharva.mp@somaiya.edu', '1815050', 'ATHARVA', '', 'PRADHAN', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('atharva.parkar@somaiya.edu', '1812100', 'ATHARVA', '', 'PARKAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('atharva.sangle@somaiya.edu', '1813114', 'ATHARVA', '', 'SANGLE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('atharva.sm@somaiya.edu', '1925008', 'ATHARVA', '', 'MEHTA', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('atharva.vibhute@somaiya.edu', '1813019', 'ATHARVA', '', 'VIBHUTE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('avanish.batkulia@somaiya.edu', '1815068', 'AVANISH', '', 'BATKULIA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('avinash.ks@somaiya.edu', '1814113', 'AVINASH', '', 'SHARMA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('avinash.nair@somaiya.edu', '1815022', 'AVINASH', '', 'NAIR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ayush.choudhary@somaiya.edu', '1815007', 'AYUSH', '', 'CHOUDHARY', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ayush.khade@somaiya.edu', '1811087', 'AYUSH', '', 'KHADE', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ayush.parmar@somaiya.edu', '1813036', 'AYUSH', '', 'PARMAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ayush.ranjan@somaiya.edu', '1815051', 'Ayush', '', 'Ranjan', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('b.jhaveri@somaiya.edu', '1925001', 'BHAVYA', '', 'JHAVERI', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('b.poonawala@somaiya.edu', '1812072', 'BURHANUDDIN', '', 'POONAWALA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('babita.r@somaiya.edu', '1813090', 'BABITA', '', 'RATUDI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bharat.choithani@somaiya.edu', '1814011', 'BHARAT', '', 'CHOITHANI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhargavi.koli@somaiya.edu', '1922007', 'BHARGAVI', '', 'KOLI', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bharvi.a@somaiya.edu', '1812064', 'BHARVI', '', 'ACHARYA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhavik.bhatt@somaiya.edu', '1814007', 'BHAVIK', '', 'BHATT', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhavik.dhimar@somaiya.edu', '1813072', 'BHAVIK', '', 'DHIMAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhavin.jp@somaiya.edu', '1925010', 'BHAVIN', '', 'PRAJAPATI', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhavya.doshi1@somaiya.edu', '1815075', 'BHAVYA', '', 'DOSHI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhavya.goradia@somaiya.edu', '1815081', 'BHAVYA', '', 'GORADIA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhavya.mv@somaiya.edu', '1813125', 'BHAVYA', '', 'VIRA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhavya.sangoi@somaiya.edu', '1925009', 'BHAVYA', '', 'SANGOI', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhikshiv.j@somaiya.edu', '1813021', 'BHIKSHIV', '', 'JAIN', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhushan.pawaskar@somaiya.edu', '1815047', 'BHUSHAN', '', 'PAWASKAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bhuvnesh.s@somaiya.edu', '1811057', 'BHUVNESH', '', 'SOLANKI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bishandeep.a@somaiya.edu', '1811100', 'BISHANDEEP', '', 'ARORA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('bushra.a@somaiya.edu', '1813003', 'BUSHRA', '', 'A', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('c.phadtare@somaiya.edu', '1812047', 'CHAITANYA', '', 'PHADTARE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('chaitanya.bane@somaiya.edu', '1815138', 'CHAITANYA', '', 'BANE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('charmee.m@somaiya.edu', '1924003', 'CHARMEE', '', 'MEHTA', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('chaturvedi.a@somaiya.edu', '1811009', 'ANIMESH', '', 'CHATURVEDI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('chetan.dinesh@somaiya.edu', '1925012', 'CHETAN', '', 'DINESH', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('chintan.jagad@somaiya.edu', '1924001', 'CHINTAN', '', 'JAGAD', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('chintan.modi@somaiya.edu', '1811025', 'CHINTAN', '', 'MODI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('chirag.jain1@somaiya.edu', '1813082', 'CHIRAG', '', 'JAIN', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('chirag.jhawar@somaiya.edu', '1814085', 'CHIRAG', '', 'JHAWAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('chiranjivi.c@somaiya.edu', '1815005', 'CHIRANJIVI', '', 'CHAUHAN', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('daidipya.s@somaiya.edu', '1813056', 'DAIDIPYA', '', 'SHARMA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('danil.george@somaiya.edu', '1812014', 'DANIEL', '', 'GEORGE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('darsh.parmar@somaiya.edu', '1812111', 'DARSH', '', 'PARMAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('darshan.as@somaiya.edu', '1813049', 'DARSHAN', '', 'SHAH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('darshan.kalwani@somaiya.edu', '1814029', 'DARSHAN', '', 'KALWANI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('darshan.sapariya@somaiya.edu', '1813115', 'DARSHAN', '', 'SAPARIYA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('darshan.ss@somaiya.edu', '1814109', 'DARSHAN', '', 'SATRA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('darshit.thakkar@somaiya.edu', '1813122', 'DARSHIT', '', 'THAKKAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('debdatta.k@somaiya.edu', '1811092', 'DEBDATTA', '', 'KUNDU', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('deep.rs@somaiya.edu', '1815116', 'DEEP', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('deep.shah5@somaiya.edu', '1814110', 'DEEP', '', 'SHAH', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('deep08@somaiya.edu', '1815011', 'DEEP', '', 'PATEL', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('deepa.kumari@somaiya.edu', '1814019', 'DEEPA', '', 'KUMARI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('deepanshu.v@somaiya.edu', '1921005', 'DEEPANSHU', '', 'VANGANI', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dev.de@somaiya.edu', '1814013', 'DEV', '', 'DE', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dev.ss@somaiya.edu', '1814016', 'DEV', '', 'SHAH', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dev.vora@somaiya.edu', '1814120', 'DEV', '', 'VORA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('devansh.cs@somaiya.edu', '1815117', 'DEVANSH', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('devansh.ds@somaiya.edu', '1811111', 'DEVANSH', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('devansh.sanghavi@somaiya.edu', '1811062', 'DEVANSH', '', 'SANGHAVI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhairya.kataria@somaiya.edu', '1813091', 'DHAIRYA', '', 'KATARIA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhairya.oza@somaiya.edu', '1814043', 'DHAIRYA', '', 'OZA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhairya.u@somaiya.edu', '1814063', 'DHAIRYA', '', 'UMRANIA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhairya12@somaiya.edu', '1814053', 'DHAIRYA', '', 'SHAH', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dharm.shah@somaiya.edu', '1815052', 'DHARM', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dharmesh.chawda@somaiya.edu', '1814069', 'DHARMESH', '', 'CHAWDA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dharmil17@somaiya.edu', '1922011', 'DHARMIL', '', 'SHAH', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dheeraj.jain@somaiya.edu', '1815084', 'DHEERAJ', '', 'JAIN', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhiraj.jeswani@somaiya.edu', '1815087', 'DHIRAJ', '', 'JESWANI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhruman.g@somaiya.edu', '1815019', 'DHRUMAN', '', 'GOHIL', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhruv.bid@somaiya.edu', '1813005', 'DHRUV', '', 'BID', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhruv.cb@somaiya.edu', '1812067', 'DHRUV', '', 'BHANUSHALI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhruv.doshi@somaiya.edu', '1814002', 'DHRUV', '', 'DOSHI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhruv.ganatra@somaiya.edu', '1812062', 'DHRUV', '', 'GANATRA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhruv.lj@somaiya.edu', '1815024', 'DHRUV', '', 'JAIN', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhruv.rg@somaiya.edu', '1922013', 'DHRUV', '', 'GANDHI', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhruva.panchal@somaiya.edu', '1922015', 'DHRUVA', '', 'PANCHAL', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhundiraj.j@somaiya.edu', '1814027', 'DHUNDIRAJ', '', 'JOGALEKAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dhvanit.b@somaiya.edu', '1813017', 'DHVANIT', '', 'BHIMANI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('divya.raul@somaiya.edu', '1812051', 'DIVYA', '', 'RAUL', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('divya.rr@somaiya.edu', '1814102', 'DIVYA', '', 'RAO', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('divyansh.singh@somaiya.edu', '1813059', 'DIVYANSH', '', 'SINGH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('dixshant.s@somaiya.edu', '1712119', 'DIXSHANT', '', 'SOLANKI', '2017', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('durva.raikar@somaiya.edu', '1812084', 'DURVA', '', 'RAIKAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('e.bhinderwala@somaiya.edu', '1812071', 'EBRAHIM', '', 'BHINDERWALA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('esha.gupta@somaiya.edu', '1814025', 'ESHA', '', 'GUPTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('esha.ponda@somaiya.edu', '1813062', 'ESHA', '', 'PONDA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('esha.vats@somaiya.edu', '1814118', 'ESHA', '', 'VATS', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('eshaan.singh@somaiya.edu', '1815127', 'ESHAAN', '', 'SINGH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('eshan.sharma@somaiya.edu', '1815120', 'ESHAN', '', 'SHARMA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('fahim.h@somaiya.edu', '1815020', 'FAHIM', '', 'HASNANI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('falguni.kumud@somaiya.edu', '1812086', 'FALGUNI', '', 'KUMUD', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('fenny.keniya@somaiya.edu', '1813051', 'FENNY', '', 'KENIYA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('foram.makadia@somaiya.edu', '1813100', 'FORAM', '', 'MAKADIA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('g.mahindrakar@somaiya.edu', '1812024', 'GAYATRI', '', 'MAHINDRAKAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('gada.d@somaiya.edu', '1814076', 'DHARMIL', '', 'GADA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('gandhar.j@somaiya.edu', '1813087', 'GANDHAR', '', 'JOSHI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('gandhi.ps@somaiya.edu', '1815079', 'PRATIK', '', 'GANDHI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('gaurang.patil@somaiya.edu', '1814046', 'GAURANG', '', 'PATIL', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('gaurang.thakker@somaiya.edu', '1921010', 'GAURANG', '', 'THAKKER', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('gaurav.dighe@somaiya.edu', '1922010', 'GAURAV', '', 'DIGHE', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('gaurav.khatwani@somaiya.edu', '1811090', 'GAURAV', '', 'KHATWANI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('gopalkrishna.w@somaiya.edu', '1814062', 'GOPALKRISHNA', '', 'WAJA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('gunj.goda@somaiya.edu', '1813018', 'GUNJ', '', 'GODA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('gurpreet.n@somaiya.edu', '1813097', 'GURPREET SINGH', '', 'NIGAM', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('h.talele@somaiya.edu', '1921002', 'HARSHAVARDHAN', '', 'TALELE', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hansi.s@somaiya.edu', '1811108', 'HANSI', '', 'SANGHANI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hardik.asher@somaiya.edu', '1811002', 'HARDIK', '', 'ASHER', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hardika.gawde@somaiya.edu', '1924005', 'HARDIKA', '', 'GAWDE', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('harsh.bm@somaiya.edu', '1814091', 'HARSH', '', 'MEHTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('harsh.sachala@somaiya.edu', '1814105', 'HARSH', '', 'SACHALA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('harshal.pathak@somaiya.edu', '1813110', 'HARSHAL', '', 'PATHAK', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('harshid.b@somaiya.edu', '1812012', 'HARSHID', '', 'BHINDE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('harshit.raval@somaiya.edu', '1815110', 'HARSHIT', '', 'RAVAL', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hasti.ds@somaiya.edu', '1811043', 'HASTI', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('heena.kasali@somaiya.edu', '1921003', 'HEENA', '', 'KASALI', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('heeral.gawade@somaiya.edu', '1923011', 'HEERAL', '', 'GAWADE', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('heet.dedhia@somaiya.edu', '1814014', 'HEET', '', 'DEDHIA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('heet.mv@somaiya.edu', '1924007', 'HEET', '', 'VORA', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hemant.soni@somaiya.edu', '1815129', 'HEMANT', '', 'SONI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('het.k@somaiya.edu', '1812036', 'HET', '', 'KOTHARI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hetvi.kothari@somaiya.edu', '1811091', 'HETVI', '', 'KOTHARI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hiket.vira@somaiya.edu', '1815065', 'HIKET', '', 'VIRA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('himali.saini@somaiya.edu', '1811107', 'HIMALI', '', 'SAINI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('himanshi.cb@somaiya.edu', '1814057', 'HIMANSHI', '', 'BHANUSHALI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hiral.lineswala@somaiya.edu', '1923001', 'HIRAL', '', 'LINESWALA', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hiral.sheth@somaiya.edu', '1811054', 'HIRAL', '', 'SHETH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hiren23@somaiya.edu', '1815132', 'HIREN', '', 'PRAJAPATI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hitarth.doshi@somaiya.edu', '1922017', 'HITARTH', '', 'DOSHI', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hriday.jani@somaiya.edu', '1812016', 'HRIDAY', '', 'JANI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hriday.mehta@somaiya.edu', '1813030', 'HRIDAY', '', 'MEHTA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hrithik.p@somaiya.edu', '1815044', 'HRITHIK', '', 'PATEL', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hrithik.pandit@somaiya.edu', '1815106', 'HRITHIK', '', 'PANDIT', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hrp1@somaiya.edu', '1812095', 'HARSH', '', 'PANCHAL', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hrp2@somaiya.edu', '1813033', 'HARSH', '', 'PANCHAL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hsb3@somaiya.edu', '1812090', 'HIREN', '', 'BHANUSHALI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('hss2@somaiya.edu', '1815053', 'HARSH', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('idrees.b@somaiya.edu', '1811004', 'IDREES', '', 'BARNAGARWALA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('isha.chinerkar@somaiya.edu', '1813079', 'ISHA', '', 'CHINDERKAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('isha.joglekar@somaiya.edu', '1924009', 'ISHA', '', 'JOGLEKAR', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ishan.patil@somaiya.edu', '1812102', 'ISHAN', '', 'PATIL', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ishan.shinde@somaiya.edu', '1815125', 'ISHAN', '', 'SHINDE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('j.gohil@somaiya.edu', '1815142', 'JAY', '', 'GOHIL', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('j.parab@somaiya.edu', '1812097', 'JAYESH', '', 'PARAB', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jai.agarwal@somaiya.edu', '1812017', 'JAI', '', 'AGARWAL', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jai.mehta@somaiya.edu', '1814036', 'JAI', '', 'MEHTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jaiman.shah@somaiya.edu', '1815054', 'JAIMAN', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jaimeen.u@somaiya.edu', '1814077', 'JAIMEEN', '', 'UNAGAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jainam.gogree@somaiya.edu', '1812021', 'JAINAM', '', 'GOGREE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jainam.tm@somaiya.edu', '1814008', 'JAINAM', '', 'MEHTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jainam.z@somaiya.edu', '1814123', 'JAINAM', '', 'ZOBALIYA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jainam02@somaiya.edu', '1811085', 'JAINAM', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jainum.s@somaiya.edu', '1814051', 'JAINUM', '', 'SANGHAVI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jaival.singh@somaiya.edu', '1815128', 'JAIVAL', '', 'SINGH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jas.p@somaiya.edu', '1813041', 'JAS', '', 'PRAJAPATI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jash.jm@somaiya.edu', '1814126', 'JASH', '', 'MEHTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jash.js@somaiya.edu', '1811082', 'JASH', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jash12@somaiya.edu', '1814054', 'JASH', '', 'SHAH', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jash28@somaiya.edu', '1922016', 'JASH', '', 'SHAH', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jay.domadia@somaiya.edu', '1813014', 'JAY', '', 'DOMADIA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jay.ingle@somaiya.edu', '1922004', 'JAY', '', 'INGLE', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jay.khatri@somaiya.edu', '1814087', 'JAY', '', 'KHATRI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jay.pd@somaiya.edu', '1815076', 'JAY', '', 'DOSHI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jay12@somaiya.edu', '1813117', 'JAY', '', 'SHAH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jayant.yadav@somaiya.edu', '1815135', 'JAYANT', '', 'YADAV', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jaykumar.mp@somaiya.edu', '1814044', 'JAYKUMAR', '', 'PANCHAL', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jeel16@somaiya.edu', '1921012', 'JEEL', '', 'SHAH', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jenil.gosar@somaiya.edu', '1813078', 'JENIL', '', 'GOSAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jibitesh.s@somaiya.edu', '1812053', 'JIBITESH', '', 'SAHA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jigar.pj@somaiya.edu', '1811018', 'JIGAR', '', 'JOSHI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jigyassa.l@somaiya.edu', '1811020', 'JIGYASSA', '', 'LAMBA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jil.ap@somaiya.edu', '1812046', 'JIL', '', 'PATEL', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jill25@somaiya.edu', '1814055', 'JILL', '', 'SHAH', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jinay.gada@somaiya.edu', '1811021', 'JINAY', '', 'GADA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jjj@somaiya.edu', '1813022', 'JAY', '', 'JAIN', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jjs1@somaiya.edu', '1811112', 'JAY', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('joel.thomas@somaiya.edu', '1815133', 'JOEL', '', 'THOMAS', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('joseph.k@somaiya.edu', '1815029', 'JOSEPH', '', 'KADANTOT', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jps1@somaiya.edu', '1815055', 'JAY', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jubin.kamdar@somaiya.edu', '1924011', 'JUBIN', '', 'KAMDAR', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('jugal.dc@somaiya.edu', '1811071', 'JUGAL', '', 'CHAUHAN', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('junaidali.s@somaiya.edu', '1815064', 'JUNAIDALI', '', 'SURTI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('k.deshpande@somaiya.edu', '1815014', 'KSHITIJ', '', 'DESHPANDE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('k.jaishankar@somaiya.edu', '1811061', 'KARTHIK', '', 'JAISHANKAR', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('k.satyanarayana@somaiya.edu', '1812118', 'KARTHIK', '', 'TALAKOKKULA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('k.ved@somaiya.edu', '1813105', 'KHUSHI', '', 'VED', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kadam.ms@somaiya.edu', '1814001', 'MAYURESH', '', 'KADAM', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kaitav.p@somaiya.edu', '1812099', 'KAITAV', '', 'PARIKH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kanksha.p@somaiya.edu', '1811104', 'KANKSHA', '', 'PANDEY', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('karan.gp@somaiya.edu', '1814096', 'KARAN', '', 'PAREKH', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('karan.nd@somaiya.edu', '1815074', 'KARAN', '', 'DEDHIA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('karan19@somaiya.edu', '1812054', 'KARAN', '', 'SHAH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kartik.ladwa@somaiya.edu', '1923008', 'KARTIK', '', 'LADWA', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kaushal.patil@somaiya.edu', '1813038', 'KAUSHAL', '', 'PATIL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kaushik.metha@somaiya.edu', '1811094', 'KAUSHIK', '', 'METHA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kaushik.naganath@somaiya.edu', '1812085', 'KAUSHIK', '', 'NAGANATH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kavish.bs@somaiya.edu', '1812055', 'KAVISH', '', 'SHAH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kedar.pednekar@somaiya.edu', '1925007', 'KEDAR', '', 'PEDNEKAR', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('keval.dk@somaiya.edu', '1814031', 'KEVAL', '', 'KARANI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('keval.rajpara@somaiya.edu', '1812050', 'KEVAL', '', 'RAJPARA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kevin26@somaiya.edu', '1811044', 'KEVIN', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('khatri.m@somaiya.edu', '1814032', 'MOHAMMEDMUDASSIR', '', 'KHATRI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('khushi.cs@somaiya.edu', '1815098', 'KHUSHI', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('khushil.shah@somaiya.edu', '1924008', 'KHUSHIL', '', 'SHAH', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kiran.gaykar@somaiya.edu', '1924012', 'KIRAN', '', 'GAYKAR', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kmb2@somaiya.edu', '1811005', 'KARAN', '', 'BHANUSHALI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('krish.chheda@somaiya.edu', '1923007', 'KRISH', '', 'CHHEDA', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('krish.parekh@somaiya.edu', '1811031', 'KRISH', '', 'PAREKH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('krisha.bm@somaiya.edu', '1814108', 'KRISHA', '', 'MEHTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('krisha.panchamia@somaiya.edu', '1811102', 'KRISHA', '', 'PANCHAMIA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('krishna.bhuva@somaiya.edu', '1925003', 'KRISHNA', '', 'BHUVA', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('krishna.sahani@somaiya.edu', '1814106', 'KRISHNA', '', 'SAHANI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('krunal.dattani@somaiya.edu', '1814071', 'KRUNAL', '', 'DATTANI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('krutik.c@somaiya.edu', '1815006', 'KRUTIK', '', 'CHAVDA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kshitij.prabhu@somaiya.edu', '1814101', 'KSHITIJ', '', 'PRABHU', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kulkarni.sr@somaiya.edu', '1814129', 'SHREYA', '', 'KULKARNI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kunal.khandait@somaiya.edu', '1815092', 'KUNAL', '', 'KHANDAIT', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kunal.sr@somaiya.edu', '1811036', 'KUNAL', '', 'RANE', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kunj.gala@somaiya.edu', '1814021', 'KUNJ', '', 'GALA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kushal.ds@somaiya.edu', '1815118', 'KUSHAL', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('kushal.sg@somaiya.edu', '1812025', 'KUSHAL', '', 'GUPTA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('labdhi.jain@somaiya.edu', '1814015', 'LABDHI', '', 'JAIN', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('lakshya.jain@somaiya.edu', '1812082', 'LAKSHYA', '', 'JAIN', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('leesa.dharod@somaiya.edu', '1814075', 'LEESA', '', 'DHAROD', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('m.baru@somaiya.edu', '1814005', 'MAHEK', '', 'BARU', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('m.merchant@somaiya.edu', '1812049', 'MUSTAFA', '', 'MERCHANT', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('m.nabeel@somaiya.edu', '1815039', 'NABEEL', '', 'M SHAFI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('m.shegaonkar@somaiya.edu', '1813120', 'MADHURA', '', 'SHEGAONKAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('maaheynoor.s@somaiya.edu', '1811110', 'MAAHEY NOOR', '', 'SAYANI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('madhura.i@somaiya.edu', '1812026', 'MADHURA', '', 'INAMDAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('makwana.d@somaiya.edu', '1815091', 'DARSHAN', '', 'MAKWANA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manan30@somaiya.edu', '1813050', 'MANAN', '', 'SHAH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manas.gandhi@somaiya.edu', '1811076', 'MANAS', '', 'GANDHI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manas.pange@somaiya.edu', '1922022', 'MANAS', '', 'PANGE', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manas.thakker@somaiya.edu', '1814092', 'MANAS', '', 'THAKKER', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manasi.nair@somaiya.edu', '1812087', 'MANASI', '', 'NAIR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manav.hirey@somaiya.edu', '1814082', 'MANAV', '', 'HIREY', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manav.malavia@somaiya.edu', '1814088', 'MANAV', '', 'MALAVIA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manav.punjabi@somaiya.edu', '1814049', 'MANAV', '', 'PUNJABI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manik.p@somaiya.edu', '1813032', 'MANIK', '', 'PAHALWAN', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manish.parihar@somaiya.edu', '1814097', 'MANISH', '', 'PARIHAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mann.daga@somaiya.edu', '1815008', 'MANN', '', 'DAGA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('manthan.dave@somaiya.edu', '1813118', 'MANTHAN', '', 'DAVE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('maru.jn@somaiya.edu', '1814089', 'JAY', '', 'MARU', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mayank.chowdhary@somaiya.edu', '1811010', 'MAYANK', '', 'CHOWDHARY', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mayank.latke@somaiya.edu', '1812040', 'MAYANK', '', 'LATKE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mayur.pawase@somaiya.edu', '1815046', 'MAYUR', '', 'PAWASE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('meet.panchal1@somaiya.edu', '1921009', 'MEET', '', 'PANCHAL', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('meet10@somaiya.edu', '1812078', 'MEET', '', 'DOSHI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('meghashyam.p@somaiya.edu', '1812045', 'MEGHASHYAM', '', 'PARAB', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mehta.da@somaiya.edu', '1811023', 'DHAIRYA', '', 'MEHTA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mehta.yh@somaiya.edu', '1811024', 'YASH', '', 'MEHTA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mehul.bharda@somaiya.edu', '1812011', 'MEHUL', '', 'BHARDA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mehul.nd@somaiya.edu', '1815077', 'MEHUL', '', 'DOSHI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mihir.dholakia@somaiya.edu', '1811074', 'MIHIR', '', 'DHOLAKIA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mihir.jadhav@somaiya.edu', '1921001', 'MIHIR', '', 'JADHAV', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mihir.mehta2@somaiya.edu', '1811093', 'MIHIR', '', 'MEHTA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mihir.w@somaiya.edu', '1815139', 'MIHIR', '', 'WADHWANA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('milind.deshpande@somaiya.edu', '1811029', 'MILIND', '', 'DESHPANDE', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('misha.ashar@somaiya.edu', '1813002', 'MISHA', '', 'ASHAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mistry.yr@somaiya.edu', '1812043', 'YASH', '', 'MISTRY', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mitalee.s@somaiya.edu', '1812105', 'MITALEE', '', 'SAWANT', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mitali.potnis@somaiya.edu', '1812048', 'MITALI', '', 'POTNIS', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mitanshu.g@somaiya.edu', '1924010', 'MITANSHU', '', 'GADA', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mitva.bhagat@somaiya.edu', '1812008', 'MITVA', '', 'BHAGAT', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mohammedammar.m@somaiya.edu', '1924006', 'MOHAMMED AMMAR', '', 'MAKKI', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('mohini.pp@somaiya.edu', '1814124', 'MOHINI', '', 'PANCHAL', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('munib.m@somaiya.edu', '1815034', 'MUNIB', '', 'MAHADIK', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('murali.singh@somaiya.edu', '1813131', 'MURALI', '', 'SINGH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('muskaan.n@somaiya.edu', '1814020', 'MUSKAAN', '', 'NANDU', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('n.namboodiri@somaiya.edu', '1811126', 'NIKHIL', '', 'NAMBOODIRI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('n.pal@somaiya.edu', '1811101', 'NISHANT', '', 'PAL', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nachiket.moghe@somaiya.edu', '1814039', 'NACHIKET', '', 'MOGHE', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nadir.sayani@somaiya.edu', '1813047', 'NADIR', '', 'SAYANI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nakul.c@somaiya.edu', '1813068', 'NAKUL', '', 'CHAMARIYA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('naman.as@somaiya.edu', '1811113', 'NAMAN', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('namrit.sheth@somaiya.edu', '1812112', 'NAMRIT', '', 'SHETH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nandini.dey@somaiya.edu', '1813071', 'NANDINI', '', 'DEY', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nandini.mahto@somaiya.edu', '1813073', 'NANDINI', '', 'MAHTO', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nandita.kadam@somaiya.edu', '1811084', 'NANDITA', '', 'KADAM', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('narayan.nagwani@somaiya.edu', '1815099', 'NARAYAN', '', 'NAGWANI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('navneet.p@somaiya.edu', '1813035', 'NAVNEET', '', 'PARAB', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('neel.desai@somaiya.edu', '1923010', 'NEEL', '', 'DESAI', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('neel.gami@somaiya.edu', '1815078', 'NEEL', '', 'GAMI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('neelay.j@somaiya.edu', '1814024', 'NEELAY', '', 'JAGANI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('neer.gada@somaiya.edu', '1815016', 'NEER', '', 'GADA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('neeraj.n@somaiya.edu', '1811027', 'NEERAJ', '', 'NAIK', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('neha.mane@somaiya.edu', '1812088', 'NEHA', '', 'MANE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nehal.cj@somaiya.edu', '1812027', 'NEHAL', '', 'JAIN', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nidhi.jajda@somaiya.edu', '1812028', 'NIDHI', '', 'JAJDA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nidhi.n@somaiya.edu', '1811028', 'NIDHI', '', 'NAIR', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('niha.ks@somaiya.edu', '1921006', 'NIHA', '', 'SHAIKH', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nihar.merchant@somaiya.edu', '1815038', 'NIHAR', '', 'MERCHANT', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nikhil.chaplot@somaiya.edu', '1815069', 'NIKHIL', '', 'CHAPLOT', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nikhil.jd@somaiya.edu', '1815073', 'NIKHIL', '', 'DARJI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nikhil19@somaiya.edu', '1814114', 'NIKHIL', '', 'SHARMA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nikunj.dg@somaiya.edu', '1813077', 'NIKUNJ', '', 'GOHIL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nilay.j@somaiya.edu', '1815028', 'NILAY', '', 'JUTHANI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nilay.sheth@somaiya.edu', '1811121', 'NILAY', '', 'SHETH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nimish.n@somaiya.edu', '1815109', 'NIMISH', '', 'NIMBALKAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nimish.v@somaiya.edu', '1811060', 'NIMISH', '', 'VITHALANI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nimisha.chauhan@somaiya.edu', '1922012', 'NIMISHA', '', 'CHAUHAN', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nimit.dave@somaiya.edu', '1815009', 'NIMIT', '', 'DAVE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ninad.devdas@somaiya.edu', '1923004', 'NINAD', '', 'DEVDAS', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nirav.reshamwala@somaiya.edu', '1815111', 'NIRAV', '', 'RESHAMWALA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nisarg.vaghasiya@somaiya.edu', '1813063', 'NISARG', '', 'VAGHASIYA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nishant.tolia@somaiya.edu', '1815134', 'NISHANT', '', 'TOLIA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nishavak.n@somaiya.edu', '1814040', 'NISHAVAK', '', 'NAIK', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nishi20@somaiya.edu', '1811045', 'NISHI', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nishit.rs@somaiya.edu', '1811114', 'NISHIT', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('nupoor.panchal@somaiya.edu', '1815041', 'NUPOOR', '', 'PANCHAL', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ojas.k@somaiya.edu', '1811064', 'OJAS', '', 'KULKARNI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ojasvi.naik@somaiya.edu', '1811098', 'OJASVI', '', 'NAIK', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('om.rawal@somaiya.edu', '1811037', 'OM', '', 'RAWAL', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('onkar.sanap@somaiya.edu', '1814035', 'ONKAR', '', 'SANAP', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('p.daphal@somaiya.edu', '1813009', 'PRATHAMESH', '', 'DAPHAL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('p.sonkusare@somaiya.edu', '1925006', 'PRIYANKA', '', 'SONKUSARE', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('panchal.jj@somaiya.edu', '1815105', 'JITESH', '', 'PANCHAL', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('panchal.jr@somaiya.edu', '1813108', 'JINAL', '', 'PANCHAL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pandey.sk@somaiya.edu', '1811030', 'SAKSHI', '', 'PANDEY', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pandya.kp@somaiya.edu', '1813034', 'KARAN', '', 'PANDYA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pankti.n@somaiya.edu', '1814045', 'PANKTI', '', 'NANAVATI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('param.ms@somaiya.edu', '1812056', 'PARAM', '', 'SHAH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('param.shendekar@somaiya.edu', '1814115', 'PARAM', '', 'SHENDEKAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('parav.s@somaiya.edu', '1815126', 'PARAV', '', 'SHINGADIYA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('parekh.kn@somaiya.edu', '1921008', 'KINJAL', '', 'PAREKH', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('parshva.ss@somaiya.edu', '1811046', 'PARSHVA', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('parth.gandani@somaiya.edu', '1812020', 'PARTH', '', 'GANDANI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('parth.jm@somaiya.edu', '1811066', 'PARTH', '', 'MEHTA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10');
-INSERT INTO `student` (`email_id`, `rollno`, `fname`, `mname`, `lname`, `year_of_admission`, `dept_id`, `current_sem`, `form_filled`, `adding_email_id`, `timestamp`) VALUES
-('parth.pd@somaiya.edu', '1815010', 'PARTH', '', 'DEDHIA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('parthiv.vs@somaiya.edu', '1925002', 'PARTHIV', '', 'SHAH', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('parva.b@somaiya.edu', '1814004', 'PARVA', '', 'BARBHAYA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('patel.vr@somaiya.edu', '1813037', 'VIVEK', '', 'PATEL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('patil.nv@somaiya.edu', '1814098', 'NEHA', '', 'PATIL', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pavitra.n@somaiya.edu', '1815103', 'PAVITRA', '', 'NAYAK', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('piyush.chavda@somaiya.edu', '1814010', 'PIYUSH', '', 'CHAVDA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('piyush.pandey@somaiya.edu', '1812096', 'PIYUSH', '', 'PANDEY', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pns1@somaiya.edu', '1811116', 'PARTH', '', 'N SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('poorva.kothari@somaiya.edu', '1812037', 'POORVA', '', 'KOTHARI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pps6@somaiya.edu', '1811115', 'PARTH', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('prabhat.g@somaiya.edu', '1925004', 'PRABHAT', '', 'GORANE', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pragun.m@somaiya.edu', '1813029', 'PRAGUN', '', 'MANTRI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('praharsh.v@somaiya.edu', '1813124', 'PRAHARSH', '', 'VANKAWALA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('prajwal.bandewar@somaiya.edu', '1815070', 'PRAJWAL', '', 'BANDEWAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('prajwal.bhagat@somaiya.edu', '1813066', 'PRAJWAL', '', 'BHAGAT', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('prajwal.gawde@somaiya.edu', '1813076', 'PRAJWAL', '', 'GAWDE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pranav.ahuja@somaiya.edu', '1811001', 'PRANAV', '', 'AHUJA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('prasad.borkar@somaiya.edu', '1815004', 'PRASAD', '', 'BORKAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('prateek.pandey@somaiya.edu', '1811105', 'PRATEEK', '', 'PANDEY', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('prathamesh.kodre@somaiya.edu', '1815032', 'PRATHAMESH', '', 'KODRE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('prathamesh.ma@somaiya.edu', '1812070', 'PRATHAMESH', '', 'ADARKAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pratik.swali@somaiya.edu', '1923003', 'PRATIK', '', 'SWALI', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('preet.porwal@somaiya.edu', '1814100', 'PREET', '', 'PORWAL', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('prina.gudhka@somaiya.edu', '1814080', 'PRINA', '', 'GUDHKA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('priyank.ps@somaiya.edu', '1812106', 'PRIYANK', '', 'SHAH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('priyanuj.b@somaiya.edu', '1813083', 'PRIYANUJ', '', 'BORDOLOI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('prutha.patel@somaiya.edu', '1812123', 'PRUTHA', '', 'PATEL', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pss5@somaiya.edu', '1815115', 'PRATHAMESH', '', 'SAWANT', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pss6@somaiya.edu', '1815056', 'PARTH', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('purav.js@somaiya.edu', '1813119', 'PURAV', '', 'SHAH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('purva.belgamwala@somaiya.edu', '1813065', 'PURVA', '', 'BELGAMWALA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('purvi.h@somaiya.edu', '1814023', 'PURVI', '', 'HARNIYA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pushti.r@somaiya.edu', '1813044', 'PUSHTI', '', 'RANPURA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('pvs1@somaiya.edu', '1811047', 'PARTH', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rachit.hm@somaiya.edu', '1814037', 'RACHIT', '', 'MEHTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rachit.j@somaiya.edu', '1812031', 'RACHIT', '', 'JUTHANI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rachit.jain@somaiya.edu', '1815085', 'RACHIT', '', 'JAIN', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rachit.singh@somaiya.edu', '1815062', 'RACHIT', '', 'SINGH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('raghvendra.s@somaiya.edu', '1813058', 'RAGHVENDRA', '', 'SHINDE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rahil.js@somaiya.edu', '1812108', 'RAHIL', '', 'SHAH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rahil.kanti@somaiya.edu', '1815089', 'RAHIL', '', 'KANTI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rahil.parikh@somaiya.edu', '1811032', 'RAHIL', '', 'PARIKH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('raj.sanghani@somaiya.edu', '1813045', 'RAJ', '', 'SANGHANI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('raj.shah8@somaiya.edu', '1811048', 'RAJ', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('raj.thakkar2@somaiya.edu', '1813061', 'RAJ', '', 'THAKKAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rajan.gaul@somaiya.edu', '1811078', 'RAJAN', '', 'GAUL', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rajat.c@somaiya.edu', '1814068', 'RAJAT', '', 'CHAUDHARI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rajat.shah@somaiya.edu', '1815057', 'RAJAT', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rajat.sharma@somaiya.edu', '1811120', 'RAJAT', '', 'SHARMA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rajiv.bane@somaiya.edu', '1814083', 'RAJIV', '', 'BANE', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rajneesh.j@somaiya.edu', '1815086', 'RAJNEESH', '', 'JAIN', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ramesh.krishnan@somaiya.edu', '1811063', 'RAMESH', '', 'KRISHNAN', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rasika.joshi@somaiya.edu', '1814086', 'RASIKA', '', 'JOSHI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rdd@somaiya.edu', '1813074', 'RAHUL', '', 'DOSHI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('revant.shah@somaiya.edu', '1813052', 'REVANT', '', 'SHAH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('revathi.p@somaiya.edu', '1921011', 'REVATHI', '', 'PRIYAN', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rhea.kamath@somaiya.edu', '1815088', 'RHEA', '', 'KAMATH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rhea23@somaiya.edu', '1813053', 'RHEA', '', 'SHAH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rhitik.g@somaiya.edu', '1713022', 'RHITIK', '', 'GANDHI', '2017', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rhutuja.t@somaiya.edu', '1814128', 'RHUTUJA', '', 'THAKUR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rhyme.risi@somaiya.edu', '1812103', 'RHYME', '', 'RISI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rhythm.js@somaiya.edu', '1815058', 'RHYTHM', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('riddhish.t@somaiya.edu', '1814058', 'RIDDHISH', '', 'THAKARE', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rishabh.cj@somaiya.edu', '1712018', 'RISHABH', '', 'JAIN', '2017', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rishabh.jogani@somaiya.edu', '1815026', 'RISHABH', '', 'JOGANI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ritik.dhame@somaiya.edu', '1812018', 'RITIK', '', 'DHAME', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ritik.ds@somaiya.edu', '1814050', 'RITIK', '', 'SHAH', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ritik.mody@somaiya.edu', '1811097', 'RITIK', '', 'MODY', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ritwik.m@somaiya.edu', '1813116', 'RITWIK', '', 'MANDAL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('riya.joshi@somaiya.edu', '1814028', 'RIYA', '', 'JOSHI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('riya.tasgaonkar@somaiya.edu', '1811122', 'RIYA', '', 'TASGAONKAR', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rnd1@somaiya.edu', '1811075', 'RUSHABH', '', 'DOSHI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rohan.shende@somaiya.edu', '1815122', 'ROHAN', '', 'SHENDE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rohit.padia@somaiya.edu', '1812052', 'ROHIT', '', 'PADIA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rohit.patil1@somaiya.edu', '1815108', 'ROHIT', '', 'PATIL', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rohit.ss@somaiya.edu', '1812083', 'ROHIT', '', 'SINGH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rohit09@somaiya.edu', '1813042', 'ROHIT', '', 'SHAH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('roma.k@somaiya.edu', '1922009', 'ROMA', '', 'KESARWANI', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('romil.us@somaiya.edu', '1714058', 'ROMIL', '', 'SONI', '2017', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ronak.desai@somaiya.edu', '1814074', 'RONAK', '', 'DESAI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ronak.dg@somaiya.edu', '1811011', 'RONAK', '', 'GALA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ronak.singh@somaiya.edu', '1813126', 'RONAK', '', 'SINGH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('roosheet.m@somaiya.edu', '1815036', 'ROOSHEET', '', 'MEHTA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ruchi.manjalkar@somaiya.edu', '1812076', 'RUCHI', '', 'MANJALKAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ruchira.j@somaiya.edu', '1813088', 'RUCHIRA', '', 'JOSHI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rudra.jog@somaiya.edu', '1815096', 'RUDRA', '', 'JOG', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rudresh.r@somaiya.edu', '1814104', 'RUDRESH', '', 'RAVAL', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rugved.bongale@somaiya.edu', '1811006', 'RUGVED', '', 'BONGALE', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rugved.j@somaiya.edu', '1815023', 'RUGVED', '', 'JABADE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rushikesh.arande@somaiya.edu', '1815002', 'RUSHIKESH', '', 'ARANDE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rushil.popat@somaiya.edu', '1815049', 'RUSHIL', '', 'POPAT', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rustom.m@somaiya.edu', '1813027', 'RUSTOM', '', 'MAKOOJINA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rutik.gandhi@somaiya.edu', '1815080', 'RUTIK', '', 'GANDHI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rutvikkumar.p@somaiya.edu', '1925011', 'RUTVIKKUMAR', '', 'PANCHAL', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('rvs1@somaiya.edu', '1922002', 'RAJ', '', 'SHAH', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('s.baradkar@somaiya.edu', '1812007', 'SHARVARI', '', 'BARADKAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('s.srinivasan@somaiya.edu', '1812117', 'SUDARSHAN', '', 'SRINIVASAN', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('s.suraliya@somaiya.edu', '1812061', 'SHREYANS', '', 'SURALIYA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('saarah.khan@somaiya.edu', '1811088', 'SAARAH', '', 'KHAN', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sagar.kamat@somaiya.edu', '1814030', 'SAGAR', '', 'KAMAT', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sagar.nn@somaiya.edu', '1815013', 'SAGAR', '', 'NAIK', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sakshi.shah4@somaiya.edu', '1922003', 'SAKSHI', '', 'SHAH', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('salil.kulkarni@somaiya.edu', '1813026', 'SALIL', '', 'KULKARNI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sameeksha.p@somaiya.edu', '1815048', 'SAMEEKSHA', '', 'POOJARY', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('samyak.z@somaiya.edu', '1813127', 'SAMYAK', '', 'ZANZARI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sanchi.desai@somaiya.edu', '1815012', 'SANCHI', '', 'DESAI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sanika.bagwe@somaiya.edu', '1811065', 'SANIKA', '', 'BAGWE', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sankalp.jain@somaiya.edu', '1813084', 'SANKALP', '', 'JAIN', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sanket.dp@somaiya.edu', '1813039', 'SANKET', '', 'PATIL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sanmit.sahu@somaiya.edu', '1811038', 'SANMIT', '', 'SAHU', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sanya.shah@somaiya.edu', '1812110', 'SANYA', '', 'SHAH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sanyam.gandhi@somaiya.edu', '1814078', 'SANYAM', '', 'GANDHI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sanyam.gudhka@somaiya.edu', '1812081', 'SANYAM', '', 'GUDHKA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sanyam.savla@somaiya.edu', '1811040', 'SANYAM', '', 'SAVLA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sap3@somaiya.edu', '1922020', 'SAKSHI', '', 'PANDEY', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sarth.m@somaiya.edu', '1815097', 'SARTH', '', 'MIRASHI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sarthak.ms@somaiya.edu', '1815059', 'SARTHAK', '', 'SHAH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sarthak.vora@somaiya.edu', '1815066', 'SARTHAK', '', 'VORA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sarvesh.bangad@somaiya.edu', '1811124', 'SARVESH', '', 'BANGAD', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('satra.y@somaiya.edu', '1811109', 'YASH', '', 'SATRA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('satyam.pandey@somaiya.edu', '1812120', 'SATYAM', '', 'PANDEY', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('saud.shaikh@somaiya.edu', '1815119', 'SAUD', '', 'SHAIKH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('saumya.gala@somaiya.edu', '1712015', 'SAUMYA', '', 'GALA', '2017', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('saurabh.nambiar@somaiya.edu', '1811099', 'SAURABH', '', 'NAMBIAR', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('saurabh.shetty@somaiya.edu', '1811055', 'SAURABH', '', 'SHETTY', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('saurav.sarkar@somaiya.edu', '1815113', 'SAURAV', '', 'SARKAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('saurav.yj@somaiya.edu', '1811019', 'SAURAV', '', 'JOSHI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('savri.gandhi@somaiya.edu', '1815114', 'SAVRI', '', 'GANDHI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sejal.chordiya@somaiya.edu', '1813008', 'SEJAL', '', 'CHORDIYA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shabdarali.m@somaiya.edu', '1813101', 'SHABDARALI', '', 'MAREDIYA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shah.di@somaiya.edu', '1922014', 'DHARMIL', '', 'SHAH', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shah.ts@somaiya.edu', '1813054', 'TIRTH', '', 'SHAH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shantanu.godbole@somaiya.edu', '1811079', 'SHANTANU', '', 'GODBOLE', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sharath.p@somaiya.edu', '1813111', 'SHARATH', '', 'PUTHIYAKUNNAN', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shatayu.m@somaiya.edu', '1815095', 'SHATAYU', '', 'MEHTA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shefali24@somaiya.edu', '1921007', 'SHEFALI', '', 'PRAJAPATI', '2019', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shelar.sa@somaiya.edu', '1811053', 'SAKSHI', '', 'SHELAR', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shelke.aa@somaiya.edu', '1811103', 'ANKITA', '', 'SHELKE', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sheth.jb@somaiya.edu', '1812002', 'JENIL', '', 'SHETH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sheth.mj@somaiya.edu', '1812060', 'MIHIR', '', 'SHETH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shetty.rr@somaiya.edu', '1815060', 'RAHUL', '', 'SHETTY', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shetye.y@somaiya.edu', '1815061', 'YASH', '', 'SHETYE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shibani.p@somaiya.edu', '1922021', 'SHIBANI', '', 'PRADHAN', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shikta.das@somaiya.edu', '1813011', 'SHIKTA', '', 'DAS', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shivam.awasthi@somaiya.edu', '1813128', 'SHIVAM', '', 'AWASTHI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shivam.bansal@somaiya.edu', '1813004', 'SHIVAM', '', 'BANSAL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shivani.kaul@somaiya.edu', '1811086', 'SHIVANI', '', 'KAUL', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shravani.d@somaiya.edu', '1812077', 'SHRAVANI', '', 'DHOTE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shrey.bs@somaiya.edu', '1812113', 'SHREY', '', 'SHETH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shreya.hk@somaiya.edu', '1813096', 'SHREYA', '', 'KULKARNI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shreya.laheri@somaiya.edu', '1922006', 'SHREYA', '', 'LAHERI', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shreya.pawar@somaiya.edu', '1923006', 'SHREYA', '', 'PAWAR', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shreya.ughade@somaiya.edu', '1814116', 'SHREYA', '', 'UGHADE', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shreyas.mm@somaiya.edu', '1811049', 'SHREYAS', '', 'MORE', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shreyas.parkar@somaiya.edu', '1812101', 'SHREYAS', '', 'PARKAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shreyas.sj@somaiya.edu', '1922018', 'SHREYAS', '', 'JOSHI', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shreyasi.h@somaiya.edu', '1813080', 'SHREYASI', '', 'HATWALNE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shruti.gosain@somaiya.edu', '1814079', 'SHRUTI', '', 'GOSAIN', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shruti.kamat@somaiya.edu', '1922019', 'SHRUTI', '', 'KAMAT', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shubh.as@somaiya.edu', '1811050', 'SHUBH', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shubh.d@somaiya.edu', '1813040', 'SHUBH', '', 'DEDHIA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shubh.mody@somaiya.edu', '1813031', 'SHUBH', '', 'MODY', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shubh.shetiya@somaiya.edu', '1815140', 'SHUBH', '', 'SHETIYA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shubham.bhakuni@somaiya.edu', '1814006', 'SHUBHAM', '', 'BHAKUNI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shubham.dj@somaiya.edu', '1923005', 'SHUBHAM', '', 'JADHAV', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shubham.mj@somaiya.edu', '1815027', 'SHUBHAM', '', 'JOSHI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('shubhankar.r@somaiya.edu', '1815112', 'SHUBHANKAR', '', 'RISWADKAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('siddhant.l@somaiya.edu', '1815093', 'SIDDHANT', '', 'LAKKAM', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('siddhant.shaha@somaiya.edu', '1814112', 'SIDDHANT', '', 'SHAHA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('siddhesh.mahajan@somaiya.edu', '1815035', 'SIDDHESH', '', 'MAHAJAN', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('siddhi.am@somaiya.edu', '1813028', 'SIDDHI', '', 'MALI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('siddhi.nagvekar@somaiya.edu', '1815040', 'SIDDHI', '', 'NAGVEKAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('siddhi.rajwatkar@somaiya.edu', '1925005', 'SIDDHI', '', 'RAJWATKAR', '2019', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sidhant.malkar@somaiya.edu', '1812041', 'SIDHANT', '', 'MALKAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('simran.lopes@somaiya.edu', '1813099', 'SIMRAN', '', 'LOPES', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('smit.bb@somaiya.edu', '1811070', 'SMIT', '', 'BHATT', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('smit.ds@somaiya.edu', '1811051', 'SMIT', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('smit.nm@somaiya.edu', '1813104', 'SMIT', '', 'MEHTA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('smit.shet@somaiya.edu', '1815123', 'SMIT', '', 'SHET', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('smita.nayak@somaiya.edu', '1812107', 'SMITA', '', 'NAYAK', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('soham.mehta@somaiya.edu', '1815043', 'SOHAM', '', 'MEHTA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('soumya.parekh@somaiya.edu', '1811106', 'SOUMYA', '', 'PAREKH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sounak.das@somaiya.edu', '1814070', 'SOUNAK', '', 'DAS', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sourabh.bujawade@somaiya.edu', '1814009', 'SOURABH', '', 'BUJAWADE', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('srg1@somaiya.edu', '1815018', 'SHUBHAM', '', 'GHADIGAONKAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ssm2@somaiya.edu', '1811095', 'SIDDHARTH', '', 'MISHRA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('student2@somaiya.edu', '1711007', 'student2', 'student2', 'student2', '	2017', 1, 5, 0, 'IC@somaiya.edu', '2020-05-09 20:05:50'),
-('student3@somaiya.edu', '1712003', 'Student3', 'student3', 'student3', '2017', 2, 4, 0, 'IC@somaiya.edu', '2020-05-09 20:05:50'),
-('student@somaiya.edu', '1711006', 'student', 'student', 'student', '2017', 1, 3, 0, 'IC@somaiya.edu', '2020-05-09 20:05:50'),
-('sudarshan.r@somaiya.edu', '1813006', 'SUDARSHAN', '', 'RAJENDRAN', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sudhir.bindu@somaiya.edu', '1811059', 'ABHISHEK', '', 'BINDU', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sudiksha.m@somaiya.edu', '1811096', 'SUDIKSHA', '', 'MISHRA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sukhada.v@somaiya.edu', '1814119', 'SUKHADA', '', 'VIRKAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sukrut.kolhe@somaiya.edu', '1812015', 'SUKRUT', '', 'KOLHE', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sukruti.a@somaiya.edu', '1812009', 'SUKRUTI', '', 'AMDEKAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sumedh.soman@somaiya.edu', '1815063', 'SUMEDH', '', 'SOMAN', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sunil.ck@somaiya.edu', '1813098', 'CHINMAY', '', 'KUMAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('suparshwa.p@somaiya.edu', '1813103', 'SUPARSHWA', '', 'PATIL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sushant.bansal@somaiya.edu', '1812006', 'SUSHANT', '', 'BANSAL', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('sushrut.b@somaiya.edu', '1715071', 'SUSHRUT', '', 'BAPORIKAR', '2017', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('swarangee.m@somaiya.edu', '1812125', 'SWARANGEE', '', 'MALHARI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('swetha.c@somaiya.edu', '1813007', 'SWETHA', '', 'CHILVERI', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('syed.suhaib@somaiya.edu', '1814059', 'SYED', '', 'HUSSAIN', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('taher.a@somaiya.edu', '1812001', 'TAHER', '', 'AHMEDABADWALA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('taher.d@somaiya.edu', '1815141', 'TAHER', '', 'DHORAJIWALA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('talha.c@somaiya.edu', '1811007', 'TALHA', '', 'CHAFEKAR', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanay.ns@somaiya.edu', '1812116', 'TANAY', '', 'SHAH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanay.parekh@somaiya.edu', '1812098', 'TANAY', '', 'PAREKH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanish.chube@somaiya.edu', '1813070', 'TANISH', '', 'CHUBE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanisha.ashar@somaiya.edu', '1814065', 'TANISHA', '', 'ASHAR', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanmay.armal@somaiya.edu', '1814099', 'TANMAY', '', 'ARMAL', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanmay.gorad@somaiya.edu', '1922008', 'TANMAY', '', 'GORAD', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanmay.shekhar@somaiya.edu', '1813020', 'TANMAY', '', 'SHEKHAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanshik.doshi@somaiya.edu', '1923002', 'TANSHIK', '', 'DOSHI', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanuj.jain@somaiya.edu', '1811017', 'TANUJ', '', 'JAIN', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanvi.bs@somaiya.edu', '1812057', 'TANVI', '', 'SHAH', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tanvi.lakhani@somaiya.edu', '1812039', 'TANVI', '', 'LAKHANI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tap@somaiya.edu', '1812091', 'TANMAY', '', 'PAWAR', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tarush.r@somaiya.edu', '1811035', 'TARUSH', '', 'RAJPUT', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tejal.gaykar@somaiya.edu', '1923012', 'TEJAL', '', 'GAYKAR', '2019', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tejas.jain@somaiya.edu', '1815025', 'TEJAS', '', 'JAIN', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tejas.khanolkar@somaiya.edu', '1811089', 'TEJAS', '', 'KHANOLKAR', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tejas.limbachiya@somaiya.edu', '1813015', 'TEJAS', '', 'LIMBACHIYA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tejas.np@somaiya.edu', '1815100', 'TEJAS', '', 'PATIL', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tejas.rathod@somaiya.edu', '1813113', 'TEJAS', '', 'RATHOD', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tirth.hs@somaiya.edu', '1811127', 'TIRTH', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tirth.ps@somaiya.edu', '1813055', 'TIRTH', '', 'SHAH', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tirth.thaker@somaiya.edu', '1814061', 'TIRTH', '', 'THAKER', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('toshith.m@somaiya.edu', '1812089', 'TOSHITH', '', 'MANGLANI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('tushar.bapecha@somaiya.edu', '1811003', 'TUSHAR', '', 'BAPECHA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('twinkle.r@somaiya.edu', '1814103', 'TWINKLE', '', 'RATHOD', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('udit.damare@somaiya.edu', '1815072', 'UDIT', '', 'DAMARE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('umair.kazi@somaiya.edu', '1815090', 'UMAIR', '', 'KAZI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('upendra.b@somaiya.edu', '1812069', 'UPENDRA', '', 'BHANUSHALI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('urmil.c@somaiya.edu', '1811008', 'URMIL', '', 'CHANDARANA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('urvi.bheda@somaiya.edu', '1811068', 'URVI', '', 'BHEDA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('utsav.parekh@somaiya.edu', '1924002', 'UTSAV', '', 'PAREKH', '2019', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('v.sunderraman@somaiya.edu', '1811125', 'VIGNESH', '', 'SUNDER RAMAN', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vaibhav.katkam@somaiya.edu', '1815031', 'VAIBHAV', '', 'KATKAM', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vaibhav.parekh@somaiya.edu', '1815042', 'VAIBHAV', '', 'PAREKH', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vaibhavi.kundle@somaiya.edu', '1814127', 'VAIBHAVI', '', 'KUNDLE', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vandan.k@somaiya.edu', '1813092', 'VANDAN', '', 'KHAMBHATA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vartika.g@somaiya.edu', '1811081', 'VARTIKA', '', 'GUPTA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('varun.bj@somaiya.edu', '1813043', 'VARUN', '', 'JAIN', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('varun.dabi@somaiya.edu', '1815071', 'VARUN', '', 'DABI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('varun.pandey@somaiya.edu', '1814095', 'VARUN', '', 'PANDEY', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('varun12@somaiya.edu', '1815121', 'VARUN', '', 'SHARMA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vatsal.kapadia@somaiya.edu', '1812032', 'VATSAL', '', 'KAPADIA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vatsal.pathak@somaiya.edu', '1811033', 'VATSAL', '', 'PATHAK', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vatsal12@somaiya.edu', '1811052', 'VATSAL', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vedant.chandra@somaiya.edu', '1812022', 'VEDANT', '', 'CHANDRA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vedant.khatod@somaiya.edu', '1813093', 'VEDANT', '', 'KHATOD', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vedant.konde@somaiya.edu', '1813129', 'VEDANT', '', 'KONDE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vedatma.k@somaiya.edu', '1812121', 'VEDATMA', '', 'KRITI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vidhi.gohel@somaiya.edu', '1812019', 'VIDHI', '', 'GOHEL', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vidhi.sejpal@somaiya.edu', '1813048', 'VIDHI', '', 'SEJPAL', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vighnesh.naik@somaiya.edu', '1814041', 'VIGHNESH', '', 'NAIK', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vijayram.p@somaiya.edu', '1812073', 'VIJAYRAM', '', 'PATEL', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vikas.rg@somaiya.edu', '1814022', 'VIKAS', '', 'GUPTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vimal.e3@somaiya.edu', '1813046', 'VIMAL', '', 'Sardhara', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vineet.gadiyar@somaiya.edu', '1813075', 'VINEET', '', 'GADIYAR', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vineeta.b@somaiya.edu', '1814066', 'VINEETA', '', 'BHUJLE', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vinit.mundra@somaiya.edu', '1811026', 'VINIT', '', 'MUNDRA', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vipul.bagal@somaiya.edu', '1814094', 'VIPUL', '', 'BAGAL', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vipul.dube@somaiya.edu', '1813089', 'VIPUL', '', 'DUBE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('virag.j@somaiya.edu', '1814026', 'VIRAG', '', 'JAIN', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('viraj.jedhe@somaiya.edu', '1813085', 'VIRAJ', '', 'JEDHE', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('viraj.joshi@somaiya.edu', '1814034', 'VIRAJ', '', 'JOSHI', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('viraj.nd@somaiya.edu', '1811072', 'VIRAJ', '', 'DOSHI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('viraj.np@somaiya.edu', '1814047', 'VIRAJ', '', 'PATIL', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('viraj06@somaiya.edu', '1814093', 'VIRAJ', '', 'MEHTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vishal.salgond@somaiya.edu', '1814107', 'VISHAL', '', 'SALGOND', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vishant.m@somaiya.edu', '1814038', 'VISHANT', '', 'MEHTA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vistasp.edulji@somaiya.edu', '1815015', 'VISTASP', '', 'EDULJI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vpb@somaiya.edu', '1922001', 'VEDANT', '', 'BHANUSHALI', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vruddhi.ms@somaiya.edu', '1811117', 'VRUDDHI', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vruksha.j@somaiya.edu', '1812030', 'VRUKSHA', '', 'JOSHI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vrushabh.rg@somaiya.edu', '1813016', 'VRUSHABH', '', 'GADA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('vrutik.shah@somaiya.edu', '1814056', 'VRUTIK', '', 'SHAH', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yash.chandarana@somaiya.edu', '1815094', 'YASH', '', 'CHANDARANA', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yash.deorah@somaiya.edu', '1814073', 'YASH', '', 'DEORAH', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yash.kalyani@somaiya.edu', '1815030', 'YASH', '', 'KALYANI', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yash.kothiya@somaiya.edu', '1813095', 'YASH', '', 'KOTHIYA', '2018', 3, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yash.tandon@somaiya.edu', '1811058', 'YASH', '', 'TANDON', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yash.telange@somaiya.edu', '1815130', 'YASH', '', 'TELANGE', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yash.thadeshwar@somaiya.edu', '1815131', 'YASH', '', 'THADESHWAR', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yash.tulsyan@somaiya.edu', '1812119', 'YASH', '', 'TULSYAN', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yashpal.m@somaiya.edu', '1812044', 'YASHPAL', '', 'MOMAYA', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yashvi.pv@somaiya.edu', '1814121', 'YASHVI', '', 'VORA', '2018', 4, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('ysb1@somaiya.edu', '1812010', 'YASH', '', 'BHANUSHALI', '2018', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yug.shah@somaiya.edu', '1811077', 'YUG', '', 'SHAH', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yukta.pathak@somaiya.edu', '1815045', 'YUKTA', '', 'PATHAK', '2018', 5, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('yusha.sharif@somaiya.edu', '1811119', 'YUSHA', '', 'SHARIF', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('zalak.b@somaiya.edu', '1811039', 'ZALAK', '', 'BHOJANI', '2018', 1, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10'),
-('zeal.mehta@somaiya.edu', '1922005', 'ZEAL', '', 'MEHTA', '2019', 2, 4, 0, 'IC@somaiya.edu', '2020-05-31 18:23:10');
+INSERT INTO `student` (`email_id`, `rollno`, `fname`, `mname`, `lname`, `year_of_admission`, `dept_id`, `program`, `current_sem`, `form_filled`, `adding_email_id`, `timestamp`) VALUES
+('student_100@somaiya.edu', '200', 'student_100', 'student_middle_100', 'student_last100', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_101@somaiya.edu', '201', 'student_101', 'student_middle_101', 'student_last101', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_102@somaiya.edu', '202', 'student_102', 'student_middle_102', 'student_last102', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_103@somaiya.edu', '203', 'student_103', 'student_middle_103', 'student_last103', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_104@somaiya.edu', '204', 'student_104', 'student_middle_104', 'student_last104', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_105@somaiya.edu', '205', 'student_105', 'student_middle_105', 'student_last105', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_106@somaiya.edu', '206', 'student_106', 'student_middle_106', 'student_last106', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_107@somaiya.edu', '207', 'student_107', 'student_middle_107', 'student_last107', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_108@somaiya.edu', '208', 'student_108', 'student_middle_108', 'student_last108', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_109@somaiya.edu', '209', 'student_109', 'student_middle_109', 'student_last109', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_10@somaiya.edu', '110', 'student_10', 'student_middle_10', 'student_last10', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_110@somaiya.edu', '210', 'student_110', 'student_middle_110', 'student_last110', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_111@somaiya.edu', '211', 'student_111', 'student_middle_111', 'student_last111', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_112@somaiya.edu', '212', 'student_112', 'student_middle_112', 'student_last112', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_113@somaiya.edu', '213', 'student_113', 'student_middle_113', 'student_last113', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_114@somaiya.edu', '214', 'student_114', 'student_middle_114', 'student_last114', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_115@somaiya.edu', '215', 'student_115', 'student_middle_115', 'student_last115', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_116@somaiya.edu', '216', 'student_116', 'student_middle_116', 'student_last116', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_117@somaiya.edu', '217', 'student_117', 'student_middle_117', 'student_last117', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_118@somaiya.edu', '218', 'student_118', 'student_middle_118', 'student_last118', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_119@somaiya.edu', '219', 'student_119', 'student_middle_119', 'student_last119', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_11@somaiya.edu', '111', 'student_11', 'student_middle_11', 'student_last11', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_120@somaiya.edu', '220', 'student_120', 'student_middle_120', 'student_last120', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_121@somaiya.edu', '221', 'student_121', 'student_middle_121', 'student_last121', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_122@somaiya.edu', '222', 'student_122', 'student_middle_122', 'student_last122', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_123@somaiya.edu', '223', 'student_123', 'student_middle_123', 'student_last123', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_124@somaiya.edu', '224', 'student_124', 'student_middle_124', 'student_last124', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_125@somaiya.edu', '225', 'student_125', 'student_middle_125', 'student_last125', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_126@somaiya.edu', '226', 'student_126', 'student_middle_126', 'student_last126', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_127@somaiya.edu', '227', 'student_127', 'student_middle_127', 'student_last127', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_128@somaiya.edu', '228', 'student_128', 'student_middle_128', 'student_last128', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_129@somaiya.edu', '229', 'student_129', 'student_middle_129', 'student_last129', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_12@somaiya.edu', '112', 'student_12', 'student_middle_12', 'student_last12', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_130@somaiya.edu', '230', 'student_130', 'student_middle_130', 'student_last130', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_131@somaiya.edu', '231', 'student_131', 'student_middle_131', 'student_last131', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_132@somaiya.edu', '232', 'student_132', 'student_middle_132', 'student_last132', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_133@somaiya.edu', '233', 'student_133', 'student_middle_133', 'student_last133', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_134@somaiya.edu', '234', 'student_134', 'student_middle_134', 'student_last134', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_135@somaiya.edu', '235', 'student_135', 'student_middle_135', 'student_last135', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_136@somaiya.edu', '236', 'student_136', 'student_middle_136', 'student_last136', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_137@somaiya.edu', '237', 'student_137', 'student_middle_137', 'student_last137', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_138@somaiya.edu', '238', 'student_138', 'student_middle_138', 'student_last138', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_139@somaiya.edu', '239', 'student_139', 'student_middle_139', 'student_last139', '2019', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_13@somaiya.edu', '113', 'student_13', 'student_middle_13', 'student_last13', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_140@somaiya.edu', '240', 'student_140', 'student_middle_140', 'student_last140', '2017', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_141@somaiya.edu', '241', 'student_141', 'student_middle_141', 'student_last141', '2017', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_142@somaiya.edu', '242', 'student_142', 'student_middle_142', 'student_last142', '2017', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_143@somaiya.edu', '243', 'student_143', 'student_middle_143', 'student_last143', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_144@somaiya.edu', '244', 'student_144', 'student_middle_144', 'student_last144', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_145@somaiya.edu', '245', 'student_145', 'student_middle_145', 'student_last145', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_146@somaiya.edu', '246', 'student_146', 'student_middle_146', 'student_last146', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_147@somaiya.edu', '247', 'student_147', 'student_middle_147', 'student_last147', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_148@somaiya.edu', '248', 'student_148', 'student_middle_148', 'student_last148', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_149@somaiya.edu', '249', 'student_149', 'student_middle_149', 'student_last149', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_14@somaiya.edu', '114', 'student_14', 'student_middle_14', 'student_last14', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_150@somaiya.edu', '250', 'student_150', 'student_middle_150', 'student_last150', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_151@somaiya.edu', '251', 'student_151', 'student_middle_151', 'student_last151', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_152@somaiya.edu', '252', 'student_152', 'student_middle_152', 'student_last152', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_153@somaiya.edu', '253', 'student_153', 'student_middle_153', 'student_last153', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_154@somaiya.edu', '254', 'student_154', 'student_middle_154', 'student_last154', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_155@somaiya.edu', '255', 'student_155', 'student_middle_155', 'student_last155', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_156@somaiya.edu', '256', 'student_156', 'student_middle_156', 'student_last156', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_157@somaiya.edu', '257', 'student_157', 'student_middle_157', 'student_last157', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_158@somaiya.edu', '258', 'student_158', 'student_middle_158', 'student_last158', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_159@somaiya.edu', '259', 'student_159', 'student_middle_159', 'student_last159', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_15@somaiya.edu', '115', 'student_15', 'student_middle_15', 'student_last15', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_160@somaiya.edu', '260', 'student_160', 'student_middle_160', 'student_last160', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_161@somaiya.edu', '261', 'student_161', 'student_middle_161', 'student_last161', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_162@somaiya.edu', '262', 'student_162', 'student_middle_162', 'student_last162', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_163@somaiya.edu', '263', 'student_163', 'student_middle_163', 'student_last163', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_164@somaiya.edu', '264', 'student_164', 'student_middle_164', 'student_last164', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_165@somaiya.edu', '265', 'student_165', 'student_middle_165', 'student_last165', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_166@somaiya.edu', '266', 'student_166', 'student_middle_166', 'student_last166', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_167@somaiya.edu', '267', 'student_167', 'student_middle_167', 'student_last167', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_168@somaiya.edu', '268', 'student_168', 'student_middle_168', 'student_last168', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_169@somaiya.edu', '269', 'student_169', 'student_middle_169', 'student_last169', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_16@somaiya.edu', '116', 'student_16', 'student_middle_16', 'student_last16', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_170@somaiya.edu', '270', 'student_170', 'student_middle_170', 'student_last170', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_171@somaiya.edu', '271', 'student_171', 'student_middle_171', 'student_last171', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_172@somaiya.edu', '272', 'student_172', 'student_middle_172', 'student_last172', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_173@somaiya.edu', '273', 'student_173', 'student_middle_173', 'student_last173', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_174@somaiya.edu', '274', 'student_174', 'student_middle_174', 'student_last174', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_175@somaiya.edu', '275', 'student_175', 'student_middle_175', 'student_last175', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_176@somaiya.edu', '276', 'student_176', 'student_middle_176', 'student_last176', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_177@somaiya.edu', '277', 'student_177', 'student_middle_177', 'student_last177', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_178@somaiya.edu', '278', 'student_178', 'student_middle_178', 'student_last178', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_179@somaiya.edu', '279', 'student_179', 'student_middle_179', 'student_last179', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_17@somaiya.edu', '117', 'student_17', 'student_middle_17', 'student_last17', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_180@somaiya.edu', '280', 'student_180', 'student_middle_180', 'student_last180', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_181@somaiya.edu', '281', 'student_181', 'student_middle_181', 'student_last181', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_182@somaiya.edu', '282', 'student_182', 'student_middle_182', 'student_last182', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_183@somaiya.edu', '283', 'student_183', 'student_middle_183', 'student_last183', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_184@somaiya.edu', '284', 'student_184', 'student_middle_184', 'student_last184', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_185@somaiya.edu', '285', 'student_185', 'student_middle_185', 'student_last185', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_186@somaiya.edu', '286', 'student_186', 'student_middle_186', 'student_last186', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_187@somaiya.edu', '287', 'student_187', 'student_middle_187', 'student_last187', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_188@somaiya.edu', '288', 'student_188', 'student_middle_188', 'student_last188', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_189@somaiya.edu', '289', 'student_189', 'student_middle_189', 'student_last189', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_18@somaiya.edu', '118', 'student_18', 'student_middle_18', 'student_last18', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_190@somaiya.edu', '290', 'student_190', 'student_middle_190', 'student_last190', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_191@somaiya.edu', '291', 'student_191', 'student_middle_191', 'student_last191', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_192@somaiya.edu', '292', 'student_192', 'student_middle_192', 'student_last192', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_193@somaiya.edu', '293', 'student_193', 'student_middle_193', 'student_last193', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_194@somaiya.edu', '294', 'student_194', 'student_middle_194', 'student_last194', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_195@somaiya.edu', '295', 'student_195', 'student_middle_195', 'student_last195', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_196@somaiya.edu', '296', 'student_196', 'student_middle_196', 'student_last196', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_197@somaiya.edu', '297', 'student_197', 'student_middle_197', 'student_last197', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_198@somaiya.edu', '298', 'student_198', 'student_middle_198', 'student_last198', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_199@somaiya.edu', '299', 'student_199', 'student_middle_199', 'student_last199', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_19@somaiya.edu', '119', 'student_19', 'student_middle_19', 'student_last19', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_1@somaiya.edu', '101', 'student_1', 'student_middle_1', 'student_last1', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_200@somaiya.edu', '300', 'student_200', 'student_middle_200', 'student_last200', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_201@somaiya.edu', '301', 'student_201', 'student_middle_201', 'student_last201', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_202@somaiya.edu', '302', 'student_202', 'student_middle_202', 'student_last202', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_203@somaiya.edu', '303', 'student_203', 'student_middle_203', 'student_last203', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_204@somaiya.edu', '304', 'student_204', 'student_middle_204', 'student_last204', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_205@somaiya.edu', '305', 'student_205', 'student_middle_205', 'student_last205', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_206@somaiya.edu', '306', 'student_206', 'student_middle_206', 'student_last206', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_207@somaiya.edu', '307', 'student_207', 'student_middle_207', 'student_last207', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_208@somaiya.edu', '308', 'student_208', 'student_middle_208', 'student_last208', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_209@somaiya.edu', '309', 'student_209', 'student_middle_209', 'student_last209', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_20@somaiya.edu', '120', 'student_20', 'student_middle_20', 'student_last20', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_210@somaiya.edu', '310', 'student_210', 'student_middle_210', 'student_last210', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_211@somaiya.edu', '311', 'student_211', 'student_middle_211', 'student_last211', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_212@somaiya.edu', '312', 'student_212', 'student_middle_212', 'student_last212', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_213@somaiya.edu', '313', 'student_213', 'student_middle_213', 'student_last213', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_214@somaiya.edu', '314', 'student_214', 'student_middle_214', 'student_last214', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_215@somaiya.edu', '315', 'student_215', 'student_middle_215', 'student_last215', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_216@somaiya.edu', '316', 'student_216', 'student_middle_216', 'student_last216', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_217@somaiya.edu', '317', 'student_217', 'student_middle_217', 'student_last217', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_218@somaiya.edu', '318', 'student_218', 'student_middle_218', 'student_last218', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_219@somaiya.edu', '319', 'student_219', 'student_middle_219', 'student_last219', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_21@somaiya.edu', '121', 'student_21', 'student_middle_21', 'student_last21', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_220@somaiya.edu', '320', 'student_220', 'student_middle_220', 'student_last220', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_221@somaiya.edu', '321', 'student_221', 'student_middle_221', 'student_last221', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_222@somaiya.edu', '322', 'student_222', 'student_middle_222', 'student_last222', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_223@somaiya.edu', '323', 'student_223', 'student_middle_223', 'student_last223', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_224@somaiya.edu', '324', 'student_224', 'student_middle_224', 'student_last224', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_225@somaiya.edu', '325', 'student_225', 'student_middle_225', 'student_last225', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_226@somaiya.edu', '326', 'student_226', 'student_middle_226', 'student_last226', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_227@somaiya.edu', '327', 'student_227', 'student_middle_227', 'student_last227', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_228@somaiya.edu', '328', 'student_228', 'student_middle_228', 'student_last228', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_229@somaiya.edu', '329', 'student_229', 'student_middle_229', 'student_last229', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_22@somaiya.edu', '122', 'student_22', 'student_middle_22', 'student_last22', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_230@somaiya.edu', '330', 'student_230', 'student_middle_230', 'student_last230', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_231@somaiya.edu', '331', 'student_231', 'student_middle_231', 'student_last231', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_232@somaiya.edu', '332', 'student_232', 'student_middle_232', 'student_last232', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_233@somaiya.edu', '333', 'student_233', 'student_middle_233', 'student_last233', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_234@somaiya.edu', '334', 'student_234', 'student_middle_234', 'student_last234', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_235@somaiya.edu', '335', 'student_235', 'student_middle_235', 'student_last235', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_236@somaiya.edu', '336', 'student_236', 'student_middle_236', 'student_last236', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_237@somaiya.edu', '337', 'student_237', 'student_middle_237', 'student_last237', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_238@somaiya.edu', '338', 'student_238', 'student_middle_238', 'student_last238', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_239@somaiya.edu', '339', 'student_239', 'student_middle_239', 'student_last239', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_23@somaiya.edu', '123', 'student_23', 'student_middle_23', 'student_last23', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_240@somaiya.edu', '340', 'student_240', 'student_middle_240', 'student_last240', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_241@somaiya.edu', '341', 'student_241', 'student_middle_241', 'student_last241', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_242@somaiya.edu', '342', 'student_242', 'student_middle_242', 'student_last242', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_243@somaiya.edu', '343', 'student_243', 'student_middle_243', 'student_last243', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_244@somaiya.edu', '344', 'student_244', 'student_middle_244', 'student_last244', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_245@somaiya.edu', '345', 'student_245', 'student_middle_245', 'student_last245', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_246@somaiya.edu', '346', 'student_246', 'student_middle_246', 'student_last246', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_247@somaiya.edu', '347', 'student_247', 'student_middle_247', 'student_last247', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_248@somaiya.edu', '348', 'student_248', 'student_middle_248', 'student_last248', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_249@somaiya.edu', '349', 'student_249', 'student_middle_249', 'student_last249', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_24@somaiya.edu', '124', 'student_24', 'student_middle_24', 'student_last24', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_250@somaiya.edu', '350', 'student_250', 'student_middle_250', 'student_last250', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_251@somaiya.edu', '351', 'student_251', 'student_middle_251', 'student_last251', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_252@somaiya.edu', '352', 'student_252', 'student_middle_252', 'student_last252', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_253@somaiya.edu', '353', 'student_253', 'student_middle_253', 'student_last253', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_254@somaiya.edu', '354', 'student_254', 'student_middle_254', 'student_last254', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_255@somaiya.edu', '355', 'student_255', 'student_middle_255', 'student_last255', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_256@somaiya.edu', '356', 'student_256', 'student_middle_256', 'student_last256', '2018', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_257@somaiya.edu', '357', 'student_257', 'student_middle_257', 'student_last257', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_258@somaiya.edu', '358', 'student_258', 'student_middle_258', 'student_last258', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_259@somaiya.edu', '359', 'student_259', 'student_middle_259', 'student_last259', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_25@somaiya.edu', '125', 'student_25', 'student_middle_25', 'student_last25', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_260@somaiya.edu', '360', 'student_260', 'student_middle_260', 'student_last260', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_261@somaiya.edu', '361', 'student_261', 'student_middle_261', 'student_last261', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_262@somaiya.edu', '362', 'student_262', 'student_middle_262', 'student_last262', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_263@somaiya.edu', '363', 'student_263', 'student_middle_263', 'student_last263', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_264@somaiya.edu', '364', 'student_264', 'student_middle_264', 'student_last264', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_265@somaiya.edu', '365', 'student_265', 'student_middle_265', 'student_last265', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_266@somaiya.edu', '366', 'student_266', 'student_middle_266', 'student_last266', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_267@somaiya.edu', '367', 'student_267', 'student_middle_267', 'student_last267', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_268@somaiya.edu', '368', 'student_268', 'student_middle_268', 'student_last268', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_269@somaiya.edu', '369', 'student_269', 'student_middle_269', 'student_last269', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_26@somaiya.edu', '126', 'student_26', 'student_middle_26', 'student_last26', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_270@somaiya.edu', '370', 'student_270', 'student_middle_270', 'student_last270', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_271@somaiya.edu', '371', 'student_271', 'student_middle_271', 'student_last271', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_272@somaiya.edu', '372', 'student_272', 'student_middle_272', 'student_last272', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_273@somaiya.edu', '373', 'student_273', 'student_middle_273', 'student_last273', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_274@somaiya.edu', '374', 'student_274', 'student_middle_274', 'student_last274', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_275@somaiya.edu', '375', 'student_275', 'student_middle_275', 'student_last275', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_276@somaiya.edu', '376', 'student_276', 'student_middle_276', 'student_last276', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_277@somaiya.edu', '377', 'student_277', 'student_middle_277', 'student_last277', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_278@somaiya.edu', '378', 'student_278', 'student_middle_278', 'student_last278', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_279@somaiya.edu', '379', 'student_279', 'student_middle_279', 'student_last279', '2019', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_27@somaiya.edu', '127', 'student_27', 'student_middle_27', 'student_last27', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_280@somaiya.edu', '380', 'student_280', 'student_middle_280', 'student_last280', '2017', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_281@somaiya.edu', '381', 'student_281', 'student_middle_281', 'student_last281', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_282@somaiya.edu', '382', 'student_282', 'student_middle_282', 'student_last282', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_283@somaiya.edu', '383', 'student_283', 'student_middle_283', 'student_last283', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_284@somaiya.edu', '384', 'student_284', 'student_middle_284', 'student_last284', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_285@somaiya.edu', '385', 'student_285', 'student_middle_285', 'student_last285', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_286@somaiya.edu', '386', 'student_286', 'student_middle_286', 'student_last286', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_287@somaiya.edu', '387', 'student_287', 'student_middle_287', 'student_last287', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_288@somaiya.edu', '388', 'student_288', 'student_middle_288', 'student_last288', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_289@somaiya.edu', '389', 'student_289', 'student_middle_289', 'student_last289', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_28@somaiya.edu', '128', 'student_28', 'student_middle_28', 'student_last28', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_290@somaiya.edu', '390', 'student_290', 'student_middle_290', 'student_last290', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_291@somaiya.edu', '391', 'student_291', 'student_middle_291', 'student_last291', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_292@somaiya.edu', '392', 'student_292', 'student_middle_292', 'student_last292', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_293@somaiya.edu', '393', 'student_293', 'student_middle_293', 'student_last293', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_294@somaiya.edu', '394', 'student_294', 'student_middle_294', 'student_last294', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_295@somaiya.edu', '395', 'student_295', 'student_middle_295', 'student_last295', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_296@somaiya.edu', '396', 'student_296', 'student_middle_296', 'student_last296', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_297@somaiya.edu', '397', 'student_297', 'student_middle_297', 'student_last297', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_298@somaiya.edu', '398', 'student_298', 'student_middle_298', 'student_last298', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_299@somaiya.edu', '399', 'student_299', 'student_middle_299', 'student_last299', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_29@somaiya.edu', '129', 'student_29', 'student_middle_29', 'student_last29', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_2@somaiya.edu', '102', 'student_2', 'student_middle_2', 'student_last2', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_300@somaiya.edu', '400', 'student_300', 'student_middle_300', 'student_last300', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_301@somaiya.edu', '401', 'student_301', 'student_middle_301', 'student_last301', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_302@somaiya.edu', '402', 'student_302', 'student_middle_302', 'student_last302', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_303@somaiya.edu', '403', 'student_303', 'student_middle_303', 'student_last303', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_304@somaiya.edu', '404', 'student_304', 'student_middle_304', 'student_last304', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_305@somaiya.edu', '405', 'student_305', 'student_middle_305', 'student_last305', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_306@somaiya.edu', '406', 'student_306', 'student_middle_306', 'student_last306', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_307@somaiya.edu', '407', 'student_307', 'student_middle_307', 'student_last307', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_308@somaiya.edu', '408', 'student_308', 'student_middle_308', 'student_last308', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_309@somaiya.edu', '409', 'student_309', 'student_middle_309', 'student_last309', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_30@somaiya.edu', '130', 'student_30', 'student_middle_30', 'student_last30', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_310@somaiya.edu', '410', 'student_310', 'student_middle_310', 'student_last310', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_311@somaiya.edu', '411', 'student_311', 'student_middle_311', 'student_last311', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_312@somaiya.edu', '412', 'student_312', 'student_middle_312', 'student_last312', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_313@somaiya.edu', '413', 'student_313', 'student_middle_313', 'student_last313', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_314@somaiya.edu', '414', 'student_314', 'student_middle_314', 'student_last314', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_315@somaiya.edu', '415', 'student_315', 'student_middle_315', 'student_last315', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_316@somaiya.edu', '416', 'student_316', 'student_middle_316', 'student_last316', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_317@somaiya.edu', '417', 'student_317', 'student_middle_317', 'student_last317', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_318@somaiya.edu', '418', 'student_318', 'student_middle_318', 'student_last318', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_319@somaiya.edu', '419', 'student_319', 'student_middle_319', 'student_last319', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_31@somaiya.edu', '131', 'student_31', 'student_middle_31', 'student_last31', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_320@somaiya.edu', '420', 'student_320', 'student_middle_320', 'student_last320', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_321@somaiya.edu', '421', 'student_321', 'student_middle_321', 'student_last321', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_322@somaiya.edu', '422', 'student_322', 'student_middle_322', 'student_last322', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_323@somaiya.edu', '423', 'student_323', 'student_middle_323', 'student_last323', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_324@somaiya.edu', '424', 'student_324', 'student_middle_324', 'student_last324', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_325@somaiya.edu', '425', 'student_325', 'student_middle_325', 'student_last325', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_326@somaiya.edu', '426', 'student_326', 'student_middle_326', 'student_last326', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_327@somaiya.edu', '427', 'student_327', 'student_middle_327', 'student_last327', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_328@somaiya.edu', '428', 'student_328', 'student_middle_328', 'student_last328', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_329@somaiya.edu', '429', 'student_329', 'student_middle_329', 'student_last329', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_32@somaiya.edu', '132', 'student_32', 'student_middle_32', 'student_last32', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_330@somaiya.edu', '430', 'student_330', 'student_middle_330', 'student_last330', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_331@somaiya.edu', '431', 'student_331', 'student_middle_331', 'student_last331', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_332@somaiya.edu', '432', 'student_332', 'student_middle_332', 'student_last332', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_333@somaiya.edu', '433', 'student_333', 'student_middle_333', 'student_last333', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_334@somaiya.edu', '434', 'student_334', 'student_middle_334', 'student_last334', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_335@somaiya.edu', '435', 'student_335', 'student_middle_335', 'student_last335', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_336@somaiya.edu', '436', 'student_336', 'student_middle_336', 'student_last336', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_337@somaiya.edu', '437', 'student_337', 'student_middle_337', 'student_last337', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_338@somaiya.edu', '438', 'student_338', 'student_middle_338', 'student_last338', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_339@somaiya.edu', '439', 'student_339', 'student_middle_339', 'student_last339', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_33@somaiya.edu', '133', 'student_33', 'student_middle_33', 'student_last33', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_340@somaiya.edu', '440', 'student_340', 'student_middle_340', 'student_last340', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_341@somaiya.edu', '441', 'student_341', 'student_middle_341', 'student_last341', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_342@somaiya.edu', '442', 'student_342', 'student_middle_342', 'student_last342', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_343@somaiya.edu', '443', 'student_343', 'student_middle_343', 'student_last343', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_344@somaiya.edu', '444', 'student_344', 'student_middle_344', 'student_last344', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_345@somaiya.edu', '445', 'student_345', 'student_middle_345', 'student_last345', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_346@somaiya.edu', '446', 'student_346', 'student_middle_346', 'student_last346', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_347@somaiya.edu', '447', 'student_347', 'student_middle_347', 'student_last347', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_348@somaiya.edu', '448', 'student_348', 'student_middle_348', 'student_last348', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_349@somaiya.edu', '449', 'student_349', 'student_middle_349', 'student_last349', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_34@somaiya.edu', '134', 'student_34', 'student_middle_34', 'student_last34', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_350@somaiya.edu', '450', 'student_350', 'student_middle_350', 'student_last350', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_351@somaiya.edu', '451', 'student_351', 'student_middle_351', 'student_last351', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_352@somaiya.edu', '452', 'student_352', 'student_middle_352', 'student_last352', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_353@somaiya.edu', '453', 'student_353', 'student_middle_353', 'student_last353', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_354@somaiya.edu', '454', 'student_354', 'student_middle_354', 'student_last354', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_355@somaiya.edu', '455', 'student_355', 'student_middle_355', 'student_last355', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_356@somaiya.edu', '456', 'student_356', 'student_middle_356', 'student_last356', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_357@somaiya.edu', '457', 'student_357', 'student_middle_357', 'student_last357', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_358@somaiya.edu', '458', 'student_358', 'student_middle_358', 'student_last358', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_359@somaiya.edu', '459', 'student_359', 'student_middle_359', 'student_last359', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_35@somaiya.edu', '135', 'student_35', 'student_middle_35', 'student_last35', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_360@somaiya.edu', '460', 'student_360', 'student_middle_360', 'student_last360', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_361@somaiya.edu', '461', 'student_361', 'student_middle_361', 'student_last361', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_362@somaiya.edu', '462', 'student_362', 'student_middle_362', 'student_last362', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_363@somaiya.edu', '463', 'student_363', 'student_middle_363', 'student_last363', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_364@somaiya.edu', '464', 'student_364', 'student_middle_364', 'student_last364', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_365@somaiya.edu', '465', 'student_365', 'student_middle_365', 'student_last365', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_366@somaiya.edu', '466', 'student_366', 'student_middle_366', 'student_last366', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_367@somaiya.edu', '467', 'student_367', 'student_middle_367', 'student_last367', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_368@somaiya.edu', '468', 'student_368', 'student_middle_368', 'student_last368', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_369@somaiya.edu', '469', 'student_369', 'student_middle_369', 'student_last369', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_36@somaiya.edu', '136', 'student_36', 'student_middle_36', 'student_last36', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_370@somaiya.edu', '470', 'student_370', 'student_middle_370', 'student_last370', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_371@somaiya.edu', '471', 'student_371', 'student_middle_371', 'student_last371', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_372@somaiya.edu', '472', 'student_372', 'student_middle_372', 'student_last372', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_373@somaiya.edu', '473', 'student_373', 'student_middle_373', 'student_last373', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_374@somaiya.edu', '474', 'student_374', 'student_middle_374', 'student_last374', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_375@somaiya.edu', '475', 'student_375', 'student_middle_375', 'student_last375', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_376@somaiya.edu', '476', 'student_376', 'student_middle_376', 'student_last376', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_377@somaiya.edu', '477', 'student_377', 'student_middle_377', 'student_last377', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_378@somaiya.edu', '478', 'student_378', 'student_middle_378', 'student_last378', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_379@somaiya.edu', '479', 'student_379', 'student_middle_379', 'student_last379', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_37@somaiya.edu', '137', 'student_37', 'student_middle_37', 'student_last37', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_380@somaiya.edu', '480', 'student_380', 'student_middle_380', 'student_last380', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_381@somaiya.edu', '481', 'student_381', 'student_middle_381', 'student_last381', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_382@somaiya.edu', '482', 'student_382', 'student_middle_382', 'student_last382', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_383@somaiya.edu', '483', 'student_383', 'student_middle_383', 'student_last383', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_384@somaiya.edu', '484', 'student_384', 'student_middle_384', 'student_last384', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_385@somaiya.edu', '485', 'student_385', 'student_middle_385', 'student_last385', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_386@somaiya.edu', '486', 'student_386', 'student_middle_386', 'student_last386', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_387@somaiya.edu', '487', 'student_387', 'student_middle_387', 'student_last387', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_388@somaiya.edu', '488', 'student_388', 'student_middle_388', 'student_last388', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_389@somaiya.edu', '489', 'student_389', 'student_middle_389', 'student_last389', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_38@somaiya.edu', '138', 'student_38', 'student_middle_38', 'student_last38', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_390@somaiya.edu', '490', 'student_390', 'student_middle_390', 'student_last390', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_391@somaiya.edu', '491', 'student_391', 'student_middle_391', 'student_last391', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_392@somaiya.edu', '492', 'student_392', 'student_middle_392', 'student_last392', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23');
+INSERT INTO `student` (`email_id`, `rollno`, `fname`, `mname`, `lname`, `year_of_admission`, `dept_id`, `program`, `current_sem`, `form_filled`, `adding_email_id`, `timestamp`) VALUES
+('student_393@somaiya.edu', '493', 'student_393', 'student_middle_393', 'student_last393', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_394@somaiya.edu', '494', 'student_394', 'student_middle_394', 'student_last394', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_395@somaiya.edu', '495', 'student_395', 'student_middle_395', 'student_last395', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_396@somaiya.edu', '496', 'student_396', 'student_middle_396', 'student_last396', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_397@somaiya.edu', '497', 'student_397', 'student_middle_397', 'student_last397', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_398@somaiya.edu', '498', 'student_398', 'student_middle_398', 'student_last398', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_399@somaiya.edu', '499', 'student_399', 'student_middle_399', 'student_last399', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_39@somaiya.edu', '139', 'student_39', 'student_middle_39', 'student_last39', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_3@somaiya.edu', '103', 'student_3', 'student_middle_3', 'student_last3', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_400@somaiya.edu', '500', 'student_400', 'student_middle_400', 'student_last400', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_401@somaiya.edu', '501', 'student_401', 'student_middle_401', 'student_last401', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_402@somaiya.edu', '502', 'student_402', 'student_middle_402', 'student_last402', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_403@somaiya.edu', '503', 'student_403', 'student_middle_403', 'student_last403', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_404@somaiya.edu', '504', 'student_404', 'student_middle_404', 'student_last404', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_405@somaiya.edu', '505', 'student_405', 'student_middle_405', 'student_last405', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_406@somaiya.edu', '506', 'student_406', 'student_middle_406', 'student_last406', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_407@somaiya.edu', '507', 'student_407', 'student_middle_407', 'student_last407', '2018', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_408@somaiya.edu', '508', 'student_408', 'student_middle_408', 'student_last408', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_409@somaiya.edu', '509', 'student_409', 'student_middle_409', 'student_last409', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_40@somaiya.edu', '140', 'student_40', 'student_middle_40', 'student_last40', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_410@somaiya.edu', '510', 'student_410', 'student_middle_410', 'student_last410', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_411@somaiya.edu', '511', 'student_411', 'student_middle_411', 'student_last411', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_412@somaiya.edu', '512', 'student_412', 'student_middle_412', 'student_last412', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_413@somaiya.edu', '513', 'student_413', 'student_middle_413', 'student_last413', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_414@somaiya.edu', '514', 'student_414', 'student_middle_414', 'student_last414', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_415@somaiya.edu', '515', 'student_415', 'student_middle_415', 'student_last415', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_416@somaiya.edu', '516', 'student_416', 'student_middle_416', 'student_last416', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_417@somaiya.edu', '517', 'student_417', 'student_middle_417', 'student_last417', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_418@somaiya.edu', '518', 'student_418', 'student_middle_418', 'student_last418', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_419@somaiya.edu', '519', 'student_419', 'student_middle_419', 'student_last419', '2019', 3, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_41@somaiya.edu', '141', 'student_41', 'student_middle_41', 'student_last41', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_420@somaiya.edu', '520', 'student_420', 'student_middle_420', 'student_last420', '2017', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_421@somaiya.edu', '521', 'student_421', 'student_middle_421', 'student_last421', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_422@somaiya.edu', '522', 'student_422', 'student_middle_422', 'student_last422', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_423@somaiya.edu', '523', 'student_423', 'student_middle_423', 'student_last423', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_424@somaiya.edu', '524', 'student_424', 'student_middle_424', 'student_last424', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_425@somaiya.edu', '525', 'student_425', 'student_middle_425', 'student_last425', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_426@somaiya.edu', '526', 'student_426', 'student_middle_426', 'student_last426', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_427@somaiya.edu', '527', 'student_427', 'student_middle_427', 'student_last427', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_428@somaiya.edu', '528', 'student_428', 'student_middle_428', 'student_last428', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_429@somaiya.edu', '529', 'student_429', 'student_middle_429', 'student_last429', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_42@somaiya.edu', '142', 'student_42', 'student_middle_42', 'student_last42', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_430@somaiya.edu', '530', 'student_430', 'student_middle_430', 'student_last430', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_431@somaiya.edu', '531', 'student_431', 'student_middle_431', 'student_last431', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_432@somaiya.edu', '532', 'student_432', 'student_middle_432', 'student_last432', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_433@somaiya.edu', '533', 'student_433', 'student_middle_433', 'student_last433', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_434@somaiya.edu', '534', 'student_434', 'student_middle_434', 'student_last434', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_435@somaiya.edu', '535', 'student_435', 'student_middle_435', 'student_last435', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_436@somaiya.edu', '536', 'student_436', 'student_middle_436', 'student_last436', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_437@somaiya.edu', '537', 'student_437', 'student_middle_437', 'student_last437', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_438@somaiya.edu', '538', 'student_438', 'student_middle_438', 'student_last438', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_439@somaiya.edu', '539', 'student_439', 'student_middle_439', 'student_last439', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_43@somaiya.edu', '143', 'student_43', 'student_middle_43', 'student_last43', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_440@somaiya.edu', '540', 'student_440', 'student_middle_440', 'student_last440', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_441@somaiya.edu', '541', 'student_441', 'student_middle_441', 'student_last441', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_442@somaiya.edu', '542', 'student_442', 'student_middle_442', 'student_last442', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_443@somaiya.edu', '543', 'student_443', 'student_middle_443', 'student_last443', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_444@somaiya.edu', '544', 'student_444', 'student_middle_444', 'student_last444', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_445@somaiya.edu', '545', 'student_445', 'student_middle_445', 'student_last445', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_446@somaiya.edu', '546', 'student_446', 'student_middle_446', 'student_last446', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_447@somaiya.edu', '547', 'student_447', 'student_middle_447', 'student_last447', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_448@somaiya.edu', '548', 'student_448', 'student_middle_448', 'student_last448', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_449@somaiya.edu', '549', 'student_449', 'student_middle_449', 'student_last449', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_44@somaiya.edu', '144', 'student_44', 'student_middle_44', 'student_last44', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_450@somaiya.edu', '550', 'student_450', 'student_middle_450', 'student_last450', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_451@somaiya.edu', '551', 'student_451', 'student_middle_451', 'student_last451', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_452@somaiya.edu', '552', 'student_452', 'student_middle_452', 'student_last452', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_453@somaiya.edu', '553', 'student_453', 'student_middle_453', 'student_last453', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_454@somaiya.edu', '554', 'student_454', 'student_middle_454', 'student_last454', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_455@somaiya.edu', '555', 'student_455', 'student_middle_455', 'student_last455', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_456@somaiya.edu', '556', 'student_456', 'student_middle_456', 'student_last456', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_457@somaiya.edu', '557', 'student_457', 'student_middle_457', 'student_last457', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_458@somaiya.edu', '558', 'student_458', 'student_middle_458', 'student_last458', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_459@somaiya.edu', '559', 'student_459', 'student_middle_459', 'student_last459', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_45@somaiya.edu', '145', 'student_45', 'student_middle_45', 'student_last45', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_460@somaiya.edu', '560', 'student_460', 'student_middle_460', 'student_last460', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_461@somaiya.edu', '561', 'student_461', 'student_middle_461', 'student_last461', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_462@somaiya.edu', '562', 'student_462', 'student_middle_462', 'student_last462', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_463@somaiya.edu', '563', 'student_463', 'student_middle_463', 'student_last463', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_464@somaiya.edu', '564', 'student_464', 'student_middle_464', 'student_last464', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_465@somaiya.edu', '565', 'student_465', 'student_middle_465', 'student_last465', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_466@somaiya.edu', '566', 'student_466', 'student_middle_466', 'student_last466', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_467@somaiya.edu', '567', 'student_467', 'student_middle_467', 'student_last467', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_468@somaiya.edu', '568', 'student_468', 'student_middle_468', 'student_last468', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_469@somaiya.edu', '569', 'student_469', 'student_middle_469', 'student_last469', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_46@somaiya.edu', '146', 'student_46', 'student_middle_46', 'student_last46', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_470@somaiya.edu', '570', 'student_470', 'student_middle_470', 'student_last470', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_471@somaiya.edu', '571', 'student_471', 'student_middle_471', 'student_last471', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_472@somaiya.edu', '572', 'student_472', 'student_middle_472', 'student_last472', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_473@somaiya.edu', '573', 'student_473', 'student_middle_473', 'student_last473', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_474@somaiya.edu', '574', 'student_474', 'student_middle_474', 'student_last474', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_475@somaiya.edu', '575', 'student_475', 'student_middle_475', 'student_last475', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_476@somaiya.edu', '576', 'student_476', 'student_middle_476', 'student_last476', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_477@somaiya.edu', '577', 'student_477', 'student_middle_477', 'student_last477', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_478@somaiya.edu', '578', 'student_478', 'student_middle_478', 'student_last478', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_479@somaiya.edu', '579', 'student_479', 'student_middle_479', 'student_last479', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_47@somaiya.edu', '147', 'student_47', 'student_middle_47', 'student_last47', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_480@somaiya.edu', '580', 'student_480', 'student_middle_480', 'student_last480', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_481@somaiya.edu', '581', 'student_481', 'student_middle_481', 'student_last481', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_482@somaiya.edu', '582', 'student_482', 'student_middle_482', 'student_last482', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_483@somaiya.edu', '583', 'student_483', 'student_middle_483', 'student_last483', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_484@somaiya.edu', '584', 'student_484', 'student_middle_484', 'student_last484', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_485@somaiya.edu', '585', 'student_485', 'student_middle_485', 'student_last485', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_486@somaiya.edu', '586', 'student_486', 'student_middle_486', 'student_last486', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_487@somaiya.edu', '587', 'student_487', 'student_middle_487', 'student_last487', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_488@somaiya.edu', '588', 'student_488', 'student_middle_488', 'student_last488', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_489@somaiya.edu', '589', 'student_489', 'student_middle_489', 'student_last489', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_48@somaiya.edu', '148', 'student_48', 'student_middle_48', 'student_last48', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_490@somaiya.edu', '590', 'student_490', 'student_middle_490', 'student_last490', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_491@somaiya.edu', '591', 'student_491', 'student_middle_491', 'student_last491', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_492@somaiya.edu', '592', 'student_492', 'student_middle_492', 'student_last492', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_493@somaiya.edu', '593', 'student_493', 'student_middle_493', 'student_last493', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_494@somaiya.edu', '594', 'student_494', 'student_middle_494', 'student_last494', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_495@somaiya.edu', '595', 'student_495', 'student_middle_495', 'student_last495', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_496@somaiya.edu', '596', 'student_496', 'student_middle_496', 'student_last496', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_497@somaiya.edu', '597', 'student_497', 'student_middle_497', 'student_last497', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_498@somaiya.edu', '598', 'student_498', 'student_middle_498', 'student_last498', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_499@somaiya.edu', '599', 'student_499', 'student_middle_499', 'student_last499', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_49@somaiya.edu', '149', 'student_49', 'student_middle_49', 'student_last49', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_4@somaiya.edu', '104', 'student_4', 'student_middle_4', 'student_last4', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_500@somaiya.edu', '600', 'student_500', 'student_middle_500', 'student_last500', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_501@somaiya.edu', '601', 'student_501', 'student_middle_501', 'student_last501', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_502@somaiya.edu', '602', 'student_502', 'student_middle_502', 'student_last502', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_503@somaiya.edu', '603', 'student_503', 'student_middle_503', 'student_last503', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_504@somaiya.edu', '604', 'student_504', 'student_middle_504', 'student_last504', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_505@somaiya.edu', '605', 'student_505', 'student_middle_505', 'student_last505', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_506@somaiya.edu', '606', 'student_506', 'student_middle_506', 'student_last506', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_507@somaiya.edu', '607', 'student_507', 'student_middle_507', 'student_last507', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_508@somaiya.edu', '608', 'student_508', 'student_middle_508', 'student_last508', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_509@somaiya.edu', '609', 'student_509', 'student_middle_509', 'student_last509', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_50@somaiya.edu', '150', 'student_50', 'student_middle_50', 'student_last50', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_510@somaiya.edu', '610', 'student_510', 'student_middle_510', 'student_last510', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_511@somaiya.edu', '611', 'student_511', 'student_middle_511', 'student_last511', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_512@somaiya.edu', '612', 'student_512', 'student_middle_512', 'student_last512', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_513@somaiya.edu', '613', 'student_513', 'student_middle_513', 'student_last513', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_514@somaiya.edu', '614', 'student_514', 'student_middle_514', 'student_last514', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_515@somaiya.edu', '615', 'student_515', 'student_middle_515', 'student_last515', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_516@somaiya.edu', '616', 'student_516', 'student_middle_516', 'student_last516', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_517@somaiya.edu', '617', 'student_517', 'student_middle_517', 'student_last517', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_518@somaiya.edu', '618', 'student_518', 'student_middle_518', 'student_last518', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_519@somaiya.edu', '619', 'student_519', 'student_middle_519', 'student_last519', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_51@somaiya.edu', '151', 'student_51', 'student_middle_51', 'student_last51', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_520@somaiya.edu', '620', 'student_520', 'student_middle_520', 'student_last520', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_521@somaiya.edu', '621', 'student_521', 'student_middle_521', 'student_last521', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_522@somaiya.edu', '622', 'student_522', 'student_middle_522', 'student_last522', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_523@somaiya.edu', '623', 'student_523', 'student_middle_523', 'student_last523', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_524@somaiya.edu', '624', 'student_524', 'student_middle_524', 'student_last524', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_525@somaiya.edu', '625', 'student_525', 'student_middle_525', 'student_last525', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_526@somaiya.edu', '626', 'student_526', 'student_middle_526', 'student_last526', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_527@somaiya.edu', '627', 'student_527', 'student_middle_527', 'student_last527', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_528@somaiya.edu', '628', 'student_528', 'student_middle_528', 'student_last528', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_529@somaiya.edu', '629', 'student_529', 'student_middle_529', 'student_last529', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_52@somaiya.edu', '152', 'student_52', 'student_middle_52', 'student_last52', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_530@somaiya.edu', '630', 'student_530', 'student_middle_530', 'student_last530', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_531@somaiya.edu', '631', 'student_531', 'student_middle_531', 'student_last531', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_532@somaiya.edu', '632', 'student_532', 'student_middle_532', 'student_last532', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_533@somaiya.edu', '633', 'student_533', 'student_middle_533', 'student_last533', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_534@somaiya.edu', '634', 'student_534', 'student_middle_534', 'student_last534', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_535@somaiya.edu', '635', 'student_535', 'student_middle_535', 'student_last535', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_536@somaiya.edu', '636', 'student_536', 'student_middle_536', 'student_last536', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_537@somaiya.edu', '637', 'student_537', 'student_middle_537', 'student_last537', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_538@somaiya.edu', '638', 'student_538', 'student_middle_538', 'student_last538', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_539@somaiya.edu', '639', 'student_539', 'student_middle_539', 'student_last539', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_53@somaiya.edu', '153', 'student_53', 'student_middle_53', 'student_last53', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_540@somaiya.edu', '640', 'student_540', 'student_middle_540', 'student_last540', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_541@somaiya.edu', '641', 'student_541', 'student_middle_541', 'student_last541', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_542@somaiya.edu', '642', 'student_542', 'student_middle_542', 'student_last542', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_543@somaiya.edu', '643', 'student_543', 'student_middle_543', 'student_last543', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_544@somaiya.edu', '644', 'student_544', 'student_middle_544', 'student_last544', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_545@somaiya.edu', '645', 'student_545', 'student_middle_545', 'student_last545', '2018', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_546@somaiya.edu', '646', 'student_546', 'student_middle_546', 'student_last546', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_547@somaiya.edu', '647', 'student_547', 'student_middle_547', 'student_last547', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_548@somaiya.edu', '648', 'student_548', 'student_middle_548', 'student_last548', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_549@somaiya.edu', '649', 'student_549', 'student_middle_549', 'student_last549', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_54@somaiya.edu', '154', 'student_54', 'student_middle_54', 'student_last54', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_550@somaiya.edu', '650', 'student_550', 'student_middle_550', 'student_last550', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_551@somaiya.edu', '651', 'student_551', 'student_middle_551', 'student_last551', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_552@somaiya.edu', '652', 'student_552', 'student_middle_552', 'student_last552', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_553@somaiya.edu', '653', 'student_553', 'student_middle_553', 'student_last553', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_554@somaiya.edu', '654', 'student_554', 'student_middle_554', 'student_last554', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_555@somaiya.edu', '655', 'student_555', 'student_middle_555', 'student_last555', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_556@somaiya.edu', '656', 'student_556', 'student_middle_556', 'student_last556', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_557@somaiya.edu', '657', 'student_557', 'student_middle_557', 'student_last557', '2019', 4, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_558@somaiya.edu', '658', 'student_558', 'student_middle_558', 'student_last558', '2017', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_559@somaiya.edu', '659', 'student_559', 'student_middle_559', 'student_last559', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_55@somaiya.edu', '155', 'student_55', 'student_middle_55', 'student_last55', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_560@somaiya.edu', '660', 'student_560', 'student_middle_560', 'student_last560', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_561@somaiya.edu', '661', 'student_561', 'student_middle_561', 'student_last561', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_562@somaiya.edu', '662', 'student_562', 'student_middle_562', 'student_last562', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_563@somaiya.edu', '663', 'student_563', 'student_middle_563', 'student_last563', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_564@somaiya.edu', '664', 'student_564', 'student_middle_564', 'student_last564', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_565@somaiya.edu', '665', 'student_565', 'student_middle_565', 'student_last565', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_566@somaiya.edu', '666', 'student_566', 'student_middle_566', 'student_last566', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_567@somaiya.edu', '667', 'student_567', 'student_middle_567', 'student_last567', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_568@somaiya.edu', '668', 'student_568', 'student_middle_568', 'student_last568', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_569@somaiya.edu', '669', 'student_569', 'student_middle_569', 'student_last569', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_56@somaiya.edu', '156', 'student_56', 'student_middle_56', 'student_last56', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_570@somaiya.edu', '670', 'student_570', 'student_middle_570', 'student_last570', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_571@somaiya.edu', '671', 'student_571', 'student_middle_571', 'student_last571', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_572@somaiya.edu', '672', 'student_572', 'student_middle_572', 'student_last572', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_573@somaiya.edu', '673', 'student_573', 'student_middle_573', 'student_last573', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_574@somaiya.edu', '674', 'student_574', 'student_middle_574', 'student_last574', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_575@somaiya.edu', '675', 'student_575', 'student_middle_575', 'student_last575', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_576@somaiya.edu', '676', 'student_576', 'student_middle_576', 'student_last576', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_577@somaiya.edu', '677', 'student_577', 'student_middle_577', 'student_last577', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_578@somaiya.edu', '678', 'student_578', 'student_middle_578', 'student_last578', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_579@somaiya.edu', '679', 'student_579', 'student_middle_579', 'student_last579', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_57@somaiya.edu', '157', 'student_57', 'student_middle_57', 'student_last57', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_580@somaiya.edu', '680', 'student_580', 'student_middle_580', 'student_last580', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_581@somaiya.edu', '681', 'student_581', 'student_middle_581', 'student_last581', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_582@somaiya.edu', '682', 'student_582', 'student_middle_582', 'student_last582', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_583@somaiya.edu', '683', 'student_583', 'student_middle_583', 'student_last583', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_584@somaiya.edu', '684', 'student_584', 'student_middle_584', 'student_last584', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_585@somaiya.edu', '685', 'student_585', 'student_middle_585', 'student_last585', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_586@somaiya.edu', '686', 'student_586', 'student_middle_586', 'student_last586', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_587@somaiya.edu', '687', 'student_587', 'student_middle_587', 'student_last587', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_588@somaiya.edu', '688', 'student_588', 'student_middle_588', 'student_last588', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_589@somaiya.edu', '689', 'student_589', 'student_middle_589', 'student_last589', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_58@somaiya.edu', '158', 'student_58', 'student_middle_58', 'student_last58', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_590@somaiya.edu', '690', 'student_590', 'student_middle_590', 'student_last590', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_591@somaiya.edu', '691', 'student_591', 'student_middle_591', 'student_last591', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_592@somaiya.edu', '692', 'student_592', 'student_middle_592', 'student_last592', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_593@somaiya.edu', '693', 'student_593', 'student_middle_593', 'student_last593', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_594@somaiya.edu', '694', 'student_594', 'student_middle_594', 'student_last594', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_595@somaiya.edu', '695', 'student_595', 'student_middle_595', 'student_last595', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_596@somaiya.edu', '696', 'student_596', 'student_middle_596', 'student_last596', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_597@somaiya.edu', '697', 'student_597', 'student_middle_597', 'student_last597', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_598@somaiya.edu', '698', 'student_598', 'student_middle_598', 'student_last598', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_599@somaiya.edu', '699', 'student_599', 'student_middle_599', 'student_last599', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_59@somaiya.edu', '159', 'student_59', 'student_middle_59', 'student_last59', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_5@somaiya.edu', '105', 'student_5', 'student_middle_5', 'student_last5', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_600@somaiya.edu', '700', 'student_600', 'student_middle_600', 'student_last600', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_601@somaiya.edu', '701', 'student_601', 'student_middle_601', 'student_last601', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_602@somaiya.edu', '702', 'student_602', 'student_middle_602', 'student_last602', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_603@somaiya.edu', '703', 'student_603', 'student_middle_603', 'student_last603', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_604@somaiya.edu', '704', 'student_604', 'student_middle_604', 'student_last604', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_605@somaiya.edu', '705', 'student_605', 'student_middle_605', 'student_last605', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_606@somaiya.edu', '706', 'student_606', 'student_middle_606', 'student_last606', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_607@somaiya.edu', '707', 'student_607', 'student_middle_607', 'student_last607', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_608@somaiya.edu', '708', 'student_608', 'student_middle_608', 'student_last608', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_609@somaiya.edu', '709', 'student_609', 'student_middle_609', 'student_last609', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_60@somaiya.edu', '160', 'student_60', 'student_middle_60', 'student_last60', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_610@somaiya.edu', '710', 'student_610', 'student_middle_610', 'student_last610', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_611@somaiya.edu', '711', 'student_611', 'student_middle_611', 'student_last611', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_612@somaiya.edu', '712', 'student_612', 'student_middle_612', 'student_last612', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_613@somaiya.edu', '713', 'student_613', 'student_middle_613', 'student_last613', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_614@somaiya.edu', '714', 'student_614', 'student_middle_614', 'student_last614', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_615@somaiya.edu', '715', 'student_615', 'student_middle_615', 'student_last615', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_616@somaiya.edu', '716', 'student_616', 'student_middle_616', 'student_last616', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_617@somaiya.edu', '717', 'student_617', 'student_middle_617', 'student_last617', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_618@somaiya.edu', '718', 'student_618', 'student_middle_618', 'student_last618', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_619@somaiya.edu', '719', 'student_619', 'student_middle_619', 'student_last619', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_61@somaiya.edu', '161', 'student_61', 'student_middle_61', 'student_last61', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_620@somaiya.edu', '720', 'student_620', 'student_middle_620', 'student_last620', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_621@somaiya.edu', '721', 'student_621', 'student_middle_621', 'student_last621', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_622@somaiya.edu', '722', 'student_622', 'student_middle_622', 'student_last622', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_623@somaiya.edu', '723', 'student_623', 'student_middle_623', 'student_last623', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_624@somaiya.edu', '724', 'student_624', 'student_middle_624', 'student_last624', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_625@somaiya.edu', '725', 'student_625', 'student_middle_625', 'student_last625', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_626@somaiya.edu', '726', 'student_626', 'student_middle_626', 'student_last626', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_627@somaiya.edu', '727', 'student_627', 'student_middle_627', 'student_last627', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_628@somaiya.edu', '728', 'student_628', 'student_middle_628', 'student_last628', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_629@somaiya.edu', '729', 'student_629', 'student_middle_629', 'student_last629', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_62@somaiya.edu', '162', 'student_62', 'student_middle_62', 'student_last62', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_630@somaiya.edu', '730', 'student_630', 'student_middle_630', 'student_last630', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_631@somaiya.edu', '731', 'student_631', 'student_middle_631', 'student_last631', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_632@somaiya.edu', '732', 'student_632', 'student_middle_632', 'student_last632', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_633@somaiya.edu', '733', 'student_633', 'student_middle_633', 'student_last633', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_634@somaiya.edu', '734', 'student_634', 'student_middle_634', 'student_last634', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_635@somaiya.edu', '735', 'student_635', 'student_middle_635', 'student_last635', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_636@somaiya.edu', '736', 'student_636', 'student_middle_636', 'student_last636', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_637@somaiya.edu', '737', 'student_637', 'student_middle_637', 'student_last637', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_638@somaiya.edu', '738', 'student_638', 'student_middle_638', 'student_last638', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_639@somaiya.edu', '739', 'student_639', 'student_middle_639', 'student_last639', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_63@somaiya.edu', '163', 'student_63', 'student_middle_63', 'student_last63', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_640@somaiya.edu', '740', 'student_640', 'student_middle_640', 'student_last640', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_641@somaiya.edu', '741', 'student_641', 'student_middle_641', 'student_last641', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_642@somaiya.edu', '742', 'student_642', 'student_middle_642', 'student_last642', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_643@somaiya.edu', '743', 'student_643', 'student_middle_643', 'student_last643', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_644@somaiya.edu', '744', 'student_644', 'student_middle_644', 'student_last644', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_645@somaiya.edu', '745', 'student_645', 'student_middle_645', 'student_last645', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_646@somaiya.edu', '746', 'student_646', 'student_middle_646', 'student_last646', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_647@somaiya.edu', '747', 'student_647', 'student_middle_647', 'student_last647', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_648@somaiya.edu', '748', 'student_648', 'student_middle_648', 'student_last648', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_649@somaiya.edu', '749', 'student_649', 'student_middle_649', 'student_last649', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_64@somaiya.edu', '164', 'student_64', 'student_middle_64', 'student_last64', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_650@somaiya.edu', '750', 'student_650', 'student_middle_650', 'student_last650', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_651@somaiya.edu', '751', 'student_651', 'student_middle_651', 'student_last651', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_652@somaiya.edu', '752', 'student_652', 'student_middle_652', 'student_last652', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_653@somaiya.edu', '753', 'student_653', 'student_middle_653', 'student_last653', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_654@somaiya.edu', '754', 'student_654', 'student_middle_654', 'student_last654', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_655@somaiya.edu', '755', 'student_655', 'student_middle_655', 'student_last655', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_656@somaiya.edu', '756', 'student_656', 'student_middle_656', 'student_last656', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_657@somaiya.edu', '757', 'student_657', 'student_middle_657', 'student_last657', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_658@somaiya.edu', '758', 'student_658', 'student_middle_658', 'student_last658', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_659@somaiya.edu', '759', 'student_659', 'student_middle_659', 'student_last659', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_65@somaiya.edu', '165', 'student_65', 'student_middle_65', 'student_last65', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_660@somaiya.edu', '760', 'student_660', 'student_middle_660', 'student_last660', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_661@somaiya.edu', '761', 'student_661', 'student_middle_661', 'student_last661', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_662@somaiya.edu', '762', 'student_662', 'student_middle_662', 'student_last662', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_663@somaiya.edu', '763', 'student_663', 'student_middle_663', 'student_last663', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_664@somaiya.edu', '764', 'student_664', 'student_middle_664', 'student_last664', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_665@somaiya.edu', '765', 'student_665', 'student_middle_665', 'student_last665', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_666@somaiya.edu', '766', 'student_666', 'student_middle_666', 'student_last666', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_667@somaiya.edu', '767', 'student_667', 'student_middle_667', 'student_last667', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_668@somaiya.edu', '768', 'student_668', 'student_middle_668', 'student_last668', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_669@somaiya.edu', '769', 'student_669', 'student_middle_669', 'student_last669', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_66@somaiya.edu', '166', 'student_66', 'student_middle_66', 'student_last66', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_670@somaiya.edu', '770', 'student_670', 'student_middle_670', 'student_last670', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_671@somaiya.edu', '771', 'student_671', 'student_middle_671', 'student_last671', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_672@somaiya.edu', '772', 'student_672', 'student_middle_672', 'student_last672', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_673@somaiya.edu', '773', 'student_673', 'student_middle_673', 'student_last673', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_674@somaiya.edu', '774', 'student_674', 'student_middle_674', 'student_last674', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_675@somaiya.edu', '775', 'student_675', 'student_middle_675', 'student_last675', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_676@somaiya.edu', '776', 'student_676', 'student_middle_676', 'student_last676', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_677@somaiya.edu', '777', 'student_677', 'student_middle_677', 'student_last677', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_678@somaiya.edu', '778', 'student_678', 'student_middle_678', 'student_last678', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_679@somaiya.edu', '779', 'student_679', 'student_middle_679', 'student_last679', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_67@somaiya.edu', '167', 'student_67', 'student_middle_67', 'student_last67', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_680@somaiya.edu', '780', 'student_680', 'student_middle_680', 'student_last680', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_681@somaiya.edu', '781', 'student_681', 'student_middle_681', 'student_last681', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_682@somaiya.edu', '782', 'student_682', 'student_middle_682', 'student_last682', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_683@somaiya.edu', '783', 'student_683', 'student_middle_683', 'student_last683', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_684@somaiya.edu', '784', 'student_684', 'student_middle_684', 'student_last684', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23');
+INSERT INTO `student` (`email_id`, `rollno`, `fname`, `mname`, `lname`, `year_of_admission`, `dept_id`, `program`, `current_sem`, `form_filled`, `adding_email_id`, `timestamp`) VALUES
+('student_685@somaiya.edu', '785', 'student_685', 'student_middle_685', 'student_last685', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_686@somaiya.edu', '786', 'student_686', 'student_middle_686', 'student_last686', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_687@somaiya.edu', '787', 'student_687', 'student_middle_687', 'student_last687', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_688@somaiya.edu', '788', 'student_688', 'student_middle_688', 'student_last688', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_689@somaiya.edu', '789', 'student_689', 'student_middle_689', 'student_last689', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_68@somaiya.edu', '168', 'student_68', 'student_middle_68', 'student_last68', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_690@somaiya.edu', '790', 'student_690', 'student_middle_690', 'student_last690', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_691@somaiya.edu', '791', 'student_691', 'student_middle_691', 'student_last691', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_692@somaiya.edu', '792', 'student_692', 'student_middle_692', 'student_last692', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_693@somaiya.edu', '793', 'student_693', 'student_middle_693', 'student_last693', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_694@somaiya.edu', '794', 'student_694', 'student_middle_694', 'student_last694', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_695@somaiya.edu', '795', 'student_695', 'student_middle_695', 'student_last695', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_696@somaiya.edu', '796', 'student_696', 'student_middle_696', 'student_last696', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_697@somaiya.edu', '797', 'student_697', 'student_middle_697', 'student_last697', '2018', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_698@somaiya.edu', '798', 'student_698', 'student_middle_698', 'student_last698', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_699@somaiya.edu', '799', 'student_699', 'student_middle_699', 'student_last699', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_69@somaiya.edu', '169', 'student_69', 'student_middle_69', 'student_last69', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_6@somaiya.edu', '106', 'student_6', 'student_middle_6', 'student_last6', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_700@somaiya.edu', '800', 'student_700', 'student_middle_700', 'student_last700', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_701@somaiya.edu', '801', 'student_701', 'student_middle_701', 'student_last701', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_702@somaiya.edu', '802', 'student_702', 'student_middle_702', 'student_last702', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_703@somaiya.edu', '803', 'student_703', 'student_middle_703', 'student_last703', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_704@somaiya.edu', '804', 'student_704', 'student_middle_704', 'student_last704', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_705@somaiya.edu', '805', 'student_705', 'student_middle_705', 'student_last705', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_706@somaiya.edu', '806', 'student_706', 'student_middle_706', 'student_last706', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_707@somaiya.edu', '807', 'student_707', 'student_middle_707', 'student_last707', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_708@somaiya.edu', '808', 'student_708', 'student_middle_708', 'student_last708', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_709@somaiya.edu', '809', 'student_709', 'student_middle_709', 'student_last709', '2019', 5, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_70@somaiya.edu', '170', 'student_70', 'student_middle_70', 'student_last70', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_710@somaiya.edu', '810', 'student_710', 'student_middle_710', 'student_last710', '2017', 2, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_71@somaiya.edu', '171', 'student_71', 'student_middle_71', 'student_last71', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_72@somaiya.edu', '172', 'student_72', 'student_middle_72', 'student_last72', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_73@somaiya.edu', '173', 'student_73', 'student_middle_73', 'student_last73', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_74@somaiya.edu', '174', 'student_74', 'student_middle_74', 'student_last74', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_75@somaiya.edu', '175', 'student_75', 'student_middle_75', 'student_last75', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_76@somaiya.edu', '176', 'student_76', 'student_middle_76', 'student_last76', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_77@somaiya.edu', '177', 'student_77', 'student_middle_77', 'student_last77', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_78@somaiya.edu', '178', 'student_78', 'student_middle_78', 'student_last78', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_79@somaiya.edu', '179', 'student_79', 'student_middle_79', 'student_last79', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_7@somaiya.edu', '107', 'student_7', 'student_middle_7', 'student_last7', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_80@somaiya.edu', '180', 'student_80', 'student_middle_80', 'student_last80', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_81@somaiya.edu', '181', 'student_81', 'student_middle_81', 'student_last81', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_82@somaiya.edu', '182', 'student_82', 'student_middle_82', 'student_last82', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_83@somaiya.edu', '183', 'student_83', 'student_middle_83', 'student_last83', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_84@somaiya.edu', '184', 'student_84', 'student_middle_84', 'student_last84', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_85@somaiya.edu', '185', 'student_85', 'student_middle_85', 'student_last85', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_86@somaiya.edu', '186', 'student_86', 'student_middle_86', 'student_last86', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_87@somaiya.edu', '187', 'student_87', 'student_middle_87', 'student_last87', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_88@somaiya.edu', '188', 'student_88', 'student_middle_88', 'student_last88', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_89@somaiya.edu', '189', 'student_89', 'student_middle_89', 'student_last89', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_8@somaiya.edu', '108', 'student_8', 'student_middle_8', 'student_last8', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_90@somaiya.edu', '190', 'student_90', 'student_middle_90', 'student_last90', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_91@somaiya.edu', '191', 'student_91', 'student_middle_91', 'student_last91', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_92@somaiya.edu', '192', 'student_92', 'student_middle_92', 'student_last92', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_93@somaiya.edu', '193', 'student_93', 'student_middle_93', 'student_last93', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_94@somaiya.edu', '194', 'student_94', 'student_middle_94', 'student_last94', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_95@somaiya.edu', '195', 'student_95', 'student_middle_95', 'student_last95', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_96@somaiya.edu', '196', 'student_96', 'student_middle_96', 'student_last96', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_97@somaiya.edu', '197', 'student_97', 'student_middle_97', 'student_last97', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_98@somaiya.edu', '198', 'student_98', 'student_middle_98', 'student_last98', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_99@somaiya.edu', '199', 'student_99', 'student_middle_99', 'student_last99', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23'),
+('student_9@somaiya.edu', '109', 'student_9', 'student_middle_9', 'student_last9', '2018', 1, 'UG', 4, 0, 'IC@somaiya.edu', '2020-07-06 16:03:23');
 
 -- --------------------------------------------------------
 
@@ -1669,13 +1244,6 @@ CREATE TABLE `student_audit_log` (
   `student_attendence` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `student_audit_log`
---
-
-INSERT INTO `student_audit_log` (`email_id`, `cid`, `sem`, `year`, `complete_status`, `student_attendence`) VALUES
-('student@somaiya.edu', 'UCEC8785', 3, '2018-19', 1, 70);
-
 -- --------------------------------------------------------
 
 --
@@ -1683,12 +1251,27 @@ INSERT INTO `student_audit_log` (`email_id`, `cid`, `sem`, `year`, `complete_sta
 --
 
 CREATE TABLE `student_form` (
-  `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `no` int(11) NOT NULL,
-  `form_type` varchar(10) NOT NULL,
+  `form_id` int(11) NOT NULL,
   `email_id` varchar(50) NOT NULL,
-  `timestamp` varchar(30) NOT NULL
+  `form_filled` tinyint(4) NOT NULL DEFAULT 0,
+  `timestamp` varchar(30) NOT NULL DEFAULT '',
+  `currently_active` tinyint(4) NOT NULL DEFAULT 0,
+  `dept_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student_form_log`
+--
+
+CREATE TABLE `student_form_log` (
+  `form_id` int(11) NOT NULL,
+  `email_id` varchar(50) NOT NULL,
+  `form_filled` tinyint(4) NOT NULL DEFAULT 0,
+  `timestamp` varchar(30) NOT NULL DEFAULT '',
+  `currently_active` tinyint(4) NOT NULL DEFAULT 0,
+  `dept_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -1699,759 +1282,44 @@ CREATE TABLE `student_form` (
 
 CREATE TABLE `student_marks` (
   `email_id` varchar(50) NOT NULL,
+  `rollno` varchar(20) NOT NULL,
   `sem` int(11) NOT NULL,
-  `gpa` float NOT NULL,
-  `year` varchar(8) NOT NULL
+  `year` varchar(8) NOT NULL,
+  `gpa` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `student_preference_audit`
+-- Table structure for table `student_preferences`
 --
 
-CREATE TABLE `student_preference_audit` (
+CREATE TABLE `student_preferences` (
+  `form_id` int(11) NOT NULL,
   `email_id` varchar(50) NOT NULL,
   `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `rollno` varchar(20) NOT NULL,
-  `timestamp` varchar(30) NOT NULL,
-  `allocate_status` tinyint(4) NOT NULL DEFAULT 0,
-  `no_of_valid_preferences` int(11) NOT NULL,
-  `pref1` varchar(15) NOT NULL DEFAULT '',
-  `pref2` varchar(15) NOT NULL DEFAULT '',
-  `pref3` varchar(15) NOT NULL DEFAULT '',
-  `pref4` varchar(15) NOT NULL DEFAULT '',
-  `pref5` varchar(15) NOT NULL DEFAULT '',
-  `pref6` varchar(15) NOT NULL DEFAULT '',
-  `pref7` varchar(15) NOT NULL DEFAULT '',
-  `pref8` varchar(15) NOT NULL DEFAULT ''
+  `year` varchar(9) NOT NULL,
+  `currently_active` int(1) NOT NULL,
+  `time_stamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `prefered_cid` varchar(30) NOT NULL,
+  `prefered_course_type_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `student_preference_audit`
---
-
-INSERT INTO `student_preference_audit` (`email_id`, `sem`, `year`, `rollno`, `timestamp`, `allocate_status`, `no_of_valid_preferences`, `pref1`, `pref2`, `pref3`, `pref4`, `pref5`, `pref6`, `pref7`, `pref8`) VALUES
-('a.choubey@somaiya.edu', 5, '2020-21', '1813130', '2020/04/15 00:00:41', 0, 8, '2UST532', '2UST543', '2UST533', '2UST514', '2UST512', '2UST544', '2UST531', 'same as pref 1'),
-('a.dautkhane@somaiya.edu', 5, '2020-21', '1813012', '2020/04/15 14:42:20', 0, 8, '2UST514', '2UST531', '2UST543', '2UST532', '2UST533', '2UST511', '2UST512', '2UST513'),
-('a.mahadevan@somaiya.edu', 5, '2020-21', '1811022', '2020/04/13 14:59:40', 0, 8, '2UST513', '2UST512', '2UST531', '2UST532', '2UST541', '2UST534', '2UST542', '2UST553'),
-('a.maru@somaiya.edu', 5, '2020-21', '1813102', '2020/04/13 16:06:30', 0, 8, '2UST543', '2UST514', '2UST542', '2UST512', '2UST524', '2UST563', 'same as pref 5', '2UST562'),
-('a.pareri@somaiya.edu', 5, '2020-21', '1814111', '2020/04/15 00:02:47', 0, 8, '2UST512', '2UST541', '2UST543', '2UST513', '2UST542', '2UST524', '2UST511', 'same as pref 5'),
-('a.shridharani@somaiya.edu', 5, '2020-21', '1812115', '2020/04/13 17:45:27', 0, 8, '2UST513', '2UST514', '2UST532', '2UST522', '2UST523', '2UST562', '2UST563', '2UST561'),
-('a.venkatadri@somaiya.edu', 5, '2020-21', '1812004', '2020/04/15 18:15:47', 0, 8, '2UST543', '2UST513', '2UST531', '2UST524', '2UST532', '2UST561', '2UST551', '2UST552'),
-('aaditya.r@somaiya.edu', 5, '2020-21', '1812094', '2020/04/15 10:35:33', 0, 8, '2UST553', '2UST534', '2UST513', '2UST563', '2UST512', '2UST562', '2UST561', 'same as pref 4'),
-('aafiya.h@somaiya.edu', 5, '2020-21', '1811014', '2020/04/15 00:06:59', 0, 8, '2UST531', '2UST512', '2UST543', '2UST532', '2UST541', '2UST524', '2UST511', '2UST542'),
-('aagam.mehta@somaiya.edu', 5, '2020-21', '1812104', '2020/04/13 14:57:36', 0, 8, '2UST543', '2UST522', '2UST552', '2UST551', '2UST541', '2UST533', '2UST511', '2UST531'),
-('aaron.cherian@somaiya.edu', 5, '2020-21', '1813069', '2020/04/14 19:46:31', 0, 8, '2UST524', '2UST514', '2UST532', '2UST544', '2UST543', 'same as pref 4', 'same as pref 3', '2UST542'),
-('aayuse.p@somaiya.edu', 5, '2020-21', '1812093', '2020/04/13 15:04:45', 0, 8, '2UST513', '2UST522', '2UST511', '2UST512', '2UST553', 'same as pref 4', '2UST544', '2UST541'),
-('abhijeet.dwivedi@somaiya.edu', 5, '2020-21', '1813013', '2020/04/15 9:46:53', 0, 8, '2UST512', '2UST543', '2UST531', '2UST532', '2UST551', 'same as pref 5', '2UST552', '2UST553'),
-('abhinav.jha@somaiya.edu', 5, '2020-21', '1812029', '2020/04/16 00:05:14', 0, 8, '2UST534', '2UST543', '2UST531', '2UST524', '2UST551', '2UST513', '2UST532', 'same as pref 5'),
-('abhinav.z@somaiya.edu', 5, '2020-21', '1815137', '2020/04/15 19:55:54', 0, 8, '2UST553', '2UST543', '2UST551', '2UST534', '2UST524', '2UST513', '2UST541', 'same as pref 5'),
-('abhiram.a@somaiya.edu', 5, '2020-21', '1813001', '2020/04/15 17:09:22', 0, 8, '2UST533', '2UST512', '2UST522', '2UST531', '2UST514', '2UST532', '2UST544', '2UST541'),
-('abhishek.ambekar@somaiya.edu', 5, '2020-21', '1815001', '2020/04/14 21:29:59', 0, 8, '2UST553', '2UST551', '2UST563', '2UST561', '2UST562', '2UST544', '2UST542', '2UST543'),
-('abhishek.padiya@somaiya.edu', 5, '2020-21', '1812092', '2020/04/13 15:30:08', 0, 8, '2UST552', '2UST551', '2UST522', '2UST524', '2UST513', '2UST531', '2UST542', '2UST553'),
-('abhishek.potdar@somaiya.edu', 5, '2020-21', '1814048', '2020/04/13 16:04:43', 0, 8, '2UST513', '2UST512', '2UST541', '2UST511', '2UST531', 'same as pref 3', 'same as pref 4', '2UST542'),
-('adarsh.rj@somaiya.edu', 5, '2020-21', '1814084', '2020/04/14 23:50:04', 0, 8, '2UST524', '2UST561', '2UST543', '2UST531', '2UST532', 'same as pref 1', 'same as pref 4', 'same as pref 5'),
-('aditi.joisher@somaiya.edu', 5, '2020-21', '1813086', '2020/04/13 14:45:25', 0, 8, '2UST514', '2UST532', '2UST512', '2UST541', '2UST531', '2UST521', 'same as pref 5', 'same as pref 2'),
-('aditi.kulkarni@somaiya.edu', 5, '2020-21', '1813024', '2020/04/14 20:58:06', 0, 8, '2UST514', '2UST524', '2UST513', '2UST533', '2UST543', '2UST552', '2UST551', '2UST534'),
-('aditya.datar@somaiya.edu', 5, '2020-21', '1814003', '2020/04/15 23:48:46', 0, 8, '2UST543', 'same as pref 1', 'same as pref 1', '2UST544', 'same as pref 4', '2UST551', '2UST511', '2UST512'),
-('aditya.goud@somaiya.edu', 5, '2020-21', '1812023', '2020/04/14 23:34:18', 0, 8, '2UST534', '2UST543', '2UST551', '2UST522', '2UST563', '2UST531', '2UST532', '2UST541'),
-('aditya.mahesh@somaiya.edu', 5, '2020-21', '1813064', '2020/04/15 22:10:26', 0, 8, '2UST524', '2UST543', '2UST531', '2UST514', '2UST533', 'same as pref 4', 'same as pref 4', 'same as pref 4'),
-('aditya.shenoy@somaiya.edu', 5, '2020-21', '1813057', '2020/04/15 21:09:17', 0, 8, '2UST543', '2UST531', '2UST552', '2UST553', '2UST522', '2UST523', 'same as pref 4', '2UST521'),
-('aditya.vaishya@somaiya.edu', 5, '2020-21', '1814117', '2020/04/13 14:51:14', 0, 8, '2UST511', '2UST531', '2UST512', '2UST541', '2UST542', 'same as pref 5', 'same as pref 1', '2UST524'),
-('aditya06@somaiya.edu', 5, '2020-21', '1815124', '2020/04/14 20:03:13', 0, 8, '2UST524', '2UST543', '2UST553', '2UST551', '2UST534', 'same as pref 2', '2UST513', '2UST562'),
-('aiswarya.k@somaiya.edu', 5, '2020-21', '1814122', '2020/04/13 20:57:29', 0, 8, '2UST512', '2UST541', '2UST544', '2UST543', '2UST532', '2UST531', '2UST542', '2UST533'),
-('ajay.bhan@somaiya.edu', 5, '2020-21', '1811128', '2020/04/14 12:00:01', 0, 8, '2UST512', '2UST511', '2UST543', '2UST524', '2UST531', '2UST544', 'same as pref 5', '2UST542'),
-('ajinkya.kirkire@somaiya.edu', 5, '2020-21', '1813094', '2020/04/13 15:12:39', 0, 8, '2UST531', '2UST513', '2UST511', '2UST512', '2UST543', '2UST541', '2UST532', '2UST542'),
-('akash.biradar@somaiya.edu', 5, '2020-21', '1712068', '2020/04/15 10:11:21', 0, 8, '2UST514', '2UST543', '2UST532', '2UST511', '2UST512', '2UST522', '2UST551', '2UST534'),
-('akhil.namboodiri@somaiya.edu', 5, '2020-21', '1814042', '2020/04/14 21:53:05', 0, 8, '2UST512', '2UST511', '2UST531', '2UST541', '2UST542', '2UST524', '2UST543', 'same as pref 2'),
-('akshar.barchha@somaiya.edu', 5, '2020-21', '1811067', '2020/04/14 23:13:20', 0, 8, '2UST541', '2UST531', '2UST513', '2UST532', '2UST544', '2UST514', '2UST534', '2UST561'),
-('aksharan.g@somaiya.edu', 5, '2020-21', '1812003', '2020/04/14 20:24:31', 0, 8, '2UST543', '2UST532', '2UST521', '2UST523', '2UST514', '2UST542', '2UST511', 'same as pref 2'),
-('akshat.ag@somaiya.edu', 5, '2020-21', '1811012', '2020/04/13 15:21:59', 0, 8, '2UST513', '2UST512', '2UST511', '2UST531', '2UST524', '2UST542', '2UST563', 'same as pref 1'),
-('akshat.shah2@somaiya.edu', 5, '2020-21', '1812059', '2020/04/14 18:42:24', 0, 8, '2UST522', '2UST553', '2UST551', '2UST563', '2UST521', '2UST511', '2UST562', '2UST513'),
-('akshata.barne@somaiya.edu', 5, '2020-21', '1812066', '2020/04/14 13:18:45', 0, 8, '2UST561', '2UST532', '2UST543', '2UST534', '2UST522', '2UST544', '2UST531', '2UST513'),
-('akshit.gs@somaiya.edu', 5, '2020-21', '1811042', '2020/04/14 20:23:31', 0, 8, '2UST512', '2UST511', '2UST541', '2UST542', '2UST532', '2UST534', 'same as pref 1', 'same as pref 2'),
-('akshit.sanchala@somaiya.edu', 5, '2020-21', '1814067', '2020/04/13 14:53:47', 0, 8, '2UST512', '2UST511', '2UST543', '2UST541', '2UST542', 'same as pref 4', '2UST514', 'same as pref 5'),
-('akshit.sj@somaiya.edu', 5, '2020-21', '1812034', '2020/04/15 14:52:03', 0, 8, '2UST511', '2UST543', '2UST522', '2UST551', '2UST553', '2UST533', 'same as pref 2', '2UST541'),
-('akshit.tayade@somaiya.edu', 5, '2020-21', '1813106', '2020/04/13 17:26:14', 0, 8, '2UST514', '2UST531', '2UST512', '2UST544', '2UST543', '2UST553', 'same as pref 4', '2UST522'),
-('alfiza.s@somaiya.edu', 5, '2020-21', '1811118', '2020/04/15 12:45:18', 0, 8, '2UST512', '2UST524', '2UST541', '2UST544', '2UST543', '2UST563', '2UST532', 'same as pref 1'),
-('aliasgar.zm@somaiya.edu', 5, '2020-21', '1815037', '2020/04/14 00:49:41', 0, 8, '2UST531', '2UST513', '2UST511', '2UST521', '2UST551', 'same as pref 2', '2UST533', 'same as pref 4'),
-('aman.desai@somaiya.edu', 5, '2020-21', '1811073', '2020/04/13 21:36:02', 0, 8, '2UST533', '2UST543', '2UST512', '2UST542', '2UST513', '2UST541', 'same as pref 5', '2UST544'),
-('aman.jg@somaiya.edu', 5, '2020-21', '1815082', '2020/04/15 19:29:21', 0, 8, '2UST553', '2UST514', '2UST543', '2UST561', '2UST513', '2UST534', '2UST541', '2UST531'),
-('aman.khakharia@somaiya.edu', 5, '2020-21', '1812033', '2020/04/14 21:04:55', 0, 8, '2UST543', '2UST542', '2UST524', '2UST532', '2UST514', 'same as pref 5', 'same as pref 3', '2UST511'),
-('aman.panchal@somaiya.edu', 5, '2020-21', '1815104', '2020/04/14 21:45:17', 0, 8, '2UST561', 'same as pref 1', 'same as pref 1', '2UST563', 'same as pref 4', '2UST544', '2UST513', '2UST533'),
-('amanshu.t@somaiya.edu', 5, '2020-21', '1922023', '2020/04/13 17:07:37', 0, 8, '2UST512', '2UST541', '2UST531', '2UST544', '2UST533', '2UST513', '2UST542', '2UST511'),
-('amogh.sinkar@somaiya.edu', 5, '2020-21', '1811056', '2020/04/13 14:52:32', 0, 8, '2UST512', '2UST544', '2UST532', '2UST543', '2UST531', 'same as pref 1', '2UST534', '2UST551'),
-('anchal.j@somaiya.edu', 5, '2020-21', '1811015', '2020/04/14 22:08:36', 0, 8, '2UST511', '2UST531', '2UST512', '2UST541', '2UST542', '2UST513', '2UST544', '2UST543'),
-('aniket.ay@somaiya.edu', 5, '2020-21', '1815067', '2020/04/15 19:47:51', 0, 8, '2UST531', '2UST514', '2UST543', '2UST551', '2UST553', 'same as pref 3', '2UST533', '2UST544'),
-('aniket.bhosale@somaiya.edu', 5, '2020-21', '1811069', '2020/04/15 20:45:06', 0, 8, '2UST531', '2UST524', '2UST561', '2UST532', '2UST544', '2UST562', '2UST511', '2UST542'),
-('aniket.choudhar@somaiya.edu', 5, '2020-21', '1812074', '2020/04/16 00:34:29', 0, 8, '2UST512', '2UST513', '2UST532', '2UST533', '2UST541', 'same as pref 3', 'same as pref 4', '2UST542'),
-('aniket.ubhare@somaiya.edu', 5, '2020-21', '1812063', '2020/04/14 16:24:36', 0, 8, '2UST553', '2UST534', '2UST552', '2UST551', '2UST521', '2UST511', '2UST512', '2UST541'),
-('aniket05@somaiya.edu', 5, '2020-21', '1811083', '2020/04/14 18:12:03', 0, 8, '2UST524', '2UST531', '2UST543', '2UST512', '2UST513', '2UST534', 'same as pref 3', '2UST514'),
-('anina.pillai@somaiya.edu', 5, '2020-21', '1811034', '2020/04/13 15:16:28', 0, 8, '2UST513', '2UST531', '2UST512', '2UST511', '2UST542', '2UST524', '2UST543', '2UST541'),
-('anirudh.rn@somaiya.edu', 5, '2020-21', '1815101', '2020/04/13 14:44:24', 0, 8, '2UST553', '2UST513', '2UST563', '2UST534', '2UST551', '2UST541', '2UST533', '2UST521'),
-('anjali.gohil@somaiya.edu', 5, '2020-21', '1811080', '2020/04/15 20:18:36', 0, 8, '2UST512', '2UST513', '2UST511', '2UST532', '2UST541', '2UST524', 'same as pref 1', 'same as pref 3'),
-('ankit.thakker@somaiya.edu', 5, '2020-21', '1811123', '2020/04/13 21:23:33', 0, 8, '2UST512', '2UST531', '2UST532', '2UST513', '2UST542', 'same as pref 3', '2UST524', '2UST521'),
-('annas.khan@somaiya.edu', 5, '2020-21', '1812080', '2020/04/15 22:29:17', 0, 8, '2UST524', '2UST543', '2UST514', '2UST544', '2UST561', 'same as pref 5', '2UST553', '2UST562'),
-('anoushka.p@somaiya.edu', 5, '2020-21', '1813107', '2020/04/14 23:59:53', 0, 8, '2UST532', '2UST543', '2UST533', '2UST514', '2UST512', 'same as pref 3', 'same as pref 1', '2UST513'),
-('anoushka.s@somaiya.edu', 5, '2020-21', '1813121', '2020/04/14 22:44:27', 0, 8, '2UST543', '2UST514', '2UST512', '2UST531', '2UST532', '2UST513', '2UST544', '2UST561'),
-('ansh.dugar@somaiya.edu', 5, '2020-21', '1814064', '2020/04/13 16:14:34', 0, 8, '2UST524', '2UST531', '2UST512', '2UST513', '2UST543', 'same as pref 2', 'same as pref 1', '2UST522'),
-('ansh.jain@somaiya.edu', 5, '2020-21', '1811016', '2020/04/14 22:08:42', 0, 8, '2UST511', '2UST531', '2UST512', '2UST541', '2UST542', '2UST532', 'same as pref 4', 'same as pref 5'),
-('ansh.mehta@somaiya.edu', 5, '2020-21', '1814090', '2020/04/14 14:12:25', 0, 8, '2UST541', '2UST542', '2UST532', '2UST524', '2UST531', '2UST523', '2UST522', 'same as pref 3'),
-('anuj.sarda@somaiya.edu', 5, '2020-21', '1814052', '2020/04/14 15:59:38', 0, 8, '2UST512', '2UST541', '2UST543', '2UST542', '2UST544', 'same as pref 5', 'same as pref 2', '2UST511'),
-('anushka.darade@somaiya.edu', 5, '2020-21', '1814012', '2020/04/13 18:29:24', 0, 8, '2UST512', '2UST542', '2UST541', '2UST543', '2UST544', 'same as pref 5', 'same as pref 1', '2UST561'),
-('anushka.sinha@somaiya.edu', 5, '2020-21', '1813060', '2020/04/13 15:54:23', 0, 8, '2UST531', '2UST512', '2UST511', '2UST524', '2UST533', '2UST553', '2UST551', '2UST563'),
-('anuvrat.m@somaiya.edu', 5, '2020-21', '1812042', '2020/04/15 20:27:44', 0, 8, '2UST522', '2UST551', '2UST513', '2UST511', '2UST561', '2UST532', '2UST531', '2UST543'),
-('apoorv.gupta@somaiya.edu', 5, '2020-21', '1814081', '2020/04/13 15:15:27', 0, 8, '2UST541', '2UST544', '2UST511', '2UST513', '2UST542', 'same as pref 1', '2UST532', 'same as pref 5'),
-('apoorva.belokar@somaiya.edu', 5, '2020-21', '1815003', '2020/04/13 14:47:35', 0, 8, '2UST553', '2UST551', '2UST561', '2UST512', '2UST562', '2UST514', '2UST532', '2UST543'),
-('arjun.sehgal@somaiya.edu', 5, '2020-21', '1811041', '2020/04/14 11:59:48', 0, 8, '2UST512', '2UST511', '2UST543', '2UST524', '2UST531', 'same as pref 5', '2UST522', '2UST534'),
-('arkaprava.p@somaiya.edu', 5, '2020-21', '1813109', '2020/04/15 12:35:03', 0, 8, '2UST524', '2UST514', '2UST532', '2UST544', '2UST541', '2UST542', '2UST513', '2UST533'),
-('arnav.gadre@somaiya.edu', 5, '2020-21', '1812079', '2020/04/14 11:20:53', 0, 8, '2UST514', '2UST532', '2UST543', '2UST523', '2UST522', '2UST542', 'same as pref 2', '2UST511'),
-('aryak.naik@somaiya.edu', 5, '2020-21', '1812068', '2020/04/15 22:36:18', 0, 8, '2UST524', '2UST531', '2UST543', '2UST522', '2UST552', '2UST551', '2UST534', '2UST513'),
-('asgarali.q@somaiya.edu', 5, '2020-21', '1921004', '2020/04/13 14:44:32', 0, 8, '2UST512', '2UST511', '2UST531', '2UST544', '2UST513', 'same as pref 5', 'same as pref 2', '2UST532'),
-('ashesh.z@somaiya.edu', 5, '2020-21', '1815136', '2020/04/15 20:00:14', 0, 8, '2UST553', '2UST543', '2UST551', '2UST534', '2UST524', '2UST542', 'same as pref 2', '2UST541'),
-('ashish.khare@somaiya.edu', 5, '2020-21', '1813023', '2020/04/13 18:45:05', 0, 8, '2UST532', '2UST542', '2UST533', '2UST541', '2UST511', '2UST544', 'same as pref 4', 'same as pref 1'),
-('ashutosh.rane@somaiya.edu', 5, '2020-21', '1813112', '2020/04/15 21:00:52', 0, 8, '2UST543', '2UST553', '2UST561', '2UST534', '2UST531', '2UST541', '2UST544', '2UST511'),
-('ashwini.pp@somaiya.edu', 5, '2020-21', '1923009', '2020/04/13 15:33:40', 0, 8, '2UST543', '2UST514', '2UST513', '2UST512', '2UST531', '2UST522', '2UST524', '2UST541'),
-('ask1@somaiya.edu', 5, '2020-21', '1813025', '2020/04/15 23:39:49', 0, 8, '2UST543', '2UST514', '2UST524', '2UST553', '2UST552', '2UST544', '2UST533', '2UST512'),
-('asra.masrat@somaiya.edu', 5, '2020-21', '1924004', '2020/04/13 22:07:29', 0, 8, '2UST512', '2UST542', '2UST541', '2UST544', '2UST511', '2UST532', '2UST543', '2UST513'),
-('atharva.dave@somaiya.edu', 5, '2020-21', '1814072', '2020/04/14 11:28:42', 0, 8, '2UST541', '2UST544', '2UST513', '2UST543', '2UST533', 'same as pref 2', '2UST511', '2UST524'),
-('atharva.humar@somaiya.edu', 5, '2020-21', '1815021', '2020/04/15 12:37:52', 0, 8, '2UST543', '2UST513', '2UST531', '2UST553', '2UST514', 'same as pref 1', '2UST524', '2UST542'),
-('atharva.kitkaru@somaiya.edu', 5, '2020-21', '1814033', '2020/04/15 20:33:52', 0, 8, '2UST512', '2UST541', '2UST531', '2UST543', '2UST532', '2UST544', '2UST533', '2UST521'),
-('atharva.mp@somaiya.edu', 5, '2020-21', '1815050', '2020/04/13 15:27:40', 0, 8, '2UST553', '2UST551', '2UST521', '2UST532', '2UST561', '2UST541', '2UST533', 'same as pref 4'),
-('atharva.parkar@somaiya.edu', 5, '2020-21', '1812100', '2020/04/15 11:56:57', 0, 8, '2UST524', '2UST531', '2UST543', '2UST522', '2UST513', '2UST533', '2UST523', 'same as pref 2'),
-('atharva.sangle@somaiya.edu', 5, '2020-21', '1813114', '2020/04/14 20:14:52', 0, 8, '2UST512', '2UST514', '2UST532', '2UST513', '2UST553', 'same as pref 2', '2UST561', '2UST551'),
-('atharva.sm@somaiya.edu', 5, '2020-21', '1925008', '2020/04/15 20:19:20', 0, 8, '2UST551', '2UST514', '2UST553', '2UST521', '2UST531', '2UST541', '2UST542', '2UST522'),
-('atharva.vibhute@somaiya.edu', 5, '2020-21', '1813019', '2020/04/15 7:40:56', 0, 8, '2UST511', '2UST553', '2UST563', '2UST552', '2UST531', 'same as pref 5', '2UST521', '2UST534'),
-('avanish.batkulia@somaiya.edu', 5, '2020-21', '1815068', '2020/04/14 20:17:56', 0, 8, '2UST512', '2UST543', '2UST541', '2UST524', '2UST511', 'same as pref 1', '2UST542', '2UST544'),
-('avinash.ks@somaiya.edu', 5, '2020-21', '1814113', '2020/04/14 23:06:03', 0, 8, '2UST512', '2UST511', '2UST543', '2UST524', '2UST531', '2UST563', '2UST534', '2UST532'),
-('avinash.nair@somaiya.edu', 5, '2020-21', '1815022', '2020/04/13 14:43:47', 0, 8, '2UST553', '2UST551', '2UST543', '2UST513', '2UST511', 'same as pref 3', '2UST544', '2UST561'),
-('ayush.choudhary@somaiya.edu', 5, '2020-21', '1815007', '2020/04/15 12:22:56', 0, 8, '2UST562', '2UST553', '2UST543', '2UST563', '2UST561', 'same as pref 5', '2UST533', 'same as pref 4'),
-('ayush.khade@somaiya.edu', 5, '2020-21', '1811087', '2020/04/14 11:52:59', 0, 8, '2UST531', '2UST512', '2UST541', '2UST532', '2UST513', 'same as pref 5', '2UST524', 'same as pref 1'),
-('ayush.parmar@somaiya.edu', 5, '2020-21', '1813036', '2020/04/15 18:58:49', 0, 8, '2UST514', '2UST531', '2UST532', '2UST533', '2UST512', '2UST551', '2UST552', '2UST544'),
-('ayush.ranjan@somaiya.edu', 5, '2020-21', '1815051', '2020/04/15 23:11:17', 0, 8, '2UST512', '2UST511', '2UST543', '2UST513', '2UST531', 'same as pref 3', 'same as pref 2', 'same as pref 5'),
-('b.jhaveri@somaiya.edu', 5, '2020-21', '1925001', '2020/04/14 19:00:49', 0, 8, '2UST563', '2UST562', '2UST551', '2UST534', '2UST532', '2UST533', '2UST511', 'same as pref 5'),
-('b.poonawala@somaiya.edu', 5, '2020-21', '1812072', '2020/04/15 20:16:58', 0, 8, '2UST524', '2UST534', '2UST553', '2UST543', '2UST561', '2UST531', 'same as pref 1', 'same as pref 4'),
-('babita.r@somaiya.edu', 5, '2020-21', '1813090', '2020/04/15 23:29:50', 0, 8, '2UST531', '2UST513', '2UST532', '2UST511', '2UST512', '2UST544', '2UST533', 'same as pref 5'),
-('bharat.choithani@somaiya.edu', 5, '2020-21', '1814011', '2020/04/13 18:58:05', 0, 8, '2UST512', '2UST542', '2UST513', '2UST511', '2UST543', '2UST541', '2UST534', '2UST524'),
-('bhargavi.koli@somaiya.edu', 5, '2020-21', '1922007', '2020/04/13 22:15:51', 0, 8, '2UST543', '2UST521', '2UST563', '2UST524', '2UST551', '2UST533', '2UST523', '2UST544'),
-('bharvi.a@somaiya.edu', 5, '2020-21', '1812064', '2020/04/14 15:25:25', 0, 8, '2UST534', '2UST543', '2UST522', '2UST521', '2UST513', '2UST531', '2UST542', 'same as pref 5'),
-('bhavik.bhatt@somaiya.edu', 5, '2020-21', '1814007', '2020/04/13 14:48:21', 0, 8, '2UST512', '2UST544', '2UST511', '2UST541', '2UST531', '2UST524', '2UST532', '2UST542'),
-('bhavik.dhimar@somaiya.edu', 5, '2020-21', '1813072', '2020/04/13 16:14:27', 0, 8, '2UST543', '2UST531', '2UST532', '2UST542', '2UST524', '2UST541', 'same as pref 3', 'same as pref 4'),
-('bhavin.jp@somaiya.edu', 5, '2020-21', '1925010', '2020/04/15 17:45:06', 0, 8, '2UST563', '2UST544', '2UST542', '2UST551', '2UST553', '2UST541', '2UST532', '2UST513'),
-('bhavya.doshi1@somaiya.edu', 5, '2020-21', '1815075', '2020/04/15 15:02:08', 0, 8, '2UST553', '2UST543', '2UST551', '2UST514', '2UST561', '2UST524', '2UST531', '2UST534'),
-('bhavya.mv@somaiya.edu', 5, '2020-21', '1813125', '2020/04/15 16:51:12', 0, 8, '2UST543', '2UST553', '2UST533', '2UST531', '2UST551', '2UST513', 'same as pref 1', '2UST542'),
-('bhavya.sangoi@somaiya.edu', 5, '2020-21', '1925009', '2020/04/15 21:56:39', 0, 8, '2UST563', '2UST553', '2UST551', '2UST544', '2UST543', '2UST561', '2UST524', 'same as pref 5'),
-('bhikshiv.j@somaiya.edu', 5, '2020-21', '1813021', '2020/04/15 22:37:21', 0, 8, '2UST531', '2UST533', '2UST512', '2UST514', '2UST542', '2UST541', 'same as pref 1', '2UST543'),
-('bhushan.pawaskar@somaiya.edu', 5, '2020-21', '1815047', '2020/04/15 12:52:58', 0, 8, '2UST531', '2UST514', '2UST521', '2UST553', '2UST533', '2UST532', '2UST513', '2UST541'),
-('bhuvnesh.s@somaiya.edu', 5, '2020-21', '1811057', '2020/04/15 9:22:01', 0, 8, '2UST531', '2UST543', '2UST544', '2UST533', '2UST532', '2UST511', 'same as pref 2', '2UST563'),
-('bishandeep.a@somaiya.edu', 5, '2020-21', '1811100', '2020/04/13 15:22:01', 0, 8, '2UST512', '2UST543', '2UST544', '2UST511', '2UST541', '2UST531', '2UST533', '2UST551'),
-('bushra.a@somaiya.edu', 5, '2020-21', '1813003', '2020/04/15 23:45:54', 0, 8, '2UST543', '2UST532', '2UST531', '2UST514', '2UST533', 'same as pref 5', '2UST513', '2UST541'),
-('c.phadtare@somaiya.edu', 5, '2020-21', '1812047', '2020/04/14 22:41:49', 0, 8, '2UST513', '2UST511', '2UST514', '2UST522', '2UST563', '2UST532', '2UST543', '2UST533'),
-('chaitanya.bane@somaiya.edu', 5, '2020-21', '1815138', '2020/04/13 23:22:03', 0, 8, '2UST553', '2UST524', '2UST551', '2UST561', '2UST521', '2UST542', '2UST541', '2UST543'),
-('charmee.m@somaiya.edu', 5, '2020-21', '1924003', '2020/04/13 17:38:13', 0, 8, '2UST532', '2UST512', '2UST531', '2UST544', '2UST511', '2UST533', 'same as pref 5', '2UST542'),
-('chaturvedi.a@somaiya.edu', 5, '2020-21', '1811009', '2020/04/14 23:27:07', 0, 8, '2UST543', '2UST522', '2UST512', '2UST513', '2UST561', '2UST542', '2UST551', '2UST553'),
-('chetan.dinesh@somaiya.edu', 5, '2020-21', '1925012', '2020/04/13 20:13:28', 0, 8, '2UST551', '2UST553', '2UST521', '2UST563', '2UST561', 'same as pref 2', '2UST531', 'same as pref 4'),
-('chintan.jagad@somaiya.edu', 5, '2020-21', '1924001', '2020/04/15 16:28:09', 0, 8, '2UST541', '2UST542', '2UST543', '2UST533', '2UST532', 'same as pref 5', '2UST513', 'same as pref 2'),
-('chintan.modi@somaiya.edu', 5, '2020-21', '1811025', '2020/04/15 20:39:06', 0, 8, '2UST512', '2UST541', '2UST532', '2UST513', '2UST542', '2UST524', 'same as pref 5', '2UST511'),
-('chirag.jain1@somaiya.edu', 5, '2020-21', '1813082', '2020/04/13 15:25:04', 0, 8, '2UST531', '2UST532', '2UST533', '2UST514', '2UST524', '2UST541', 'same as pref 2', '2UST542'),
-('chirag.jhawar@somaiya.edu', 5, '2020-21', '1814085', '2020/04/13 16:22:13', 0, 8, '2UST531', '2UST512', '2UST513', '2UST541', '2UST543', '2UST532', 'same as pref 3', 'same as pref 5'),
-('chiranjivi.c@somaiya.edu', 5, '2020-21', '1815005', '2020/04/14 17:49:46', 0, 8, '2UST553', '2UST543', '2UST513', '2UST533', '2UST532', '2UST544', '2UST542', '2UST541'),
-('daidipya.s@somaiya.edu', 5, '2020-21', '1813056', '2020/04/15 21:10:47', 0, 8, '2UST514', '2UST543', '2UST552', '2UST553', '2UST532', 'same as pref 5', '2UST531', 'same as pref 2'),
-('danil.george@somaiya.edu', 5, '2020-21', '1812014', '2020/04/15 23:10:52', 0, 8, '2UST534', '2UST543', '2UST551', '2UST522', '2UST563', '2UST524', '2UST514', '2UST541'),
-('darsh.parmar@somaiya.edu', 5, '2020-21', '1812111', '2020/04/13 15:49:02', 0, 8, '2UST522', 'same as pref 1', '2UST543', '2UST552', 'same as pref 1', '2UST532', '2UST541', '2UST542'),
-('darshan.as@somaiya.edu', 5, '2020-21', '1813049', '2020/04/15 17:47:07', 0, 8, '2UST512', '2UST531', '2UST543', '2UST511', '2UST514', '2UST522', 'same as pref 3', 'same as pref 5'),
-('darshan.kalwani@somaiya.edu', 5, '2020-21', '1814029', '2020/04/13 15:00:23', 0, 8, '2UST531', '2UST532', '2UST512', '2UST513', '2UST511', 'same as pref 3', 'same as pref 2', '2UST524'),
-('darshan.sapariya@somaiya.edu', 5, '2020-21', '1813115', '2020/04/14 20:15:06', 0, 8, '2UST531', '2UST533', '2UST524', '2UST532', '2UST543', '2UST514', '2UST561', '2UST551'),
-('darshan.ss@somaiya.edu', 5, '2020-21', '1814109', '2020/04/14 12:03:13', 0, 8, '2UST511', '2UST512', '2UST541', '2UST513', '2UST543', '2UST522', '2UST534', 'same as pref 4'),
-('darshit.thakkar@somaiya.edu', 5, '2020-21', '1813122', '2020/04/13 14:47:47', 0, 8, '2UST543', '2UST514', '2UST532', '2UST533', 'same as pref 1', '2UST541', '2UST544', '2UST542'),
-('debdatta.k@somaiya.edu', 5, '2020-21', '1811092', '2020/04/13 21:49:22', 0, 8, '2UST531', '2UST524', '2UST532', '2UST512', '2UST511', '2UST543', '2UST542', 'same as pref 4'),
-('deep.rs@somaiya.edu', 5, '2020-21', '1815116', '2020/04/15 17:12:09', 0, 8, '2UST514', '2UST531', '2UST543', '2UST542', '2UST512', '2UST532', '2UST524', '2UST551'),
-('deep.shah5@somaiya.edu', 5, '2020-21', '1814110', '2020/04/14 20:58:49', 0, 8, '2UST512', '2UST541', '2UST542', '2UST511', '2UST543', 'same as pref 2', 'same as pref 1', '2UST533'),
-('deep08@somaiya.edu', 5, '2020-21', '1815011', '2020/04/15 15:35:50', 0, 8, '2UST543', '2UST553', '2UST551', '2UST514', '2UST513', 'same as pref 5', '2UST524', '2UST531'),
-('deepa.kumari@somaiya.edu', 5, '2020-21', '1814019', '2020/04/13 22:08:09', 0, 8, '2UST512', '2UST542', '2UST541', '2UST544', '2UST511', 'same as pref 5', '2UST543', '2UST531'),
-('deepanshu.v@somaiya.edu', 5, '2020-21', '1921005', '2020/04/13 18:05:21', 0, 8, '2UST531', '2UST541', '2UST512', '2UST543', '2UST524', '2UST544', 'same as pref 4', '2UST511'),
-('dev.de@somaiya.edu', 5, '2020-21', '1814013', '2020/04/15 18:34:01', 0, 8, '2UST512', '2UST511', '2UST524', '2UST531', '2UST513', '2UST532', '2UST534', '2UST522'),
-('dev.ss@somaiya.edu', 5, '2020-21', '1814016', '2020/04/13 15:04:33', 0, 8, '2UST513', '2UST531', '2UST512', '2UST524', '2UST553', '2UST521', '2UST514', 'same as pref 1'),
-('dev.vora@somaiya.edu', 5, '2020-21', '1814120', '2020/04/13 19:52:34', 0, 8, '2UST512', '2UST541', '2UST543', '2UST511', '2UST524', '2UST532', '2UST544', 'same as pref 5'),
-('devansh.cs@somaiya.edu', 5, '2020-21', '1815117', '2020/04/13 16:03:08', 0, 8, '2UST551', '2UST553', '2UST561', '2UST513', '2UST534', '2UST512', '2UST522', '2UST541'),
-('devansh.ds@somaiya.edu', 5, '2020-21', '1811111', '2020/04/13 14:54:49', 0, 8, '2UST543', '2UST513', '2UST512', '2UST531', '2UST533', '2UST522', '2UST541', 'same as pref 5'),
-('devansh.sanghavi@somaiya.edu', 5, '2020-21', '1811062', '2020/04/15 22:41:00', 0, 8, '2UST512', '2UST513', '2UST543', '2UST532', '2UST524', '2UST544', '2UST511', '2UST531'),
-('dhairya.kataria@somaiya.edu', 5, '2020-21', '1813091', '2020/04/15 18:30:09', 0, 8, '2UST543', '2UST514', '2UST531', '2UST524', '2UST532', '2UST534', '2UST533', '2UST562'),
-('dhairya.oza@somaiya.edu', 5, '2020-21', '1814043', '2020/04/15 22:36:40', 0, 8, '2UST543', '2UST512', '2UST561', '2UST553', '2UST531', '2UST511', '2UST522', '2UST532'),
-('dhairya.u@somaiya.edu', 5, '2020-21', '1814063', '2020/04/13 16:18:09', 0, 8, '2UST512', '2UST511', '2UST513', '2UST542', '2UST543', '2UST532', 'same as pref 2', '2UST524'),
-('dhairya12@somaiya.edu', 5, '2020-21', '1814053', '2020/04/13 14:44:37', 0, 8, '2UST512', '2UST541', '2UST543', '2UST544', '2UST542', '2UST513', '2UST531', '2UST534'),
-('dharm.shah@somaiya.edu', 5, '2020-21', '1815052', '2020/04/15 13:06:16', 0, 8, '2UST553', '2UST551', '2UST543', '2UST563', '2UST514', '2UST542', '2UST513', '2UST544'),
-('dharmesh.chawda@somaiya.edu', 5, '2020-21', '1814069', '2020/04/13 19:50:38', 0, 8, '2UST512', '2UST541', '2UST542', '2UST532', '2UST524', '2UST513', '2UST544', 'same as pref 7'),
-('dharmil17@somaiya.edu', 5, '2020-21', '1922011', '2020/04/15 17:17:32', 0, 8, '2UST521', '2UST552', '2UST563', '2UST551', '2UST553', 'same as pref 5', 'same as pref 2', '2UST561'),
-('dheeraj.jain@somaiya.edu', 5, '2020-21', '1815084', '2020/04/13 21:25:07', 0, 8, '2UST553', '2UST563', '2UST551', '2UST543', '2UST521', '2UST544', '2UST562', 'same as pref 1'),
-('dhiraj.jeswani@somaiya.edu', 5, '2020-21', '1815087', '2020/04/13 21:38:33', 0, 8, '2UST553', '2UST563', '2UST551', '2UST562', '2UST514', '2UST541', '2UST522', '2UST511'),
-('dhruman.g@somaiya.edu', 5, '2020-21', '1815019', '2020/04/13 14:44:17', 0, 8, '2UST553', '2UST551', '2UST563', '2UST534', '2UST513', '2UST543', '2UST524', '2UST514'),
-('dhruv.bid@somaiya.edu', 5, '2020-21', '1813005', '2020/04/15 21:35:32', 0, 8, '2UST543', '2UST512', '2UST514', '2UST532', '2UST522', '2UST541', 'same as pref 4', '2UST513'),
-('dhruv.cb@somaiya.edu', 5, '2020-21', '1812067', '2020/04/15 23:46:29', 0, 8, '2UST553', '2UST524', '2UST551', '2UST552', '2UST511', '2UST512', 'same as pref 5', '2UST563'),
-('dhruv.doshi@somaiya.edu', 5, '2020-21', '1814002', '2020/04/14 14:42:34', 0, 8, '2UST512', '2UST511', '2UST544', '2UST542', '2UST541', '2UST524', '2UST533', '2UST531'),
-('dhruv.lj@somaiya.edu', 5, '2020-21', '1815024', '2020/04/15 11:51:56', 0, 8, '2UST553', '2UST534', '2UST543', '2UST514', '2UST521', '2UST561', '2UST563', 'same as pref 5'),
-('dhruv.rg@somaiya.edu', 5, '2020-21', '1922013', '2020/04/15 20:15:30', 0, 8, '2UST514', '2UST532', '2UST513', '2UST533', '2UST524', '2UST552', '2UST563', '2UST551'),
-('dhruva.panchal@somaiya.edu', 5, '2020-21', '1922015', '2020/04/15 12:00:04', 0, 8, '2UST521', '2UST534', '2UST551', '2UST522', '2UST524', '2UST531', 'same as pref 4', 'same as pref 2'),
-('dhundiraj.j@somaiya.edu', 5, '2020-21', '1814027', '2020/04/15 16:30:09', 0, 8, '2UST512', '2UST531', '2UST543', '2UST561', '2UST524', '2UST511', 'same as pref 1', '2UST513'),
-('dhvanit.b@somaiya.edu', 5, '2020-21', '1813017', '2020/04/13 15:35:12', 0, 8, '2UST543', '2UST512', '2UST531', '2UST533', '2UST514', 'same as pref 3', 'same as pref 4', '2UST534'),
-('divya.raul@somaiya.edu', 5, '2020-21', '1812051', '2020/04/13 14:47:23', 0, 8, '2UST514', '2UST532', '2UST522', '2UST534', '2UST524', '2UST513', '2UST531', 'same as pref 4'),
-('divya.rr@somaiya.edu', 5, '2020-21', '1814102', '2020/04/13 19:50:10', 0, 8, '2UST531', '2UST543', '2UST513', '2UST542', '2UST512', 'same as pref 2', '2UST544', 'same as pref 1'),
-('divyansh.singh@somaiya.edu', 5, '2020-21', '1813059', '2020/04/15 23:39:36', 0, 8, '2UST543', '2UST514', '2UST524', '2UST553', '2UST552', '2UST531', '2UST533', '2UST532'),
-('dixshant.s@somaiya.edu', 5, '2020-21', '1712119', '2020/04/13 20:47:18', 0, 8, '2UST561', '2UST563', '2UST562', '2UST541', '2UST551', '2UST531', '2UST542', '2UST524'),
-('durva.raikar@somaiya.edu', 5, '2020-21', '1812084', '2020/04/13 15:13:44', 0, 8, '2UST543', '2UST553', '2UST514', '2UST551', '2UST533', '2UST541', '2UST532', '2UST542'),
-('e.bhinderwala@somaiya.edu', 5, '2020-21', '1812071', '2020/04/16 00:29:06', 0, 8, '2UST512', '2UST513', '2UST532', '2UST533', '2UST541', '2UST543', '2UST522', '2UST531'),
-('esha.gupta@somaiya.edu', 5, '2020-21', '1814025', '2020/04/13 23:45:57', 0, 8, '2UST512', '2UST541', '2UST543', '2UST542', '2UST513', '2UST511', '2UST533', '2UST532'),
-('esha.ponda@somaiya.edu', 5, '2020-21', '1813062', '2020/04/15 16:35:36', 0, 8, '2UST514', '2UST524', '2UST561', '2UST531', '2UST541', '2UST563', '2UST544', 'same as pref 4'),
-('esha.vats@somaiya.edu', 5, '2020-21', '1814118', '2020/04/13 15:46:02', 0, 8, '2UST512', '2UST541', '2UST542', '2UST511', '2UST544', 'same as pref 3', '2UST532', '2UST513'),
-('eshaan.singh@somaiya.edu', 5, '2020-21', '1815127', '2020/04/15 17:13:13', 0, 8, '2UST514', '2UST543', '2UST534', '2UST553', '2UST513', 'same as pref 3', '2UST522', 'same as pref 5'),
-('eshan.sharma@somaiya.edu', 5, '2020-21', '1815120', '2020/04/14 23:36:53', 0, 8, '2UST512', '2UST543', '2UST541', '2UST524', '2UST511', '2UST542', 'same as pref 4', '2UST553'),
-('fahim.h@somaiya.edu', 5, '2020-21', '1815020', '2020/04/14 20:03:33', 0, 8, '2UST561', '2UST563', '2UST551', '2UST553', '2UST533', '2UST513', '2UST543', '2UST514'),
-('falguni.kumud@somaiya.edu', 5, '2020-21', '1812086', '2020/04/14 15:23:48', 0, 8, '2UST534', '2UST543', '2UST522', '2UST521', '2UST532', '2UST524', 'same as pref 5', '2UST531'),
-('fenny.keniya@somaiya.edu', 5, '2020-21', '1813051', '2020/04/15 23:20:12', 0, 8, '2UST543', '2UST514', '2UST531', '2UST512', '2UST511', 'same as pref 3', 'same as pref 5', '2UST542'),
-('foram.makadia@somaiya.edu', 5, '2020-21', '1813100', '2020/04/13 16:44:57', 0, 8, '2UST543', '2UST561', '2UST534', '2UST531', '2UST511', '2UST514', '2UST524', 'same as pref 1'),
-('g.mahindrakar@somaiya.edu', 5, '2020-21', '1812024', '2020/04/15 23:46:56', 0, 8, '2UST543', '2UST522', '2UST534', '2UST513', '2UST514', '2UST512', '2UST511', '2UST563'),
-('gada.d@somaiya.edu', 5, '2020-21', '1814076', '2020/04/13 19:58:09', 0, 8, '2UST512', '2UST541', '2UST543', '2UST511', '2UST542', '2UST551', '2UST514', 'same as pref 4'),
-('gandhar.j@somaiya.edu', 5, '2020-21', '1813087', '2020/04/14 20:02:10', 0, 8, '2UST543', '2UST553', '2UST534', '2UST563', '2UST562', '2UST561', 'same as pref 4', 'same as pref 5'),
-('gandhi.ps@somaiya.edu', 5, '2020-21', '1815079', '2020/04/13 15:55:46', 0, 8, '2UST543', '2UST514', '2UST532', '2UST511', 'same as pref 4', '2UST531', 'same as pref 6', '2UST512'),
-('gaurang.patil@somaiya.edu', 5, '2020-21', '1814046', '2020/04/14 18:40:06', 0, 8, '2UST532', '2UST531', '2UST543', '2UST524', '2UST541', '2UST534', 'same as pref 3', '2UST514'),
-('gaurang.thakker@somaiya.edu', 5, '2020-21', '1921010', '2020/04/13 14:41:43', 0, 8, '2UST512', '2UST544', '2UST542', '2UST541', '2UST511', '2UST534', '2UST563', '2UST514'),
-('gaurav.dighe@somaiya.edu', 5, '2020-21', '1922010', '2020/04/15 21:38:47', 0, 8, '2UST553', 'same as pref 1', 'same as pref 1', '2UST521', '2UST552', '2UST533', '2UST524', '2UST534'),
-('gaurav.khatwani@somaiya.edu', 5, '2020-21', '1811090', '2020/04/15 20:51:48', 0, 8, '2UST512', '2UST531', '2UST513', '2UST543', '2UST541', 'same as pref 2', '2UST552', '2UST551'),
-('gopalkrishna.w@somaiya.edu', 5, '2020-21', '1814062', '2020/04/13 15:00:45', 0, 8, '2UST541', '2UST542', '2UST531', '2UST544', '2UST543', '2UST533', 'same as pref 1', '2UST511'),
-('gunj.goda@somaiya.edu', 5, '2020-21', '1813018', '2020/04/15 14:43:15', 0, 8, '2UST543', '2UST522', '2UST532', '2UST512', '2UST514', '2UST544', '2UST513', '2UST542'),
-('gurpreet.n@somaiya.edu', 5, '2020-21', '1813097', '2020/04/15 14:15:54', 0, 8, '2UST543', '2UST531', '2UST514', '2UST524', '2UST532', 'same as pref 2', 'same as pref 3', 'same as pref 3'),
-('h.talele@somaiya.edu', 5, '2020-21', '1921002', '2020/04/13 15:49:08', 0, 8, '2UST531', '2UST512', '2UST511', '2UST543', '2UST533', '2UST522', '2UST551', 'same as pref 1'),
-('hansi.s@somaiya.edu', 5, '2020-21', '1811108', '2020/04/15 22:55:32', 0, 8, '2UST512', '2UST513', '2UST531', '2UST541', '2UST532', '2UST561', 'same as pref 2', 'same as pref 5'),
-('hardik.asher@somaiya.edu', 5, '2020-21', '1811002', '2020/04/15 22:41:30', 0, 8, '2UST512', '2UST543', '2UST542', '2UST524', '2UST541', '2UST511', '2UST533', '2UST513'),
-('hardika.gawde@somaiya.edu', 5, '2020-21', '1924005', '2020/04/14 13:10:22', 0, 8, '2UST512', '2UST542', '2UST541', '2UST511', '2UST544', '2UST513', '2UST524', '2UST514'),
-('harsh.bm@somaiya.edu', 5, '2020-21', '1814091', '2020/04/13 14:49:58', 0, 8, '2UST512', '2UST542', '2UST541', '2UST544', '2UST513', '2UST514', '2UST561', '2UST563'),
-('harsh.sachala@somaiya.edu', 5, '2020-21', '1814105', '2020/04/13 15:11:18', 0, 8, '2UST513', '2UST522', '2UST512', '2UST544', '2UST531', '2UST543', '2UST532', '2UST521'),
-('harshal.pathak@somaiya.edu', 5, '2020-21', '1813110', '2020/04/13 15:58:58', 0, 8, '2UST531', '2UST512', '2UST514', '2UST511', '2UST533', '2UST524', '2UST541', '2UST542'),
-('harshid.b@somaiya.edu', 5, '2020-21', '1812012', '2020/04/15 18:20:04', 0, 8, '2UST534', '2UST543', '2UST511', '2UST551', '2UST522', 'same as pref 3', '2UST532', '2UST533'),
-('harshit.raval@somaiya.edu', 5, '2020-21', '1815110', '2020/04/14 20:43:29', 0, 8, '2UST553', '2UST551', '2UST563', '2UST513', '2UST534', '2UST524', '2UST512', '2UST511'),
-('hasti.ds@somaiya.edu', 5, '2020-21', '1811043', '2020/04/14 23:06:44', 0, 8, '2UST512', '2UST543', '2UST531', '2UST544', '2UST541', '2UST532', '2UST542', '2UST551'),
-('heena.kasali@somaiya.edu', 5, '2020-21', '1921003', '2020/04/13 21:04:46', 0, 8, '2UST512', '2UST511', '2UST531', '2UST533', '2UST543', '2UST524', '2UST521', '2UST542'),
-('heeral.gawade@somaiya.edu', 5, '2020-21', '1923011', '2020/04/15 22:30:39', 0, 8, '2UST543', '2UST531', '2UST522', '2UST563', '2UST524', '2UST513', 'same as pref 2', 'same as pref 1'),
-('heet.dedhia@somaiya.edu', 5, '2020-21', '1814014', '2020/04/18 18:59:15', 0, 8, '2UST543', '2UST513', '2UST541', '2UST531', '2UST511', '2UST514', '2UST512', '2UST521'),
-('heet.mv@somaiya.edu', 5, '2020-21', '1924007', '2020/04/15 16:19:20', 0, 8, '2UST512', '2UST543', '2UST513', '2UST511', '2UST541', '2UST542', '2UST532', '2UST533'),
-('het.k@somaiya.edu', 5, '2020-21', '1812036', '2020/04/15 16:47:28', 0, 8, '2UST513', '2UST511', '2UST512', '2UST522', '2UST514', '2UST532', '2UST563', '2UST531'),
-('hetvi.kothari@somaiya.edu', 5, '2020-21', '1811091', '2020/04/15 15:50:28', 0, 8, '2UST512', '2UST511', '2UST542', '2UST543', '2UST513', '2UST563', '2UST562', 'same as pref 4'),
-('hiket.vira@somaiya.edu', 5, '2020-21', '1815065', '2020/04/14 23:06:16', 0, 8, '2UST553', '2UST543', '2UST524', '2UST551', '2UST561', '2UST542', '2UST532', '2UST511'),
-('himali.saini@somaiya.edu', 5, '2020-21', '1811107', '2020/04/15 15:07:39', 0, 8, '2UST512', '2UST511', '2UST542', '2UST543', '2UST544', '2UST513', 'same as pref 3', '2UST532'),
-('himanshi.cb@somaiya.edu', 5, '2020-21', '1814057', '2020/04/15 17:23:52', 0, 8, '2UST543', '2UST512', '2UST524', '2UST561', '2UST532', '2UST521', '2UST513', '2UST551'),
-('hiral.lineswala@somaiya.edu', 5, '2020-21', '1923001', '2020/04/13 16:37:00', 0, 8, '2UST543', '2UST514', '2UST531', '2UST544', '2UST513', 'same as pref 1', '2UST533', '2UST534'),
-('hiral.sheth@somaiya.edu', 5, '2020-21', '1811054', '2020/04/14 20:39:25', 0, 8, '2UST512', '2UST531', '2UST532', '2UST511', '2UST543', 'same as pref 1', '2UST561', '2UST514'),
-('hiren23@somaiya.edu', 5, '2020-21', '1815132', '2020/04/13 15:28:11', 0, 8, '2UST551', '2UST531', '2UST514', '2UST524', '2UST553', 'same as pref 3', '2UST543', '2UST513'),
-('hitarth.doshi@somaiya.edu', 5, '2020-21', '1922017', '2020/04/16 13:42:05', 0, 8, '2UST552', '2UST551', '2UST553', '2UST521', '2UST522', 'same as pref 3', '2UST514', '2UST563'),
-('hriday.jani@somaiya.edu', 5, '2020-21', '1812016', '2020/04/15 22:29:22', 0, 8, '2UST534', '2UST543', '2UST551', '2UST522', '2UST563', '2UST542', '2UST544', '2UST531'),
-('hrithik.p@somaiya.edu', 5, '2020-21', '1815044', '2020/04/15 18:30:27', 0, 8, '2UST553', '2UST551', '2UST543', '2UST563', '2UST561', 'same as pref 3', '2UST544', '2UST514'),
-('hrithik.pandit@somaiya.edu', 5, '2020-21', '1815106', '2020/04/14 23:27:54', 0, 8, '2UST512', '2UST543', '2UST541', '2UST511', '2UST514', 'same as pref 1', '2UST542', '2UST522'),
-('hrp1@somaiya.edu', 5, '2020-21', '1812095', '2020/04/13 18:03:34', 0, 8, '2UST514', '2UST543', '2UST531', '2UST532', '2UST524', '2UST513', '2UST542', '2UST544'),
-('hrp2@somaiya.edu', 5, '2020-21', '1813033', '2020/04/13 15:18:36', 0, 8, '2UST514', '2UST551', '2UST543', '2UST533', '2UST524', '2UST534', '2UST542', '2UST541'),
-('hsb3@somaiya.edu', 5, '2020-21', '1812090', '2020/04/15 19:50:04', 0, 8, '2UST552', '2UST553', '2UST531', '2UST534', '2UST562', '2UST561', '2UST521', '2UST563'),
-('hss2@somaiya.edu', 5, '2020-21', '1815053', '2020/04/13 14:51:07', 0, 8, '2UST543', '2UST533', '2UST553', '2UST551', '2UST534', 'same as pref 1', '2UST544', 'same as pref 7'),
-('idrees.b@somaiya.edu', 5, '2020-21', '1811004', '2020/04/13 15:28:52', 0, 8, '2UST533', '2UST544', '2UST543', '2UST524', '2UST512', 'same as pref 3', '2UST523', '2UST561'),
-('isha.chinerkar@somaiya.edu', 5, '2020-21', '1813079', '2020/04/14 19:10:57', 0, 8, '2UST512', '2UST543', '2UST541', '2UST524', '2UST511', '2UST532', '2UST531', '2UST542'),
-('isha.joglekar@somaiya.edu', 5, '2020-21', '1924009', '2020/04/15 16:19:24', 0, 8, '2UST512', '2UST543', '2UST513', '2UST511', '2UST541', '2UST561', '2UST553', '2UST521'),
-('ishan.patil@somaiya.edu', 5, '2020-21', '1812102', '2020/04/15 4:19:17', 0, 8, '2UST552', '2UST553', '2UST563', '2UST513', '2UST534', '2UST542', '2UST532', '2UST533'),
-('ishan.shinde@somaiya.edu', 5, '2020-21', '1815125', '2020/04/15 4:12:05', 0, 8, '2UST553', '2UST543', '2UST551', '2UST534', '2UST524', '2UST552', 'same as pref 2', '2UST513'),
-('j.gohil@somaiya.edu', 5, '2020-21', '1815142', '2020/04/15 12:58:37', 0, 8, '2UST543', '2UST553', '2UST514', '2UST542', '2UST524', '2UST522', '2UST533', '2UST563'),
-('j.parab@somaiya.edu', 5, '2020-21', '1812097', '2020/04/13 20:24:14', 0, 8, '2UST523', '2UST551', '2UST522', '2UST513', '2UST524', '2UST544', '2UST533', 'same as pref 4'),
-('jai.agarwal@somaiya.edu', 5, '2020-21', '1812017', '2020/04/15 19:05:07', 0, 8, '2UST534', '2UST543', '2UST551', '2UST522', '2UST563', '2UST544', '2UST541', '2UST542'),
-('jai.mehta@somaiya.edu', 5, '2020-21', '1814036', '2020/04/14 19:51:31', 0, 8, '2UST512', '2UST541', '2UST543', '2UST511', '2UST531', 'same as pref 5', '2UST513', 'same as pref 4'),
-('jaiman.shah@somaiya.edu', 5, '2020-21', '1815054', '2020/04/13 21:27:29', 0, 8, '2UST553', '2UST551', '2UST513', '2UST534', '2UST511', '2UST544', '2UST541', 'same as pref 5'),
-('jaimeen.u@somaiya.edu', 5, '2020-21', '1814077', '2020/04/14 23:50:31', 0, 8, '2UST512', '2UST513', '2UST543', '2UST541', '2UST542', '2UST533', 'same as pref 4', 'same as pref 3'),
-('jainam.gogree@somaiya.edu', 5, '2020-21', '1812021', '2020/04/25 11:49:10', 0, 8, '2UST511', '2UST512', '2UST531', '2UST543', '2UST521', '2UST513', '2UST551', '2UST534'),
-('jainam.tm@somaiya.edu', 5, '2020-21', '1814008', '2020/04/14 22:16:35', 0, 8, '2UST543', '2UST512', '2UST542', '2UST541', '2UST531', '2UST513', 'same as pref 3', 'same as pref 4'),
-('jainam.z@somaiya.edu', 5, '2020-21', '1814123', '2020/04/13 19:46:08', 0, 8, '2UST512', '2UST511', '2UST541', '2UST513', '2UST524', 'same as pref 5', '2UST521', '2UST543'),
-('jainam02@somaiya.edu', 5, '2020-21', '1811085', '2020/04/13 23:57:06', 0, 8, '2UST512', '2UST513', '2UST531', '2UST542', '2UST541', '2UST511', '2UST533', '2UST532'),
-('jainum.s@somaiya.edu', 5, '2020-21', '1814051', '2020/04/14 19:51:34', 0, 8, '2UST543', '2UST524', '2UST541', '2UST512', '2UST532', 'same as pref 2', '2UST521', '2UST531'),
-('jaival.singh@somaiya.edu', 5, '2020-21', '1815128', '2020/04/15 18:36:46', 0, 8, '2UST514', '2UST551', '2UST543', '2UST512', '2UST553', '2UST532', '2UST524', '2UST531'),
-('jas.p@somaiya.edu', 5, '2020-21', '1813041', '2020/04/15 23:45:40', 0, 8, '2UST514', '2UST543', '2UST511', '2UST551', '2UST553', '2UST524', '2UST541', '2UST513'),
-('jash.jm@somaiya.edu', 5, '2020-21', '1814126', '2020/04/13 15:37:10', 0, 8, '2UST512', '2UST511', '2UST541', '2UST544', '2UST513', '2UST524', 'same as pref 4', '2UST543'),
-('jash.js@somaiya.edu', 5, '2020-21', '1811082', '2020/04/15 20:04:18', 0, 8, '2UST512', '2UST524', '2UST531', '2UST532', '2UST511', 'same as pref 2', '2UST533', 'same as pref 4'),
-('jash12@somaiya.edu', 5, '2020-21', '1814054', '2020/04/14 17:48:50', 0, 8, '2UST512', '2UST511', '2UST543', '2UST513', '2UST531', 'same as pref 3', 'same as pref 3', 'same as pref 5'),
-('jash28@somaiya.edu', 5, '2020-21', '1922016', '2020/04/16 13:29:43', 0, 8, '2UST521', '2UST533', '2UST523', '2UST551', '2UST512', '2UST553', '2UST514', '2UST513'),
-('jay.ingle@somaiya.edu', 5, '2020-21', '1922004', '2020/04/15 21:20:27', 0, 8, '2UST511', '2UST551', '2UST553', '2UST533', 'same as pref 2', '2UST552', '2UST534', '2UST522'),
-('jay.khatri@somaiya.edu', 5, '2020-21', '1814087', '2020/04/13 16:29:35', 0, 8, '2UST512', '2UST542', '2UST543', '2UST541', '2UST511', 'same as pref 3', '2UST533', '2UST544'),
-('jay.pd@somaiya.edu', 5, '2020-21', '1815076', '2020/04/20 19:19:05', 0, 8, '2UST553', '2UST551', '2UST563', '2UST513', '2UST544', '2UST522', '2UST534', 'same as pref 3'),
-('jay12@somaiya.edu', 5, '2020-21', '1813117', '2020/04/15 19:01:35', 0, 8, '2UST543', '2UST553', '2UST512', '2UST522', '2UST511', '2UST561', 'same as pref 2', '2UST552'),
-('jayant.yadav@somaiya.edu', 5, '2020-21', '1815135', '2020/04/15 23:53:16', 0, 8, '2UST553', '2UST543', '2UST551', '2UST534', '2UST524', '2UST511', '2UST512', 'same as pref 3'),
-('jaykumar.mp@somaiya.edu', 5, '2020-21', '1814044', '2020/04/13 18:14:30', 0, 8, '2UST524', '2UST512', '2UST542', '2UST541', '2UST531', '2UST514', '2UST532', 'same as pref 2'),
-('jeel16@somaiya.edu', 5, '2020-21', '1921012', '2020/04/25 11:49:10', 0, 8, '2UST512', '2UST524', '2UST531', '2UST522', '2UST523', '2UST533', '2UST532', '2UST543'),
-('jenil.gosar@somaiya.edu', 5, '2020-21', '1813078', '2020/04/13 14:47:05', 0, 8, '2UST543', '2UST531', '2UST534', '2UST532', '2UST522', '2UST541', '2UST511', '2UST551'),
-('jibitesh.s@somaiya.edu', 5, '2020-21', '1812053', '2020/04/13 16:42:53', 0, 8, '2UST561', '2UST524', '2UST531', '2UST514', '2UST532', '2UST512', '2UST522', 'same as pref 2'),
-('jigar.pj@somaiya.edu', 5, '2020-21', '1811018', '2020/04/15 1:10:10', 0, 8, '2UST543', '2UST531', '2UST511', '2UST512', '2UST541', 'same as pref 1', '2UST563', '2UST513'),
-('jigyassa.l@somaiya.edu', 5, '2020-21', '1811020', '2020/04/13 16:04:48', 0, 8, '2UST513', '2UST512', '2UST543', '2UST531', '2UST532', 'same as pref 4', '2UST541', 'same as pref 5'),
-('jil.ap@somaiya.edu', 5, '2020-21', '1812046', '2020/04/23 11:49:10', 0, 8, '2UST553', '2UST514', '2UST524', '2UST512', '2UST552', 'same as pref 1', 'same as pref 2', 'same as pref 3'),
-('jill25@somaiya.edu', 5, '2020-21', '1814055', '2020/04/13 14:45:50', 0, 8, '2UST512', '2UST513', '2UST541', '2UST544', '2UST531', 'same as pref 2', '2UST511', '2UST532'),
-('jinay.gada@somaiya.edu', 5, '2020-21', '1811021', '2020/04/15 22:34:46', 0, 8, '2UST512', '2UST544', '2UST543', '2UST541', '2UST533', 'same as pref 2', 'same as pref 3', 'same as pref 5'),
-('jjj@somaiya.edu', 5, '2020-21', '1813022', '2020/04/15 15:17:49', 0, 8, '2UST514', '2UST543', '2UST531', '2UST513', '2UST532', '2UST542', '2UST541', 'same as pref 2'),
-('jjs1@somaiya.edu', 5, '2020-21', '1811112', '2020/04/13 15:04:12', 0, 8, '2UST512', '2UST513', '2UST531', '2UST524', '2UST511', '2UST544', 'same as pref 5', '2UST541'),
-('joel.thomas@somaiya.edu', 5, '2020-21', '1815133', '2020/04/13 15:27:35', 0, 8, '2UST551', '2UST553', '2UST563', '2UST562', '2UST561', '2UST514', '2UST534', 'same as pref 3'),
-('joseph.k@somaiya.edu', 5, '2020-21', '1815029', '2020/04/15 22:24:43', 0, 8, '2UST561', '2UST562', '2UST563', '2UST553', '2UST551', '2UST533', '2UST543', '2UST513'),
-('jps1@somaiya.edu', 5, '2020-21', '1815055', '2020/04/13 20:35:35', 0, 8, '2UST531', '2UST514', '2UST532', '2UST553', '2UST551', 'same as pref 3', '2UST543', '2UST513'),
-('jubin.kamdar@somaiya.edu', 5, '2020-21', '1924011', '2020/04/13 15:42:21', 0, 8, '2UST512', '2UST541', '2UST542', '2UST511', '2UST532', '2UST513', '2UST543', '2UST524'),
-('jugal.dc@somaiya.edu', 5, '2020-21', '1811071', '2020/04/15 15:59:26', 0, 8, '2UST512', '2UST531', '2UST511', '2UST524', '2UST543', '2UST513', '2UST553', 'same as pref 5'),
-('junaidali.s@somaiya.edu', 5, '2020-21', '1815064', '2020/04/13 15:36:31', 0, 8, '2UST553', '2UST514', '2UST543', '2UST551', '2UST562', '2UST542', 'same as pref 3', '2UST532'),
-('k.deshpande@somaiya.edu', 5, '2020-21', '1815014', '2020/04/13 17:05:08', 0, 8, '2UST553', '2UST563', '2UST561', '2UST534', '2UST551', 'same as pref 4', 'same as pref 2', '2UST533'),
-('k.jaishankar@somaiya.edu', 5, '2020-21', '1811061', '2020/04/17 13:07:10', 0, 8, '2UST511', '2UST531', '2UST524', '2UST512', '2UST543', '2UST542', '2UST534', 'same as pref 5'),
-('k.satyanarayana@somaiya.edu', 5, '2020-21', '1812118', '2020/04/14 19:39:18', 0, 8, '2UST532', '2UST513', '2UST534', '2UST551', '2UST553', '2UST531', '2UST533', '2UST512'),
-('k.ved@somaiya.edu', 5, '2020-21', '1813105', '2020/04/14 19:11:01', 0, 8, '2UST512', '2UST543', '2UST541', '2UST524', '2UST511', 'same as pref 2', '2UST553', '2UST514'),
-('kadam.ms@somaiya.edu', 5, '2020-21', '1814001', '2020/04/13 15:06:09', 0, 8, '2UST543', '2UST513', '2UST531', '2UST524', '2UST511', '2UST551', 'same as pref 4', '2UST533'),
-('kaitav.p@somaiya.edu', 5, '2020-21', '1812099', '2020/04/13 17:54:27', 0, 8, '2UST553', '2UST552', '2UST551', '2UST534', '2UST522', '2UST513', '2UST511', '2UST512'),
-('kanksha.p@somaiya.edu', 5, '2020-21', '1811104', '2020/04/14 21:17:03', 0, 8, '2UST531', '2UST543', '2UST511', '2UST512', '2UST513', 'same as pref 2', 'same as pref 5', '2UST534'),
-('karan.gp@somaiya.edu', 5, '2020-21', '1814096', '2020/04/13 15:12:42', 0, 8, '2UST524', '2UST531', '2UST543', '2UST513', '2UST523', '2UST541', '2UST532', '2UST542'),
-('karan.nd@somaiya.edu', 5, '2020-21', '1815074', '2020/04/15 11:04:52', 0, 8, '2UST514', '2UST543', '2UST551', '2UST513', '2UST531', '2UST523', '2UST552', '2UST524'),
-('karan19@somaiya.edu', 5, '2020-21', '1812054', '2020/04/13 16:03:09', 0, 8, '2UST544', '2UST514', '2UST521', '2UST513', '2UST523', '2UST543', 'same as pref 4', '2UST541'),
-('kartik.ladwa@somaiya.edu', 5, '2020-21', '1923008', '2020/04/15 13:28:47', 0, 8, '2UST543', '2UST532', '2UST522', 'same as pref 2', '2UST551', '2UST524', '2UST521', 'same as pref 5'),
-('kaushal.patil@somaiya.edu', 5, '2020-21', '1813038', '2020/04/13 14:47:01', 0, 8, '2UST543', '2UST531', '2UST533', '2UST513', '2UST514', '2UST544', 'same as pref 3', '2UST551'),
-('kaushik.metha@somaiya.edu', 5, '2020-21', '1811094', '2020/04/13 14:54:12', 0, 8, '2UST524', '2UST531', '2UST543', '2UST513', '2UST532', 'same as pref 3', '2UST541', '2UST562'),
-('kaushik.naganath@somaiya.edu', 5, '2020-21', '1812085', '2020/04/13 21:20:58', 0, 8, '2UST513', '2UST534', '2UST563', '2UST523', '2UST522', '2UST531', '2UST542', 'same as pref 1'),
-('kavish.bs@somaiya.edu', 5, '2020-21', '1812055', '2020/04/14 18:30:40', 0, 8, '2UST522', '2UST553', '2UST551', '2UST563', '2UST521', '2UST542', '2UST512', '2UST544'),
-('kedar.pednekar@somaiya.edu', 5, '2020-21', '1925007', '2020/04/14 18:53:47', 0, 8, '2UST553', '2UST551', '2UST521', '2UST561', '2UST563', '2UST543', 'same as pref 1', '2UST514'),
-('keval.dk@somaiya.edu', 5, '2020-21', '1814031', '2020/04/15 16:17:32', 0, 8, '2UST512', '2UST543', '2UST531', '2UST561', '2UST522', '2UST513', '2UST524', '2UST552'),
-('keval.rajpara@somaiya.edu', 5, '2020-21', '1812050', '2020/04/14 21:28:19', 0, 8, '2UST543', '2UST514', '2UST532', '2UST524', '2UST523', '2UST513', '2UST533', 'same as pref 5'),
-('kevin26@somaiya.edu', 5, '2020-21', '1811044', '2020/04/15 00:22:10', 0, 8, '2UST543', '2UST544', '2UST512', '2UST522', '2UST533', '2UST551', '2UST561', '2UST542'),
-('khatri.m@somaiya.edu', 5, '2020-21', '1814032', '2020/04/15 20:35:55', 0, 8, '2UST512', '2UST511', '2UST532', '2UST543', '2UST513', 'same as pref 4', 'same as pref 2', '2UST524'),
-('khushi.cs@somaiya.edu', 5, '2020-21', '1815098', '2020/04/14 20:01:27', 0, 8, '2UST553', '2UST513', '2UST514', '2UST561', '2UST551', '2UST552', 'same as pref 4', 'same as pref 5'),
-('khushil.shah@somaiya.edu', 5, '2020-21', '1924008', '2020/04/14 22:43:49', 0, 8, '2UST512', '2UST513', '2UST511', '2UST541', '2UST542', 'same as pref 3', '2UST543', '2UST521');
-INSERT INTO `student_preference_audit` (`email_id`, `sem`, `year`, `rollno`, `timestamp`, `allocate_status`, `no_of_valid_preferences`, `pref1`, `pref2`, `pref3`, `pref4`, `pref5`, `pref6`, `pref7`, `pref8`) VALUES
-('kiran.gaykar@somaiya.edu', 5, '2020-21', '1924012', '2020/04/14 12:42:44', 0, 8, '2UST512', '2UST544', '2UST542', '2UST511', '2UST541', '2UST514', '2UST524', '2UST553'),
-('kmb2@somaiya.edu', 5, '2020-21', '1811005', '2020/04/15 22:29:17', 0, 8, '2UST532', '2UST524', '2UST531', '2UST561', '2UST544', 'same as pref 3', '2UST553', '2UST511'),
-('krish.chheda@somaiya.edu', 5, '2020-21', '1923007', '2020/04/14 23:04:33', 0, 8, '2UST514', '2UST511', '2UST512', '2UST553', '2UST552', '2UST513', 'same as pref 5', '2UST534'),
-('krish.parekh@somaiya.edu', 5, '2020-21', '1811031', '2020/04/13 15:33:05', 0, 8, '2UST513', '2UST524', '2UST531', '2UST512', '2UST542', '2UST533', '2UST551', '2UST544'),
-('krisha.bm@somaiya.edu', 5, '2020-21', '1814108', '2020/04/15 19:49:12', 0, 8, '2UST512', '2UST541', '2UST542', '2UST511', '2UST513', '2UST543', '2UST522', '2UST551'),
-('krisha.panchamia@somaiya.edu', 5, '2020-21', '1811102', '2020/04/15 20:18:23', 0, 8, '2UST512', '2UST513', '2UST511', '2UST532', '2UST541', '2UST531', '2UST524', '2UST543'),
-('krishna.bhuva@somaiya.edu', 5, '2020-21', '1925003', '2020/04/15 10:05:44', 0, 8, '2UST553', '2UST563', '2UST551', '2UST562', '2UST543', '2UST524', '2UST531', '2UST521'),
-('krishna.sahani@somaiya.edu', 5, '2020-21', '1814106', '2020/04/14 23:19:55', 0, 8, '2UST512', '2UST513', '2UST524', '2UST531', '2UST543', 'same as pref 4', '2UST533', 'same as pref 3'),
-('krunal.dattani@somaiya.edu', 5, '2020-21', '1814071', '2020/04/15 18:44:17', 0, 8, '2UST512', '2UST531', '2UST513', '2UST541', '2UST543', '2UST522', 'same as pref 3', 'same as pref 5'),
-('krutik.c@somaiya.edu', 5, '2020-21', '1815006', '2020/04/15 10:06:27', 0, 8, '2UST553', '2UST562', '2UST551', '2UST543', '2UST514', '2UST512', '2UST511', '2UST513'),
-('kshitij.prabhu@somaiya.edu', 5, '2020-21', '1814101', '2020/04/13 15:12:58', 0, 8, '2UST524', '2UST531', '2UST543', '2UST513', '2UST512', '2UST522', '2UST534', 'same as pref 1'),
-('kulkarni.sr@somaiya.edu', 5, '2020-21', '1814129', '2020/04/13 23:05:23', 0, 8, '2UST512', '2UST541', '2UST543', '2UST531', '2UST532', '2UST542', 'same as pref 5', '2UST513'),
-('kunal.khandait@somaiya.edu', 5, '2020-21', '1815092', '2020/04/14 22:31:46', 0, 8, '2UST543', '2UST531', '2UST551', '2UST553', '2UST524', '2UST533', 'same as pref 3', 'same as pref 4'),
-('kunal.sr@somaiya.edu', 5, '2020-21', '1811036', '2020/04/15 20:39:21', 0, 8, '2UST512', '2UST541', '2UST532', '2UST513', '2UST524', 'same as pref 5', '2UST543', '2UST552'),
-('kunj.gala@somaiya.edu', 5, '2020-21', '1814021', '2020/04/13 22:54:37', 0, 8, '2UST512', '2UST541', '2UST511', '2UST532', '2UST531', '2UST563', '2UST513', '2UST561'),
-('kushal.ds@somaiya.edu', 5, '2020-21', '1815118', '2020/04/15 19:25:56', 0, 8, '2UST551', '2UST514', '2UST553', '2UST561', '2UST513', '2UST512', '2UST541', 'same as pref 1'),
-('kushal.sg@somaiya.edu', 5, '2020-21', '1812025', '2020/04/13 14:58:21', 0, 8, '2UST552', '2UST543', '2UST534', '2UST563', '2UST562', '2UST542', '2UST511', '2UST524'),
-('labdhi.jain@somaiya.edu', 5, '2020-21', '1814015', '2020/04/14 14:42:34', 0, 8, '2UST512', '2UST511', '2UST544', '2UST542', '2UST541', '2UST543', '2UST532', '2UST513'),
-('lakshya.jain@somaiya.edu', 5, '2020-21', '1812082', '2020/04/15 10:11:32', 0, 8, '2UST513', '2UST553', '2UST514', '2UST523', '2UST531', '2UST512', '2UST511', '2UST524'),
-('leesa.dharod@somaiya.edu', 5, '2020-21', '1814075', '2020/04/13 21:36:22', 0, 8, '2UST531', '2UST512', '2UST524', '2UST532', '2UST542', '2UST544', '2UST511', '2UST513'),
-('m.baru@somaiya.edu', 5, '2020-21', '1814005', '2020/04/13 19:52:20', 0, 8, '2UST512', 'same as pref 1', '2UST511', 'same as pref 3', '2UST513', '2UST542', '2UST532', '2UST544'),
-('m.merchant@somaiya.edu', 5, '2020-21', '1812049', '2020/04/16 14:32:58', 0, 8, '2UST552', '2UST551', '2UST563', '2UST553', '2UST521', 'same as pref 5', '2UST511', 'same as pref 7'),
-('m.nabeel@somaiya.edu', 5, '2020-21', '1815039', '2020/04/14 17:00:49', 0, 8, '2UST553', 'same as pref 1', 'same as pref 1', '2UST551', 'same as pref 4', '2UST561', '2UST514', '2UST563'),
-('m.shegaonkar@somaiya.edu', 5, '2020-21', '1813120', '2020/04/13 14:53:54', 0, 8, '2UST531', '2UST532', '2UST512', '2UST524', '2UST543', '2UST533', 'same as pref 3', '2UST541'),
-('maaheynoor.s@somaiya.edu', 5, '2020-21', '1811110', '2020/04/13 22:15:39', 0, 8, '2UST512', '2UST541', '2UST524', '2UST513', '2UST542', '2UST523', '2UST562', '2UST522'),
-('madhura.i@somaiya.edu', 5, '2020-21', '1812026', '2020/04/15 15:15:53', 0, 8, '2UST543', '2UST533', '2UST553', '2UST512', '2UST531', 'same as pref 4', '2UST511', '2UST534'),
-('makwana.d@somaiya.edu', 5, '2020-21', '1815091', '2020/04/14 17:15:59', 0, 8, '2UST553', '2UST551', '2UST563', '2UST521', '2UST561', 'same as pref 5', '2UST531', '2UST522'),
-('manan30@somaiya.edu', 5, '2020-21', '1813050', '2020/04/15 18:10:33', 0, 8, '2UST543', '2UST512', '2UST514', '2UST531', '2UST541', '2UST562', '2UST533', '2UST521'),
-('manas.gandhi@somaiya.edu', 5, '2020-21', '1811076', '2020/04/14 20:49:47', 0, 8, '2UST513', '2UST541', '2UST522', '2UST542', '2UST531', 'same as pref 4', '2UST561', '2UST514'),
-('manas.pange@somaiya.edu', 5, '2020-21', '1922022', '2020/04/15 22:56:28', 0, 8, '2UST534', '2UST551', '2UST512', '2UST524', '2UST521', '2UST544', '2UST513', 'same as pref 3'),
-('manas.thakker@somaiya.edu', 5, '2020-21', '1814092', '2020/04/13 16:11:03', 0, 8, '2UST512', '2UST542', '2UST543', '2UST541', '2UST511', '2UST532', 'same as pref 2', 'same as pref 4'),
-('manasi.nair@somaiya.edu', 5, '2020-21', '1812087', '2020/04/15 22:22:07', 0, 8, '2UST524', '2UST543', '2UST514', '2UST544', '2UST561', '2UST531', '2UST553', '2UST511'),
-('manav.hirey@somaiya.edu', 5, '2020-21', '1814082', '2020/04/13 15:14:59', 0, 8, '2UST524', '2UST531', '2UST512', '2UST513', '2UST543', 'same as pref 1', 'same as pref 3', 'same as pref 5'),
-('manav.malavia@somaiya.edu', 5, '2020-21', '1814088', '2020/04/13 15:15:49', 0, 8, '2UST524', '2UST531', '2UST512', '2UST513', '2UST543', 'same as pref 4', '2UST561', '2UST521'),
-('manav.punjabi@somaiya.edu', 5, '2020-21', '1814049', '2020/04/14 22:31:34', 0, 8, '2UST511', '2UST512', '2UST531', '2UST524', '2UST543', '2UST514', '2UST534', '2UST561'),
-('manik.p@somaiya.edu', 5, '2020-21', '1813032', '2020/04/15 21:33:01', 0, 8, '2UST512', '2UST543', '2UST541', '2UST524', '2UST511', '2UST544', '2UST522', '2UST513'),
-('manish.parihar@somaiya.edu', 5, '2020-21', '1814097', '2020/04/15 22:29:29', 0, 8, '2UST512', '2UST524', '2UST543', '2UST513', '2UST541', '2UST534', '2UST514', '2UST553'),
-('mann.daga@somaiya.edu', 5, '2020-21', '1815008', '2020/04/15 12:21:31', 0, 8, '2UST553', '2UST551', '2UST563', '2UST543', '2UST534', '2UST524', '2UST561', '2UST531'),
-('manthan.dave@somaiya.edu', 5, '2020-21', '1813118', '2020/04/15 16:49:37', 0, 8, '2UST543', '2UST553', '2UST533', '2UST522', '2UST534', '2UST514', '2UST552', '2UST563'),
-('maru.jn@somaiya.edu', 5, '2020-21', '1814089', '2020/04/15 22:55:19', 0, 8, '2UST513', '2UST512', '2UST543', '2UST541', '2UST544', '2UST524', '2UST511', '2UST542'),
-('mayank.chowdhary@somaiya.edu', 5, '2020-21', '1811010', '2020/04/15 23:31:50', 0, 8, '2UST531', '2UST543', '2UST542', '2UST532', '2UST541', '2UST522', '2UST513', '2UST523'),
-('mayank.latke@somaiya.edu', 5, '2020-21', '1812040', '2020/04/15 13:05:34', 0, 8, '2UST511', '2UST543', '2UST551', '2UST522', '2UST553', '2UST562', '2UST524', '2UST531'),
-('mayur.pawase@somaiya.edu', 5, '2020-21', '1815046', '2020/04/14 13:06:31', 0, 8, '2UST553', '2UST513', '2UST551', '2UST543', '2UST511', 'same as pref 4', '2UST532', 'same as pref 2'),
-('meet.panchal1@somaiya.edu', 5, '2020-21', '1921009', '2020/04/13 15:27:51', 0, 8, '2UST512', '2UST542', '2UST543', '2UST544', '2UST531', '2UST532', '2UST563', '2UST561'),
-('meet10@somaiya.edu', 5, '2020-21', '1812078', '2020/04/15 21:09:49', 0, 8, '2UST511', '2UST512', '2UST514', '2UST533', '2UST543', '2UST524', '2UST531', 'same as pref 2'),
-('meghashyam.p@somaiya.edu', 5, '2020-21', '1812045', '2020/04/15 11:13:02', 0, 8, '2UST532', '2UST544', '2UST513', '2UST553', '2UST512', '2UST531', '2UST524', '2UST522'),
-('mehta.da@somaiya.edu', 5, '2020-21', '1811023', '2020/04/14 19:10:11', 0, 8, '2UST531', '2UST544', '2UST543', '2UST541', '2UST524', '2UST532', 'same as pref 1', '2UST542'),
-('mehta.yh@somaiya.edu', 5, '2020-21', '1811024', '2020/04/15 22:09:54', 0, 8, '2UST531', '2UST541', '2UST543', '2UST532', '2UST544', '2UST513', '2UST511', '2UST553'),
-('mehul.bharda@somaiya.edu', 5, '2020-21', '1812011', '2020/04/14 00:09:59', 0, 8, '2UST524', '2UST511', 'same as pref 1', '2UST543', 'same as pref 4', 'same as pref 1', '2UST533', '2UST542'),
-('mehul.nd@somaiya.edu', 5, '2020-21', '1815077', '2020/04/14 17:29:18', 0, 8, '2UST543', '2UST563', '2UST553', '2UST551', '2UST561', '2UST562', '2UST544', '2UST542'),
-('mihir.dholakia@somaiya.edu', 5, '2020-21', '1811074', '2020/04/15 18:54:56', 0, 8, '2UST512', '2UST524', '2UST531', '2UST513', '2UST511', 'same as pref 5', '2UST543', 'same as pref 2'),
-('mihir.jadhav@somaiya.edu', 5, '2020-21', '1921001', '2020/04/15 2:23:49', 0, 8, '2UST512', '2UST532', '2UST541', '2UST534', '2UST543', 'same as pref 1', 'same as pref 2', '2UST511'),
-('mihir.mehta2@somaiya.edu', 5, '2020-21', '1811093', '2020/04/15 22:30:45', 0, 8, '2UST531', '2UST524', '2UST532', '2UST543', '2UST512', '2UST533', '2UST511', '2UST534'),
-('mihir.w@somaiya.edu', 5, '2020-21', '1815139', '2020/04/15 12:46:44', 0, 8, '2UST543', '2UST513', '2UST553', '2UST562', '2UST551', 'same as pref 2', '2UST544', '2UST542'),
-('milind.deshpande@somaiya.edu', 5, '2020-21', '1811029', '2020/04/13 15:07:19', 0, 8, '2UST531', '2UST524', '2UST512', '2UST511', '2UST543', 'same as pref 1', '2UST551', '2UST544'),
-('misha.ashar@somaiya.edu', 5, '2020-21', '1813002', '2020/04/15 10:41:51', 0, 8, '2UST543', '2UST512', '2UST532', '2UST531', '2UST524', 'same as pref 4', '2UST534', '2UST533'),
-('mistry.yr@somaiya.edu', 5, '2020-21', '1812043', '2020/04/15 23:07:03', 0, 8, '2UST551', '2UST522', '2UST553', '2UST514', '2UST543', '2UST533', 'same as pref 3', '2UST532'),
-('mitalee.s@somaiya.edu', 5, '2020-21', '1812105', '2020/04/15 22:22:09', 0, 8, '2UST524', '2UST543', '2UST514', '2UST544', '2UST561', '2UST521', '2UST532', 'same as pref 3'),
-('mitali.potnis@somaiya.edu', 5, '2020-21', '1812048', '2020/04/13 15:01:37', 0, 8, '2UST532', '2UST514', '2UST542', '2UST543', '2UST524', '2UST534', 'same as pref 3', '2UST553'),
-('mitanshu.g@somaiya.edu', 5, '2020-21', '1924010', '2020/04/13 17:12:05', 0, 8, '2UST531', '2UST524', '2UST543', '2UST533', '2UST512', 'same as pref 2', '2UST541', '2UST542'),
-('mitva.bhagat@somaiya.edu', 5, '2020-21', '1812008', '2020/04/13 22:26:41', 0, 8, '2UST543', '2UST534', '2UST522', '2UST513', '2UST514', 'same as pref 2', '2UST531', 'same as pref 4'),
-('mohammedammar.m@somaiya.edu', 5, '2020-21', '1924006', '2020/04/13 20:44:23', 0, 8, '2UST512', '2UST542', '2UST541', '2UST544', '2UST511', 'same as pref 2', '2UST552', '2UST531'),
-('mohini.pp@somaiya.edu', 5, '2020-21', '1814124', '2020/04/14 21:42:32', 0, 8, '2UST512', '2UST513', '2UST531', '2UST532', '2UST541', '2UST562', 'same as pref 6', '2UST551'),
-('munib.m@somaiya.edu', 5, '2020-21', '1815034', '2020/04/14 16:59:47', 0, 8, '2UST553', '2UST551', '2UST563', '2UST562', '2UST561', 'same as pref 1', 'same as pref 1', 'same as pref 1'),
-('murali.singh@somaiya.edu', 5, '2020-21', '1813131', '2020/04/15 16:03:16', 0, 8, '2UST512', '2UST514', '2UST532', '2UST544', '2UST533', '2UST561', '2UST521', '2UST563'),
-('muskaan.n@somaiya.edu', 5, '2020-21', '1814020', '2020/04/13 14:48:23', 0, 8, '2UST512', '2UST544', '2UST511', '2UST541', '2UST531', '2UST533', '2UST514', 'same as pref 2'),
-('n.namboodiri@somaiya.edu', 5, '2020-21', '1811126', '2020/04/13 23:28:58', 0, 8, '2UST531', '2UST512', '2UST524', '2UST532', '2UST513', '2UST541', '2UST542', '2UST544'),
-('n.pal@somaiya.edu', 5, '2020-21', '1811101', '2020/04/13 16:01:20', 0, 8, '2UST512', '2UST531', '2UST513', '2UST532', '2UST543', 'same as pref 5', '2UST524', '2UST511'),
-('nachiket.moghe@somaiya.edu', 5, '2020-21', '1814039', '2020/04/13 17:26:52', 0, 8, '2UST512', '2UST531', '2UST513', '2UST543', '2UST541', 'same as pref 5', '2UST524', 'same as pref 4'),
-('nadir.sayani@somaiya.edu', 5, '2020-21', '1813047', '2020/04/14 13:33:07', 0, 8, '2UST512', '2UST543', '2UST514', '2UST532', '2UST511', '2UST531', '2UST542', '2UST524'),
-('nakul.c@somaiya.edu', 5, '2020-21', '1813068', '2020/04/13 14:48:01', 0, 8, '2UST531', '2UST524', '2UST514', '2UST543', '2UST512', 'same as pref 2', '2UST532', '2UST542'),
-('naman.as@somaiya.edu', 5, '2020-21', '1811113', '2020/04/13 15:35:30', 0, 8, '2UST541', '2UST543', '2UST513', '2UST512', '2UST544', '2UST521', '2UST561', '2UST524'),
-('namrit.sheth@somaiya.edu', 5, '2020-21', '1812112', '2020/04/15 16:16:59', 0, 8, '2UST524', '2UST514', '2UST532', '2UST512', '2UST541', '2UST513', 'same as pref 1', '2UST552'),
-('nandini.dey@somaiya.edu', 5, '2020-21', '1813071', '2020/04/13 14:52:36', 0, 8, '2UST531', '2UST514', '2UST532', '2UST533', '2UST543', '2UST562', '2UST524', 'same as pref 5'),
-('nandini.mahto@somaiya.edu', 5, '2020-21', '1813073', '2020/04/15 20:55:36', 0, 8, '2UST533', '2UST514', '2UST553', '2UST543', '2UST522', '2UST511', '2UST512', 'same as pref 5'),
-('nandita.kadam@somaiya.edu', 5, '2020-21', '1811084', '2020/04/15 22:04:45', 0, 8, '2UST511', '2UST512', '2UST513', '2UST542', '2UST524', 'same as pref 5', '2UST521', '2UST563'),
-('narayan.nagwani@somaiya.edu', 5, '2020-21', '1815099', '2020/04/13 22:43:11', 0, 8, '2UST551', '2UST561', '2UST562', '2UST563', '2UST553', '2UST513', '2UST543', '2UST533'),
-('navneet.p@somaiya.edu', 5, '2020-21', '1813035', '2020/04/14 20:17:32', 0, 8, '2UST514', '2UST511', '2UST513', '2UST532', '2UST524', 'same as pref 4', '2UST531', '2UST542'),
-('neel.desai@somaiya.edu', 5, '2020-21', '1923010', '2020/04/15 00:11:56', 0, 8, '2UST543', '2UST514', '2UST532', '2UST531', '2UST544', '2UST512', '2UST522', '2UST521'),
-('neel.gami@somaiya.edu', 5, '2020-21', '1815078', '2020/04/13 16:19:03', 0, 8, '2UST543', '2UST534', '2UST562', '2UST551', '2UST563', '2UST513', '2UST532', '2UST544'),
-('neelay.j@somaiya.edu', 5, '2020-21', '1814024', '2020/04/13 23:37:47', 0, 8, '2UST543', '2UST512', '2UST511', '2UST522', '2UST513', 'same as pref 3', '2UST544', '2UST532'),
-('neer.gada@somaiya.edu', 5, '2020-21', '1815016', '2020/04/13 17:52:46', 0, 8, '2UST553', '2UST543', '2UST514', '2UST524', '2UST551', 'same as pref 2', '2UST522', '2UST563'),
-('neeraj.n@somaiya.edu', 5, '2020-21', '1811027', '2020/04/15 11:21:17', 0, 8, '2UST512', '2UST513', '2UST533', '2UST541', '2UST524', 'same as pref 2', '2UST542', '2UST514'),
-('neha.mane@somaiya.edu', 5, '2020-21', '1812088', '2020/04/14 14:31:46', 0, 8, '2UST534', '2UST543', '2UST524', '2UST521', '2UST513', '2UST532', '2UST541', '2UST514'),
-('nehal.cj@somaiya.edu', 5, '2020-21', '1812027', '2020/04/15 21:22:39', 0, 8, '2UST553', '2UST551', '2UST552', '2UST513', '2UST511', '2UST542', 'same as pref 1', 'same as pref 2'),
-('nidhi.jajda@somaiya.edu', 5, '2020-21', '1812028', '2020/04/14 19:45:06', 0, 8, '2UST514', '2UST532', '2UST511', '2UST524', '2UST543', '2UST531', '2UST512', '2UST522'),
-('nidhi.n@somaiya.edu', 5, '2020-21', '181028', '2020/04/14 23:25:13', 0, 8, '2UST543', '2UST522', '2UST512', '2UST513', '2UST561', '2UST524', '2UST511', '2UST532'),
-('niha.ks@somaiya.edu', 5, '2020-21', '1921006', '2020/04/13 21:04:43', 0, 8, '2UST512', '2UST511', '2UST531', '2UST533', '2UST543', '2UST513', '2UST541', '2UST544'),
-('nihar.merchant@somaiya.edu', 5, '2020-21', '1815038', '2020/04/13 15:21:47', 0, 8, '2UST553', '2UST543', '2UST534', '2UST551', '2UST563', 'same as pref 2', '2UST522', 'same as pref 1'),
-('nikhil.chaplot@somaiya.edu', 5, '2020-21', '1815069', '2020/04/13 16:35:16', 0, 8, '2UST553', '2UST563', '2UST551', '2UST561', '2UST562', '2UST532', 'same as pref 3', '2UST541'),
-('nikhil.jd@somaiya.edu', 5, '2020-21', '1815073', '2020/04/15 11:46:09', 0, 8, '2UST514', '2UST543', '2UST551', '2UST563', '2UST513', '2UST522', '2UST523', 'same as pref 2'),
-('nikhil19@somaiya.edu', 5, '2020-21', '1814114', '2020/04/13 15:43:18', 0, 8, '2UST512', '2UST541', '2UST542', '2UST511', '2UST544', '2UST563', '2UST534', '2UST543'),
-('nikunj.dg@somaiya.edu', 5, '2020-21', '1813077', '2020/04/15 14:07:33', 0, 8, '2UST531', '2UST512', '2UST511', '2UST541', '2UST524', '2UST534', '2UST532', '2UST533'),
-('nilay.j@somaiya.edu', 5, '2020-21', '1815028', '2020/04/13 15:03:12', 0, 8, '2UST553', '2UST551', '2UST563', '2UST562', '2UST561', '2UST542', '2UST541', '2UST543'),
-('nilay.sheth@somaiya.edu', 5, '2020-21', '1811121', '2020/04/15 21:18:08', 0, 8, '2UST543', '2UST542', '2UST544', '2UST512', '2UST531', 'same as pref 1', '2UST534', 'same as pref 1'),
-('nimish.n@somaiya.edu', 5, '2020-21', '1815109', '2020/04/14 21:26:05', 0, 8, '2UST553', '2UST551', '2UST513', '2UST512', '2UST514', '2UST544', '2UST534', '2UST533'),
-('nimish.v@somaiya.edu', 5, '2020-21', '1811060', '2020/04/14 16:08:55', 0, 8, '2UST533', '2UST543', '2UST512', '2UST542', '2UST513', '2UST521', '2UST561', '2UST524'),
-('nimisha.chauhan@somaiya.edu', 5, '2020-21', '1922012', '2020/04/14 19:50:53', 0, 8, '2UST511', '2UST563', '2UST513', '2UST522', '2UST534', '2UST543', '2UST523', '2UST542'),
-('nimit.dave@somaiya.edu', 5, '2020-21', '1815009', '2020/04/13 14:53:06', 0, 8, '2UST553', '2UST563', '2UST561', '2UST534', '2UST551', '2UST533', '2UST531', '2UST524'),
-('ninad.devdas@somaiya.edu', 5, '2020-21', '1923004', '2020/04/14 23:06:03', 0, 8, '2UST522', '2UST551', '2UST553', '2UST543', '2UST531', '2UST533', '2UST532', '2UST513'),
-('nirav.reshamwala@somaiya.edu', 5, '2020-21', '1815111', '2020/04/15 21:27:28', 0, 8, '2UST514', '2UST513', '2UST543', '2UST532', '2UST531', 'same as pref 1', '2UST522', 'same as pref 5'),
-('nisarg.vaghasiya@somaiya.edu', 5, '2020-21', '1813063', '2020/04/15 18:36:51', 0, 8, '2UST543', '2UST512', '2UST514', '2UST531', '2UST541', 'same as pref 4', '2UST544', 'same as pref 5'),
-('nishant.tolia@somaiya.edu', 5, '2020-21', '1815134', '2020/04/14 23:12:25', 0, 8, '2UST514', '2UST543', '2UST563', '2UST553', '2UST524', '2UST512', '2UST511', 'same as pref 5'),
-('nishavak.n@somaiya.edu', 5, '2020-21', '1814040', '2020/04/13 14:58:13', 0, 8, '2UST512', '2UST513', '2UST544', '2UST541', '2UST542', '2UST521', '2UST523', '2UST522'),
-('nishi20@somaiya.edu', 5, '2020-21', '1811045', '2020/04/14 23:20:56', 0, 8, '2UST512', '2UST543', '2UST531', '2UST544', '2UST541', '2UST524', '2UST511', '2UST532'),
-('nishit.rs@somaiya.edu', 5, '2020-21', '1811114', '2020/04/15 10:56:30', 0, 8, '2UST532', '2UST524', '2UST531', '2UST541', '2UST543', 'same as pref 4', '2UST534', 'same as pref 1'),
-('nupoor.panchal@somaiya.edu', 5, '2020-21', '1815041', '2020/04/13 16:50:09', 0, 8, '2UST553', '2UST551', '2UST563', '2UST562', '2UST561', 'same as pref 4', '2UST524', '2UST534'),
-('ojas.k@somaiya.edu', 5, '2020-21', '1811064', '2020/04/14 17:47:01', 0, 8, '2UST524', '2UST531', '2UST543', '2UST512', '2UST544', 'same as pref 5', '2UST532', '2UST541'),
-('ojasvi.naik@somaiya.edu', 5, '2020-21', '1811098', '2020/04/13 15:16:34', 0, 8, '2UST512', '2UST511', '2UST531', '2UST513', '2UST542', 'same as pref 1', 'same as pref 2', '2UST532'),
-('om.rawal@somaiya.edu', 5, '2020-21', '1811037', '2020/04/14 16:24:56', 0, 8, '2UST531', '2UST544', '2UST532', '2UST524', '2UST513', '2UST523', 'same as pref 2', 'same as pref 4'),
-('onkar.sanap@somaiya.edu', 5, '2020-21', '1814035', '2020/04/15 16:17:36', 0, 8, '2UST512', '2UST543', '2UST531', '2UST561', '2UST522', 'same as pref 2', 'same as pref 5', '2UST511'),
-('p.daphal@somaiya.edu', 5, '2020-21', '1813009', '2020/04/13 14:55:32', 0, 8, '2UST512', '2UST531', '2UST514', '2UST524', '2UST533', '2UST521', 'same as pref 3', 'same as pref 4'),
-('p.sonkusare@somaiya.edu', 5, '2020-21', '1925006', '2020/04/15 12:09:35', 0, 8, '2UST563', '2UST551', '2UST553', '2UST562', '2UST544', '2UST511', '2UST532', '2UST513'),
-('panchal.jj@somaiya.edu', 5, '2020-21', '1815105', '2020/04/14 21:24:28', 0, 8, '2UST553', '2UST563', '2UST551', '2UST521', '2UST544', '2UST543', '2UST511', '2UST524'),
-('panchal.jr@somaiya.edu', 5, '2020-21', '1813108', '2020/04/15 15:50:12', 0, 8, '2UST512', '2UST524', '2UST514', '2UST531', '2UST542', '2UST541', 'same as pref 4', '2UST544'),
-('pandey.sk@somaiya.edu', 5, '2020-21', '1811030', '2020/04/15 00:19:35', 0, 8, '2UST512', '2UST531', '2UST544', '2UST541', '2UST543', 'same as pref 5', '2UST563', 'same as pref 2'),
-('pandya.kp@somaiya.edu', 5, '2020-21', '1813034', '2020/04/15 22:19:33', 0, 8, '2UST543', '2UST512', '2UST532', '2UST514', '2UST522', '2UST531', '2UST553', '2UST511'),
-('pankti.n@somaiya.edu', 5, '2020-21', '1814045', '2020/04/14 19:50:20', 0, 8, '2UST512', '2UST541', '2UST543', '2UST511', '2UST531', 'same as pref 3', '2UST523', '2UST542'),
-('param.ms@somaiya.edu', 5, '2020-21', '1812056', '2020/04/13 15:57:42', 0, 8, '2UST544', '2UST514', '2UST521', '2UST513', '2UST523', '2UST512', '2UST522', '2UST541'),
-('param.shendekar@somaiya.edu', 5, '2020-21', '1814115', '2020/04/13 16:58:21', 0, 8, '2UST512', '2UST541', '2UST544', '2UST543', '2UST542', '2UST562', '2UST513', '2UST533'),
-('parav.s@somaiya.edu', 5, '2020-21', '1815126', '2020/04/14 19:35:35', 0, 8, '2UST543', '2UST513', '2UST514', '2UST553', '2UST521', '2UST541', '2UST542', '2UST531'),
-('parekh.kn@somaiya.edu', 5, '2020-21', '1921008', '2020/04/13 16:22:27', 0, 8, '2UST512', '2UST544', '2UST542', '2UST541', '2UST511', '2UST531', '2UST533', 'same as pref 4'),
-('parshva.ss@somaiya.edu', 5, '2020-21', '1811046', '2020/04/17 1:35:42', 0, 8, '2UST512', '2UST513', '2UST532', '2UST531', '2UST524', '2UST543', 'same as pref 6', 'same as pref 6'),
-('parth.gandani@somaiya.edu', 5, '2020-21', '1812020', '2020/04/15 16:24:44', 0, 8, '2UST534', '2UST543', '2UST551', '2UST522', '2UST563', '2UST511', '2UST544', '2UST512'),
-('parth.jm@somaiya.edu', 5, '2020-21', '1811066', '2020/04/15 13:49:44', 0, 8, '2UST512', '2UST524', '2UST511', '2UST532', '2UST541', '2UST562', '2UST544', '2UST514'),
-('parth.pd@somaiya.edu', 5, '2020-21', '1815010', '2020/04/13 14:55:34', 0, 8, '2UST553', '2UST543', '2UST562', '2UST563', '2UST534', '2UST512', 'same as pref 3', 'same as pref 4'),
-('parthiv.vs@somaiya.edu', 5, '2020-21', '1925002', '2020/04/14 19:11:52', 0, 8, '2UST563', '2UST562', '2UST551', '2UST534', '2UST532', '2UST543', 'same as pref 4', '2UST544'),
-('parva.b@somaiya.edu', 5, '2020-21', '1814004', '2020/04/14 21:08:24', 0, 8, '2UST512', '2UST513', '2UST541', '2UST543', '2UST542', 'same as pref 4', '2UST532', '2UST523'),
-('patel.vr@somaiya.edu', 5, '2020-21', '1813037', '2020/04/15 18:01:44', 0, 8, '2UST543', '2UST512', '2UST514', '2UST531', '2UST511', '2UST524', 'same as pref 5', '2UST544'),
-('patil.nv@somaiya.edu', 5, '2020-21', '1814098', '2020/04/14 19:38:31', 0, 8, '2UST524', '2UST543', '2UST544', '2UST512', '2UST513', '2UST561', '2UST514', 'same as pref 1'),
-('pavitra.n@somaiya.edu', 5, '2020-21', '1815103', '2020/04/15 22:05:02', 0, 8, '2UST513', '2UST553', '2UST514', '2UST551', '2UST512', '2UST534', '2UST521', '2UST561'),
-('piyush.chavda@somaiya.edu', 5, '2020-21', '1814010', '2020/04/13 15:09:43', 0, 8, '2UST512', '2UST544', '2UST543', '2UST511', 'same as pref 4', '2UST532', '2UST524', '2UST513'),
-('piyush.pandey@somaiya.edu', 5, '2020-21', '1812096', '2020/04/13 15:15:50', 0, 8, '2UST551', '2UST552', '2UST522', '2UST523', '2UST524', '2UST541', '2UST532', '2UST542'),
-('pns1@somaiya.edu', 5, '2020-21', '1811116', '2020/04/13 15:24:04', 0, 8, '2UST531', '2UST521', '2UST513', '2UST523', '2UST552', '2UST543', '2UST512', '2UST551'),
-('poorva.kothari@somaiya.edu', 5, '2020-21', '1812037', '2020/04/16 1:14:17', 0, 8, '2UST532', '2UST514', '2UST533', '2UST524', '2UST543', '2UST513', 'same as pref 1', '2UST522'),
-('pps6@somaiya.edu', 5, '2020-21', '1811115', '2020/04/13 15:06:14', 0, 8, '2UST531', '2UST532', '2UST511', '2UST544', '2UST543', '2UST552', '2UST522', '2UST562'),
-('prabhat.g@somaiya.edu', 5, '2020-21', '1925004', '2020/04/14 22:04:52', 0, 8, '2UST553', '2UST563', '2UST562', '2UST561', '2UST543', '2UST513', '2UST544', 'same as pref 5'),
-('pragun.m@somaiya.edu', 5, '2020-21', '1813029', '2020/04/15 23:46:05', 0, 8, '2UST543', '2UST531', '2UST532', '2UST514', '2UST512', '2UST561', '2UST541', '2UST521'),
-('praharsh.v@somaiya.edu', 5, '2020-21', '1813124', '2020/04/15 15:50:07', 0, 8, '2UST512', '2UST524', '2UST514', '2UST531', '2UST542', '2UST541', '2UST513', '2UST543'),
-('prajwal.bhagat@somaiya.edu', 5, '2020-21', '1813066', '2020/04/13 14:49:13', 0, 8, '2UST543', '2UST531', '2UST534', '2UST522', '2UST532', '2UST511', 'same as pref 2', '2UST524'),
-('prajwal.gawde@somaiya.edu', 5, '2020-21', '1813076', '2020/04/15 18:08:37', 0, 8, '2UST514', '2UST543', '2UST512', '2UST532', '2UST531', '2UST513', '2UST541', '2UST524'),
-('pranav.ahuja@somaiya.edu', 5, '2020-21', '1811001', '2020/04/14 8:22:24', 0, 8, '2UST512', '2UST541', '2UST542', '2UST543', '2UST544', '2UST524', '2UST531', '2UST513'),
-('prasad.borkar@somaiya.edu', 5, '2020-21', '1815004', '2020/04/13 17:00:50', 0, 8, '2UST553', '2UST551', '2UST514', '2UST534', '2UST563', '2UST524', '2UST562', '2UST544'),
-('prateek.pandey@somaiya.edu', 5, '2020-21', '1811105', '2020/04/13 15:07:16', 0, 8, '2UST512', '2UST531', '2UST511', '2UST513', '2UST532', '2UST523', 'same as pref 4', '2UST533'),
-('prathamesh.kodre@somaiya.edu', 5, '2020-21', '1815032', '2020/04/14 16:15:16', 0, 8, '2UST553', '2UST534', '2UST551', '2UST563', '2UST562', 'same as pref 4', '2UST522', 'same as pref 5'),
-('prathamesh.ma@somaiya.edu', 5, '2020-21', '1812070', '2020/04/15 23:25:45', 0, 8, '2UST512', '2UST543', '2UST511', '2UST553', '2UST513', '2UST522', '2UST524', '2UST514'),
-('pratik.swali@somaiya.edu', 5, '2020-21', '1923003', '2020/04/15 12:59:19', 0, 8, '2UST543', '2UST513', '2UST531', '2UST552', '2UST534', 'same as pref 1', '2UST533', '2UST551'),
-('preet.porwal@somaiya.edu', 5, '2020-21', '1814100', '2020/04/13 15:26:36', 0, 8, '2UST524', '2UST531', '2UST512', '2UST513', '2UST543', '2UST534', 'same as pref 5', '2UST541'),
-('prina.gudhka@somaiya.edu', 5, '2020-21', '1814080', '2020/04/14 22:11:58', 0, 8, '2UST512', '2UST513', '2UST531', '2UST524', '2UST543', '2UST561', 'same as pref 4', '2UST544'),
-('priyank.ps@somaiya.edu', 5, '2020-21', '1812106', '2020/04/19 16:51:27', 0, 8, '2UST543', '2UST534', '2UST511', '2UST553', '2UST542', '2UST512', 'same as pref 3', 'same as pref 2'),
-('priyanuj.b@somaiya.edu', 5, '2020-21', '1813083', '2020/04/13 15:21:45', 0, 8, '2UST524', '2UST514', '2UST543', '2UST512', '2UST531', '2UST562', 'same as pref 1', '2UST513'),
-('prutha.patel@somaiya.edu', 5, '2020-21', '1812123', '2020/04/13 15:23:50', 0, 8, '2UST543', '2UST553', '2UST551', '2UST533', '2UST522', '2UST512', 'same as pref 2', '2UST511'),
-('pss5@somaiya.edu', 5, '2020-21', '1815115', '2020/04/15 17:41:41', 0, 8, '2UST524', '2UST514', '2UST543', '2UST561', '2UST542', '2UST532', '2UST544', '2UST513'),
-('pss6@somaiya.edu', 5, '2020-21', '1815056', '2020/04/15 22:32:01', 0, 8, '2UST543', '2UST551', '2UST553', '2UST563', '2UST561', '2UST511', '2UST513', '2UST524'),
-('purav.js@somaiya.edu', 5, '2020-21', '1813119', '2020/04/15 21:13:18', 0, 8, '2UST543', '2UST514', '2UST533', '2UST512', '2UST532', 'same as pref 5', '2UST524', 'same as pref 3'),
-('purva.belgamwala@somaiya.edu', 5, '2020-21', '1813065', '2020/04/13 16:44:54', 0, 8, '2UST543', '2UST561', '2UST534', '2UST531', '2UST511', '2UST512', '2UST522', '2UST524'),
-('purvi.h@somaiya.edu', 5, '2020-21', '1814023', '2020/04/14 21:50:52', 0, 8, '2UST512', '2UST511', '2UST531', '2UST541', '2UST542', '2UST543', '2UST524', '2UST513'),
-('pushti.r@somaiya.edu', 5, '2020-21', '1813044', '2020/04/13 16:04:15', 0, 8, '2UST531', '2UST512', '2UST532', '2UST524', '2UST511', 'same as pref 1', 'same as pref 5', '2UST544'),
-('pvs1@somaiya.edu', 5, '2020-21', '1811047', '2020/04/15 00:11:43', 0, 8, '2UST512', '2UST531', '2UST543', '2UST513', '2UST524', '2UST542', 'same as pref 1', 'same as pref 4'),
-('rachit.hm@somaiya.edu', 5, '2020-21', '1814037', '2020/04/13 15:38:25', 0, 8, '2UST513', '2UST531', '2UST512', 'same as pref 2', '2UST511', '2UST541', '2UST543', 'same as pref 1'),
-('rachit.j@somaiya.edu', 5, '2020-21', '1812031', '2020/04/14 17:28:01', 0, 8, '2UST552', '2UST553', '2UST523', '2UST551', '2UST521', '2UST532', '2UST513', '2UST543'),
-('rachit.jain@somaiya.edu', 5, '2020-21', '1815085', '2020/04/15 21:58:21', 0, 8, '2UST553', '2UST563', '2UST551', '2UST514', '2UST513', '2UST531', '2UST522', 'same as pref 1'),
-('rachit.singh@somaiya.edu', 5, '2020-21', '1815062', '2020/04/13 17:05:29', 0, 8, '2UST553', '2UST562', '2UST551', '2UST544', '2UST561', '2UST514', '2UST542', '2UST543'),
-('raghvendra.s@somaiya.edu', 5, '2020-21', '1813058', '2020/04/16 00:05:11', 0, 8, '2UST512', '2UST543', '2UST532', '2UST531', '2UST534', '2UST522', 'same as pref 1', '2UST552'),
-('rahil.js@somaiya.edu', 5, '2020-21', '1812108', '2020/04/13 14:59:43', 0, 8, '2UST543', '2UST522', '2UST552', '2UST551', '2UST541', 'same as pref 1', '2UST513', 'same as pref 4'),
-('rahil.kanti@somaiya.edu', 5, '2020-21', '1815089', '2020/04/14 17:15:41', 0, 8, '2UST553', '2UST551', '2UST563', '2UST524', '2UST561', 'same as pref 1', 'same as pref 2', 'same as pref 3'),
-('rahil.parikh@somaiya.edu', 5, '2020-21', '1811032', '2020/04/15 19:12:35', 0, 8, '2UST541', '2UST531', '2UST533', '2UST512', '2UST544', '2UST524', 'same as pref 2', '2UST551'),
-('raj.sanghani@somaiya.edu', 5, '2020-21', '1813045', '2020/04/15 20:43:28', 0, 8, '2UST514', '2UST532', '2UST531', '2UST512', '2UST541', '2UST533', 'same as pref 5', '2UST513'),
-('raj.shah8@somaiya.edu', 5, '2020-21', '1811048', '2020/04/14 21:53:16', 0, 8, '2UST513', '2UST531', '2UST541', '2UST512', '2UST532', 'same as pref 2', '2UST542', '2UST524'),
-('raj.thakkar2@somaiya.edu', 5, '2020-21', '1813061', '2020/04/15 18:24:56', 0, 8, '2UST543', '2UST512', '2UST514', '2UST531', '2UST541', '2UST513', 'same as pref 2', '2UST511'),
-('rajan.gaul@somaiya.edu', 5, '2020-21', '1811078', '2020/04/14 8:18:31', 0, 8, '2UST541', '2UST531', '2UST532', '2UST513', '2UST533', 'same as pref 4', '2UST524', '2UST511'),
-('rajat.c@somaiya.edu', 5, '2020-21', '1814068', '2020/04/15 8:26:30', 0, 8, '2UST531', '2UST541', '2UST542', '2UST524', '2UST512', '2UST543', '2UST562', 'same as pref 6'),
-('rajat.shah@somaiya.edu', 5, '2020-21', '1815057', '2020/04/13 14:59:43', 0, 8, '2UST514', '2UST524', '2UST531', '2UST553', '2UST551', 'same as pref 2', '2UST563', '2UST543'),
-('rajat.sharma@somaiya.edu', 5, '2020-21', '1811120', '2020/04/13 14:55:04', 0, 8, '2UST512', '2UST513', '2UST524', '2UST531', '2UST532', '2UST511', '2UST543', '2UST544'),
-('rajiv.bane@somaiya.edu', 5, '2020-21', '1814083', '2020/04/15 21:11:47', 0, 8, '2UST512', '2UST511', '2UST524', '2UST542', '2UST541', '2UST513', '2UST522', '2UST553'),
-('rajneesh.j@somaiya.edu', 5, '2020-21', '1815086', '2020/04/13 19:08:42', 0, 8, '2UST532', '2UST514', '2UST551', '2UST553', '2UST563', 'same as pref 1', '2UST512', '2UST543'),
-('ramesh.krishnan@somaiya.edu', 5, '2020-21', '1811063', '2020/04/14 11:55:00', 0, 8, '2UST512', '2UST541', '2UST542', '2UST544', '2UST543', '2UST532', '2UST534', '2UST513'),
-('rasika.joshi@somaiya.edu', 5, '2020-21', '1814086', '2020/04/13 15:38:34', 0, 8, '2UST512', '2UST524', '2UST544', '2UST542', '2UST532', '2UST541', '2UST543', '2UST513'),
-('rdd@somaiya.edu', 5, '2020-21', '1813074', '2020/04/15 19:56:51', 0, 8, '2UST514', '2UST543', '2UST512', '2UST532', '2UST531', '2UST561', '2UST521', '2UST563'),
-('revant.shah@somaiya.edu', 5, '2020-21', '1813052', '2020/04/25 11:49:10', 0, 8, '2UST531', '2UST542', '2UST514', '2UST524', '2UST532', '2UST543', '2UST512', '2UST533'),
-('revathi.p@somaiya.edu', 5, '2020-21', '1921011', '2020/04/14 17:28:48', 0, 8, '2UST512', '2UST542', '2UST544', '2UST541', '2UST511', '2UST562', 'same as pref 3', 'same as pref 2'),
-('rhea.kamath@somaiya.edu', 5, '2020-21', '1815088', '2020/04/15 15:17:53', 0, 8, '2UST553', '2UST551', '2UST514', '2UST521', '2UST531', 'same as pref 5', '2UST524', '2UST544'),
-('rhea23@somaiya.edu', 5, '2020-21', '1813053', '2020/04/13 16:29:21', 0, 8, '2UST543', '2UST531', '2UST534', '2UST563', '2UST522', 'same as pref 2', '2UST513', '2UST532'),
-('rhitik.g@somaiya.edu', 5, '2020-21', '1713022', '2020/04/17 22:06:03', 0, 8, '2UST543', 'same as pref 1', '2UST552', 'same as pref 1', 'same as pref 3', '2UST531', '2UST541', '2UST542'),
-('rhutuja.t@somaiya.edu', 5, '2020-21', '1814128', '2020/04/13 14:46:21', 0, 8, '2UST512', '2UST541', '2UST543', '2UST544', '2UST542', '2UST524', '2UST522', 'same as pref 1'),
-('rhyme.risi@somaiya.edu', 5, '2020-21', '1812103', '2020/04/14 13:03:34', 0, 8, '2UST524', '2UST514', '2UST511', '2UST531', '2UST541', '2UST542', '2UST512', 'same as pref 3'),
-('rhythm.js@somaiya.edu', 5, '2020-21', '1815058', '2020/04/13 14:54:25', 0, 8, '2UST553', '2UST513', '2UST514', '2UST524', '2UST533', '2UST511', '2UST544', '2UST532'),
-('rishabh.cj@somaiya.edu', 5, '2020-21', '1712018', '2020/04/15 14:19:31', 0, 8, '2UST522', '2UST553', '2UST552', '2UST534', '2UST543', 'same as pref 1', '2UST533', '2UST544'),
-('rishabh.jogani@somaiya.edu', 5, '2020-21', '1815026', '2020/04/14 22:52:45', 0, 8, '2UST553', '2UST534', '2UST563', '2UST551', '2UST562', '2UST542', '2UST544', '2UST533'),
-('ritik.dhame@somaiya.edu', 5, '2020-21', '1812018', '2020/04/15 17:43:14', 0, 8, '2UST543', '2UST524', '2UST512', '2UST522', '2UST511', '2UST532', '2UST544', '2UST513'),
-('ritik.ds@somaiya.edu', 5, '2020-21', '1814050', '2020/04/13 18:21:13', 0, 8, '2UST512', '2UST543', '2UST544', '2UST511', '2UST524', 'same as pref 4', '2UST563', '2UST522'),
-('ritik.mody@somaiya.edu', 5, '2020-21', '1811097', '2020/04/13 22:53:48', 0, 8, '2UST531', '2UST524', '2UST512', '2UST541', '2UST544', 'same as pref 2', 'same as pref 5', '2UST543'),
-('ritwik.m@somaiya.edu', 5, '2020-21', '1813116', '2020/04/14 23:01:47', 0, 8, '2UST543', '2UST514', '2UST512', '2UST531', '2UST532', '2UST524', '2UST551', 'same as pref 5'),
-('riya.joshi@somaiya.edu', 5, '2020-21', '1814028', '2020/04/14 20:38:12', 0, 8, '2UST512', '2UST531', '2UST513', '2UST543', '2UST541', '2UST544', 'same as pref 5', '2UST542'),
-('riya.tasgaonkar@somaiya.edu', 5, '2020-21', '1811122', '2020/04/13 23:09:28', 0, 8, '2UST531', '2UST524', '2UST512', '2UST544', '2UST541', '2UST514', '2UST534', '2UST533'),
-('rnd1@somaiya.edu', 5, '2020-21', '1811075', '2020/04/15 20:20:58', 0, 8, '2UST533', '2UST544', '2UST512', '2UST524', '2UST531', '2UST511', '2UST513', '2UST521'),
-('rohan.shende@somaiya.edu', 5, '2020-21', '1815122', '2020/04/15 15:55:14', 0, 8, '2UST553', '2UST544', '2UST514', '2UST551', '2UST512', '2UST532', '2UST533', '2UST541'),
-('rohit.padia@somaiya.edu', 5, '2020-21', '1812052', '2020/04/13 15:12:11', 0, 8, '2UST514', '2UST524', '2UST511', '2UST532', '2UST531', 'same as pref 4', '2UST543', '2UST521'),
-('rohit.patil1@somaiya.edu', 5, '2020-21', '1815108', '2020/04/15 17:41:03', 0, 8, '2UST524', '2UST514', '2UST543', '2UST561', '2UST542', '2UST541', '2UST553', '2UST551'),
-('rohit.ss@somaiya.edu', 5, '2020-21', '1812083', '2020/04/15 22:40:24', 0, 8, '2UST524', '2UST543', '2UST514', '2UST544', '2UST561', '2UST531', '2UST511', 'same as pref 4'),
-('rohit09@somaiya.edu', 5, '2020-21', '1813042', '2020/04/15 15:05:19', 0, 8, '2UST543', '2UST532', '2UST514', '2UST533', '2UST544', '2UST513', '2UST541', '2UST531'),
-('roma.k@somaiya.edu', 5, '2020-21', '1922009', '2020/04/15 21:49:51', 0, 8, '2UST511', '2UST551', '2UST553', '2UST533', 'same as pref 2', '2UST514', '2UST563', '2UST522'),
-('romil.us@somaiya.edu', 5, '2020-21', '1714058', '2020/04/15 14:39:57', 0, 8, '2UST531', '2UST524', '2UST543', '2UST561', '2UST553', '2UST544', '2UST511', '2UST513'),
-('ronak.desai@somaiya.edu', 5, '2020-21', '1814074', '2020/04/13 15:19:39', 0, 8, '2UST531', '2UST513', '2UST512', '2UST541', '2UST544', '2UST521', '2UST524', 'same as pref 5'),
-('ronak.dg@somaiya.edu', 5, '2020-21', '1811011', '2020/04/14 23:25:17', 0, 8, '2UST543', '2UST522', '2UST512', '2UST513', '2UST561', '2UST524', '2UST511', '2UST532'),
-('ronak.singh@somaiya.edu', 5, '2020-21', '1813126', '2020/04/15 20:56:33', 0, 8, '2UST543', '2UST553', '2UST561', '2UST534', '2UST531', '2UST514', '2UST512', '2UST513'),
-('roosheet.m@somaiya.edu', 5, '2020-21', '1815036', '2020/04/15 13:54:34', 0, 8, '2UST524', '2UST562', '2UST551', '2UST553', '2UST563', '2UST541', '2UST531', '2UST543'),
-('ruchi.manjalkar@somaiya.edu', 5, '2020-21', '1812076', '2020/04/13 15:21:32', 0, 8, '2UST553', '2UST552', '2UST543', '2UST521', '2UST522', '2UST562', '2UST524', '2UST513'),
-('ruchira.j@somaiya.edu', 5, '2020-21', '1813088', '2020/04/13 15:28:23', 0, 8, '2UST531', '2UST522', '2UST524', '2UST533', '2UST532', 'same as pref 1', '2UST521', '2UST513'),
-('rudra.jog@somaiya.edu', 5, '2020-21', '1815096', '2020/04/15 18:33:51', 0, 8, '2UST513', '2UST553', '2UST563', '2UST551', '2UST512', '2UST532', 'same as pref 2', '2UST552'),
-('rudresh.r@somaiya.edu', 5, '2020-21', '1814104', '2020/04/14 13:05:44', 0, 8, '2UST513', '2UST531', '2UST541', '2UST544', '2UST543', '2UST521', '2UST534', '2UST563'),
-('rugved.bongale@somaiya.edu', 5, '2020-21', '1811006', '2020/04/15 14:25:46', 0, 8, '2UST531', '2UST524', '2UST541', '2UST543', '2UST544', '2UST552', '2UST522', '2UST513'),
-('rugved.j@somaiya.edu', 5, '2020-21', '1815023', '2020/04/15 14:18:18', 0, 8, '2UST543', '2UST553', '2UST561', '2UST524', '2UST513', '2UST562', '2UST563', 'same as pref 6'),
-('rushikesh.arande@somaiya.edu', 5, '2020-21', '1815002', '2020/04/15 18:38:34', 0, 8, '2UST513', '2UST543', '2UST553', '2UST563', '2UST562', '2UST532', '2UST544', '2UST511'),
-('rushil.popat@somaiya.edu', 5, '2020-21', '1815049', '2020/04/15 13:15:38', 0, 8, '2UST514', '2UST532', '2UST553', '2UST524', '2UST533', '2UST511', '2UST541', '2UST542'),
-('rustom.m@somaiya.edu', 5, '2020-21', '1813027', '2020/04/14 2:03:42', 0, 8, '2UST533', '2UST511', '2UST553', '2UST543', '2UST514', 'same as pref 4', '2UST512', 'same as pref 2'),
-('rutik.gandhi@somaiya.edu', 5, '2020-21', '1815080', '2020/04/15 19:23:56', 0, 8, '2UST553', '2UST514', '2UST543', '2UST561', '2UST513', 'same as pref 3', '2UST521', '2UST511'),
-('rutvikkumar.p@somaiya.edu', 5, '2020-21', '1925011', '2020/04/13 18:44:24', 0, 8, '2UST553', '2UST534', '2UST551', '2UST543', '2UST513', '2UST512', 'same as pref 5', 'same as pref 3'),
-('rvs1@somaiya.edu', 5, '2020-21', '1922002', '2020/04/15 21:49:17', 0, 8, '2UST543', '2UST514', '2UST511', '2UST522', '2UST533', 'same as pref 1', '2UST541', '2UST542'),
-('s.baradkar@somaiya.edu', 5, '2020-21', '1812007', '2020/04/14 21:29:34', 0, 8, '2UST543', '2UST522', '2UST534', '2UST514', '2UST544', '2UST524', '2UST531', 'same as pref 3'),
-('s.srinivasan@somaiya.edu', 5, '2020-21', '1812117', '2020/04/13 20:24:30', 0, 8, '2UST523', '2UST551', '2UST522', '2UST531', '2UST543', '2UST524', '2UST513', '2UST561'),
-('s.suraliya@somaiya.edu', 5, '2020-21', '1812061', '2020/04/13 15:57:45', 0, 8, '2UST544', '2UST521', '2UST514', '2UST513', '2UST523', '2UST531', 'same as pref 3', '2UST534'),
-('saarah.khan@somaiya.edu', 5, '2020-21', '1811088', '2020/04/15 22:48:23', 0, 8, '2UST531', '2UST513', '2UST512', '2UST524', '2UST511', '2UST542', '2UST532', 'same as pref 4'),
-('sagar.kamat@somaiya.edu', 5, '2020-21', '1814030', '2020/04/13 15:57:23', 0, 8, '2UST531', 'same as pref 1', 'same as pref 1', '2UST512', 'same as pref 4', 'same as pref 4', '2UST522', '2UST541'),
-('sagar.nn@somaiya.edu', 5, '2020-21', '1815013', '2020/04/13 21:23:45', 0, 8, '2UST553', '2UST543', '2UST551', '2UST563', '2UST561', '2UST513', '2UST544', '2UST562'),
-('sakshi.shah4@somaiya.edu', 5, '2020-21', '1922003', '2020/04/15 11:36:55', 0, 8, '2UST521', '2UST533', '2UST551', '2UST532', '2UST534', 'same as pref 4', '2UST553', 'same as pref 2'),
-('salil.kulkarni@somaiya.edu', 5, '2020-21', '1813026', '2020/04/15 22:31:37', 0, 8, '2UST514', '2UST531', '2UST532', '2UST543', '2UST524', '2UST544', '2UST551', 'same as pref 7'),
-('sameeksha.p@somaiya.edu', 5, '2020-21', '1815048', '2020/04/14 19:11:53', 0, 8, '2UST553', '2UST551', '2UST561', '2UST563', '2UST562', 'same as pref 1', '2UST552', '2UST522'),
-('samyak.z@somaiya.edu', 5, '2020-21', '1813127', '2020/04/15 19:27:35', 0, 8, '2UST553', '2UST543', '2UST533', '2UST514', '2UST532', '2UST524', 'same as pref 5', '2UST562'),
-('sanchi.desai@somaiya.edu', 5, '2020-21', '1815012', '2020/04/13 15:44:27', 0, 8, '2UST553', '2UST514', '2UST561', '2UST551', '2UST531', '2UST513', '2UST543', '2UST524'),
-('sanika.bagwe@somaiya.edu', 5, '2020-21', '1811065', '2020/04/15 22:18:58', 0, 8, '2UST512', '2UST513', '2UST532', '2UST541', '2UST531', '2UST534', '2UST533', 'same as pref 5'),
-('sankalp.jain@somaiya.edu', 5, '2020-21', '1813084', '2020/04/13 16:28:32', 0, 8, '2UST544', '2UST543', '2UST513', '2UST512', '2UST532', '2UST562', '2UST563', '2UST561'),
-('sanket.dp@somaiya.edu', 5, '2020-21', '1813039', '2020/04/15 14:42:21', 0, 8, '2UST514', '2UST531', '2UST543', '2UST532', '2UST533', '2UST534', 'same as pref 2', 'same as pref 5'),
-('sanmit.sahu@somaiya.edu', 5, '2020-21', '1811038', '2020/04/15 15:08:56', 0, 8, '2UST531', '2UST533', '2UST541', '2UST512', '2UST511', '2UST542', 'same as pref 3', 'same as pref 5'),
-('sanya.shah@somaiya.edu', 5, '2020-21', '1812110', '2020/04/13 16:49:18', 0, 8, '2UST543', '2UST553', '2UST551', '2UST533', '2UST522', '2UST563', '2UST534', 'same as pref 4'),
-('sanyam.gandhi@somaiya.edu', 5, '2020-21', '1814078', '2020/04/13 16:12:04', 0, 8, '2UST513', '2UST543', '2UST531', '2UST512', '2UST544', '2UST533', '2UST514', '2UST534'),
-('sanyam.gudhka@somaiya.edu', 5, '2020-21', '1812081', '2020/04/15 20:15:45', 0, 8, '2UST524', '2UST534', '2UST553', '2UST543', '2UST561', '2UST552', '2UST563', '2UST551'),
-('sanyam.savla@somaiya.edu', 5, '2020-21', '1811040', '2020/04/14 23:31:07', 0, 8, '2UST512', '2UST541', '2UST542', '2UST543', '2UST513', '2UST561', '2UST553', '2UST562'),
-('sap3@somaiya.edu', 5, '2020-21', '1922020', '2020/04/14 23:34:52', 0, 8, '2UST514', '2UST563', '2UST543', '2UST534', '2UST522', '2UST544', '2UST513', '2UST542'),
-('sarth.m@somaiya.edu', 5, '2020-21', '1815097', '2020/04/13 16:08:44', 0, 8, '2UST553', '2UST514', '2UST551', '2UST561', '2UST531', 'same as pref 5', '2UST513', '2UST532'),
-('sarthak.ms@somaiya.edu', 5, '2020-21', '1815059', '2020/04/15 18:12:28', 0, 8, '2UST543', '2UST563', '2UST553', '2UST534', '2UST551', '2UST544', '2UST511', '2UST513'),
-('sarthak.vora@somaiya.edu', 5, '2020-21', '1815066', '2020/04/14 11:57:54', 0, 8, '2UST553', '2UST551', '2UST563', '2UST561', '2UST514', '2UST533', '2UST532', '2UST513'),
-('sarvesh.bangad@somaiya.edu', 5, '2020-21', '1811124', '2020/04/15 10:14:40', 0, 8, '2UST513', '2UST524', '2UST511', '2UST512', '2UST531', 'same as pref 2', '2UST543', 'same as pref 3'),
-('satra.y@somaiya.edu', 5, '2020-21', '1811109', '2020/04/13 16:18:11', 0, 8, '2UST512', '2UST531', '2UST543', '2UST513', '2UST521', 'same as pref 2', '2UST563', 'same as pref 4'),
-('satyam.pandey@somaiya.edu', 5, '2020-21', '1812120', '2020/04/13 18:21:51', 0, 8, '2UST543', '2UST553', '2UST531', '2UST514', '2UST512', '2UST511', '2UST513', 'same as pref 3'),
-('saud.shaikh@somaiya.edu', 5, '2020-21', '1815119', '2020/04/13 16:55:14', 0, 8, '2UST553', '2UST551', '2UST531', '2UST514', '2UST561', '2UST513', 'same as pref 3', '2UST532'),
-('saumya.gala@somaiya.edu', 5, '2020-21', '1712015', '2020/04/15 14:05:30', 0, 8, '2UST553', '2UST552', '2UST563', '2UST522', '2UST534', '2UST543', '2UST541', '2UST542'),
-('saurabh.nambiar@somaiya.edu', 5, '2020-21', '1811099', '2020/04/14 22:44:12', 0, 8, '2UST531', '2UST541', '2UST542', '2UST524', '2UST512', 'same as pref 3', '2UST513', '2UST511'),
-('saurabh.shetty@somaiya.edu', 5, '2020-21', '1811055', '2020/04/15 00:39:59', 0, 8, '2UST511', '2UST512', '2UST532', '2UST544', '2UST531', '2UST542', 'same as pref 1', '2UST513'),
-('saurav.sarkar@somaiya.edu', 5, '2020-21', '18151113', '2020/04/15 15:15:29', 0, 8, '2UST553', '2UST543', '2UST561', '2UST534', '2UST514', 'same as pref 5', '2UST522', '2UST563'),
-('saurav.yj@somaiya.edu', 5, '2020-21', '1811019', '2020/04/15 18:49:22', 0, 8, '2UST524', '2UST532', '2UST531', '2UST544', '2UST543', 'same as pref 5', 'same as pref 2', '2UST541'),
-('savri.gandhi@somaiya.edu', 5, '2020-21', '1815114', '2020/04/15 11:49:25', 0, 8, '2UST514', '2UST524', '2UST531', '2UST553', '2UST561', '2UST522', '2UST534', '2UST551'),
-('sejal.chordiya@somaiya.edu', 5, '2020-21', '1813008', '2020/04/14 17:49:07', 0, 8, '2UST543', 'same as pref 1', '2UST531', 'same as pref 3', 'same as pref 1', '2UST561', '2UST514', 'same as pref 3'),
-('shabdarali.m@somaiya.edu', 5, '2020-21', '1813101', '2020/04/15 21:20:50', 0, 8, '2UST531', '2UST514', '2UST513', '2UST512', '2UST541', 'same as pref 4', '2UST524', '2UST561'),
-('shah.di@somaiya.edu', 5, '2020-21', '1922014', '2020/04/16 13:30:14', 0, 8, '2UST522', '2UST551', '2UST563', '2UST521', '2UST512', 'same as pref 2', '2UST552', '2UST543'),
-('shah.ts@somaiya.edu', 5, '2020-21', '1813054', '2020/04/15 18:34:50', 0, 8, '2UST543', '2UST512', '2UST514', '2UST531', '2UST562', '2UST513', '2UST533', '2UST532'),
-('shantanu.godbole@somaiya.edu', 5, '2020-21', '1811079', '2020/04/13 19:21:38', 0, 8, '2UST513', '2UST541', '2UST524', '2UST542', '2UST544', '2UST552', '2UST533', 'same as pref 2'),
-('sharath.p@somaiya.edu', 5, '2020-21', '1813111', '2020/04/14 20:17:03', 0, 8, '2UST531', '2UST533', '2UST524', '2UST532', '2UST543', 'same as pref 1', '2UST522', 'same as pref 5'),
-('shatayu.m@somaiya.edu', 5, '2020-21', '1815095', '2020/04/14 20:14:14', 0, 8, '2UST553', '2UST513', '2UST514', '2UST561', '2UST551', '2UST541', '2UST544', 'same as pref 5'),
-('shefali24@somaiya.edu', 5, '2020-21', '1921007', '2020/04/14 23:51:12', 0, 8, '2UST531', '2UST524', '2UST544', '2UST513', '2UST512', '2UST542', '2UST543', 'same as pref 2'),
-('shelar.sa@somaiya.edu', 5, '2020-21', '1811053', '2020/04/15 00:09:57', 0, 8, '2UST512', '2UST531', '2UST543', '2UST544', '2UST541', 'same as pref 5', 'same as pref 4', '2UST542'),
-('shelke.aa@somaiya.edu', 5, '2020-21', '1811103', '2020/04/13 23:59:45', 0, 8, '2UST512', '2UST513', '2UST531', '2UST542', '2UST541', '2UST532', 'same as pref 2', '2UST543'),
-('sheth.jb@somaiya.edu', 5, '2020-21', '1812002', '2020/04/15 17:43:41', 0, 8, '2UST543', '2UST524', '2UST512', '2UST522', '2UST511', '2UST533', '2UST562', '2UST531'),
-('sheth.mj@somaiya.edu', 5, '2020-21', '1812060', '2020/04/13 19:33:40', 0, 8, '2UST553', '2UST511', '2UST512', '2UST534', '2UST524', '2UST543', '2UST544', '2UST542'),
-('shetty.rr@somaiya.edu', 5, '2020-21', '1815060', '2020/04/13 18:37:15', 0, 8, '2UST543', '2UST553', '2UST551', '2UST563', '2UST513', '2UST511', '2UST514', 'same as pref 4'),
-('shetye.y@somaiya.edu', 5, '2020-21', '1815061', '2020/04/15 13:40:36', 0, 8, '2UST514', '2UST543', '2UST513', '2UST531', '2UST553', 'same as pref 4', 'same as pref 2', '2UST544'),
-('shibani.p@somaiya.edu', 5, '2020-21', '1922021', '2020/04/15 12:14:52', 0, 8, '2UST543', '2UST563', '2UST533', '2UST551', '2UST511', 'same as pref 5', '2UST532', 'same as pref 3'),
-('shikta.das@somaiya.edu', 5, '2020-21', '1813011', '2020/04/13 22:05:25', 0, 8, '2UST514', '2UST532', '2UST524', '2UST533', '2UST531', 'same as pref 2', '2UST543', '2UST513'),
-('shivam.awasthi@somaiya.edu', 5, '2020-21', '1813128', '2020/04/15 18:20:00', 0, 8, '2UST532', '2UST543', '2UST512', '2UST522', '2UST541', '2UST563', '2UST561', '2UST521'),
-('shivam.bansal@somaiya.edu', 5, '2020-21', '1813004', '2020/04/15 22:45:24', 0, 8, '2UST543', '2UST512', '2UST514', '2UST532', '2UST522', '2UST542', '2UST541', 'same as pref 1'),
-('shivani.kaul@somaiya.edu', 5, '2020-21', '1811086', '2020/04/15 15:40:22', 0, 8, '2UST543', '2UST522', '2UST532', '2UST512', '2UST511', '2UST513', '2UST531', '2UST524'),
-('shravani.d@somaiya.edu', 5, '2020-21', '1812077', '2020/04/15 22:22:07', 0, 8, '2UST524', '2UST543', '2UST514', '2UST544', '2UST561', '2UST531', '2UST553', '2UST511'),
-('shrey.bs@somaiya.edu', 5, '2020-21', '1812113', '2020/04/15 23:10:40', 0, 8, '2UST534', '2UST543', '2UST513', '2UST514', '2UST522', '2UST551', '2UST521', '2UST532'),
-('shreya.hk@somaiya.edu', 5, '2020-21', '1813096', '2020/04/13 14:49:05', 0, 8, '2UST543', '2UST531', '2UST534', '2UST524', '2UST532', '2UST533', '2UST514', '2UST544'),
-('shreya.laheri@somaiya.edu', 5, '2020-21', '1922006', '2020/04/15 23:22:42', 0, 8, '2UST541', '2UST512', '2UST521', '2UST511', '2UST543', 'same as pref 5', 'same as pref 1', '2UST513'),
-('shreya.pawar@somaiya.edu', 5, '2020-21', '1923006', '2020/04/13 15:07:37', 0, 8, '2UST543', '2UST514', '2UST513', '2UST512', '2UST533', 'same as pref 1', '2UST544', '2UST511'),
-('shreya.ughade@somaiya.edu', 5, '2020-21', '1814116', '2020/04/14 13:35:59', 0, 8, '2UST512', '2UST541', '2UST544', '2UST543', '2UST532', '2UST524', '2UST551', '2UST531'),
-('shreyas.mm@somaiya.edu', 5, '2020-21', '1811049', '2020/04/15 22:40:00', 0, 8, '2UST511', '2UST512', '2UST513', '2UST542', '2UST524', '2UST531', '2UST553', 'same as pref 1'),
-('shreyas.parkar@somaiya.edu', 5, '2020-21', '1812101', '2020/04/14 21:16:36', 0, 8, '2UST512', '2UST511', '2UST542', '2UST541', '2UST551', '2UST524', 'same as pref 3', '2UST532'),
-('shreyas.sj@somaiya.edu', 5, '2020-21', '1922018', '2020/04/16 13:37:53', 0, 8, '2UST521', '2UST522', '2UST533', '2UST553', '2UST534', '2UST512', 'same as pref 5', '2UST543'),
-('shreyasi.h@somaiya.edu', 5, '2020-21', '1813080', '2020/04/16 00:59:48', 0, 8, '2UST543', '2UST561', '2UST534', '2UST531', '2UST524', 'same as pref 3', 'same as pref 2', '2UST522'),
-('shruti.gosain@somaiya.edu', 5, '2020-21', '1814079', '2020/04/13 21:46:24', 0, 8, '2UST512', '2UST513', '2UST531', '2UST542', '2UST532', 'same as pref 4', 'same as pref 2', '2UST522'),
-('shruti.kamat@somaiya.edu', 5, '2020-21', '1922019', '2020/04/14 19:50:54', 0, 8, '2UST511', '2UST563', '2UST513', '2UST522', '2UST534', '2UST544', '2UST532', '2UST542'),
-('shubh.as@somaiya.edu', 5, '2020-21', '1811050', '2020/04/15 20:39:27', 0, 8, '2UST512', '2UST541', '2UST532', '2UST513', '2UST531', '2UST543', 'same as pref 6', '2UST542'),
-('shubh.d@somaiya.edu', 5, '2020-21', '1813040', '2020/04/13 20:02:36', 0, 8, '2UST543', '2UST532', '2UST512', '2UST533', '2UST524', '2UST534', '2UST511', 'same as pref 1');
-INSERT INTO `student_preference_audit` (`email_id`, `sem`, `year`, `rollno`, `timestamp`, `allocate_status`, `no_of_valid_preferences`, `pref1`, `pref2`, `pref3`, `pref4`, `pref5`, `pref6`, `pref7`, `pref8`) VALUES
-('shubh.mody@somaiya.edu', 5, '2020-21', '1813031', '2020/04/15 23:13:42', 0, 8, '2UST512', '2UST511', '2UST543', '2UST514', '2UST532', '2UST542', 'same as pref 5', '2UST524'),
-('shubh.shetiya@somaiya.edu', 5, '2020-21', '1815140', '2020/04/15 12:32:50', 0, 8, '2UST551', '2UST553', '2UST563', '2UST562', '2UST514', '2UST542', '2UST512', '2UST543'),
-('shubham.bhakuni@somaiya.edu', 5, '2020-21', '1814006', '2020/04/13 18:57:53', 0, 8, '2UST512', '2UST542', '2UST513', '2UST511', '2UST543', '2UST544', '2UST541', '2UST532'),
-('shubham.dj@somaiya.edu', 5, '2020-21', '1923005', '2020/04/14 19:31:32', 0, 8, '2UST514', '2UST563', '2UST543', '2UST534', '2UST522', '2UST531', '2UST524', '2UST551'),
-('shubham.mj@somaiya.edu', 5, '2020-21', '1815027', '2020/04/15 18:15:33', 0, 8, '2UST553', '2UST551', '2UST534', '2UST563', '2UST543', '2UST533', '2UST542', '2UST511'),
-('shubhankar.r@somaiya.edu', 5, '2020-21', '1815112', '2020/04/15 19:44:57', 0, 8, '2UST514', '2UST553', '2UST524', '2UST532', '2UST543', '2UST511', 'same as pref 3', '2UST544'),
-('siddhant.l@somaiya.edu', 5, '2020-21', '1815093', '2020/04/13 15:58:02', 0, 8, '2UST524', '2UST521', '2UST551', '2UST562', '2UST561', '2UST544', '2UST543', '2UST534'),
-('siddhant.shaha@somaiya.edu', 5, '2020-21', '1814112', '2020/04/15 18:37:04', 0, 8, '2UST512', '2UST511', '2UST533', '2UST543', '2UST513', '2UST551', '2UST521', '2UST561'),
-('siddhesh.mahajan@somaiya.edu', 5, '2020-21', '1815035', '2020/04/15 12:32:13', 0, 8, '2UST543', '2UST553', '2UST513', '2UST511', '2UST512', '2UST534', '2UST561', '2UST531'),
-('siddhi.rajwatkar@somaiya.edu', 5, '2020-21', '1925005', '2020/04/14 18:58:05', 0, 8, '2UST563', '2UST562', '2UST551', '2UST534', '2UST532', '2UST543', '2UST553', '2UST514'),
-('sidhant.malkar@somaiya.edu', 5, '2020-21', '1812041', '2020/04/13 15:18:59', 0, 8, '2UST524', '2UST532', '2UST513', '2UST531', '2UST543', 'same as pref 5', '2UST522', '2UST541'),
-('simran.lopes@somaiya.edu', 5, '2020-21', '1813099', '2020/04/14 19:10:57', 0, 8, '2UST512', '2UST543', '2UST541', '2UST524', '2UST511', '2UST532', '2UST531', '2UST542'),
-('smit.bb@somaiya.edu', 5, '2020-21', '1811070', '2020/04/15 20:14:06', 0, 8, '2UST512', '2UST543', '2UST542', '2UST531', '2UST541', 'same as pref 4', '2UST511', '2UST521'),
-('smit.ds@somaiya.edu', 5, '2020-21', '1811051', '2020/04/13 15:07:39', 0, 8, '2UST512', '2UST524', '2UST531', '2UST532', '2UST513', '2UST543', '2UST534', '2UST514'),
-('smit.nm@somaiya.edu', 5, '2020-21', '1813104', '2020/04/15 18:09:31', 0, 8, '2UST514', '2UST543', '2UST512', '2UST532', '2UST531', '2UST544', '2UST522', '2UST534'),
-('smit.shet@somaiya.edu', 5, '2020-21', '1815123', '2020/04/15 10:59:05', 0, 8, '2UST551', '2UST553', '2UST563', '2UST561', '2UST562', '2UST542', '2UST544', '2UST531'),
-('smita.nayak@somaiya.edu', 5, '2020-21', '1812107', '2020/04/13 19:47:40', 0, 8, '2UST552', '2UST551', '2UST522', '2UST553', '2UST523', '2UST524', '2UST511', 'same as pref 2'),
-('soham.mehta@somaiya.edu', 5, '2020-21', '1815043', '2020/04/14 17:10:36', 0, 8, '2UST553', '2UST543', '2UST513', '2UST533', '2UST532', 'same as pref 1', '2UST551', '2UST563'),
-('soumya.parekh@somaiya.edu', 5, '2020-21', '1811106', '2020/04/13 23:03:02', 0, 8, '2UST531', '2UST512', '2UST524', '2UST513', '2UST544', 'same as pref 4', 'same as pref 3', '2UST511'),
-('sounak.das@somaiya.edu', 5, '2020-21', '1814070', '2020/04/15 17:18:57', 0, 8, '2UST512', '2UST541', '2UST531', '2UST543', '2UST513', '2UST562', '2UST534', 'same as pref 5'),
-('sourabh.bujawade@somaiya.edu', 5, '2020-21', '1814009', '2020/04/13 15:10:01', 0, 8, '2UST512', '2UST543', '2UST542', '2UST541', '2UST544', '2UST553', '2UST524', '2UST561'),
-('srg1@somaiya.edu', 5, '2020-21', '1815018', '2020/04/13 14:44:58', 0, 8, '2UST553', '2UST551', '2UST561', '2UST562', '2UST512', '2UST543', '2UST522', '2UST513'),
-('ssm2@somaiya.edu', 5, '2020-21', '1811095', '2020/04/14 12:40:28', 0, 8, '2UST512', '2UST531', '2UST513', '2UST511', '2UST543', '2UST523', '2UST532', 'same as pref 3'),
-('sudarshan.r@somaiya.edu', 5, '2020-21', '1813006', '2020/04/15 21:33:58', 0, 8, '2UST512', '2UST541', '2UST514', '2UST532', '2UST542', '2UST531', '2UST534', '2UST533'),
-('sudhir.bindu@somaiya.edu', 5, '2020-21', '1811059', '2020/04/15 21:37:36', 0, 8, '2UST512', '2UST511', '2UST531', '2UST524', '2UST543', 'same as pref 1', '2UST521', '2UST544'),
-('sudiksha.m@somaiya.edu', 5, '2020-21', '1811096', '2020/04/14 23:26:02', 0, 8, '2UST543', '2UST531', '2UST512', '2UST541', '2UST524', 'same as pref 5', '2UST511', '2UST532'),
-('sukhada.v@somaiya.edu', 5, '2020-21', '1814119', '2020/04/13 21:21:35', 0, 8, '2UST512', '2UST541', '2UST544', '2UST543', '2UST532', '2UST511', '2UST524', 'same as pref 4'),
-('sukrut.kolhe@somaiya.edu', 5, '2020-21', '1812015', '2020/04/13 15:06:58', 0, 8, '2UST513', '2UST511', '2UST512', '2UST534', '2UST543', '2UST533', 'same as pref 5', '2UST522'),
-('sukruti.a@somaiya.edu', 5, '2020-21', '1812009', '2020/04/15 23:42:06', 0, 8, '2UST534', '2UST543', '2UST553', '2UST522', '2UST552', '2UST544', '2UST541', '2UST531'),
-('sumedh.soman@somaiya.edu', 5, '2020-21', '1815063', '2020/04/13 14:57:10', 0, 8, '2UST553', '2UST551', '2UST561', '2UST543', '2UST514', '2UST534', '2UST542', 'same as pref 1'),
-('sunil.ck@somaiya.edu', 5, '2020-21', '1813098', '2020/04/14 14:41:49', 0, 8, '2UST531', '2UST543', '2UST513', '2UST511', '2UST514', 'same as pref 2', '2UST532', 'same as pref 3'),
-('suparshwa.p@somaiya.edu', 5, '2020-21', '1813103', '2020/04/14 14:40:35', 0, 8, '2UST531', '2UST543', '2UST513', '2UST512', '2UST511', '2UST541', '2UST532', '2UST551'),
-('sushant.bansal@somaiya.edu', 5, '2020-21', '1812006', '2020/04/14 21:29:01', 0, 8, '2UST543', '2UST522', '2UST534', '2UST514', '2UST544', '2UST513', '2UST533', '2UST523'),
-('swarangee.m@somaiya.edu', 5, '2020-21', '1812125', '2020/04/14 13:18:43', 0, 8, '2UST561', '2UST532', '2UST543', '2UST534', '2UST522', '2UST513', '2UST524', '2UST514'),
-('swetha.c@somaiya.edu', 5, '2020-21', '1813007', '2020/04/13 15:30:21', 0, 8, '2UST512', '2UST513', '2UST532', '2UST524', '2UST514', '2UST541', '2UST511', '2UST543'),
-('syed.suhaib@somaiya.edu', 5, '2020-21', '1814059', '2020/04/14 19:15:49', 0, 8, '2UST543', '2UST542', '2UST541', '2UST512', '2UST511', '2UST531', '2UST532', 'same as pref 3'),
-('taher.a@somaiya.edu', 5, '2020-21', '1812001', '2020/04/13 22:59:44', 0, 8, '2UST543', '2UST534', '2UST522', '2UST533', '2UST523', '2UST542', '2UST541', '2UST532'),
-('taher.d@somaiya.edu', 5, '2020-21', '1815141', '2020/04/13 15:07:58', 0, 8, '2UST553', '2UST562', '2UST563', '2UST551', '2UST561', '2UST521', '2UST532', '2UST514'),
-('talha.c@somaiya.edu', 5, '2020-21', '1811007', '2020/04/15 00:07:26', 0, 8, '2UST531', '2UST512', '2UST543', '2UST532', '2UST541', 'same as pref 3', '2UST533', '2UST511'),
-('tanay.ns@somaiya.edu', 5, '2020-21', '1812116', '2020/04/16 00:53:33', 0, 8, '2UST543', '2UST511', '2UST512', '2UST514', 'same as pref 4', 'same as pref 2', 'same as pref 3', '2UST522'),
-('tanay.parekh@somaiya.edu', 5, '2020-21', '1812098', '2020/04/13 15:01:55', 0, 8, '2UST543', '2UST522', '2UST552', '2UST551', '2UST541', '2UST542', '2UST544', 'same as pref 2'),
-('tanish.chube@somaiya.edu', 5, '2020-21', '1813070', '2020/04/14 21:20:58', 0, 8, '2UST532', '2UST514', '2UST524', '2UST512', '2UST511', '2UST513', 'same as pref 4', '2UST534'),
-('tanisha.ashar@somaiya.edu', 5, '2020-21', '1814065', '2020/04/17 11:36:47', 0, 8, '2UST512', '2UST511', '2UST524', '2UST532', '2UST543', '2UST514', 'same as pref 1', '2UST531'),
-('tanmay.armal@somaiya.edu', 5, '2020-21', '1814099', '2020/04/14 23:45:04', 0, 8, '2UST512', '2UST531', '2UST543', '2UST513', '2UST541', 'same as pref 1', 'same as pref 4', 'same as pref 5'),
-('tanmay.gorad@somaiya.edu', 5, '2020-21', '1922008', '2020/04/15 21:55:32', 0, 8, '2UST511', '2UST532', '2UST534', '2UST543', '2UST553', '2UST531', 'same as pref 3', '2UST562'),
-('tanmay.shekhar@somaiya.edu', 5, '2020-21', '1813020', '2020/04/25 11:49:10', 0, 8, '2UST543', '2UST514', '2UST562', '2UST534', '2UST511', 'same as pref 1', 'same as pref 5', '2UST512'),
-('tanshik.doshi@somaiya.edu', 5, '2020-21', '1923002', '2020/04/13 15:53:16', 0, 8, '2UST553', '2UST533', '2UST552', '2UST534', '2UST543', '2UST532', '2UST514', 'same as pref 5'),
-('tanuj.jain@somaiya.edu', 5, '2020-21', '1811017', '2020/04/14 23:25:30', 0, 8, '2UST543', '2UST522', '2UST512', '2UST513', '2UST561', '2UST511', 'same as pref 4', '2UST532'),
-('tanvi.bs@somaiya.edu', 5, '2020-21', '1812057', '2020/04/13 14:58:21', 0, 8, '2UST552', '2UST543', '2UST534', '2UST563', '2UST562', '2UST521', '2UST523', '2UST522'),
-('tanvi.lakhani@somaiya.edu', 5, '2020-21', '1812039', '2020/04/15 23:10:44', 0, 8, '2UST534', '2UST543', '2UST514', '2UST513', '2UST522', '2UST561', '2UST553', '2UST521'),
-('tap@somaiya.edu', 5, '2020-21', '1812091', '2020/04/15 17:27:14', 0, 8, '2UST514', '2UST512', '2UST543', '2UST532', '2UST561', '2UST541', '2UST533', '2UST552'),
-('tarush.r@somaiya.edu', 5, '2020-21', '1811035', '2020/04/14 23:15:12', 0, 8, '2UST513', '2UST512', '2UST531', '2UST543', '2UST544', '2UST533', 'same as pref 5', '2UST542'),
-('tejal.gaykar@somaiya.edu', 5, '2020-21', '1923012', '2020/04/14 22:49:36', 0, 8, '2UST543', '2UST511', '2UST531', '2UST522', '2UST534', '2UST561', '2UST524', 'same as pref 1'),
-('tejas.jain@somaiya.edu', 5, '2020-21', '1815025', '2020/04/13 15:21:41', 0, 8, '2UST553', '2UST543', '2UST534', '2UST551', '2UST563', 'same as pref 4', '2UST513', '2UST532'),
-('tejas.khanolkar@somaiya.edu', 5, '2020-21', '1811089', '2020/04/13 15:48:02', 0, 8, '2UST531', '2UST524', '2UST512', '2UST511', '2UST541', '2UST552', '2UST551', 'same as pref 6'),
-('tejas.limbachiya@somaiya.edu', 5, '2020-21', '1813015', '2020/04/15 18:35:48', 0, 8, '2UST514', '2UST524', '2UST511', '2UST512', '2UST531', '2UST563', 'same as pref 2', '2UST561'),
-('tejas.np@somaiya.edu', 5, '2020-21', '1815100', '2020/04/14 23:13:27', 0, 8, '2UST543', '2UST531', '2UST551', '2UST553', '2UST524', '2UST542', '2UST533', 'same as pref 5'),
-('tejas.rathod@somaiya.edu', 5, '2020-21', '1813113', '2020/04/15 18:44:50', 0, 8, '2UST531', '2UST514', '2UST524', '2UST512', '2UST532', 'same as pref 4', '2UST542', '2UST541'),
-('tirth.hs@somaiya.edu', 5, '2020-21', '1811127', '2020/04/13 15:12:08', 0, 8, '2UST531', '2UST511', '2UST524', '2UST513', '2UST512', '2UST533', 'same as pref 4', '2UST561'),
-('tirth.ps@somaiya.edu', 5, '2020-21', '1813055', '2020/04/15 18:02:32', 0, 8, '2UST514', '2UST543', '2UST531', '2UST512', '2UST532', '2UST513', '2UST541', '2UST511'),
-('tirth.thaker@somaiya.edu', 5, '2020-21', '1814061', '2020/04/13 16:04:27', 0, 8, '2UST541', '2UST542', '2UST543', '2UST512', '2UST524', 'same as pref 3', 'same as pref 2', 'same as pref 5'),
-('toshith.m@somaiya.edu', 5, '2020-21', '1812089', '2020/04/15 23:48:27', 0, 8, '2UST524', '2UST531', '2UST514', '2UST541', '2UST532', '2UST544', 'same as pref 4', 'same as pref 5'),
-('tushar.bapecha@somaiya.edu', 5, '2020-21', '1811003', '2020/04/15 23:41:58', 0, 8, '2UST531', '2UST543', '2UST542', '2UST532', '2UST541', '2UST533', '2UST513', '2UST512'),
-('twinkle.r@somaiya.edu', 5, '2020-21', '1814103', '2020/04/15 23:01:32', 0, 8, '2UST543', '2UST524', '2UST512', '2UST513', '2UST541', '2UST553', '2UST521', '2UST532'),
-('udit.damare@somaiya.edu', 5, '2020-21', '1815072', '2020/04/15 15:15:00', 0, 8, '2UST553', '2UST551', '2UST514', '2UST521', '2UST531', '2UST563', 'same as pref 2', '2UST532'),
-('umair.kazi@somaiya.edu', 5, '2020-21', '1815090', '2020/04/15 20:46:30', 0, 8, '2UST553', '2UST551', '2UST563', '2UST521', '2UST543', '2UST511', '2UST524', '2UST532'),
-('upendra.b@somaiya.edu', 5, '2020-21', '1812069', '2020/04/14 20:56:43', 0, 8, '2UST563', '2UST553', '2UST551', '2UST531', '2UST512', '2UST511', 'same as pref 4', '2UST532'),
-('urmil.c@somaiya.edu', 5, '2020-21', '1811008', '2020/04/13 17:45:06', 0, 8, '2UST531', '2UST543', '2UST524', '2UST541', '2UST532', '2UST544', '2UST553', '2UST552'),
-('urvi.bheda@somaiya.edu', 5, '2020-21', '1811068', '2020/04/15 15:44:03', 0, 8, '2UST512', '2UST511', '2UST542', '2UST541', '2UST544', 'same as pref 4', '2UST513', '2UST543'),
-('utsav.parekh@somaiya.edu', 5, '2020-21', '1924002', '2020/04/14 17:34:24', 0, 8, '2UST512', '2UST544', '2UST542', '2UST532', '2UST541', '2UST513', 'same as pref 3', 'same as pref 5'),
-('v.sunderraman@somaiya.edu', 5, '2020-21', '1811125', '2020/04/13 15:12:22', 0, 8, '2UST531', '2UST511', '2UST524', '2UST513', '2UST512', '2UST532', '2UST514', '2UST541'),
-('vaibhav.katkam@somaiya.edu', 5, '2020-21', '1815031', '2020/04/15 17:21:12', 0, 8, '2UST553', '2UST551', '2UST563', '2UST561', '2UST543', '2UST544', '2UST541', '2UST522'),
-('vaibhav.parekh@somaiya.edu', 5, '2020-21', '1815042', '2020/04/15 22:12:24', 0, 8, '2UST553', '2UST514', '2UST532', '2UST513', '2UST534', '2UST543', '2UST521', 'same as pref 3'),
-('vaibhavi.kundle@somaiya.edu', 5, '2020-21', '1814127', '2020/04/13 15:39:47', 0, 8, '2UST512', '2UST524', '2UST544', '2UST542', '2UST532', 'same as pref 3', '2UST513', '2UST543'),
-('vandan.k@somaiya.edu', 5, '2020-21', '1813092', '2020/04/14 19:41:46', 0, 8, '2UST524', '2UST514', '2UST543', '2UST532', '2UST511', '2UST534', '2UST512', '2UST522'),
-('vartika.g@somaiya.edu', 5, '2020-21', '1811081', '2020/04/15 21:05:07', 0, 8, '2UST512', '2UST531', '2UST513', '2UST532', '2UST543', '2UST524', '2UST514', '2UST534'),
-('varun.bj@somaiya.edu', 5, '2020-21', '1813043', '2020/04/16 00:08:22', 0, 8, '2UST543', '2UST533', '2UST512', '2UST514', 'same as pref 2', 'same as pref 1', '2UST522', '2UST534'),
-('varun.dabi@somaiya.edu', 5, '2020-21', '1815071', '2020/04/15 12:46:14', 0, 8, '2UST543', '2UST551', '2UST553', '2UST561', '2UST544', '2UST531', '2UST563', '2UST524'),
-('varun.pandey@somaiya.edu', 5, '2020-21', '1814095', '2020/04/13 16:19:17', 0, 8, '2UST512', '2UST531', '2UST543', '2UST541', '2UST542', '2UST544', 'same as pref 5', '2UST532'),
-('varun12@somaiya.edu', 5, '2020-21', '1815121', '2020/04/15 00:48:54', 0, 8, '2UST512', '2UST543', '2UST541', '2UST524', '2UST511', 'same as pref 2', '2UST513', '2UST551'),
-('vatsal.kapadia@somaiya.edu', 5, '2020-21', '1812032', '2020/04/15 00:35:28', 0, 8, '2UST553', '2UST552', '2UST514', '2UST532', '2UST531', '2UST544', '2UST521', '2UST551'),
-('vatsal.pathak@somaiya.edu', 5, '2020-21', '1811033', '2020/04/15 19:39:07', 0, 8, '2UST541', '2UST533', '2UST531', '2UST512', '2UST544', '2UST514', '2UST513', '2UST532'),
-('vatsal12@somaiya.edu', 5, '2020-21', '1811052', '2020/04/15 20:39:21', 0, 8, '2UST512', '2UST541', '2UST532', '2UST513', '2UST531', '2UST524', '2UST542', '2UST543'),
-('vedant.chandra@somaiya.edu', 5, '2020-21', '1812022', '2020/04/15 23:41:58', 0, 8, '2UST534', '2UST543', '2UST553', '2UST522', '2UST552', '2UST533', '2UST513', '2UST512'),
-('vedant.khatod@somaiya.edu', 5, '2020-21', '1813093', '2020/04/15 19:35:08', 0, 8, '2UST543', '2UST513', '2UST512', '2UST533', '2UST544', '2UST542', '2UST511', '2UST532'),
-('vedant.konde@somaiya.edu', 5, '2020-21', '1813129', '2020/04/15 11:43:24', 0, 8, '2UST532', '2UST543', '2UST512', '2UST533', '2UST514', 'same as pref 1', '2UST544', '2UST531'),
-('vedatma.k@somaiya.edu', 5, '2020-21', '1812121', '2020/04/14 20:58:48', 0, 8, '2UST514', '2UST511', '2UST513', '2UST522', '2UST543', '2UST544', 'same as pref 3', '2UST524'),
-('vidhi.gohel@somaiya.edu', 5, '2020-21', '1812019', '2020/04/14 20:05:37', 0, 8, '2UST514', '2UST521', '2UST522', '2UST553', '2UST542', '2UST524', 'same as pref 2', '2UST531'),
-('vidhi.sejpal@somaiya.edu', 5, '2020-21', '1813048', '2020/04/13 17:26:06', 0, 8, '2UST514', '2UST531', '2UST512', '2UST544', '2UST543', '2UST524', '2UST513', '2UST533'),
-('vighnesh.naik@somaiya.edu', 5, '2020-21', '1814041', '2020/04/15 21:49:27', 0, 8, '2UST512', '2UST531', '2UST513', '2UST544', '2UST511', '2UST543', '2UST534', '2UST552'),
-('vijayram.p@somaiya.edu', 5, '2020-21', '1812073', '2020/04/15 23:51:36', 0, 8, '2UST511', '2UST512', '2UST514', '2UST543', '2UST524', '2UST561', 'same as pref 5', '2UST531'),
-('vikas.rg@somaiya.edu', 5, '2020-21', '1814022', '2020/04/13 14:45:38', 0, 8, '2UST512', '2UST541', '2UST542', '2UST543', '2UST513', 'same as pref 3', '2UST511', '2UST521'),
-('vimal.e3@somaiya.edu', 5, '2020-21', '1813046', '2020/04/15 17:29:40', 0, 8, '2UST543', '2UST514', '2UST531', '2UST553', '2UST532', 'same as pref 1', '2UST542', '2UST513'),
-('vineet.gadiyar@somaiya.edu', 5, '2020-21', '1813075', '2020/04/13 18:19:19', 0, 8, '2UST531', '2UST543', '2UST513', '2UST511', 'same as pref 2', '2UST542', '2UST552', 'same as pref 3'),
-('vineeta.b@somaiya.edu', 5, '2020-21', '1814066', '2020/04/15 19:11:16', 0, 8, '2UST524', '2UST531', '2UST543', '2UST512', '2UST513', '2UST542', '2UST532', 'same as pref 1'),
-('vinit.mundra@somaiya.edu', 5, '2020-21', '1811026', '2020/04/15 15:00:29', 0, 8, '2UST531', '2UST524', '2UST542', '2UST544', '2UST512', '2UST513', '2UST534', '2UST511'),
-('vipul.bagal@somaiya.edu', 5, '2020-21', '1814094', '2020/04/15 23:25:07', 0, 8, '2UST521', '2UST512', '2UST522', '2UST532', '2UST511', '2UST534', '2UST552', '2UST542'),
-('vipul.dube@somaiya.edu', 5, '2020-21', '1813089', '2020/04/15 23:37:42', 0, 8, '2UST543', '2UST512', '2UST513', '2UST514', '2UST562', '2UST531', '2UST533', '2UST532'),
-('virag.j@somaiya.edu', 5, '2020-21', '1814026', '2020/04/15 17:36:13', 0, 8, '2UST541', '2UST512', '2UST531', '2UST511', 'same as pref 3', 'same as pref 1', '2UST553', '2UST551'),
-('viraj.jedhe@somaiya.edu', 5, '2020-21', '1813085', '2020/04/13 15:22:54', 0, 8, '2UST512', '2UST543', '2UST513', '2UST544', '2UST532', '2UST514', '2UST524', '2UST534'),
-('viraj.joshi@somaiya.edu', 5, '2020-21', '1814034', '2020/04/15 13:16:26', 0, 8, '2UST532', '2UST531', '2UST524', '2UST543', '2UST512', '2UST553', '2UST533', '2UST563'),
-('viraj.nd@somaiya.edu', 5, '2020-21', '1811072', '2020/04/13 20:59:21', 0, 8, '2UST511', '2UST541', '2UST543', '2UST544', '2UST513', 'same as pref 5', 'same as pref 2', 'same as pref 4'),
-('viraj.np@somaiya.edu', 5, '2020-21', '1814047', '2020/04/15 22:57:47', 0, 8, '2UST543', 'same as pref 1', '2UST521', '2UST512', 'same as pref 3', '2UST511', 'same as pref 4', '2UST513'),
-('viraj06@somaiya.edu', 5, '2020-21', '1814093', '2020/04/13 15:15:50', 0, 8, '2UST524', '2UST531', '2UST512', '2UST513', '2UST543', 'same as pref 5', 'same as pref 1', '2UST521'),
-('vishal.salgond@somaiya.edu', 5, '2020-21', '1814107', '2020/04/14 15:47:51', 0, 8, '2UST512', '2UST541', '2UST544', '2UST543', '2UST532', '2UST511', '2UST513', '2UST531'),
-('vishant.m@somaiya.edu', 5, '2020-21', '1814038', '2020/04/15 14:51:42', 0, 8, '2UST543', '2UST512', '2UST511', '2UST531', '2UST541', 'same as pref 3', 'same as pref 1', '2UST522'),
-('vistasp.edulji@somaiya.edu', 5, '2020-21', '1815015', '2020/04/13 15:08:39', 0, 8, '2UST553', '2UST563', '2UST561', '2UST562', '2UST551', '2UST532', '2UST542', '2UST522'),
-('vpb@somaiya.edu', 5, '2020-21', '1922001', '2020/04/14 20:56:40', 0, 8, '2UST563', '2UST553', '2UST551', '2UST531', '2UST512', '2UST542', '2UST561', '2UST514'),
-('vruddhi.ms@somaiya.edu', 5, '2020-21', '1811117', '2020/04/13 21:36:27', 0, 8, '2UST512', '2UST532', '2UST541', '2UST542', '2UST543', '2UST524', '2UST534', 'same as pref 5'),
-('vruksha.j@somaiya.edu', 5, '2020-21', '1812030', '2020/04/15 23:47:00', 0, 8, '2UST543', '2UST522', '2UST534', '2UST513', '2UST514', '2UST542', '2UST551', 'same as pref 1'),
-('vrushabh.rg@somaiya.edu', 5, '2020-21', '1813016', '2020/04/15 20:59:20', 0, 8, '2UST533', '2UST544', '2UST551', '2UST543', '2UST563', '2UST511', '2UST512', '2UST522'),
-('vrutik.shah@somaiya.edu', 5, '2020-21', '1814056', '2020/04/14 15:58:46', 0, 8, '2UST512', '2UST541', '2UST543', '2UST542', '2UST544', '2UST511', '2UST513', '2UST531'),
-('yash.chandarana@somaiya.edu', 5, '2020-21', '1815094', '2020/04/14 17:29:18', 0, 8, '2UST543', '2UST563', '2UST553', '2UST551', '2UST561', 'same as pref 1', '2UST511', '2UST513'),
-('yash.deorah@somaiya.edu', 5, '2020-21', '1814073', '2020/04/13 15:03:03', 0, 8, '2UST513', '2UST512', '2UST524', '2UST531', '2UST541', '2UST544', '2UST534', '2UST543'),
-('yash.kalyani@somaiya.edu', 5, '2020-21', '1815030', '2020/04/14 22:49:15', 0, 8, '2UST553', '2UST534', '2UST563', '2UST551', '2UST562', '2UST531', '2UST541', '2UST512'),
-('yash.kothiya@somaiya.edu', 5, '2020-21', '1813095', '2020/04/13 15:19:33', 0, 8, '2UST533', '2UST532', '2UST531', '2UST524', '2UST512', '2UST511', '2UST543', 'same as pref 4'),
-('yash.tandon@somaiya.edu', 5, '2020-21', '1811058', '2020/04/14 12:49:59', 0, 8, '2UST531', '2UST511', '2UST532', '2UST524', '2UST512', '2UST534', 'same as pref 3', '2UST551'),
-('yash.telange@somaiya.edu', 5, '2020-21', '1815130', '2020/04/15 16:37:19', 0, 8, '2UST553', '2UST524', '2UST514', '2UST551', '2UST521', 'same as pref 1', 'same as pref 4', '2UST534'),
-('yash.thadeshwar@somaiya.edu', 5, '2020-21', '1815131', '2020/04/14 21:05:30', 0, 8, '2UST551', '2UST553', '2UST561', '2UST563', '2UST524', '2UST544', '2UST532', 'same as pref 5'),
-('yash.tulsyan@somaiya.edu', 5, '2020-21', '1812119', '2020/04/17 00:33:37', 0, 8, '2UST534', '2UST543', '2UST522', '2UST552', '2UST524', '2UST553', '2UST542', '2UST544'),
-('yashpal.m@somaiya.edu', 5, '2020-21', '1812044', '2020/04/13 16:49:52', 0, 8, '2UST551', '2UST553', '2UST511', '2UST543', '2UST513', '2UST544', 'same as pref 4', '2UST534'),
-('yashvi.pv@somaiya.edu', 5, '2020-21', '1814121', '2020/04/15 21:37:59', 0, 8, '2UST513', '2UST531', '2UST524', '2UST543', '2UST561', '2UST563', 'same as pref 4', '2UST514'),
-('ysb1@somaiya.edu', 5, '2020-21', '1812010', '2020/04/14 2:52:06', 0, 8, '2UST543', '2UST534', '2UST514', '2UST522', '2UST512', '2UST524', '2UST513', '2UST531'),
-('yukta.pathak@somaiya.edu', 5, '2020-21', '1815045', '2020/04/13 17:00:17', 0, 8, '2UST553', '2UST561', '2UST514', '2UST524', '2UST551', '2UST543', '2UST533', '2UST562'),
-('yusha.sharif@somaiya.edu', 5, '2020-21', '1811119', '2020/04/15 14:05:41', 0, 8, '2UST544', '2UST512', '2UST511', '2UST524', '2UST532', 'same as pref 5', '2UST543', '2UST542'),
-('zalak.b@somaiya.edu', 5, '2020-21', '181039', '2020/04/15 20:33:45', 0, 8, '2UST533', '2UST513', '2UST512', '2UST541', '2UST542', 'same as pref 2', 'same as pref 5', '2UST544'),
-('zeal.mehta@somaiya.edu', 5, '2020-21', '1922005', '2020/04/14 16:44:27', 0, 8, '2UST512', '2UST541', '2UST532', '2UST514', '2UST513', '2UST543', '2UST521', '2UST534');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `student_preference_idc`
+-- Table structure for table `student_preferences_log`
 --
 
-CREATE TABLE `student_preference_idc` (
+CREATE TABLE `student_preferences_log` (
+  `form_id` int(11) NOT NULL,
   `email_id` varchar(50) NOT NULL,
   `sem` int(11) NOT NULL,
-  `year` varchar(8) NOT NULL,
-  `rollno` varchar(20) NOT NULL,
-  `timestamp` varchar(30) NOT NULL,
-  `allocate_status` tinyint(11) NOT NULL DEFAULT 0,
-  `no_of_valid_preferences` int(11) NOT NULL,
-  `pref1` varchar(30) NOT NULL,
-  `pref2` varchar(30) NOT NULL,
-  `pref3` varchar(30) NOT NULL,
-  `pref4` varchar(30) NOT NULL,
-  `pref5` varchar(30) NOT NULL
+  `year` varchar(9) NOT NULL,
+  `currently_active` int(1) NOT NULL,
+  `time_stamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `prefered_cid` varchar(30) NOT NULL,
+  `prefered_course_type_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -2459,57 +1327,72 @@ CREATE TABLE `student_preference_idc` (
 --
 
 --
--- Indexes for table `audit_course`
+-- Indexes for table `course`
 --
-ALTER TABLE `audit_course`
-  ADD PRIMARY KEY (`cid`,`sem`,`year`);
+ALTER TABLE `course`
+  ADD PRIMARY KEY (`cid`,`sem`,`year`,`course_type_id`) USING BTREE,
+  ADD KEY `course_type_id_fk` (`course_type_id`);
 
 --
--- Indexes for table `audit_course_applicable_dept`
+-- Indexes for table `course_applicable_dept`
 --
-ALTER TABLE `audit_course_applicable_dept`
-  ADD PRIMARY KEY (`cid`,`sem`,`year`,`dept_id`),
-  ADD KEY `dept_audit_course_applicable` (`dept_id`);
+ALTER TABLE `course_applicable_dept`
+  ADD PRIMARY KEY (`cid`,`sem`,`year`,`dept_id`,`course_type_id`,`program`) USING BTREE,
+  ADD KEY `dept_audit_course_applicable` (`dept_id`),
+  ADD KEY `course_type_id_dept_applicable_fk` (`course_type_id`);
 
 --
--- Indexes for table `audit_course_applicable_dept_log`
+-- Indexes for table `course_applicable_dept_log`
 --
-ALTER TABLE `audit_course_applicable_dept_log`
-  ADD PRIMARY KEY (`sem`,`year`,`dept_id`,`cid`),
-  ADD KEY `audit_course_applicable_audit_course_log` (`cid`,`sem`,`year`),
-  ADD KEY `audit_course_applicable_dept` (`dept_id`);
+ALTER TABLE `course_applicable_dept_log`
+  ADD PRIMARY KEY (`cid`,`sem`,`year`,`dept_id`,`course_type_id`,`program`) USING BTREE,
+  ADD KEY `dept_audit_course_applicable` (`dept_id`),
+  ADD KEY `course_type_id_dept_applicable_fk` (`course_type_id`);
 
 --
--- Indexes for table `audit_course_floating_dept`
+-- Indexes for table `course_floating_dept`
 --
-ALTER TABLE `audit_course_floating_dept`
-  ADD PRIMARY KEY (`cid`,`sem`,`year`,`dept_id`),
-  ADD KEY `audit_course_floating_dept_department` (`dept_id`);
+ALTER TABLE `course_floating_dept`
+  ADD PRIMARY KEY (`cid`,`sem`,`year`,`dept_id`,`course_type_id`,`program`) USING BTREE,
+  ADD KEY `audit_course_floating_dept_department` (`dept_id`),
+  ADD KEY `audit_course_floating_dept_course_type` (`course_type_id`);
 
 --
--- Indexes for table `audit_course_floating_dept_log`
+-- Indexes for table `course_floating_dept_log`
 --
-ALTER TABLE `audit_course_floating_dept_log`
-  ADD PRIMARY KEY (`cid`,`sem`,`year`,`dept_id`),
-  ADD KEY `audit_course_floating_dept_log_department` (`dept_id`);
+ALTER TABLE `course_floating_dept_log`
+  ADD PRIMARY KEY (`cid`,`sem`,`year`,`dept_id`,`course_type_id`,`program`) USING BTREE,
+  ADD KEY `audit_course_floating_dept_department` (`dept_id`),
+  ADD KEY `audit_course_floating_dept_course_type` (`course_type_id`);
 
 --
--- Indexes for table `audit_course_log`
+-- Indexes for table `course_log`
 --
-ALTER TABLE `audit_course_log`
-  ADD PRIMARY KEY (`cid`,`sem`,`year`);
+ALTER TABLE `course_log`
+  ADD PRIMARY KEY (`cid`,`sem`,`year`,`course_type_id`) USING BTREE,
+  ADD KEY `course_type_id_log_fk` (`course_type_id`);
 
 --
--- Indexes for table `audit_map`
+-- Indexes for table `course_similar_map`
 --
-ALTER TABLE `audit_map`
-  ADD PRIMARY KEY (`newcid`,`newsem`,`newyear`,`oldcid`,`oldsem`,`oldyear`);
+ALTER TABLE `course_similar_map`
+  ADD PRIMARY KEY (`newcid`,`new_course_type_id`,`newsem`,`newyear`,`oldcid`,`old_course_type_id`,`oldsem`,`oldyear`) USING BTREE,
+  ADD KEY `map_new_course_type_id_fk` (`new_course_type_id`),
+  ADD KEY `map_old_course_type_id_fk` (`old_course_type_id`);
 
 --
--- Indexes for table `audit_map_log`
+-- Indexes for table `course_similar_map_log`
 --
-ALTER TABLE `audit_map_log`
-  ADD PRIMARY KEY (`newcid`,`newsem`,`newyear`,`oldcid`,`oldsem`,`oldyear`);
+ALTER TABLE `course_similar_map_log`
+  ADD PRIMARY KEY (`newcid`,`new_course_type_id`,`newsem`,`newyear`,`oldcid`,`old_course_type_id`,`oldsem`,`oldyear`) USING BTREE,
+  ADD KEY `map_new_course_type_id_fk` (`new_course_type_id`),
+  ADD KEY `map_old_course_type_id_fk` (`old_course_type_id`);
+
+--
+-- Indexes for table `course_types`
+--
+ALTER TABLE `course_types`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `current_sem_info`
@@ -2521,7 +1404,7 @@ ALTER TABLE `current_sem_info`
 -- Indexes for table `delete_temp_tables`
 --
 ALTER TABLE `delete_temp_tables`
-  ADD PRIMARY KEY (`table_name`,`timestamp_created`);
+  ADD PRIMARY KEY (`table_name`,`timestamp_created`) USING BTREE;
 
 --
 -- Indexes for table `department`
@@ -2550,20 +1433,6 @@ ALTER TABLE `faculty`
   ADD KEY `faculty_department` (`dept_id`);
 
 --
--- Indexes for table `faculty_audit`
---
-ALTER TABLE `faculty_audit`
-  ADD PRIMARY KEY (`email_id`,`cid`,`sem`,`year`),
-  ADD KEY `faculty_audit_audit_course` (`cid`,`sem`,`year`);
-
---
--- Indexes for table `faculty_audit_log`
---
-ALTER TABLE `faculty_audit_log`
-  ADD PRIMARY KEY (`email_id`,`cid`,`sem`,`year`),
-  ADD KEY `faculty_audit_log_audit_log` (`cid`,`sem`,`year`);
-
---
 -- Indexes for table `faculty_certification`
 --
 ALTER TABLE `faculty_certification`
@@ -2573,78 +1442,59 @@ ALTER TABLE `faculty_certification`
 -- Indexes for table `faculty_coordinator`
 --
 ALTER TABLE `faculty_coordinator`
-  ADD PRIMARY KEY (`email_id`,`start_date`,`end_date`),
-  ADD KEY `faculty_coordinator_hod` (`hod_id`),
+  ADD PRIMARY KEY (`email_id`,`dept_id`,`start_date`,`end_date`),
   ADD KEY `faculty_coordinator_department` (`dept_id`);
 
 --
--- Indexes for table `faculty_idc`
+-- Indexes for table `faculty_course_alloted`
 --
-ALTER TABLE `faculty_idc`
-  ADD PRIMARY KEY (`sem`,`cid`,`year`,`email_id`) USING BTREE,
-  ADD KEY `faculty_idc_faculty` (`email_id`),
-  ADD KEY `faculty_idc_idc` (`cid`,`sem`,`year`);
+ALTER TABLE `faculty_course_alloted`
+  ADD PRIMARY KEY (`email_id`,`cid`,`course_type_id`,`sem`,`year`) USING BTREE,
+  ADD KEY `faculty_audit_audit_course` (`cid`,`sem`,`year`),
+  ADD KEY `facuty_audit_course` (`course_type_id`,`cid`,`sem`,`year`);
 
 --
--- Indexes for table `faculty_idc_log`
+-- Indexes for table `faculty_course_alloted_log`
 --
-ALTER TABLE `faculty_idc_log`
-  ADD PRIMARY KEY (`email_id`,`cid`,`sem`,`year`),
-  ADD KEY `faculty_idc_log_idc_log` (`cid`,`sem`,`year`);
+ALTER TABLE `faculty_course_alloted_log`
+  ADD PRIMARY KEY (`email_id`,`cid`,`course_type_id`,`sem`,`year`) USING BTREE,
+  ADD KEY `faculty_audit_audit_course` (`cid`,`sem`,`year`),
+  ADD KEY `facuty_audit_course` (`course_type_id`,`cid`,`sem`,`year`);
 
 --
 -- Indexes for table `form`
 --
 ALTER TABLE `form`
-  ADD PRIMARY KEY (`sem`,`no`,`year`,`form_type`) USING BTREE;
+  ADD PRIMARY KEY (`form_id`);
 
 --
--- Indexes for table `hide_student_audit_course`
+-- Indexes for table `form_applicable_dept`
 --
-ALTER TABLE `hide_student_audit_course`
-  ADD PRIMARY KEY (`email_id`,`cid`,`sem`,`year`),
-  ADD KEY `hide_student_audit_course_audit_course` (`cid`,`sem`,`year`);
+ALTER TABLE `form_applicable_dept`
+  ADD PRIMARY KEY (`form_id`,`dept_id`),
+  ADD KEY `form_applicable_dept_department` (`dept_id`);
 
 --
--- Indexes for table `hide_student_idc`
+-- Indexes for table `form_course_category_map`
 --
-ALTER TABLE `hide_student_idc`
-  ADD PRIMARY KEY (`email_id`,`cid`,`sem`,`year`),
-  ADD KEY `hide_student_idc_idc` (`cid`,`sem`,`year`);
+ALTER TABLE `form_course_category_map`
+  ADD PRIMARY KEY (`form_id`,`course_type_id`),
+  ADD KEY `form_course_Type_map_course` (`course_type_id`);
+
+--
+-- Indexes for table `hide_student_course`
+--
+ALTER TABLE `hide_student_course`
+  ADD PRIMARY KEY (`email_id`,`cid`,`sem`,`year`,`course_type_id`) USING BTREE,
+  ADD KEY `hide_student_course_course` (`cid`,`sem`,`year`,`course_type_id`);
 
 --
 -- Indexes for table `hod`
 --
 ALTER TABLE `hod`
-  ADD PRIMARY KEY (`email_id`,`start_date`,`end_date`);
-
---
--- Indexes for table `idc`
---
-ALTER TABLE `idc`
-  ADD PRIMARY KEY (`cid`,`sem`,`year`),
-  ADD KEY `idc_department` (`dept_id`);
-
---
--- Indexes for table `idc_applicable_dept`
---
-ALTER TABLE `idc_applicable_dept`
-  ADD PRIMARY KEY (`cid`,`sem`,`year`,`dept_id`),
-  ADD KEY `idc_applicable_dept_dept` (`dept_id`);
-
---
--- Indexes for table `idc_applicable_dept_log`
---
-ALTER TABLE `idc_applicable_dept_log`
-  ADD PRIMARY KEY (`cid`,`sem`,`year`,`dept_id`),
-  ADD KEY `idc_applicable_department_dept_log` (`dept_id`);
-
---
--- Indexes for table `idc_log`
---
-ALTER TABLE `idc_log`
-  ADD PRIMARY KEY (`cid`,`sem`,`year`),
-  ADD KEY `idc_log_department` (`dept_id`);
+  ADD PRIMARY KEY (`hod_email_id`,`start_date`,`end_date`,`dept_id`,`faculty_email_id`) USING BTREE,
+  ADD KEY `hod_department` (`dept_id`),
+  ADD KEY `hod_faculty` (`faculty_email_id`);
 
 --
 -- Indexes for table `login_role`
@@ -2679,72 +1529,86 @@ ALTER TABLE `student_audit_log`
 -- Indexes for table `student_form`
 --
 ALTER TABLE `student_form`
-  ADD PRIMARY KEY (`year`,`no`,`form_type`,`email_id`,`sem`) USING BTREE,
-  ADD KEY `student_form_student` (`email_id`);
+  ADD KEY `student_form_Student` (`email_id`),
+  ADD KEY `student_form_form` (`form_id`);
+
+--
+-- Indexes for table `student_form_log`
+--
+ALTER TABLE `student_form_log`
+  ADD KEY `student_form_Student` (`email_id`),
+  ADD KEY `student_form_form` (`form_id`);
 
 --
 -- Indexes for table `student_marks`
 --
 ALTER TABLE `student_marks`
-  ADD PRIMARY KEY (`email_id`,`sem`,`year`);
+  ADD PRIMARY KEY (`email_id`,`sem`,`year`,`rollno`) USING BTREE;
 
 --
--- Indexes for table `student_preference_audit`
+-- Indexes for table `student_preferences`
 --
-ALTER TABLE `student_preference_audit`
-  ADD PRIMARY KEY (`email_id`,`sem`,`year`),
-  ADD UNIQUE KEY `rollno` (`rollno`);
+ALTER TABLE `student_preferences`
+  ADD PRIMARY KEY (`form_id`,`email_id`,`prefered_cid`,`prefered_course_type_id`),
+  ADD KEY `pref_student` (`email_id`),
+  ADD KEY `pref_course` (`prefered_course_type_id`,`prefered_cid`);
 
 --
--- Indexes for table `student_preference_idc`
+-- Indexes for table `student_preferences_log`
 --
-ALTER TABLE `student_preference_idc`
-  ADD PRIMARY KEY (`email_id`,`sem`,`year`),
-  ADD UNIQUE KEY `rollno` (`rollno`);
+ALTER TABLE `student_preferences_log`
+  ADD PRIMARY KEY (`form_id`,`email_id`,`prefered_cid`,`prefered_course_type_id`),
+  ADD KEY `pref_student` (`email_id`),
+  ADD KEY `pref_course` (`prefered_course_type_id`,`prefered_cid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `course_types`
+--
+ALTER TABLE `course_types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `audit_course_applicable_dept`
+-- Constraints for table `course`
 --
-ALTER TABLE `audit_course_applicable_dept`
-  ADD CONSTRAINT `audit_course_audit_course_applicable` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `audit_course` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
+ALTER TABLE `course`
+  ADD CONSTRAINT `course_type_id_fk` FOREIGN KEY (`course_type_id`) REFERENCES `course_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `course_applicable_dept`
+--
+ALTER TABLE `course_applicable_dept`
+  ADD CONSTRAINT `audit_course_audit_course_applicable` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `course` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `course_type_id_dept_applicable_fk` FOREIGN KEY (`course_type_id`) REFERENCES `course_types` (`id`),
   ADD CONSTRAINT `dept_audit_course_applicable` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `audit_course_applicable_dept_log`
+-- Constraints for table `course_floating_dept`
 --
-ALTER TABLE `audit_course_applicable_dept_log`
-  ADD CONSTRAINT `audit_course_applicable_audit_course_log` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `audit_course_log` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `audit_course_applicable_dept` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `audit_course_floating_dept`
---
-ALTER TABLE `audit_course_floating_dept`
-  ADD CONSTRAINT `audit_course_floating_dept_audit_course` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `audit_course` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
+ALTER TABLE `course_floating_dept`
+  ADD CONSTRAINT `audit_course_floating_dept_audit_course` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `course` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `audit_course_floating_dept_course_type` FOREIGN KEY (`course_type_id`) REFERENCES `course_types` (`id`),
   ADD CONSTRAINT `audit_course_floating_dept_department` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `audit_course_floating_dept_log`
+-- Constraints for table `course_log`
 --
-ALTER TABLE `audit_course_floating_dept_log`
-  ADD CONSTRAINT `audit_course_floating_dept_log_audit_course` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `audit_course_log` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `audit_course_floating_dept_log_department` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `course_log`
+  ADD CONSTRAINT `course_type_id_log_fk` FOREIGN KEY (`course_type_id`) REFERENCES `course_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `audit_map`
+-- Constraints for table `course_similar_map`
 --
-ALTER TABLE `audit_map`
-  ADD CONSTRAINT `audit_map_audit_course` FOREIGN KEY (`newcid`,`newsem`,`newyear`) REFERENCES `audit_course` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `audit_map_log`
---
-ALTER TABLE `audit_map_log`
-  ADD CONSTRAINT `audit_map_log_audit_course_log` FOREIGN KEY (`newcid`,`newsem`,`newyear`) REFERENCES `audit_course_log` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `course_similar_map`
+  ADD CONSTRAINT `map_new_course_type_id_fk` FOREIGN KEY (`new_course_type_id`) REFERENCES `course_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `map_old_course_type_id_fk` FOREIGN KEY (`old_course_type_id`) REFERENCES `course_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `external_faculty_certification`
@@ -2759,20 +1623,6 @@ ALTER TABLE `faculty`
   ADD CONSTRAINT `faculty_department` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`);
 
 --
--- Constraints for table `faculty_audit`
---
-ALTER TABLE `faculty_audit`
-  ADD CONSTRAINT `faculty_audit_audit_course` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `audit_course` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `facuty_audit_faculty` FOREIGN KEY (`email_id`) REFERENCES `faculty` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `faculty_audit_log`
---
-ALTER TABLE `faculty_audit_log`
-  ADD CONSTRAINT `faculty_audit_log_audit_log` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `audit_course_log` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `faculty_audit_log_faculty` FOREIGN KEY (`email_id`) REFERENCES `faculty` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `faculty_certification`
 --
 ALTER TABLE `faculty_certification`
@@ -2783,61 +1633,42 @@ ALTER TABLE `faculty_certification`
 --
 ALTER TABLE `faculty_coordinator`
   ADD CONSTRAINT `faculty_coordinator_department` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `faculty_coordinator_hod` FOREIGN KEY (`hod_id`) REFERENCES `hod` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `faculty_coordinator_faculty` FOREIGN KEY (`email_id`) REFERENCES `faculty` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `faculty_idc`
+-- Constraints for table `faculty_course_alloted`
 --
-ALTER TABLE `faculty_idc`
-  ADD CONSTRAINT `faculty_idc_faculty` FOREIGN KEY (`email_id`) REFERENCES `faculty` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `faculty_idc_idc` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `idc` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `faculty_course_alloted`
+  ADD CONSTRAINT `facuty_audit_course` FOREIGN KEY (`course_type_id`,`cid`,`sem`,`year`) REFERENCES `course` (`course_type_id`, `cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `facuty_audit_faculty` FOREIGN KEY (`email_id`) REFERENCES `faculty` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `faculty_idc_log`
+-- Constraints for table `form_applicable_dept`
 --
-ALTER TABLE `faculty_idc_log`
-  ADD CONSTRAINT `faculty_idc_log_faculty` FOREIGN KEY (`email_id`) REFERENCES `faculty` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `faculty_idc_log_idc_log` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `idc_log` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `form_applicable_dept`
+  ADD CONSTRAINT `form_applicable_dept_department` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `form_applicable_dept_form_id` FOREIGN KEY (`form_id`) REFERENCES `form` (`form_id`);
 
 --
--- Constraints for table `hide_student_audit_course`
+-- Constraints for table `form_course_category_map`
 --
-ALTER TABLE `hide_student_audit_course`
-  ADD CONSTRAINT `hide_student_audit_course_audit_course` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `audit_course` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `hide_student_audit_course_student` FOREIGN KEY (`email_id`) REFERENCES `student` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `form_course_category_map`
+  ADD CONSTRAINT `form_course_Type_map_course` FOREIGN KEY (`course_type_id`) REFERENCES `course_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `form_course_Type_map_form_id` FOREIGN KEY (`form_id`) REFERENCES `form` (`form_id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `hide_student_idc`
+-- Constraints for table `hide_student_course`
 --
-ALTER TABLE `hide_student_idc`
-  ADD CONSTRAINT `hide_student_idc_idc` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `idc` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `hide_student_idc_student` FOREIGN KEY (`email_id`) REFERENCES `student` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `hide_student_course`
+  ADD CONSTRAINT `hide_student_course_course` FOREIGN KEY (`cid`,`sem`,`year`,`course_type_id`) REFERENCES `course` (`cid`, `sem`, `year`, `course_type_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hide_student_course_student` FOREIGN KEY (`email_id`) REFERENCES `student` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `idc`
+-- Constraints for table `hod`
 --
-ALTER TABLE `idc`
-  ADD CONSTRAINT `idc_department` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `idc_applicable_dept`
---
-ALTER TABLE `idc_applicable_dept`
-  ADD CONSTRAINT `idc_applicable_dept_dept` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `idc_applicable_dept_idc` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `idc` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `idc_applicable_dept_log`
---
-ALTER TABLE `idc_applicable_dept_log`
-  ADD CONSTRAINT `idc_applicable_department_dept_log` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `idc_applicable_idc_log` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `idc_log` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `idc_log`
---
-ALTER TABLE `idc_log`
-  ADD CONSTRAINT `idc_log_department` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `hod`
+  ADD CONSTRAINT `hod_department` FOREIGN KEY (`dept_id`) REFERENCES `department` (`dept_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hod_faculty` FOREIGN KEY (`faculty_email_id`) REFERENCES `faculty` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `student`
@@ -2849,20 +1680,21 @@ ALTER TABLE `student`
 -- Constraints for table `student_audit`
 --
 ALTER TABLE `student_audit`
-  ADD CONSTRAINT `student_audit_audit_course` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `audit_course` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `student_audit_audit_course` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `course` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `student_audit_student` FOREIGN KEY (`email_id`) REFERENCES `student` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `student_audit_log`
 --
 ALTER TABLE `student_audit_log`
-  ADD CONSTRAINT `student_audit_log_ibfk_1` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `audit_course_log` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `student_audit_log_ibfk_1` FOREIGN KEY (`cid`,`sem`,`year`) REFERENCES `course_log` (`cid`, `sem`, `year`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `student_form`
 --
 ALTER TABLE `student_form`
-  ADD CONSTRAINT `student_form_student` FOREIGN KEY (`email_id`) REFERENCES `student` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `student_form_Student` FOREIGN KEY (`email_id`) REFERENCES `student` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `student_form_form` FOREIGN KEY (`form_id`) REFERENCES `form` (`form_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `student_marks`
@@ -2871,16 +1703,12 @@ ALTER TABLE `student_marks`
   ADD CONSTRAINT `student_marks_student` FOREIGN KEY (`email_id`) REFERENCES `student` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `student_preference_audit`
+-- Constraints for table `student_preferences`
 --
-ALTER TABLE `student_preference_audit`
-  ADD CONSTRAINT `student_preference_audit_student` FOREIGN KEY (`email_id`) REFERENCES `student` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `student_preference_idc`
---
-ALTER TABLE `student_preference_idc`
-  ADD CONSTRAINT `student_preference_idc_student` FOREIGN KEY (`email_id`) REFERENCES `student` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `student_preferences`
+  ADD CONSTRAINT `pref_course` FOREIGN KEY (`prefered_course_type_id`,`prefered_cid`) REFERENCES `course` (`course_type_id`, `cid`),
+  ADD CONSTRAINT `pref_form_id` FOREIGN KEY (`form_id`) REFERENCES `form` (`form_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pref_student` FOREIGN KEY (`email_id`) REFERENCES `student` (`email_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
