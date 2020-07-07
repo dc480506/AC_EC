@@ -26,11 +26,11 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             $syllabus_field = '<small><span>Syllabus not present</span></small>';
         }
         $email_id = $row['email_id'];
-        $sql = "(SELECT cname,oldcid,oldsem,oldyear FROM course INNER JOIN course_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+        $sql = "(SELECT cname,oldcid,oldsem,oldyear FROM course INNER JOIN course_similar_map
+              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year AND old_course_type_id=course_type_id)
               UNION
-              (SELECT cname,oldcid,oldsem,oldyear FROM course_log INNER JOIN course_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              (SELECT cname,oldcid,oldsem,oldyear FROM course_log INNER JOIN course_similar_map
+              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year AND old_course_type_id=course_type_id)
               ";
         $result = mysqli_query($conn, $sql);
         $similar_courses = "";
@@ -43,7 +43,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                 $i++;
             }
         }
-        $sql = "SELECT post,fname,mname,lname,faculty_code FROM faculty_audit fa INNER JOIN faculty f ON fa.cid='$cid' AND fa.sem='$sem' AND fa.year='$year' AND fa.email_id=f.email_id";
+        $sql = "SELECT post,fname,mname,lname,faculty_code FROM faculty_course_alloted fa INNER JOIN faculty f ON fa.cid='$cid' AND fa.sem='$sem' AND fa.year='$year' AND fa.course_type_id='$course_type_id' AND fa.email_id=f.email_id";
         $result = mysqli_query($conn, $sql);
         $faculty_info = "";
         if (mysqli_num_rows($result) == 0) {
