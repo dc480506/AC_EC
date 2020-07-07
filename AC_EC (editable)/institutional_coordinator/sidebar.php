@@ -63,8 +63,7 @@
 
         <a class="collapse-item" href="courses_landing.php?program=UG">UG</a>
         <a class="collapse-item" href="courses_landing.php?program=PG">PG</a>
-        <a class="collapse-item" href="courses_landing.phpp?program=PHD">PHD</a>
-
+        <a class="collapse-item" href="courses_landing.php?program=PHD">PHD</a>
 
         <!-- <a class="collapse-item" href="audit_course.php">Audit Course</a>
         <a class="collapse-item" href="addcourse_idc.php">Interdisciplinary Course</a>

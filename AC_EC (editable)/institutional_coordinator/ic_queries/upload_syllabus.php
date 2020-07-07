@@ -5,6 +5,8 @@ $year = $_POST['year'];
 $cid = $_POST['cid'];
 $cname = $_POST['cname'];
 $sem = $_POST["sem"];
+$course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
+$program = mysqli_escape_string($conn, $_POST['program']);
 $uploadedFile = $_FILES['UploadSyllabusfile'];
 $ext = pathinfo($_FILES["UploadSyllabusfile"]["name"])['extension'];
 
@@ -19,12 +21,12 @@ $target_location = $base_dir . $rel_file_path;
 move_uploaded_file($_FILES['UploadSyllabusfile']['tmp_name'], $target_location);
 
 $upload_time = date("Y-m-d H:i:s");
-$table_name = "audit_course";
+$table_name = "course";
 if ($_POST['courseType'] == "PREVIOUS") {
     $table_name .= "_log";
 }
 
-$sql = "update " . $table_name . " set syllabus_path = '" . $rel_file_path . "' , upload_timestamp =  '" . $upload_time . "' where cid = '" . $cid . "'";
+$sql = "update " . $table_name . " set syllabus_path = '" . $rel_file_path . "' , upload_timestamp =  '" . $upload_time . "' where cid = '$cid' and sem='$sem' and year='$year' and course_type_id='$course_type_id' and program='$program'";
 
 if (mysqli_query($conn, $sql)) {
     echo "uploaded successfully";
