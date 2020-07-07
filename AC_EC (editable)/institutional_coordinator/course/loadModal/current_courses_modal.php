@@ -16,8 +16,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   $floating_dept = mysqli_escape_string($conn, $data['dept_name']);
   $result = mysqli_query($conn, "select academic_year from current_sem_info WHERE currently_active=1");
   $row = mysqli_fetch_assoc($result);
-  $year = $row['academic_year'];
 
+  $year = $row['academic_year'];
   $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_assoc($result);
@@ -44,12 +44,13 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   $faculty_div = "";
   $i = 1;
   //$faculties_allocated_temp = "(";
-  $sql = "(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course INNER JOIN audit_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+  $sql = "(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM course INNER JOIN course_similar_map
+              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year AND old_course_type_id=course_type_id)
               UNION
-              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course_log INNER JOIN audit_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM course_log INNER JOIN course_similar_map
+              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year AND old_course_type_id=course_type_id)
               ";
+
   $result = mysqli_query($conn, $sql);
   $similar_courses = "";
   if (mysqli_num_rows($result) == 0) {
@@ -133,14 +134,14 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   // $dept_div .= '</select></div>';
 
 
-  $yearsQuery = "(select distinct(year) from audit_course) union (select distinct(year) from audit_course_log)";
+  $yearsQuery = "(select distinct(year) from course) union (select distinct(year) from course_log)";
   $yearsQueryResult = mysqli_query($conn, $yearsQuery);
   $years = "<option value=''>Select Year..</option>";
   while ($row = mysqli_fetch_assoc($yearsQueryResult)) {
     $years .= "<option value='" . $row['year'] . "'>" . $row['year'] . "</option>";
   }
 
-  $syllabusQuery = 'select syllabus_path from audit_course where cid = "' . $cid . '"';
+  $syllabusQuery = "select syllabus_path from course where cid = '$cid' and year='$year' and sem='$sem' and course_type_id='$course_type_id' and program='$program'";
   $syllabus_path = mysqli_fetch_assoc(mysqli_query($conn, $syllabusQuery))['syllabus_path'];
   $removeSyllabusForm = "";
   if ($syllabus_path != "")
