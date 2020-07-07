@@ -25,6 +25,7 @@ include('../includes/header.php');
             <form action="courses.php" method="POST">
                 <div class="form-group">
                     <h5><label for="FormControlSelect1">Select Course:</label></h5>
+                    <input type="text" name="program" hidden value="<?php echo $program; ?>" />
                     <select class="form-control" id="FormControlSelect1" name="course_type_id">
 
                         <?php
@@ -36,7 +37,6 @@ include('../includes/header.php');
                             echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
                         }
                         ?>
-
                     </select>
                 </div>
                 <div class="form-group row">
