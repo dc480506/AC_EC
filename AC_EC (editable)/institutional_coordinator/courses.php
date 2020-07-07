@@ -1334,12 +1334,14 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         }
         var actual_data = {}
         actual_data['type'] = 'current'
+        actual_data['course_type_id'] = '<?php echo $course_type_id; ?>';
+        actual_data['program'] = '<?php echo $_POST['program']; ?>';
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
-        console.log(actual_delete_data_json)
+        console.log(actual_delete_data_json);
         $.ajax({
             type: "POST",
-            url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
+            url: "ic_queries/multioperation_queries/delete_multiple_courses.php",
             data: actual_delete_data_json,
             success: function(data) {
                 // console.log(data)
@@ -1649,11 +1651,14 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var courseData = $('#dataTable-current').DataTable().row(aPos).data()
         // delete courseData.action
         // delete courseData.allocate_faculty
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
+
         $.ajax({
             type: "POST",
-            url: "course/loadModal/current_audit_modal.php",
+            url: "course/loadModal/current_courses_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -1780,7 +1785,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                             $('#upload_syllabus .progress').show();
                         },
                         success: function(data) {
-                            $("#upload_syllabus_btn").html('uploaded successfully').attr('disabled', true)
+                            $("#upload_syllabus_btn").html('uploaded successfully').attr('disabled', true);
                         },
                         error: function(e) {
                             window.alert(e);
@@ -1966,12 +1971,14 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             var data = {}
             data['cid'] = row.data()['cid'];
             data['sem'] = row.data()['sem'];
+            data['course_type_id'] = '<?php echo $course_type_id; ?>';
+            data['program'] = '<?php echo $_POST['program'] ?>';
             data['type'] = 'current'
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
                 type: "POST",
-                url: "loadAdditionalInfo/additional_info_audit_course.php",
+                url: "loadAdditionalInfo/additional_info_course.php",
                 data: data_json,
                 success: function(response) {
                     row.child(response).show();
@@ -2035,12 +2042,14 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         }
         var actual_data = {}
         actual_data['type'] = 'upcoming'
+        actual_data['course_type_id'] = '<?php echo $course_type_id; ?>';
+        actual_data['program'] = '<?php echo $_POST['program']; ?>';
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json)
         $.ajax({
             type: "POST",
-            url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
+            url: "ic_queries/multioperation_queries/delete_multiple_courses.php",
             data: actual_delete_data_json,
             success: function(data) {
                 // console.log(data)
@@ -2308,11 +2317,13 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var courseData = $('#dataTable-upcoming').DataTable().row(aPos).data()
         // delete courseData.action
         // delete courseData.allocate_faculty
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "course/loadModal/upcoming_audit_modal.php",
+            url: "course/loadModal/upcoming_courses_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -2628,6 +2639,8 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             data['sem'] = row.data()['sem'];
             data['year'] = row.data()['year'];
             data['type'] = 'upcoming'
+            data['course_type_id'] = '<?php echo $course_type_id; ?>';
+            data['program'] = '<?php echo $_POST['program'] ?>';
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
@@ -2695,12 +2708,14 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         }
         var actual_data = {}
         actual_data['type'] = 'previous'
+        actual_data['course_type_id'] = '<?php echo $course_type_id; ?>';
+        actual_data['program'] = '<?php echo $_POST['program']; ?>';
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json)
         $.ajax({
             type: "POST",
-            url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
+            url: "ic_queries/multioperation_queries/delete_multiple_courses.php",
             data: actual_delete_data_json,
             success: function(data) {
                 // console.log(data)
@@ -2968,11 +2983,13 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var courseData = $('#dataTable-previous').DataTable().row(aPos).data()
         // delete courseData.action
         // delete courseData.allocate_faculty
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "course/loadModal/previous_audit_modal.php",
+            url: "course/loadModal/previous_courses_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -3287,6 +3304,8 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             data['sem'] = row.data()['sem'];
             data['year'] = row.data()['year'];
             data['type'] = 'previous'
+            data['course_type_id'] = '<?php echo $course_type_id; ?>';
+            data['program'] = '<?php echo $_POST['program'] ?>';
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
