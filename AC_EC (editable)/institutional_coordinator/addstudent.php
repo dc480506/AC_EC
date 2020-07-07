@@ -85,7 +85,7 @@ include('../includes/header.php');
                                                     <select class="form-control" id="program" name="program" required>
                                                         <option value="UG">UG</option>
                                                         <option value="PG">PG</option>
-                                                        <option value="Ph.D">Ph.D</option>
+                                                        <option value="PHD">PhD</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -358,8 +358,8 @@ include('../includes/header.php');
             <div class="modal-body">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-Ug-tab" data-toggle="tab" href="#nav-Ug" role="tab" aria-controls="nav-Ug" aria-selected="true">UnerGraduate</a>
-                        <a class="nav-item nav-link" id="nav-Pg-tab" data-toggle="tab" href="#nav-Pg" role="tab" aria-controls="nav-Pg" aria-selected="false">PostGraduate</a>
+                        <a class="nav-item nav-link active" id="nav-Ug-tab" data-toggle="tab" href="#nav-Ug" role="tab" aria-controls="nav-Ug" aria-selected="true">UG</a>
+                        <a class="nav-item nav-link" id="nav-Pg-tab" data-toggle="tab" href="#nav-Pg" role="tab" aria-controls="nav-Pg" aria-selected="false">PG</a>
                         <a class="nav-item nav-link" id="nav-Phd-tab" data-toggle="tab" href="#nav-Phd" role="tab" aria-controls="nav-Phd" aria-selected="false">PhD</a>
                     </div>
                 </nav>
@@ -550,33 +550,6 @@ include('../includes/header.php');
 
         return normalizedFilters
     }
-
-    //Bulk Upload 
-    $("#bulkUploadstudent").submit(function(e) {
-    e.preventDefault();
-    form = this;
-    var formData = new FormData(this);
-    $("#upload_student").attr("disabled", true);
-    $("#upload_student").text("Uploading...")
-    $.ajax({
-        url: "adduser/bulkUpload/addstudent_queries.php",
-        type: 'POST',
-        data: formData,
-        success: function(data) {
-            if ($.trim(data) == "Successful") {
-                $("#upload_student").text("Uploaded Successfully")
-                loadUg();
-            } else {
-                $("#upload_student").text("Upload Failed")
-                alert(data);
-            }
-            // form.reset();
-        },
-        cache: false,
-        contentType: false,
-        processData: false
-    });
-    })
 
     $("#filter_student_form").submit(function(e) {
         e.preventDefault();
@@ -1447,6 +1420,34 @@ $("#dataTable-studentPhd").on('click', 'td.email_id', function() {
 })
 
 // ********** PHD SECTION COMPLETES***************
+    //Bulk Upload 
+    $("#bulkUploadstudent").submit(function(e) {
+    e.preventDefault();
+    form = this;
+    var formData = new FormData(this);
+    $("#upload_student").attr("disabled", true);
+    $("#upload_student").text("Uploading...")
+    $.ajax({
+        url: "adduser/bulkUpload/addstudent_queries.php",
+        type: 'POST',
+        data: formData,
+        success: function(data) {
+            if ($.trim(data) == "Successful") {
+                $("#upload_student").text("Uploaded Successfully")
+                // loadUg();
+                // loadPg();
+                loadPhd();
+            } else {
+                $("#upload_student").text("Upload Failed")
+                alert(data);
+            }
+            // form.reset();
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+    })
 
     function id_to_name_convertor_dept(id) {
         <?php
