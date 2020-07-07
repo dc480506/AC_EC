@@ -17,25 +17,12 @@ include('../includes/header.php');
                     <h4 class="font-weight-bold text-primary mb-0">Student Marksheet Records</h4>
                     <br>
                     <br>
-                    <nav>
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-ug-tab" data-toggle="tab" href="#nav-ug"
-                            role="tab" aria-controls="nav-ug" aria-selected="true">UG</a>
-                        <a class="nav-item nav-link" id="nav-pg-tab" data-toggle="tab" href="#nav-pg"
-                            role="tab" aria-controls="nav-pg" aria-selected="false">PG</a>
-                        <a class="nav-item nav-link" id="nav-phd-tab" data-toggle="tab" href="#nav-phd"
-                            role="tab" aria-controls="nav-phd" aria-selected="false">PHD</a>
-                    </div>
-                </nav>
+                    
                 </div>
 
                 
 
-                <div class="col text-right" id="delete_selected_response_div">
-                    <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
-                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Record(s)
-                    </button>
-                </div>
+                
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadstudent">
                         <i class="fas fa-upload"></i>
@@ -265,12 +252,76 @@ include('../includes/header.php');
             </div>
         </div>
 
-        <div class="tab-content" id="nav-tabContent">
+
+    <div class="card-body">
+            <div class="modal-body">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-Ug-tab" data-toggle="tab" href="#nav-Ug" role="tab" aria-controls="nav-Ug" aria-selected="true">UG</a>
+                        <a class="nav-item nav-link" id="nav-Pg-tab" data-toggle="tab" href="#nav-Pg" role="tab" aria-controls="nav-Pg" aria-selected="false">PG</a>
+                        <a class="nav-item nav-link" id="nav-Phd-tab" data-toggle="tab" href="#nav-Phd" role="tab" aria-controls="nav-Phd" aria-selected="false">PhD</a>
+                    </div>
+                </nav>
+    <div class="tab-content" id="nav-tabContent">
                     <!--Current-->
-             <div class="tab-pane fade show active" id="nav-ug" role="tabpanel" aria-labelledby="nav-ug-tab">
+            <div class="tab-pane fade show active" id="nav-Ug-tab" role="tabpanel" aria-labelledby="nav-Ug-tab">
                 <div class="card-body">
-        
-                <table class="table table-bordered table-responsive-lg" id="dataTable-marks" width="100%" cellspacing="0">
+                    <div class="col text-right" id="delete_selected_response_div">
+                        <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
+                            <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Record(s)
+                        </button>
+                    </div>
+                    <br>
+                    
+                    <br>
+                    <table class="table table-bordered table-responsive-lg" id="dataTable-marksUg" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="select_all">
+                                <label class="custom-control-label" for="select_all"></label>
+                            </div>
+                        </th>
+                        <th>Email Address</th>
+                        <th>Roll Number</th>
+                        <th>Full Name</th>
+                        <th>Semester</th>
+                        <th>Year</th>
+                        <th>GPA</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th>Email Address</th>
+                        <th>Roll Number</th>
+                        <th>Full Name</th>
+                        <th>Semester</th>
+                        <th>Year</th>
+                        <th>GPA</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+                </table>
+            </div>
+      </div>
+     
+
+                            <!--PG-->
+            <div class="tab-pane fade " id="nav-Pg" role="tabpanel" aria-labelledby="nav-Pg-tab">
+            <div class="card-body">
+                <div class="col text-right" id="delete_selected_response_div">
+                    <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
+                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Record(s)
+                    </button>
+                </div>
+                <br>
+              
+                <br>
+               
+                <table class="table table-bordered table-responsive-lg" id="dataTable-marksPg" width="100%" cellspacing="0">
                  <thead>
                     <tr>
                         <th>
@@ -303,11 +354,59 @@ include('../includes/header.php');
             </table>
         </div>
       </div>
-      </div> 
+
+      <!-- phd -->
+      <div class="tab-pane fade " id="nav-Phd" role="tabpanel" aria-labelledby="nav-Phd-tab">
+            <div class="card-body">
+                <div class="col text-right" id="delete_selected_response_div">
+                    <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
+                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Record(s)
+                    </button>
+                </div>
+                <br>
+            
+                <br>
+               
+                <table class="table table-bordered table-responsive-lg" id="dataTable-marksPhd" width="100%" cellspacing="0">
+                 <thead>
+                    <tr>
+                        <th>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="select_all">
+                                <label class="custom-control-label" for="select_all"></label>
+                            </div>
+                        </th>
+                        <th>Email Address</th>
+                        <th>Roll Number</th>
+                        <th>Full Name</th>
+                        <th>Semester</th>
+                        <th>Year</th>
+                        <th>GPA</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th>Email Address</th>
+                        <th>Roll Number</th>
+                        <th>Full Name</th>
+                        <th>Semester</th>
+                        <th>Year</th>
+                        <th>GPA</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+      </div>
+        
+
+            </div>
+      
     
     </div>
-    
-
+</div>
 </div>
 
 <!-- /.container-fluid -->
