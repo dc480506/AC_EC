@@ -1423,9 +1423,11 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                 },
             }],
             ajax: {
-                'url': 'course/loadInfo/current_audit.php',
+                'url': 'course/loadInfo/current_courses.php',
                 "data": function(d) {
                     d.filters = getFilters();
+                    d.program = "<?php echo $_POST['program']; ?>";
+                    d.course_type_id = "<?php echo $course_type_id; ?>"
                     return d
                 }
             },
@@ -2076,9 +2078,11 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                 },
             }],
             ajax: {
-                'url': 'course/loadInfo/upcoming_audit.php',
+                'url': 'course/loadInfo/upcoming_courses.php',
                 "data": function(d) {
                     d.filters = getFilters();
+                    d.program = "<?php echo $_POST['program']; ?>";
+                    d.course_type_id = "<?php echo $course_type_id; ?>"
                     return d
                 }
             },
@@ -2644,8 +2648,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
-        formData.append("program", "<?php echo $_POST['program']; ?>")
-        formData.append("course_type_id", "<?php echo $course_type_id; ?>")
+
         $("#upload_previous").attr("disabled", true);
         $("#upload_previous").text("Uploading...")
         $.ajax({
@@ -2735,9 +2738,11 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                 },
             }],
             ajax: {
-                'url': 'course/loadInfo/previous_audit.php',
+                'url': 'course/loadInfo/previous_courses.php',
                 "data": function(d) {
                     d.filters = getFilters();
+                    d.program = "<?php echo $_POST['program']; ?>";
+                    d.course_type_id = "<?php echo $course_type_id; ?>"
                     return d
                 }
             },
