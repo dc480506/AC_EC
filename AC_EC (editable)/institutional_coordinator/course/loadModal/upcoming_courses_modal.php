@@ -195,6 +195,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                       <!--Update-->
                       <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
                         <form method="POST" id="update_course_form">
+                          <input type="hidden" name="program" value="' . $program . '">
+                          <input type="hidden" name="course_type_id" value="' . $course_type_id . '">
                           <div class="form-row mt-4">
                               <div class="form-group col-md-6">
                                   <label for="cname"><b>Name</b></label>
