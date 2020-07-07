@@ -1651,11 +1651,14 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var courseData = $('#dataTable-current').DataTable().row(aPos).data()
         // delete courseData.action
         // delete courseData.allocate_faculty
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
+
         $.ajax({
             type: "POST",
-            url: "course/loadModal/current_audit_modal.php",
+            url: "course/loadModal/current_courses_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -2312,11 +2315,13 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var courseData = $('#dataTable-upcoming').DataTable().row(aPos).data()
         // delete courseData.action
         // delete courseData.allocate_faculty
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "course/loadModal/upcoming_audit_modal.php",
+            url: "course/loadModal/upcoming_courses_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -2974,11 +2979,13 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var courseData = $('#dataTable-previous').DataTable().row(aPos).data()
         // delete courseData.action
         // delete courseData.allocate_faculty
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "course/loadModal/previous_audit_modal.php",
+            url: "course/loadModal/previous_courses_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,

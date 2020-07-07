@@ -10,6 +10,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   $sem = mysqli_escape_string($conn, $data['sem']);
   $max = mysqli_escape_string($conn, $data['max']);
   $min = mysqli_escape_string($conn, $data['min']);
+  $program = mysqli_escape_string($conn, $data['program']);
+  $course_type_id = mysqli_escape_string($conn, $data['course_type_id']);
   $year = mysqli_escape_string($conn, $data['year']);
   $dept_applicable = mysqli_escape_string($conn, $data['dept_applicable']);
   $floating_dept = mysqli_escape_string($conn, $data['dept_name']);
@@ -24,7 +26,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   // while ($row = mysqli_fetch_assoc($result)) {
   $sem_dropdown .= "<option>" . $sem . "</option>";
   if ($row['sem_type'] == 'EVEN') {
-    for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
+    for ($sem_start = 1; $sem_start <= 7; $sem_start += 2) {
       if ($sem == $sem_start) {
         continue;
       } else {
@@ -35,7 +37,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
     $temp += 1;
     $temp2 = "" . ($temp + 1);
   } else {
-    for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
+    for ($sem_start = 1; $sem_start <= 8; $sem_start += 2) {
       $sem_dropdown .= "<option>" . $sem_start . "</option>";
     }
   }
@@ -43,10 +45,10 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   $faculty_div = "";
   $i = 1;
   //$faculties_allocated_temp = "(";
-  $sql = "(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course INNER JOIN audit_map_log
+  $sql = "(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course INNER JOIN audit_map
               ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND oldcid=cid AND oldsem=sem AND oldyear=year)
               UNION
-              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course_log INNER JOIN audit_map_log
+              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course_log INNER JOIN audit_map
               ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND oldcid=cid AND oldsem=sem AND oldyear=year)
               ";
   $result = mysqli_query($conn, $sql);
@@ -81,7 +83,6 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
       $i = $i + 1;
     }
   }
-
 
   $checkbox_div = '';
   $floating_checkbox_div = '';
@@ -127,17 +128,18 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
     $years .= "<option value='" . $row['year'] . "'>" . $row['year'] . "</option>";
   }
 
-  $syllabusQuery = 'select syllabus_path from audit_course_log where cid = "' . $cid . '"';
+  $syllabusQuery = 'select syllabus_path from audit_course where cid = "' . $cid . '"';
   $syllabus_path = mysqli_fetch_assoc(mysqli_query($conn, $syllabusQuery))['syllabus_path'];
   $removeSyllabusForm = "";
   if ($syllabus_path != "")
     $removeSyllabusForm = '<form id = "remove_syllabus_form">
     <input type="hidden" name="cid" value="' . $cid . '">
     <input type="hidden" name="syllabus_path" value="' . $syllabus_path . '">
-    <input type="hidden" name="type" value="PREVIOUS">
+    <input type="hidden" name="type" value="UPCOMING">
     <button type="submit" class="btn btn-danger" id="remove_syllabus_btn" name="remove_syllabus">Remove Existing</button>
     <br><br>
      </form>';
+
 
   // $dept_div .= '<div class="form-group">
   //                 <label for="exampleInputDepartment"><b>Floating Department</b></label>
@@ -163,8 +165,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                           <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
-                          <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a> 
-                          <a class="nav-item nav-link" id="nav-map-tab" data-toggle="tab" href="#nav-map" role="tab" aria-controls="nav-map" aria-selected="false">Similar Previous Courses</a>                        
+                          <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>
+                          <a class="nav-item nav-link" id="nav-map-tab" data-toggle="tab" href="#nav-map" role="tab" aria-controls="nav-map" aria-selected="false">Similar Previous Courses</a>   
                           <a class="nav-item nav-link" id="nav-map-tab" data-toggle="tab" href="#nav-syllabus" role="tab" aria-controls="nav-syllabus" aria-selected="false">Upload Syllabus</a>                        
                         </div>
                     </nav>
@@ -174,15 +176,17 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                         <form id="delete_course_form">
                         <div class="form-group">
                           <label for="exampleFormControlSelect1"><i class="text-danger">*This will delete all the information related to the course including
-                           students and faculties associated with it if there are any.</i><br>Are you sure you want to delete the course 
-                           with Course ID <i><small><b>' . $cid . '</small></b></i> ,Semester <i><small><b>' . $sem . '</b></small></i> and
+                          students and faculties associated with it if there are any.</i><br>Are you sure you want to delete the course 
+                          with Course ID <i><small><b>' . $cid . '</small></b></i> ,Semester <i><small><b>' . $sem . '</b></small></i> and
                             Academic Year <i><small><b>' . $year . '</b></small></i>?
                           </label>
                           <br>
                           <input type="hidden" name="cid" value="' . $cid . '">
+                          <input type="hidden" name="program" value="' . $program . '">
+                          <input type="hidden" name="course_type_id" value="' . $course_type_id . '">
                           <input type="hidden" name="sem" value="' . $sem . '">
                           <input type="hidden" name="year" value="' . $year . '">
-                          <button type="submit" class="btn btn-primary" id="delete_course_btn" name="delete_course_log">Yes</button>
+                          <button type="submit" class="btn btn-primary" id="delete_course_btn" name="delete_course">Yes</button>
                           <button type="button" class="btn btn-secondary" name="no">No</button>
                         </div>
                       </form>
@@ -201,7 +205,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                                   <label for="courseid"><b>Course ID</b></label>
                                   <input type="text" class="form-control" required="required" placeholder="00000" name="courseidnew" value="' . $cid . '">
                                   <input type="hidden" class="form-control"  placeholder="00000" name="courseidold" value="' . $cid . '">
-                                  <span id="error_cid_previous" class="text-danger"></span>
+                                  <span id="error_cid_upcoming" class="text-danger"></span>
                               </div>
                           </div>
                           <div class="form-row">
@@ -227,7 +231,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                               <div class="form-group col-md-6">
                                   <label for="max"><b>Max</b></label>
                                   <input type="number" class="form-control" required="required" name="max" placeholder="120" value="' . $max . '">
-                                  <span id="error_max_previous" class="text-danger"></span>
+                                  <span id="error_max_upcoming" class="text-danger"></span>
                               </div>
                               <div class="form-group col-md-6">
                                   <label for="min"><b>Min</b></label>
@@ -238,7 +242,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <br>
                           ' . $checkbox_div . '
                           <br>
-                          <button type="submit" class="btn btn-primary" id="update_course_btn" name="update_course_log">Update</button>
+                          <button type="submit" class="btn btn-primary" id="update_course_btn" name="update_course">Update</button>
                         </form>
                         <br>
                       </div>
@@ -258,7 +262,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                                               <br>
                                               <div class = "temporarydiv" style="display:none">
                                               <div class="form-row mt-4">
-                               <div class="form-group col-md-6">
+                             <div class="form-group col-md-6">
                                   <label for="cname"><b>Year</b></label>
                                   <br>
                                   <select class="custom-select tempyear" id="tempyear" name="tempyear" required>' . $years . '</select>
@@ -279,13 +283,14 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                               </div>
                           </div>
                           </div>
-                          <button type="submit" class="btn btn-primary" id="add_new_similar_course_btn" name="add_new_similar_course_log">Allocate</button>
+                          <button type="submit" class="btn btn-primary" id="add_new_similar_course_btn" name="add_new_similar_course">Allocate</button>
                           <br>
                           <br>
                           </form>
                         </div>
                       <!--end Map-->
-                      <div class="tab-pane fade show" id="nav-syllabus" role="tabpanel" aria-labelledby="nav-syllabus-tab">
+
+                      <div class="tab-pane fade show" id="nav-syllabus" role="tabpanel" aria-labelledby="nav-syllabus-tab"><br>
                       ' . $removeSyllabusForm . '
                        <form id="upload_syllabus" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="year" value="' . $year . '"/>
@@ -293,7 +298,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <input type="hidden" name="cid" value="' . $cid . '"/>
                           <input type="hidden" name="cname" value="' . $cname . '"/>
 
-                          <div class="form-group files color">                                                          
+                         <div class="form-group files color">                                                          
                               <input type="file" name="UploadSyllabusfile" class="form-control" required />
                           </div>
                              <div class="d-flex align-items-center">
@@ -302,8 +307,10 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
                               </div>
                           </div>
-                          </form>
+                           </form>
                       </div>
+
+
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                           <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
@@ -314,7 +321,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
               </div>
             </div>
 
-            <!--delete Faculty Modal-->
+<!--delete Faculty Modal-->
               <div style="background-color: rgba(40, 40, 40, .7)" class="modal fade" id="deleteSimilarCourseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -335,7 +342,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                       </div>
                       <div class="modal-footer">
                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                          <button class="btn btn-primary" type="submit" id="course_remove_btn" name="course_remove_log">Remove</button>
+                          <button class="btn btn-primary" type="submit" id="course_remove_btn" name="course_remove">Remove</button>
                       </div>
                   </form>
                 </div>

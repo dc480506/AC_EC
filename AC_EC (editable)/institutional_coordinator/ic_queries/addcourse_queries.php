@@ -6,10 +6,12 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     $cid = mysqli_escape_string($conn, $_POST['cid']);
     $sem = mysqli_escape_string($conn, $_POST['sem']);
     $year = mysqli_escape_string($conn, $_POST['year']);
+    $course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
+    $program = mysqli_escape_string($conn, $_POST['program']);
     if (isset($_POST['delete_course'])) {
-        $sql = "DELETE FROM audit_course WHERE cid='$cid' AND sem='$sem' AND year='$year'";
+        $sql = "DELETE FROM course WHERE cid='$cid' AND sem='$sem' AND year='$year' AND course_type_id='$course_type_id' AND program='$program'";
     } else if (isset($_POST['delete_course_log'])) {
-        $sql = "DELETE FROM audit_course_log WHERE cid='$cid' AND sem='$sem' AND year='$year'";
+        $sql = "DELETE FROM course_log WHERE cid='$cid' AND sem='$sem' AND year='$year' AND course_type_id='$course_type_id' AND program='$program'";
     }
     mysqli_query($conn, $sql);
     // header("Location: ../addcourse_ac.php");
@@ -62,12 +64,10 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
                 $sql = "UPDATE audit_course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold'
                         AND sem='$semold' AND year='$year'";
                 mysqli_query($conn, $sql);
-
             } else if (isset($_POST['update_course_log'])) {
                 $sql = "UPDATE audit_course_log SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold'
                         AND sem='$semold' AND year='$year'";
                 mysqli_query($conn, $sql);
-
             }
         }
         // }
@@ -258,8 +258,7 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
         $Values = "";
         foreach ($_POST['check_dept'] as $u) {
             $Values .= "('$cid','$sem','$year','$u'),";
-        }
-        ;
+        };
         $sql = "INSERT INTO audit_course_applicable_dept VALUES " . substr($Values, 0, strlen($Values) - 1);
         mysqli_query($conn, $sql);
 
@@ -445,7 +444,6 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     $faculties_allocated_temp = "nvvhvjh";
     echo "{$faculties_allocated_temp}+{$faculty_div}";
     exit();
-
 } else if (isset($_POST['add_new_similar_course_log'])) {
     $oldyear = mysqli_escape_string($conn, $_POST['tempoldyear']);
     $newyear = mysqli_escape_string($conn, $_POST['tempyear']);

@@ -10,6 +10,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   $sem = mysqli_escape_string($conn, $data['sem']);
   $max = mysqli_escape_string($conn, $data['max']);
   $min = mysqli_escape_string($conn, $data['min']);
+  $program = mysqli_escape_string($conn, $data['program']);
+  $course_type_id = mysqli_escape_string($conn, $data['course_type_id']);
   $dept_applicable = mysqli_escape_string($conn, $data['dept_applicable']);
   $floating_dept = mysqli_escape_string($conn, $data['dept_name']);
   $result = mysqli_query($conn, "select academic_year from current_sem_info WHERE currently_active=1");
@@ -180,6 +182,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           </label>
                           <br>
                           <input type="hidden" name="cid" value="' . $cid . '">
+                          <input type="hidden" name="program" value="' . $program . '">
+                          <input type="hidden" name="course_type_id" value="' . $course_type_id . '">
                           <input type="hidden" name="sem" value="' . $sem . '">
                           <input type="hidden" name="year" value="' . $year . '">
                           <button type="submit" class="btn btn-primary" id="delete_course_btn" name="delete_course">Yes</button>
