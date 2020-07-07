@@ -15,7 +15,22 @@ include('../includes/header.php');
             <div class="row align-items-center">
                 <div class="col">
                     <h4 class="font-weight-bold text-primary mb-0">Student Marksheet Records</h4>
+                    <br>
+                    <br>
+                    <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-ug-tab" data-toggle="tab" href="#nav-ug"
+                            role="tab" aria-controls="nav-ug" aria-selected="true">UG</a>
+                        <a class="nav-item nav-link" id="nav-pg-tab" data-toggle="tab" href="#nav-pg"
+                            role="tab" aria-controls="nav-pg" aria-selected="false">PG</a>
+                        <a class="nav-item nav-link" id="nav-phd-tab" data-toggle="tab" href="#nav-phd"
+                            role="tab" aria-controls="nav-phd" aria-selected="false">PHD</a>
+                    </div>
+                </nav>
                 </div>
+
+                
+
                 <div class="col text-right" id="delete_selected_response_div">
                     <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
                         <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Record(s)
@@ -26,6 +41,9 @@ include('../includes/header.php');
                         <i class="fas fa-upload"></i>
                     </button>
                 </div>
+                
+               
+                
             </div>
         </div>
         <div class="modal fade" id="uploadstudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -247,9 +265,13 @@ include('../includes/header.php');
             </div>
         </div>
 
-        <div class="card-body">
-            <table class="table table-bordered table-responsive-lg" id="dataTable-marks" width="100%" cellspacing="0">
-                <thead>
+        <div class="tab-content" id="nav-tabContent">
+                    <!--Current-->
+             <div class="tab-pane fade show active" id="nav-ug" role="tabpanel" aria-labelledby="nav-ug-tab">
+                <div class="card-body">
+        
+                <table class="table table-bordered table-responsive-lg" id="dataTable-marks" width="100%" cellspacing="0">
+                 <thead>
                     <tr>
                         <th>
                             <div class="custom-control custom-checkbox">
@@ -280,8 +302,14 @@ include('../includes/header.php');
                 </tfoot>
             </table>
         </div>
+      </div>
+      </div> 
+    
     </div>
+    
+
 </div>
+
 <!-- /.container-fluid -->
 
 <script type="text/javascript">
