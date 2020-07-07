@@ -146,6 +146,10 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   if ($syllabus_path != "")
     $removeSyllabusForm = '<form id = "remove_syllabus_form">
     <input type="hidden" name="cid" value="' . $cid . '">
+    <input type="hidden" name="year" value="' . $year . '"/>
+    <input type="hidden" name="sem" value="' . $sem . '"/>
+    <input type="hidden" name="program" value="' . $program . '">
+    <input type="hidden" name="course_type_id" value="' . $course_type_id . '">
     <input type="hidden" name="syllabus_path" value="' . $syllabus_path . '">
     <input type="hidden" name="type" value="CURRENT">
     <button type="submit" class="btn btn-danger" id="remove_syllabus_btn" name="remove_syllabus">Remove Existing</button>
@@ -300,6 +304,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <input type="hidden" name="sem" value="' . $sem . '"/>
                           <input type="hidden" name="cid" value="' . $cid . '"/>
                           <input type="hidden" name="cname" value="' . $cname . '"/>
+                          <input type="hidden" name="program" value="' . $program . '">
+                          <input type="hidden" name="course_type_id" value="' . $course_type_id . '">
 
                           <div class="form-group files color">                                                          
                               <input type="file" name="UploadSyllabusfile" class="form-control" required />

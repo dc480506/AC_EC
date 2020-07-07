@@ -6,15 +6,17 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
     if ($data['type'] == "current") {
         $cid = $data['cid'];
         $sem = $data['sem'];
+        $course_type_id = $data['course_type_id'];
+        $program = $data['program'];
         $result = mysqli_query($conn, "select academic_year from current_sem_info WHERE currently_active=1");
         $row = mysqli_fetch_assoc($result);
         $year = $row['academic_year'];
-        $_SESSION['cid']=$cid;
-        $_SESSION['sem']=$sem;
-        $_SESSION['year']=$year;
-        $_SESSION['active']=1;
+        $_SESSION['cid'] = $cid;
+        $_SESSION['sem'] = $sem;
+        $_SESSION['year'] = $year;
+        $_SESSION['active'] = 1;
 
-        $sql = "SELECT timestamp,email_id,syllabus_path FROM audit_course WHERE cid='$cid' AND sem='$sem' AND year='$year'";
+        $sql = "SELECT timestamp,email_id,syllabus_path FROM course WHERE cid='$cid' AND sem='$sem' AND year='$year'  and course_type_id='$course_type_id' and program='$program'";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
         $timestamp = date_format(date_create($row['timestamp']), 'd-M-Y h:i:s A');
@@ -24,10 +26,10 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             $syllabus_field = '<small><span>Syllabus not present</span></small>';
         }
         $email_id = $row['email_id'];
-        $sql = "(SELECT cname,oldcid,oldsem,oldyear FROM audit_course INNER JOIN audit_map
+        $sql = "(SELECT cname,oldcid,oldsem,oldyear FROM course INNER JOIN course_map
               ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND oldcid=cid AND oldsem=sem AND oldyear=year)
               UNION
-              (SELECT cname,oldcid,oldsem,oldyear FROM audit_course_log INNER JOIN audit_map
+              (SELECT cname,oldcid,oldsem,oldyear FROM course_log INNER JOIN course_map
               ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND oldcid=cid AND oldsem=sem AND oldyear=year)
               ";
         $result = mysqli_query($conn, $sql);
@@ -90,10 +92,10 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $cid = $data['cid'];
         $sem = $data['sem'];
         $year = $data['year'];
-        $_SESSION['cid']=$cid;
-        $_SESSION['sem']=$sem;
-        $_SESSION['year']=$year;
-        $_SESSION['active']=0;
+        $_SESSION['cid'] = $cid;
+        $_SESSION['sem'] = $sem;
+        $_SESSION['year'] = $year;
+        $_SESSION['active'] = 0;
         $sql = "SELECT timestamp,email_id,syllabus_path FROM audit_course WHERE cid='$cid' AND sem='$sem' AND year='$year'";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
@@ -170,10 +172,10 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $cid = $data['cid'];
         $sem = $data['sem'];
         $year = $data['year'];
-        $_SESSION['cid']=$cid;
-        $_SESSION['sem']=$sem;
-        $_SESSION['year']=$year;
-        $_SESSION['active']=2;
+        $_SESSION['cid'] = $cid;
+        $_SESSION['sem'] = $sem;
+        $_SESSION['year'] = $year;
+        $_SESSION['active'] = 2;
         $sql = "SELECT timestamp,email_id,syllabus_path FROM audit_course_log WHERE cid='$cid' AND sem='$sem' AND year='$year'";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);

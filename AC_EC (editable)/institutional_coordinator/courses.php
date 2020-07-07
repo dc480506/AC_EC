@@ -1785,7 +1785,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                             $('#upload_syllabus .progress').show();
                         },
                         success: function(data) {
-                            $("#upload_syllabus_btn").html('uploaded successfully').attr('disabled', true)
+                            $("#upload_syllabus_btn").html('uploaded successfully').attr('disabled', true);
                         },
                         error: function(e) {
                             window.alert(e);
@@ -1971,12 +1971,14 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             var data = {}
             data['cid'] = row.data()['cid'];
             data['sem'] = row.data()['sem'];
+            data['course_type_id'] = '<?php echo $course_type_id; ?>';
+            data['program'] = '<?php echo $_POST['program'] ?>';
             data['type'] = 'current'
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
                 type: "POST",
-                url: "loadAdditionalInfo/additional_info_audit_course.php",
+                url: "loadAdditionalInfo/additional_info_course.php",
                 data: data_json,
                 success: function(response) {
                     row.child(response).show();
@@ -2637,6 +2639,8 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             data['sem'] = row.data()['sem'];
             data['year'] = row.data()['year'];
             data['type'] = 'upcoming'
+            data['course_type_id'] = '<?php echo $course_type_id; ?>';
+            data['program'] = '<?php echo $_POST['program'] ?>';
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
@@ -3300,6 +3304,8 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             data['sem'] = row.data()['sem'];
             data['year'] = row.data()['year'];
             data['type'] = 'previous'
+            data['course_type_id'] = '<?php echo $course_type_id; ?>';
+            data['program'] = '<?php echo $_POST['program'] ?>';
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
