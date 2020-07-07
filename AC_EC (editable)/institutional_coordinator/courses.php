@@ -2037,12 +2037,14 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         }
         var actual_data = {}
         actual_data['type'] = 'upcoming'
+        actual_data['course_type_id'] = '<?php echo $course_type_id; ?>';
+        actual_data['program'] = '<?php echo $_POST['program']; ?>';
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json)
         $.ajax({
             type: "POST",
-            url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
+            url: "ic_queries/multioperation_queries/delete_multiple_courses.php",
             data: actual_delete_data_json,
             success: function(data) {
                 // console.log(data)
@@ -2697,12 +2699,14 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         }
         var actual_data = {}
         actual_data['type'] = 'previous'
+        actual_data['course_type_id'] = '<?php echo $course_type_id; ?>';
+        actual_data['program'] = '<?php echo $_POST['program']; ?>';
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json)
         $.ajax({
             type: "POST",
-            url: "ic_queries/multioperation_queries/delete_multiple_audit.php",
+            url: "ic_queries/multioperation_queries/delete_multiple_courses.php",
             data: actual_delete_data_json,
             success: function(data) {
                 // console.log(data)
