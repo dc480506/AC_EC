@@ -26,12 +26,12 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             $syllabus_field = '<small><span>Syllabus not present</span></small>';
         }
         $email_id = $row['email_id'];
-        $sql = "(SELECT cname,oldcid,oldsem,oldyear FROM course INNER JOIN course_similar_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year AND old_course_type_id=course_type_id)
-              UNION
-              (SELECT cname,oldcid,oldsem,oldyear FROM course_log INNER JOIN course_similar_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year AND old_course_type_id=course_type_id)
-              ";
+        $sql = "(SELECT cname,oldcid,oldsem, name ,oldyear FROM course INNER JOIN course_similar_map INNER JOIN course_types as ct
+                ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
+                UNION
+               (SELECT cname,oldcid,oldsem, name ,oldyear FROM course_log INNER JOIN course_similar_map INNER JOIN course_types as ct
+                ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
+                ";
         $result = mysqli_query($conn, $sql);
         $similar_courses = "";
         if (mysqli_num_rows($result) == 0) {
@@ -39,7 +39,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         } else {
             $i = 1;
             while ($row = mysqli_fetch_assoc($result)) {
-                $similar_courses .= "<p><small>" . $i . ") " . $row['cname'] . " (Course ID: " . $row['oldcid'] . " , Sem: " . $row['oldsem'] . " , Year: " . $row['oldyear'] . ")</small></p>";
+                $similar_courses .= "<p><small>" . $i . ") " . $row['cname'] . " (Course ID: " . $row['oldcid'] . " , Sem: " . $row['oldsem'] . " , Year: " . $row['oldyear'] . " , Type: " . $row['name'] . ")</small></p>";
                 $i++;
             }
         }
@@ -108,12 +108,12 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             $syllabus_field = '<small><span>Syllabus not present</span></small>';
         }
         $email_id = $row['email_id'];
-        $sql = "(SELECT cname,oldcid,oldsem,oldyear FROM course INNER JOIN course_similar_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id)
-              UNION
-              (SELECT cname,oldcid,oldsem,oldyear FROM course_log INNER JOIN course_similar_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id)
-              ";
+        $sql = "(SELECT cname,oldcid,oldsem, name ,oldyear FROM course INNER JOIN course_similar_map INNER JOIN course_types as ct
+                ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
+                UNION
+               (SELECT cname,oldcid,oldsem, name ,oldyear FROM course_log INNER JOIN course_similar_map INNER JOIN course_types as ct
+                ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
+                ";
         $result = mysqli_query($conn, $sql);
         $similar_courses = "";
         if (mysqli_num_rows($result) == 0) {
@@ -121,7 +121,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         } else {
             $i = 1;
             while ($row = mysqli_fetch_assoc($result)) {
-                $similar_courses .= "<p><small>" . $i . ") " . $row['cname'] . " (Course ID: " . $row['oldcid'] . " , Sem: " . $row['oldsem'] . " , Year: " . $row['oldyear'] . ")</small></p>";
+                $similar_courses .= "<p><small>" . $i . ") " . $row['cname'] . " (Course ID: " . $row['oldcid'] . " , Sem: " . $row['oldsem'] . " , Year: " . $row['oldyear'] . " , Type: " . $row['name'] . ")</small></p>";
                 $i++;
             }
         }
@@ -190,8 +190,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         if ($syllabus_link == "") {
             $syllabus_field = '<small><span>Syllabus not present</span></small>';
         }
-        $sql = "SELECT cname,oldcid,oldsem,oldyear FROM course_log INNER JOIN course_similar_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id
+        $sql = "SELECT cname,oldcid,oldsem,oldyear,name FROM course_log INNER JOIN course_similar_map INNER JOIN course_types as ct
+              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id
               ";
         $result = mysqli_query($conn, $sql);
         $similar_courses = "";
@@ -200,7 +200,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         } else {
             $i = 1;
             while ($row = mysqli_fetch_assoc($result)) {
-                $similar_courses .= "<p><small>" . $i . ") " . $row['cname'] . " (Course ID: " . $row['oldcid'] . " , Sem: " . $row['oldsem'] . " , Year: " . $row['oldyear'] . ")</small></p>";
+                $similar_courses .= "<p><small>" . $i . ") " . $row['cname'] . " (Course ID: " . $row['oldcid'] . " , Sem: " . $row['oldsem'] . " , Year: " . $row['oldyear'] . " , Type: " . $row['name'] . ")</small></p>";
                 $i++;
             }
         }

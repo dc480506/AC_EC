@@ -45,12 +45,12 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   $faculty_div = "";
   $i = 1;
   //$faculties_allocated_temp = "(";
-  $sql = "(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM course INNER JOIN course_similar_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year AND old_course_type_id=course_type_id)
-              UNION
-              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM course_log INNER JOIN course_similar_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year AND old_course_type_id=course_type_id)
-              ";
+  $sql = "(SELECT cname,oldcid,oldsem,old_course_type_id,new_course_type_id , name ,oldyear,newcid, newsem,newyear,new_course_type_id FROM course INNER JOIN course_similar_map INNER JOIN course_types as ct
+                ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
+                UNION
+               (SELECT cname,oldcid,oldsem,old_course_type_id,new_course_type_id , name ,oldyear,newcid, newsem,newyear,new_course_type_id FROM course_log INNER JOIN course_similar_map INNER JOIN course_types as ct
+                ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
+                ";
   $result = mysqli_query($conn, $sql);
   $similar_courses = "";
   if (mysqli_num_rows($result) == 0) {
@@ -65,6 +65,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
       $oldcid = $row['oldcid'];
       $newcid = $row['newcid'];
       $cname = $row['cname'];
+      $course_type = $row['name'];
+
       // $similar_courses.="<p><small>".$i.") ".$row['cname']." (Course ID: ".$row['oldcid']." , Sem: ".$row['oldsem']." , Year: ".$row['oldyear'].")</small></p>";
       // $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldyear="'.$row['oldyear'].'" data-oldcid="'.$row['oldcid'].'" data-oldsem="'.$row['oldsem'].'" data-newyear="'.$row['newyear'].'" data-newcid="'.$row['newcid'].'" data-newsem="'.$row['newsem'].'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$row['oldcid'].''.$row['oldsem'].''.$row['oldyear'].'"><i class="fas fa-trash"></i>
       //           </button>
@@ -78,7 +80,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                       </button>
                       <label for="sem"><b>Course ' . $i . ' : </b>
                       </label>
-                      <span>' . $row['cname'] . '</span><br><span style="margin-left: 44px;"><b>CID:</b> ' . $row['oldcid'] . ', <b>SEM:</b> ' . $row['oldsem'] . ', <b>YEAR:</b> ' . $row['oldyear'] . '</span>
+                      <span>' . $row['cname'] . '</span><br><span style="margin-left: 44px;"><b>CID:</b> ' . $row['oldcid'] . ', <b>SEM:</b> ' . $row['oldsem'] . ', <b>YEAR:</b> ' . $row['oldyear'] . ', <b>COURSE TYPE:</b> ' . $course_type . '</span>
                       <br>';
       $i = $i + 1;
     }
