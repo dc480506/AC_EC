@@ -66,6 +66,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
       $newcid = $row['newcid'];
       $cname = $row['cname'];
       $course_type = $row['name'];
+      $new_course_type_id = $row['new_course_type_id'];
+      $old_course_type_id = $row['old_course_type_id'];
 
       // $similar_courses.="<p><small>".$i.") ".$row['cname']." (Course ID: ".$row['oldcid']." , Sem: ".$row['oldsem']." , Year: ".$row['oldyear'].")</small></p>";
       // $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldyear="'.$row['oldyear'].'" data-oldcid="'.$row['oldcid'].'" data-oldsem="'.$row['oldsem'].'" data-newyear="'.$row['newyear'].'" data-newcid="'.$row['newcid'].'" data-newsem="'.$row['newsem'].'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$row['oldcid'].''.$row['oldsem'].''.$row['oldyear'].'"><i class="fas fa-trash"></i>
@@ -76,7 +78,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
       //           <br>';
       //           $i = $i + 1;
 
-      $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldsem="' . $oldsem . '" data-newsem="' . $newsem . '" data-oldyear="' . $oldyear . '" data-newyear="' . $newyear . '" data-oldcid="' . $oldcid . '" data-newcid="' . $newcid . '" id="unallocate_faculty_btn' . $i . '" type="button" class="btn icon-btn" name="unallocate_faculty" value="' . $oldcid . '"><i class="fas fa-trash"></i>
+      $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldsem="' . $oldsem . '" data-newsem="' . $newsem . '" data-oldyear="' . $oldyear . '" data-newyear="' . $newyear . '" data-oldcid="' . $oldcid . '" data-newcid="' . $newcid . '" data-newcourse_type_id="' . $new_course_type_id . '" data-oldcourse_type_id="' . $old_course_type_id . '" id="unallocate_faculty_btn' . $i . '" type="button" class="btn icon-btn" name="unallocate_faculty" value="' . $oldcid . '"><i class="fas fa-trash"></i>
                       </button>
                       <label for="sem"><b>Course ' . $i . ' : </b>
                       </label>
@@ -348,6 +350,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <input type="hidden" name="newyear" id="newyear" value=""/>
                           <input type="hidden" name="newsem" id="newsem" value=""/>
                           <input type="hidden" name="newcid" id="newcid" value=""/>
+                          <input type="hidden" name="new_course_type_id" id="new_course_type_id" value=""/>
+                           <input type="hidden" name="old_course_type_id" id="old_course_type_id" value=""/>
                       </div>
                       <div class="modal-footer">
                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>

@@ -1858,6 +1858,10 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     $(this).find('.modal-body #newcid').val(newcid)
                     let newsem = $(event.relatedTarget).data('newsem')
                     $(this).find('.modal-body #newsem').val(newsem)
+                    let old_course_type_id = $(event.relatedTarget).data('oldcourse_type_id')
+                    $(this).find('.modal-body #old_course_type_id').val(old_course_type_id)
+                    let new_course_type_id = $(event.relatedTarget).data('newcourse_type_id')
+                    $(this).find('.modal-body #new_course_type_id').val(new_course_type_id)
 
 
                     $('#newModalRemoveCourse').submit(function(e) {
@@ -2527,6 +2531,10 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     $(this).find('.modal-body #newcid').val(newcid)
                     let newsem = $(event.relatedTarget).data('newsem')
                     $(this).find('.modal-body #newsem').val(newsem)
+                    let old_course_type_id = $(event.relatedTarget).data('oldcourse_type_id')
+                    $(this).find('.modal-body #old_course_type_id').val(old_course_type_id)
+                    let new_course_type_id = $(event.relatedTarget).data('newcourse_type_id')
+                    $(this).find('.modal-body #new_course_type_id').val(new_course_type_id)
 
 
                     $('#newModalRemoveCourse').submit(function(e) {
@@ -3191,6 +3199,10 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     $(this).find('.modal-body #newcid').val(newcid)
                     let newsem = $(event.relatedTarget).data('newsem')
                     $(this).find('.modal-body #newsem').val(newsem)
+                    let old_course_type_id = $(event.relatedTarget).data('oldcourse_type_id')
+                    $(this).find('.modal-body #old_course_type_id').val(old_course_type_id)
+                    let new_course_type_id = $(event.relatedTarget).data('newcourse_type_id')
+                    $(this).find('.modal-body #new_course_type_id').val(new_course_type_id)
 
 
                     $('#newModalRemoveCourse').submit(function(e) {
