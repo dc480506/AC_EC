@@ -1512,14 +1512,16 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var target_row = $(this).closest("tr");
         // var btn=$(this);
         var aPos = $("#dataTable-current").dataTable().fnGetPosition(target_row.get(0));
-        var courseData = $('#dataTable-current').DataTable().row(aPos).data()
+        var courseData = $('#dataTable-current').DataTable().row(aPos).data();
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         // delete courseData.action
         // delete courseData.allocate_faculty
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "course/loadModal/current_audit_allocate_modal.php",
+            url: "course/loadModal/current_course_faculty_allocate_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -1557,7 +1559,6 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                                 $('#temp_allocated_faculty').val(z[0]);
                                 $('#hiddenemailid').val("null");
                                 $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
                             }
                         });
                     }
@@ -1715,11 +1716,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                         $("#tempcid option").not(":first").remove();
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "semester",
                                 courseType: "CURRENT",
-                                year: year
+                                year: year,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempsem option").not(":first").remove();
@@ -1738,11 +1740,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     if (year != "" && sem != "") {
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "courses",
                                 year: year,
-                                sem: sem
+                                sem: sem,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempcid option").not(":first").remove();
@@ -1855,6 +1858,10 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     $(this).find('.modal-body #newcid').val(newcid)
                     let newsem = $(event.relatedTarget).data('newsem')
                     $(this).find('.modal-body #newsem').val(newsem)
+                    let old_course_type_id = $(event.relatedTarget).data('oldcourse_type_id')
+                    $(this).find('.modal-body #old_course_type_id').val(old_course_type_id)
+                    let new_course_type_id = $(event.relatedTarget).data('newcourse_type_id')
+                    $(this).find('.modal-body #new_course_type_id').val(new_course_type_id)
 
 
                     $('#newModalRemoveCourse').submit(function(e) {
@@ -2171,13 +2178,15 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         // var btn=$(this);
         var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(target_row.get(0));
         var courseData = $('#dataTable-upcoming').DataTable().row(aPos).data()
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         // delete courseData.action
         // delete courseData.allocate_faculty
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "course/loadModal/upcoming_audit_allocate_modal.php",
+            url: "course/loadModal/upcoming_course_faculty_allocate_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -2380,11 +2389,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                         $("#tempcid option").not(":first").remove();
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "semester",
                                 courseType: "CURRENT",
-                                year: year
+                                year: year,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempsem option").not(":first").remove();
@@ -2403,11 +2413,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     if (year != "" && sem != "") {
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "courses",
                                 year: year,
-                                sem: sem
+                                sem: sem,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempcid option").not(":first").remove();
@@ -2520,6 +2531,10 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     $(this).find('.modal-body #newcid').val(newcid)
                     let newsem = $(event.relatedTarget).data('newsem')
                     $(this).find('.modal-body #newsem').val(newsem)
+                    let old_course_type_id = $(event.relatedTarget).data('oldcourse_type_id')
+                    $(this).find('.modal-body #old_course_type_id').val(old_course_type_id)
+                    let new_course_type_id = $(event.relatedTarget).data('newcourse_type_id')
+                    $(this).find('.modal-body #new_course_type_id').val(new_course_type_id)
 
 
                     $('#newModalRemoveCourse').submit(function(e) {
@@ -2645,7 +2660,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             console.log(data_json)
             $.ajax({
                 type: "POST",
-                url: "loadAdditionalInfo/additional_info_audit_course.php",
+                url: "loadAdditionalInfo/additional_info_course.php",
                 data: data_json,
                 success: function(response) {
                     row.child(response).show();
@@ -2661,6 +2676,8 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
+        formData.append("program", "<?php echo $_POST['program']; ?>")
+        formData.append("course_type_id", "<?php echo $course_type_id; ?>")
 
         $("#upload_previous").attr("disabled", true);
         $("#upload_previous").text("Uploading...")
@@ -2840,11 +2857,13 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var courseData = $('#dataTable-previous').DataTable().row(aPos).data()
         // delete courseData.action
         // delete courseData.allocate_faculty
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "course/loadModal/previous_audit_allocate_modal.php",
+            url: "course/loadModal/previous_course_faculty_allocate_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -3041,11 +3060,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                         $("#tempcid option").not(":first").remove();
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "semester",
                                 courseType: "CURRENT",
-                                year: year
+                                year: year,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempsem option").not(":first").remove();
@@ -3064,11 +3084,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     if (year != "" && sem != "") {
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "courses",
                                 year: year,
-                                sem: sem
+                                sem: sem,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempcid option").not(":first").remove();
@@ -3180,6 +3201,10 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     $(this).find('.modal-body #newcid').val(newcid)
                     let newsem = $(event.relatedTarget).data('newsem')
                     $(this).find('.modal-body #newsem').val(newsem)
+                    let old_course_type_id = $(event.relatedTarget).data('oldcourse_type_id')
+                    $(this).find('.modal-body #old_course_type_id').val(old_course_type_id)
+                    let new_course_type_id = $(event.relatedTarget).data('newcourse_type_id')
+                    $(this).find('.modal-body #new_course_type_id').val(new_course_type_id)
 
 
                     $('#newModalRemoveCourse').submit(function(e) {
@@ -3310,7 +3335,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             console.log(data_json)
             $.ajax({
                 type: "POST",
-                url: "loadAdditionalInfo/additional_info_audit_course.php",
+                url: "loadAdditionalInfo/additional_info_course.php",
                 data: data_json,
                 success: function(response) {
                     row.child(response).show();

@@ -45,12 +45,13 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   $faculty_div = "";
   $i = 1;
   //$faculties_allocated_temp = "(";
-  $sql = "(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM course INNER JOIN course_similar_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year AND old_course_type_id=course_type_id)
-              UNION
-              (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM course_log INNER JOIN course_similar_map
-              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' AND new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year AND old_course_type_id=course_type_id)
-              ";
+  $sql = "(SELECT cname,oldcid,oldsem,old_course_type_id,new_course_type_id , name ,oldyear,newcid, newsem,newyear,new_course_type_id FROM course INNER JOIN course_similar_map INNER JOIN course_types as ct
+                ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
+                UNION
+               (SELECT cname,oldcid,oldsem,old_course_type_id,new_course_type_id , name ,oldyear,newcid, newsem,newyear,new_course_type_id FROM course_log INNER JOIN course_similar_map INNER JOIN course_types as ct
+                ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
+                ";
+
   $result = mysqli_query($conn, $sql);
   $similar_courses = "";
   if (mysqli_num_rows($result) == 0) {
@@ -65,6 +66,10 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
       $oldcid = $row['oldcid'];
       $newcid = $row['newcid'];
       $cname = $row['cname'];
+      $course_type = $row['name'];
+      $new_course_type_id = $row['new_course_type_id'];
+      $old_course_type_id = $row['old_course_type_id'];
+
       // $similar_courses.="<p><small>".$i.") ".$row['cname']." (Course ID: ".$row['oldcid']." , Sem: ".$row['oldsem']." , Year: ".$row['oldyear'].")</small></p>";
       // $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldyear="'.$row['oldyear'].'" data-oldcid="'.$row['oldcid'].'" data-oldsem="'.$row['oldsem'].'" data-newyear="'.$row['newyear'].'" data-newcid="'.$row['newcid'].'" data-newsem="'.$row['newsem'].'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$row['oldcid'].''.$row['oldsem'].''.$row['oldyear'].'"><i class="fas fa-trash"></i>
       //           </button>
@@ -74,11 +79,11 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
       //           <br>';
       //           $i = $i + 1;
 
-      $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldsem="' . $oldsem . '" data-newsem="' . $newsem . '" data-oldyear="' . $oldyear . '" data-newyear="' . $newyear . '" data-oldcid="' . $oldcid . '" data-newcid="' . $newcid . '" id="unallocate_faculty_btn' . $i . '" type="button" class="btn icon-btn" name="unallocate_faculty" value="' . $oldcid . '"><i class="fas fa-trash"></i>
+      $faculty_div .= '<button data-toggle="modal" data-target="#deleteSimilarCourseModal" data-oldsem="' . $oldsem . '" data-newsem="' . $newsem . '" data-oldyear="' . $oldyear . '" data-newyear="' . $newyear . '" data-oldcid="' . $oldcid . '" data-newcid="' . $newcid . '" data-newcourse_type_id="' . $new_course_type_id . '" data-oldcourse_type_id="' . $old_course_type_id . '" id="unallocate_faculty_btn' . $i . '" type="button" class="btn icon-btn" name="unallocate_faculty" value="' . $oldcid . '"><i class="fas fa-trash"></i>
                       </button>
                       <label for="sem"><b>Course ' . $i . ' : </b>
                       </label>
-                      <span>' . $row['cname'] . '</span><br><span style="margin-left: 44px;"><b>CID:</b> ' . $row['oldcid'] . ', <b>SEM:</b> ' . $row['oldsem'] . ', <b>YEAR:</b> ' . $row['oldyear'] . '</span>
+                      <span>' . $row['cname'] . '</span><br><span style="margin-left: 44px;"><b>CID:</b> ' . $row['oldcid'] . ', <b>SEM:</b> ' . $row['oldsem'] . ', <b>YEAR:</b> ' . $row['oldyear'] . ', <b>COURSE TYPE:</b> ' . $course_type . '</span>
                       <br>';
       $i = $i + 1;
     }
@@ -260,6 +265,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <input type="hidden" name="tempoldyear" value="' . $year . '"/>
                           <input type="hidden" name="tempoldsem" value="' . $sem . '"/>
                           <input type="hidden" name="tempoldcid" value="' . $cid . '"/>
+                          <input type="hidden" name="tempoldcourse_type_id" value="' . $course_type_id . '"/>
                             <h6><b>Similar Previous Courses</b></h6>
                                               <div class="faculty_div">' . $faculty_div . '</div>
                                               <hr class="my-4" />
@@ -305,7 +311,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <input type="hidden" name="cname" value="' . $cname . '"/>
                           <input type="hidden" name="program" value="' . $program . '">
                           <input type="hidden" name="course_type_id" value="' . $course_type_id . '">
-
+                          
                          <div class="form-group files color">                                                          
                               <input type="file" name="UploadSyllabusfile" class="form-control" required />
                           </div>
@@ -347,6 +353,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <input type="hidden" name="newyear" id="newyear" value=""/>
                           <input type="hidden" name="newsem" id="newsem" value=""/>
                           <input type="hidden" name="newcid" id="newcid" value=""/>
+                          <input type="hidden" name="new_course_type_id" id="new_course_type_id" value=""/>
+                           <input type="hidden" name="old_course_type_id" id="old_course_type_id" value=""/>
                       </div>
                       <div class="modal-footer">
                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
