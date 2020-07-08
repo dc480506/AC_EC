@@ -1,37 +1,39 @@
 <?php
-    // echo 'Hi';
+// echo 'Hi';
 session_start();
-if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
-    // echo 'Hi';
-    include_once('../../../config.php');
-    $data = json_decode(file_get_contents("php://input"),true); 
-    $cid=mysqli_escape_string($conn,$data['cid']);
-    $cname=mysqli_escape_string($conn,$data['cname']);
-    $sem=mysqli_escape_string($conn,$data['sem']);
-    $year=mysqli_escape_string($conn,$data['year']);
-    $faculty_div = "";
-    $faculties_allocated_temp = "(";
-    $i = 1;
-    $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_audit_log NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year'";
-    $result = mysqli_query($conn, $sql);
-    if(mysqli_num_rows($result) == 0) {
-        $faculty_div .= 'No Faculty Allocated';
-        $faculties_allocated_temp .= "'',";
-    }
-    while ($row = mysqli_fetch_assoc($result)) {
-      $faculties_allocated_temp .= "'". $row['email_id']. "',";
-      $email = $row['email_id'];
-      $faculty_div .= '<button data-toggle="modal" data-target="#deleteFacultyModal" data-email_id="'.$email.'" data-year="'.$year.'" data-cid="'.$cid.'" data-sem="'.$sem.'" id="unallocate_faculty_btn'.$i.'" type="button" class="btn icon-btn" name="unallocate_faculty" value="'.$email.'"><i class="fas fa-trash"></i>
+if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
+  // echo 'Hi';
+  include_once('../../../config.php');
+  $data = json_decode(file_get_contents("php://input"), true);
+  $cid = mysqli_escape_string($conn, $data['cid']);
+  $cname = mysqli_escape_string($conn, $data['cname']);
+  $sem = mysqli_escape_string($conn, $data['sem']);
+  $year = mysqli_escape_string($conn, $data['year']);
+  $program = mysqli_escape_string($conn, $data['program']);
+  $course_type_id = mysqli_escape_string($conn, $data['course_type_id']);
+  $faculty_div = "";
+  $faculties_allocated_temp = "(";
+  $i = 1;
+  $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_course_alloted NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND course_type_id='$course_type_id' AND currently_active='0'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) == 0) {
+    $faculty_div .= 'No Faculty Allocated';
+    $faculties_allocated_temp .= "'',";
+  }
+  while ($row = mysqli_fetch_assoc($result)) {
+    $faculties_allocated_temp .= "'" . $row['email_id'] . "',";
+    $email = $row['email_id'];
+    $faculty_div .= '<button data-toggle="modal" data-target="#deleteFacultyModal" data-email_id="' . $email . '" data-year="' . $year . '" data-cid="' . $cid . '" data-sem="' . $sem . '" id="unallocate_faculty_btn' . $i . '" type="button" class="btn icon-btn" name="unallocate_faculty" value="' . $email . '"><i class="fas fa-trash"></i>
                       </button>
                       <label for="sem"><b>Faculty ' . $i . ' : </b>
                       </label>
-                      <span> ' . $row['fname'] .' '.$row['mname'].' '.$row['lname']. ' ( ' . $row['faculty_code'] .' ) </span>
+                      <span> ' . $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'] . ' ( ' . $row['faculty_code'] . ' ) </span>
                       <br>';
-                      $i = $i + 1;
-    }
-    $faculties_allocated_temp=substr($faculties_allocated_temp,0,strlen($faculties_allocated_temp)-1);
-    $faculties_allocated_temp .= ")";
-    echo '
+    $i = $i + 1;
+  }
+  $faculties_allocated_temp = substr($faculties_allocated_temp, 0, strlen($faculties_allocated_temp) - 1);
+  $faculties_allocated_temp .= ")";
+  echo '
     <!--allocate Modal-->
     <div class="modal fade mymodal" id="allocate-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
@@ -55,20 +57,22 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                           <input type="hidden" name="cid" value="' . $cid . '">
                                           <input type="hidden" name="sem" value="' . $sem . '">
                                           <input type="hidden" name="year" value="' . $year . '">
+                                          <input type="hidden" name="program" value="' . $program . '">
+                                          <input type="hidden" name="course_type_id" value="' . $course_type_id . '">
                                           <div class="form-group">
                                               <label for="cname"><b>Course Name : </b>
                                               </label>
-                                              <span>'.$cname.'</span>
+                                              <span>' . $cname . '</span>
                                           </div>
                                           <div class="form-group">
                                               <label for="cid"><b>Course ID : </b>
                                               </label>
-                                              <span>'.$cid.'</span>
+                                              <span>' . $cid . '</span>
                                           </div>
                                           <div class="form-group">
                                               <label for="sem"><b>Semester : </b>
                                               </label>
-                                              <span>'.$sem.'</span>
+                                              <span>' . $sem . '</span>
                                           </div>
                                           <hr class="my-4" />
                                           <h6><b>Faculty Allocated</b></h6>
@@ -78,7 +82,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
 
                                           <div class="form-group">
                                             <input type="hidden" name="email_id" id="hiddenemailid" value="null"/>
-                                            <input type="hidden" name="temp_allocated_faculty" id="temp_allocated_faculty" value="'.$faculties_allocated_temp.'"/>
+                                            <input type="hidden" name="temp_allocated_faculty" id="temp_allocated_faculty" value="' . $faculties_allocated_temp . '"/>
                                             <div class="" style="margin-bottom: 10px"><button type="button" class="showtext btn btn-secondary">Choose Faculty <i class="fa fa-caret-down"></i></button></div>
                                             <div id="show" style="display:none" class="fade">
                                                 <input class="form-control" type="text" name="search_text" id="search_text" placeholder="Faculty Name"></input>
@@ -88,7 +92,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                           </div>
                                           <br>
                                           
-                                          <button type="submit" class="btn btn-primary" id="allocate_faculty_audit_btn" name="allocate_faculty_audit_log">Allocate</button>
+                                          <button type="submit" class="btn btn-primary" id="allocate_faculty_audit_btn" name="allocate_faculty_audit_upcoming">Allocate</button>
                                           <br>
                                       </form>
                                   </div>
@@ -120,16 +124,17 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                           <input type="hidden" name="year" id="year" value=""/>
                           <input type="hidden" name="sem" id="sem" value=""/>
                           <input type="hidden" name="cid" id="cid" value=""/>
+                          <input type="hidden" name="program" value="' . $program . '">
+                          <input type="hidden" name="course_type_id" value="' . $course_type_id . '">
                       </div>
                       <div class="modal-footer">
                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                          <button class="btn btn-primary" type="submit" id="faculty_unallocate_btn" name="faculty_unallocate_log">Delete</button>
+                          <button class="btn btn-primary" type="submit" id="faculty_unallocate_btn" name="faculty_unallocate_upcoming">Delete</button>
                       </div>
                   </form>
                 </div>
               </div>
             </div>
             <!--end Delete Faculty Modal-->';
-                                // echo 'Hi';
+  // echo 'Hi';
 }
-?>
