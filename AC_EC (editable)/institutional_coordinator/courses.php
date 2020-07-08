@@ -2676,6 +2676,8 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
+        formData.append("program", "<?php echo $_POST['program']; ?>")
+        formData.append("course_type_id", "<?php echo $course_type_id; ?>")
 
         $("#upload_previous").attr("disabled", true);
         $("#upload_previous").text("Uploading...")
