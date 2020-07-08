@@ -260,6 +260,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <input type="hidden" name="tempoldyear" value="' . $year . '"/>
                           <input type="hidden" name="tempoldsem" value="' . $sem . '"/>
                           <input type="hidden" name="tempoldcid" value="' . $cid . '"/>
+                          <input type="hidden" name="tempoldcourse_type_id" value="' . $course_type_id . '"/>
+
                             <h6><b>Similar Previous Courses</b></h6>
                                               <div class="faculty_div">' . $faculty_div . '</div>
                                               <hr class="my-4" />

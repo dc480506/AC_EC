@@ -396,20 +396,24 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     $oldsem = mysqli_escape_string($conn, $_POST['tempoldsem']);
     $newsem = mysqli_escape_string($conn, $_POST['tempsem']);
     $oldcid = mysqli_escape_string($conn, $_POST['tempoldcid']);
-    $newcid = mysqli_escape_string($conn, $_POST['tempcid']);
+    $old_course_type_id = mysqli_escape_string($conn, $_POST['tempoldcourse_type_id']);
+    $new_cid_and_type_id = explode('-', mysqli_escape_string($conn, $_POST['tempcid']), 2);
+    $newcid = $new_cid_and_type_id[0];
+    $new_course_type_id = $new_cid_and_type_id[1];
 
-    $sql = "INSERT INTO audit_map(`newcid`,`newsem`,`newyear`,`oldcid`,`oldsem`,`oldyear`) VALUES('$oldcid','$oldsem','$oldyear','$newcid','$newsem','$newyear')";
+
+    $sql = "INSERT INTO course_similar_map(`newcid`,`newsem`,`newyear`,`new_course_type_id`,`oldcid`,`oldsem`,`oldyear`,`old_course_type_id`) VALUES('$oldcid','$oldsem','$oldyear','$old_course_type_id','$newcid','$newsem','$newyear','$new_course_type_id')";
 
     mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
     $faculty_div = "";
     $i = 1;
     //$faculties_allocated_temp = "(";
-    $sql = "(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course INNER JOIN audit_map
-                ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+    $sql = "(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM course INNER JOIN course_similar_map
+                ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' and new_course_type_id='$new_course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id)
                 UNION
-                (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course_log INNER JOIN audit_map
-                ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+                (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM course_log INNER JOIN course_similar_map
+                ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' and new_course_type_id='$new_course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id)
                 ";
     $result = mysqli_query($conn, $sql);
 
@@ -452,20 +456,23 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     $oldsem = mysqli_escape_string($conn, $_POST['tempoldsem']);
     $newsem = mysqli_escape_string($conn, $_POST['tempsem']);
     $oldcid = mysqli_escape_string($conn, $_POST['tempoldcid']);
-    $newcid = mysqli_escape_string($conn, $_POST['tempcid']);
+    $old_course_type_id = mysqli_escape_string($conn, $_POST['tempoldcourse_type_id']);
+    $new_cid_and_type_id = explode('-', mysqli_escape_string($conn, $_POST['tempcid']), 2);
+    $newcid = $new_cid_and_type_id[0];
+    $new_course_type_id = $new_cid_and_type_id[1];
 
-    $sql = "INSERT INTO audit_map_log(`newcid`,`newsem`,`newyear`,`oldcid`,`oldsem`,`oldyear`) VALUES('$oldcid','$oldsem','$oldyear','$newcid','$newsem','$newyear')";
+    $sql = "INSERT INTO course_similar_map_log(`newcid`,`newsem`,`newyear`,`new_course_type_id`,`oldcid`,`oldsem`,`oldyear`,`old_course_type_id`) VALUES('$oldcid','$oldsem','$oldyear','$old_course_type_id','$newcid','$newsem','$newyear','$new_course_type_id')";
 
     mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
     $faculty_div = "";
     $i = 1;
     //$faculties_allocated_temp = "(";
-    $sql = "(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course INNER JOIN audit_map_log
-                ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+    $sql = "(SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM course INNER JOIN course_similar_map
+                ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' and new_course_type_id='$new_course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id)
                 UNION
-                (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM audit_course_log INNER JOIN audit_map_log
-                ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' AND oldcid=cid AND oldsem=sem AND oldyear=year)
+                (SELECT cname,oldcid,oldsem,oldyear,newcid, newsem,newyear FROM course_log INNER JOIN course_similar_map
+                ON newcid='$oldcid' AND newsem='$oldsem' AND newyear='$oldyear' and new_course_type_id='$new_course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id)
                 ";
     $result = mysqli_query($conn, $sql);
 

@@ -1716,11 +1716,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                         $("#tempcid option").not(":first").remove();
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "semester",
                                 courseType: "CURRENT",
-                                year: year
+                                year: year,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempsem option").not(":first").remove();
@@ -1739,11 +1740,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     if (year != "" && sem != "") {
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "courses",
                                 year: year,
-                                sem: sem
+                                sem: sem,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempcid option").not(":first").remove();
@@ -2383,11 +2385,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                         $("#tempcid option").not(":first").remove();
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "semester",
                                 courseType: "CURRENT",
-                                year: year
+                                year: year,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempsem option").not(":first").remove();
@@ -2406,11 +2409,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     if (year != "" && sem != "") {
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "courses",
                                 year: year,
-                                sem: sem
+                                sem: sem,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempcid option").not(":first").remove();
@@ -3046,11 +3050,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                         $("#tempcid option").not(":first").remove();
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "semester",
                                 courseType: "CURRENT",
-                                year: year
+                                year: year,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempsem option").not(":first").remove();
@@ -3069,11 +3074,12 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     if (year != "" && sem != "") {
                         $.ajax({
                             type: "POST",
-                            url: "course/loadModal/audit_modal_mapping_utils.php",
+                            url: "course/loadModal/course_modal_mapping_utils.php",
                             data: {
                                 dataFor: "courses",
                                 year: year,
-                                sem: sem
+                                sem: sem,
+                                program: "<?php echo $_POST['program']; ?>"
                             },
                             success: function(data) {
                                 $("#tempcid option").not(":first").remove();
