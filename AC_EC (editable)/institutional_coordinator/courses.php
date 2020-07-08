@@ -1512,14 +1512,16 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var target_row = $(this).closest("tr");
         // var btn=$(this);
         var aPos = $("#dataTable-current").dataTable().fnGetPosition(target_row.get(0));
-        var courseData = $('#dataTable-current').DataTable().row(aPos).data()
+        var courseData = $('#dataTable-current').DataTable().row(aPos).data();
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         // delete courseData.action
         // delete courseData.allocate_faculty
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "course/loadModal/current_audit_allocate_modal.php",
+            url: "course/loadModal/current_course_faculty_allocate_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -1557,7 +1559,6 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                                 $('#temp_allocated_faculty').val(z[0]);
                                 $('#hiddenemailid').val("null");
                                 $('.showtext').html("Choose Faculty ".concat(' <i class="fa fa-caret-down"></i>'));
-
                             }
                         });
                     }
@@ -2171,13 +2172,15 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         // var btn=$(this);
         var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(target_row.get(0));
         var courseData = $('#dataTable-upcoming').DataTable().row(aPos).data()
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         // delete courseData.action
         // delete courseData.allocate_faculty
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "course/loadModal/upcoming_audit_allocate_modal.php",
+            url: "course/loadModal/upcoming_course_faculty_allocate_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -2645,7 +2648,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             console.log(data_json)
             $.ajax({
                 type: "POST",
-                url: "loadAdditionalInfo/additional_info_audit_course.php",
+                url: "loadAdditionalInfo/additional_info_course.php",
                 data: data_json,
                 success: function(response) {
                     row.child(response).show();
@@ -2840,11 +2843,13 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var courseData = $('#dataTable-previous').DataTable().row(aPos).data()
         // delete courseData.action
         // delete courseData.allocate_faculty
+        courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "course/loadModal/previous_audit_allocate_modal.php",
+            url: "course/loadModal/previous_course_faculty_allocate_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -3310,7 +3315,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             console.log(data_json)
             $.ajax({
                 type: "POST",
-                url: "loadAdditionalInfo/additional_info_audit_course.php",
+                url: "loadAdditionalInfo/additional_info_course.php",
                 data: data_json,
                 success: function(response) {
                     row.child(response).show();
