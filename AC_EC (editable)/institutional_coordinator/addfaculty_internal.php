@@ -667,7 +667,10 @@ include('../includes/header.php');
             // Open this row
             var data = {}
             data['faculty_code'] = row.data()['faculty_code'];
-            data['type'] = 'faculty'
+            console.log(row.data());
+            data['type'] = 'faculty';
+            data['email_id']=row.data()['email_id'];
+            
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
