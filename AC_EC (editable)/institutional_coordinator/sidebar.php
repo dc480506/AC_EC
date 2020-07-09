@@ -90,21 +90,12 @@
     </div>
   </li>
 
+
   <hr class="sidebar-divider">
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages1" aria-expanded="true" aria-controls="collapseUtilities">
+    <a class="nav-link" href="prepare_form.php">
       <i class="fas fa-fw fa-wrench"></i>
-      <span>Prepare Form</span>
-    </a>
-    <div id="collapsePages1" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="prepare_form_ac.php">Audit Course</a>
-        <a class="collapse-item" href="prepare_form_idc.php">Interdisciplinary Course</a>
-        <a class="collapse-item" href="prepare_form_cec.php">Close Elective Course</a>
-        <a class="collapse-item" href="prepare_form_oec.php">Open Elective Course</a>
-
-      </div>
-    </div>
+      <span>Prepare Form</span></a>
   </li>
 
 
