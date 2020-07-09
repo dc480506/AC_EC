@@ -104,7 +104,7 @@ include('includes/header.php');
                                 <div class="container">
                                     <form method="post" method="POST" enctype="multipart/form-data" id="bulkUploadCurrent">
                                         <br>
-                                        <input type="hidden" name="type" value="audit">
+                                        <input type="hidden" name="form_id" value="<?php echo $_POST['form_id']; ?>">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="semester"><b>Semester</b></label>
@@ -424,7 +424,7 @@ include('includes/header.php');
         $("#upload_current").attr("disabled", true);
         $("#upload_current").text("Uploading...")
         $.ajax({
-            url: "bulkUpload/upload_response_queries_ac.php",
+            url: "bulkUpload/upload_response_queries.php",
             type: 'POST',
             data: formData,
             success: function(data) {
