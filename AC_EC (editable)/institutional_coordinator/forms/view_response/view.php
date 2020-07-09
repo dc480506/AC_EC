@@ -549,10 +549,6 @@ include('includes/header.php');
         alert("You have selected " + $("#dataTable-response tbody tr.selected").length + " record(s) for deletion");
         var delete_rows = $("#dataTable-response").DataTable().rows('.selected').data()
         var delete_data = {}
-        var yr1 = <?php echo mysqli_escape_string($conn, explode("-", $_POST['yearb'])[0]); ?>;
-        var yr2 = <?php echo mysqli_escape_string($conn, explode("-", $_POST['yearb'])[1]); ?>;
-        var y3 = yr1 + "-" + yr2;
-        var sem = <?php echo mysqli_escape_string($conn, $_POST['sem']); ?>;
         var form_id = <?php echo mysqli_escape_string($conn, $_POST['form_id']); ?>;
         var currently_active = <?php echo mysqli_escape_string($conn, $_POST['currently_active']); ?>;
         for (var i = 0; i < delete_rows.length; i++) {
@@ -562,12 +558,9 @@ include('includes/header.php');
             // console.log(baseData);
         }
         var actual_data = {}
-        actual_data['sem'] = sem
-        actual_data['year'] = y3
+
         actual_data['form_id'] = form_id;
-        actual_data['type'] = 'audit'
         actual_data['currently_active'] = currently_active
-        actual_data['no'] = '0'
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json)

@@ -2,11 +2,9 @@
 include_once('../../verify.php');
 include_once('../../../config.php');
 $data = json_decode(file_get_contents("php://input"), true);
-$sem = $data['sem'];
-$year = $data['year'];
-$course_type = $data['type'];
+
 $currently_active = $data['currently_active'];
-$no = $data['no'];
+
 $delete_data = $data['delete_data'];
 $del_condition = " (";
 $update_condition = " (";
