@@ -52,6 +52,11 @@ include('../includes/header.php');
                                         </select>
                                         <!-- <span id="add_upcoming_cid_error" class="text-danger"></span> -->
                                     </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" checked class="custom-control-input" id="is_gradable" name="is_gradable" value="">
+                                        <label class="custom-control-label" for="is_gradable">Is Gradable</label>
+                                    </div>
+                                    <br>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" id="close_add_new_course_form" data-dismiss="modal" name="close">Close</button>
                                         <button type="submit" id="add_new_course_btn" class="btn btn-primary" name="add_new_course_type">Add</button>
@@ -91,6 +96,10 @@ include('../includes/header.php');
                                         </select>
 
                                     </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" checked class="custom-control-input" id="is_gradable" name="is_gradable" value="">
+                                        <label class="custom-control-label" for="is_gradable">Is Gradable</label>
+                                    </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" id="close_edit_course_form" data-dismiss="modal" name="close">Close</button>
                                         <button type="submit" id="edit_course_btn" class="btn btn-primary" name="edit_course_type">Edit</button>
@@ -121,6 +130,7 @@ include('../includes/header.php');
                                 <th>id</th>
                                 <th>Course Type</th>
                                 <th>Program</th>
+                                <th>Graded</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -130,6 +140,7 @@ include('../includes/header.php');
                                 <th>id</th>
                                 <th>Course Type</th>
                                 <th>Program</th>
+                                <th>Graded</th>
                                 <th>Actions</th>
                             </tr>
                         </tfoot>
@@ -154,6 +165,11 @@ include('../includes/header.php');
         form.push({
             name: "add_new_course_type",
             value: "true"
+        });
+        var is_gradable = $("#add_new_course_type_form #is_gradable").attr("checked") ? 1 : 0;
+        form.push({
+            name: "is_gradable",
+            value: is_gradable
         });
         $.ajax({
             method: "POST",
@@ -210,6 +226,8 @@ include('../includes/header.php');
         $("#edit_course_type_form #courseTypeName").val(courseTypeData.name)
         $("#edit_course_type_form #courseTypeId").val(courseTypeData.course_type_id)
         $("#edit_course_type_form #program").val(courseTypeData.program);
+        $("#edit_course_type_form #is_gradable").attr("checked", courseTypeData.is_gradable == "yes" ? true : false)
+
         $("#edit_course_type_form").submit(editCourseType);
         $('#editCourseType').modal("show");
     }
@@ -220,6 +238,11 @@ include('../includes/header.php');
         form.push({
             name: "edit_course_type",
             value: "true"
+        });
+        var is_gradable = $("#edit_course_type_form #is_gradable").attr("checked") ? 1 : 0;
+        form.push({
+            name: "is_gradable",
+            value: is_gradable
         });
         $.ajax({
             method: "POST",
@@ -294,6 +317,9 @@ include('../includes/header.php');
                 },
                 {
                     data: 'program'
+                },
+                {
+                    data: 'is_gradable'
                 },
 
                 // {

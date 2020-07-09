@@ -6,7 +6,9 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
     if (isset($_POST['add_new_course_type'])) {
         $course_type_name = mysqli_escape_string($conn, $_POST['courseTypeName']);
         $program = mysqli_escape_string($conn, $_POST['program']);
-        $sql = "insert into course_types(name,program) values ('$course_type_name','$program')";
+        $program = mysqli_escape_string($conn, $_POST['program']);
+        $is_gradable = mysqli_escape_string($conn, $_POST['is_gradable']);
+        $sql = "insert into course_types(name,program,is_gradable) values ('$course_type_name','$program','$is_gradable')";
 
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
         echo "added";
@@ -55,6 +57,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
                 "course_type_id" => $row['id'],
                 "name" => $row['name'],
                 "program" => $row['program'],
+                "is_gradable" => $row['is_gradable'] == 0 ? "no" : "yes",
                 // "name" => $row['name'],
                 // "current_sem" => $row['current_sem'],
                 // "dept_name" => $row['dept_name'],
@@ -88,8 +91,9 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
     } else if (isset($_POST["edit_course_type"])) {
         $course_type_id = mysqli_escape_string($conn, $_POST['courseTypeId']);
         $course_type_name = mysqli_escape_string($conn, $_POST['courseTypeName']);
+        $is_gradable = mysqli_escape_string($conn, $_POST['is_gradable']);
         mysqli_escape_string($conn, $_POST['courseTypeId']);
-        $sql = "UPDATE course_types set name='$course_type_name' where id = '$course_type_id'";
+        $sql = "UPDATE course_types set name='$course_type_name',is_gradable='$is_gradable' where id = '$course_type_id'";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
         echo "edited";
     } else {
