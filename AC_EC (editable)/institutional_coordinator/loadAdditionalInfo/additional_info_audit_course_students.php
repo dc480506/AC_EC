@@ -20,12 +20,15 @@ include('includes/header.php');
     // echo $year.' ';
     // echo $active;
     if($active==0 || $active==1){
-        $query1 ="SELECT cname FROM audit_course where cid='$cid'";
+        $query1 ="SELECT cname FROM course where cid='$cid'";
     }
     else{
-        $query1 ="SELECT cname FROM audit_course_log where cid='$cid'";
+        $query1 ="SELECT cname FROM course_log where cid='$cid'";
     }
     $result1 = mysqli_query($conn, $query1);
+    if (!$result1) {
+        printf("Error: %s\n", mysqli_error($conn));
+    }
     $row=mysqli_fetch_array($result1);
 ?>
 
@@ -57,7 +60,7 @@ include('includes/header.php');
                 </style>
 
                 <div class="col-md-4 text-right">
-                    <a id="go-back" href="../audit_course.php" >  
+                    <a id="go-back" href="../courses_landing.php?program=UG" >  
                         <button  class="btn btn-danger btn-icon-split" style="width:120px">
                         <span class="icon text-white-50 pull-left">
                          <i class="fas fa-angle-double-left"></i>
@@ -96,7 +99,7 @@ include('includes/header.php');
                      if($active==0 OR $active==1){
                         // echo 'active/upcoming hhhhhhhhhhhhhhhhhhhhhhhhhhhh';
                         $query="select c.cname,stu.fname as fname,stu.lname as lname,stu.email_id as email_id,stu.rollno as rollno , stu_audit.student_attendance as student_attendance ,stu_audit.complete_status as complete_status from 
-                        audit_course as c inner join student_audit as stu_audit 
+                        course as c inner join student_audit as stu_audit 
                         on c.cid=stu_audit.cid inner join student as stu on stu.email_id=stu_audit.email_id 
                         where stu_audit.currently_active=$active AND c.cid='$cid' AND stu_audit.sem=$sem AND stu_audit.year='$year' ";
                                             $result = mysqli_query($conn, $query);
@@ -105,7 +108,7 @@ include('includes/header.php');
                     else{
                         // echo 'non active hhhhhhhhhhhhhhhhhhhhhhhhhhhh';
                         $query="select c.cname,stu.fname as fname,stu.lname as lname,stu.email_id as email_id,stu.rollno as rollno ,stu_audit.student_attendence as student_attendance ,stu_audit.complete_status as complete_status from 
-                        audit_course_log as c inner join student_audit_log as stu_audit
+                        course_log as c inner join student_audit_log as stu_audit
                         on c.cid=stu_audit.cid inner join student as stu on stu.email_id=stu_audit.email_id 
                         where c.cid='$cid' AND stu_audit.sem=$sem AND stu_audit.year='$year'";
                                             $result = mysqli_query($conn, $query);
