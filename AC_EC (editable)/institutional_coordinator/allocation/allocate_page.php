@@ -2,11 +2,22 @@
 include('../../config.php');
 include_once('../verify.php');
 // if(!isset($_SESSION['sem'])){
-    $_SESSION['sem']=$_POST['sem'];
-    $_SESSION['year']=$_POST['year'];
-    $_SESSION['type']=$_POST['type'];
-    $_SESSION['no']=$_POST['no'];
-    $_SESSION['no_of_preferences']=$_POST['no_of_preferences'];
+$form_id = $_POST['form_id'];
+$course_types_sql = "select * from form_course_category_map inner join course_types on course_type_id = id where form_id='$form_id'";
+$result = mysqli_query($conn, $course_types_sql);
+$form_course_type_ids = array();
+$form_course_types = array();
+while ($row = mysqli_fetch_assoc($result)) {
+    array_push($form_course_type_ids, $row['course_type_id']);
+    array_push($form_course_types, $row['name']);
+}
+
+$_SESSION['sem'] = $_POST['sem'];
+$_SESSION['year'] = $_POST['year'];
+$_SESSION['type'] = "temp";
+$_SESSION['form_id'] = $_POST['form_id'];
+$_SESSION['form_course_type_ids'] = $form_course_type_ids;
+$_SESSION['no_of_preferences'] = $_POST['no_of_preferences'];
 // }
 include('includes/header.php');
 ?>
@@ -29,22 +40,19 @@ include('includes/header.php');
             <div class="row align-items-center">
                 <div class="col">
                     <h5 class="font-weight-bold text-primary mb-0">
-                        <?php if($_SESSION['type']=='audit'){
-                           echo 'Audit Course Allocation : Semester '.$_SESSION['sem'].' and Academic Year '.$_SESSION['year'];
-                        }
+                        <?php
+                        echo implode(' , ', $form_course_types) . ' Allocation : Semester ' . $_SESSION['sem'] . ' and Academic Year ' . $_SESSION['year'];
                         ?>
                     </h5>
                 </div>
                 <div class="col text-right">
                     <a id="go-back" href="javascript: history.back()" style="display:none;">
-                        << Go back to Forms Page
-                    </a>
-                    <button id="cancel_allocation"  class="btn btn-danger btn-icon-split">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </span>
-                        <span class="text" id="cancel_text">Cancel Allocation</span>
-                    </button>
+                        << Go back to Forms Page </a> <button id="cancel_allocation" class="btn btn-danger btn-icon-split">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </span>
+                            <span class="text" id="cancel_text">Cancel Allocation</span>
+                            </button>
                 </div>
             </div>
         </div>
@@ -71,23 +79,24 @@ include('includes/header.php');
 include('includes/scripts.php');
 ?>
 <script>
-    function loadAllocationMethodTab(){
+    function loadAllocationMethodTab() {
         $.ajax({
-            type:"POST",
-            url:"loadTabs/load_allocation_method_tab.php",
-            success:function(html){
+            type: "POST",
+            url: "loadTabs/load_allocation_method_tab.php",
+            success: function(html) {
                 $("#nav-tabContent").html(html)
             }
         })
     }
-    function loadCourseSelectionTab(){
+
+    function loadCourseSelectionTab() {
         $.ajax({
-            type:"POST",
-            url:"loadTabs/load_course_selection_tab.php",
-            beforeSend:function(){
-            //Loader daalna hai baadme
+            type: "POST",
+            url: "loadTabs/load_course_selection_tab.php",
+            beforeSend: function() {
+                //Loader daalna hai baadme
             },
-            success:function(html){
+            success: function(html) {
                 $("#nav-course-tab").removeClass("disabled")
                 $("#nav-tabContent").html(html)
                 $("#nav-course-tab").addClass("active")
@@ -108,22 +117,22 @@ include('includes/scripts.php');
     //         }
     //     })
     // }
-    $(document).ready(function(){
+    $(document).ready(function() {
         loadAllocationMethodTab()
     })
-    $("#cancel_allocation").on('click',function(){
+    $("#cancel_allocation").on('click', function() {
         $("#cancel_text").text("Cancelling");
-        $("#cancel_allocation").attr('disabled',true);
+        $("#cancel_allocation").attr('disabled', true);
         $(".nav-item.nav-link").addClass("disabled");
         $(".nav-item.nav-link").removeClass("active");
         $("#nav-tabContent").empty();
         $.ajax({
-        type: 'POST',
-        url: 'unset_requirements.php',
-        success:function(){
-            $("#cancel_text").text("Cancellation Successful")
-            $("#go-back").show();
-        }
-    });
+            type: 'POST',
+            url: 'unset_requirements.php',
+            success: function() {
+                $("#cancel_text").text("Cancellation Successful")
+                $("#go-back").show();
+            }
+        });
     })
 </script>

@@ -24,6 +24,9 @@ while ($row = mysqli_fetch_assoc($result)) {
         </div>';
     $c++;
 }
+
+
+
 $tabs = '<a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
          <a class="nav-item nav-link" id="nav-update-tab" data-toggle="tab" href="#nav-update" role="tab" aria-controls="nav-update" aria-selected="false">Update</a>';
 $show_allocate = false;

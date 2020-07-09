@@ -48,7 +48,7 @@ $totalStudentCount=$res['totalStudentCount'];
 //        GROUP BY 'all') as app 
 //        from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 "
 //        .$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
-$sql="select cid,cname,max,min,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM ".$_SESSION['type']."_course_floating_dept afd 
+$sql="select cid,cname,max,min,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM course_floating_dept afd 
 INNER JOIN department d ON afd.dept_id=d.dept_id WHERE ac.cid=afd.cid AND ac.sem=afd.sem AND ac.year=afd.year
 GROUP BY 'all') as offering_dept,
 (select count(*) as firstprefCount from {$_SESSION['student_pref']} spa where ac.cid=spa.pref1) as firstcount,
@@ -96,5 +96,3 @@ $response = array(
 
 echo json_encode($response);
 // select cname,cid,sem,dept_name,max,min,no_of_allocated,(SELECT aad.dept_id as app FROM audit_course_applicable_dept aad WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year) from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1
-
-?>
