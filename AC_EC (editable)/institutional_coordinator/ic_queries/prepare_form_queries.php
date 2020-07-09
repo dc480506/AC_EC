@@ -92,6 +92,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
     } else if (isset($_POST['modifyForm'])) {
         $nop = mysqli_escape_string($conn, $_POST['nop']);
         $sem = mysqli_escape_string($conn, $_POST['sem']);
+        $form_id = mysqli_escape_string($conn, $_POST['form_id']);
+
         $curr_sem = intval($sem) - 1;
 
         $year = mysqli_escape_string($conn, $_POST['year']);
@@ -104,9 +106,9 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $dept_applicable = $_POST['dept_applicable'];
         $end_timestamp = $end_date . " " . $end_time;
         $sql = "UPDATE form SET no_of_preferences='$nop',start_timestamp='$start_timestamp',
-        end_timestamp='$end_timestamp' WHERE sem='$sem' AND year='$year' AND form_type='audit'";
+        end_timestamp='$end_timestamp' WHERE form_id='$form_id'";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
-        $current_depts_query = "select dept_id from form_applicable_dept where sem='$sem' and year='$year' and form_type='audit'";
+        $current_depts_query = "select dept_id from form_applicable_dept where form_id='$form_id'";
         $result = mysqli_query($conn, $current_depts_query);
         $old_depts = array();
         $deleted_depts = array();
@@ -124,18 +126,18 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             }
         }
         if (!empty($deleted_depts)) {
-            $deleteApplicableDepts = "delete from form_applicable_dept where sem = '$sem' and year = '$year' and form_type = 'audit' and  dept_id in  ('" . implode("','", $deleted_depts) . "');";
+            $deleteApplicableDepts = "delete from form_applicable_dept where form_id='$form_id' and  dept_id in  ('" . implode("','", $deleted_depts) . "');";
             mysqli_query($conn, $deleteApplicableDepts) or die(mysqli_error($conn) . $deleteApplicableDepts);
-            $deleteApplicablestudents = "delete from student_form where sem = '$sem' and year = '$year' and form_type = 'audit' and dept_id in  ('" . implode("','", $deleted_depts) . "');";
+            $deleteApplicablestudents = "delete from student_form where form_id='$form_id' and dept_id in  ('" . implode("','", $deleted_depts) . "');";
             mysqli_query($conn, $deleteApplicablestudents) or die(mysqli_error($conn) . $deleteApplicablestudents);
         }
         foreach ($added_depts as $dept_id) {
-            $applicabelDeptSql = "INSERT INTO form_applicable_dept(sem,year,no,form_type, dept_id) VALUES ('$sem','$year','0','audit','$dept_id');";
+            $applicabelDeptSql = "INSERT INTO form_applicable_dept(form_iddept_id) VALUES ('$form_id','$dept_id');";
             mysqli_query($conn, $applicabelDeptSql) or die(mysqli_error($conn) . $applicabelDeptSql);
         }
 
-        $newsql = "INSERT INTO student_form(`sem`,`year`,`no`,`form_type`,`email_id`,`dept_id`)
-         SELECT '$sem','$year','0', 'audit',email_id , dept_id FROM student WHERE current_sem='$curr_sem' and dept_id in  ('" . implode("','", $added_depts) . "');";
+        $newsql = "INSERT INTO student_form(`form_id`,`email_id`,`dept_id`)
+         SELECT '$form_id',email_id , dept_id FROM student WHERE current_sem='$curr_sem' and dept_id in  ('" . implode("','", $added_depts) . "');";
         mysqli_query($conn, $newsql) or die(mysqli_error($conn) . $newsql);
 
         echo "done";

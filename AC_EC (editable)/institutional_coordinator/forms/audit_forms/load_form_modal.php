@@ -76,7 +76,8 @@ echo '
                                             <label for="exampleInputSem"><b>Floating Semester</b></label>
                                             <input type="number" required class="form-control" disabled value="' . $sem . '">
                                             <input type="hidden" required class="form-control" name="sem" value="' . $sem . '">
-                                        </div>
+                                            <input type="hidden" required class="form-control" name="form_id" value="' . $form_id . '">
+                                            </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
