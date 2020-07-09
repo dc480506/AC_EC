@@ -842,13 +842,16 @@ include('includes/header.php');
             var yr1 = <?php echo mysqli_escape_string($conn, explode("-", $_POST['yearb'])[0]); ?>;
             var yr2 = <?php echo mysqli_escape_string($conn, explode("-", $_POST['yearb'])[1]); ?>;
             var y3 = yr1 + "-" + yr2;
+
             var sem = <?php echo mysqli_escape_string($conn, $_POST['sem']); ?>;
+            var form_id = <?php echo mysqli_escape_string($conn, $_POST['form_id']); ?>;
             var currently_active = <?php echo mysqli_escape_string($conn, $_POST['currently_active']); ?>;
             var data = {}
             data['email_id'] = row.data()['email_id'];
             data['type'] = 'audit'
             data['sem'] = sem
-            data['year'] = y3
+            data['year'] = y3;
+            data['form_id'] = form_id;
             data['currently_active'] = currently_active
             data['nop'] = <?php echo $pref; ?>;
             data_json = JSON.stringify(data)
