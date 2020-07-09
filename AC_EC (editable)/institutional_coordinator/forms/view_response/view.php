@@ -722,6 +722,7 @@ include('includes/header.php');
         // var btn=$(this);
         var yr1 = <?php echo mysqli_escape_string($conn, explode("-", $_POST['yearb'])[0]); ?>;
         var yr2 = <?php echo mysqli_escape_string($conn, explode("-", $_POST['yearb'])[1]); ?>;
+        var form_id = <?php echo mysqli_escape_string($conn, $_POST['form_id']); ?>;
         var y3 = yr1 + "-" + yr2;
         var sem = <?php echo mysqli_escape_string($conn, $_POST['sem']); ?>;
         var currently_active = <?php echo mysqli_escape_string($conn, $_POST['currently_active']); ?>;
@@ -732,12 +733,13 @@ include('includes/header.php');
         // delete courseData.allocate_faculty
         courseData['sem'] = sem;
         courseData['year'] = y3;
-        courseData['currently_active'] = currently_active
+        courseData['form_id'] = form_id;
+        courseData['currently_active'] = currently_active;
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
             type: "POST",
-            url: "loadModal/audit_response_modal.php",
+            url: "loadModal/response_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_courseData,
@@ -832,25 +834,17 @@ include('includes/header.php');
     $("#dataTable-response").on('click', 'td.view-pref-btn', function() {
         var tr = $(this).closest('tr');
         var row = $("#dataTable-response").DataTable().row(tr);
-
+        console.log('abcd');
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown table-warning');
         } else {
             // Open this row
-            var yr1 = <?php echo mysqli_escape_string($conn, explode("-", $_POST['yearb'])[0]); ?>;
-            var yr2 = <?php echo mysqli_escape_string($conn, explode("-", $_POST['yearb'])[1]); ?>;
-            var y3 = yr1 + "-" + yr2;
-
-            var sem = <?php echo mysqli_escape_string($conn, $_POST['sem']); ?>;
             var form_id = <?php echo mysqli_escape_string($conn, $_POST['form_id']); ?>;
             var currently_active = <?php echo mysqli_escape_string($conn, $_POST['currently_active']); ?>;
             var data = {}
             data['email_id'] = row.data()['email_id'];
-            data['type'] = 'audit'
-            data['sem'] = sem
-            data['year'] = y3;
             data['form_id'] = form_id;
             data['currently_active'] = currently_active
             data['nop'] = <?php echo $pref; ?>;

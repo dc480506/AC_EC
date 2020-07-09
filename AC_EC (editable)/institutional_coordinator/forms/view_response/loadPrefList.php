@@ -3,8 +3,7 @@ include_once('../../verify.php');
 include_once('../../../config.php');
 $data = json_decode(file_get_contents("php://input"), true);
 $email_id = $data['email_id'];
-$sem = $data['sem'];
-$year = $data['year'];
+
 $currently_active = $data['currently_active'];
 $nop = $data['nop'];
 $form_id = $data['form_id'];

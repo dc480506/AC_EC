@@ -6,6 +6,7 @@ $email_id = mysqli_escape_string($conn, $data['email_id']);
 $rollno = mysqli_escape_string($conn, $data['rollno']);
 $sem = mysqli_escape_string($conn, $data['sem']);
 $year = mysqli_escape_string($conn, $data['year']);
+$form_id = mysqli_escape_string($conn, $data['form_id']);
 $currently_active = mysqli_escape_string($conn, $data['currently_active']);
 $allocate_status = mysqli_escape_string($conn, $data['allocate_status']);
 $year_temp = mysqli_escape_string($conn, $data['year']);
@@ -43,6 +44,7 @@ echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="
                         <input type="hidden" name="currently_active" value="' . $currently_active . '">
                         <input type="hidden" name="type" value="audit">
                         <input type="hidden" name="no" value="0">
+                        <input type="hidden" name="form_id" value="' . $form_id . '">
                         <button type="submit" class="btn btn-primary" id="delete_response_btn" name="delete_response">Yes</button>
                         <button type="button" class="btn btn-secondary" name="no">No</button>
                     </div>
@@ -67,75 +69,74 @@ echo '<div class="modal fade mymodal" id="update-del-modal" tabindex="-1" role="
                         </div>                 
                     </div>'
 ?>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="semester"><b>Semester</b></label>
-            <?php
-            $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
-            $result = mysqli_query($conn, $sql);
-            $row = mysqli_fetch_assoc($result);
-            $sem_dropdown = "";
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label for="semester"><b>Semester</b></label>
+        <?php
+        $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $sem_dropdown = "";
 
-            for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
-                if ($sem == $sem_start) {
-                    $sem_dropdown .= "<option selected>" . $sem_start . "</option>";
-                } else {
-                    $sem_dropdown .= "<option>" . $sem_start . "</option>";
-                }
+        for ($sem_start = 1; $sem_start <= 8; $sem_start += 1) {
+            if ($sem == $sem_start) {
+                $sem_dropdown .= "<option selected>" . $sem_start . "</option>";
+            } else {
+                $sem_dropdown .= "<option>" . $sem_start . "</option>";
             }
-            echo '<select class="form-control" name="sem_new" id="sem_new">
+        }
+        echo '<select class="form-control" name="sem_new" id="sem_new">
                                 ' . $sem_dropdown . '
                             </select>';
-            echo '<input type="hidden" class="form-control" placeholder="Semester" name="sem_old" value="' . $sem . '">';
+        echo '<input type="hidden" class="form-control" placeholder="Semester" name="sem_old" value="' . $sem . '">';
 
-            ?>
-        </div>
-        <div class="form-group col-md-6">
-            <label for="year"><b>Year</b></label>
-            <select class="form-control" name="year_new" id="year_new">
-                <?php
-                $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
-                $result = mysqli_query($conn, $sql);
-                $row = mysqli_fetch_assoc($result);
-                $year1 = $row['academic_year'];
-                $year2 = $row['academic_year'];
-                // $selected = false;
-                // $temp3 = explode('-', $year_temp)[0];
-                // $temp4 = explode('-', $year1)[0];
-                // $temp5 = explode('-', $year2)[0];
-                echo "<option selected>" . $year_temp . "</option>";
-                for ($i = 0; $i < 2; $i++) {
-                    // if ($temp3 == $year2 || $temp3 == $year1) 
-                    // 
-                    if($year1 == $year_temp){
-                        continue;
-                        
-                    } else {
-                        $temp = explode('-', $year1)[0];
-                        $temp += 1;
-                        $temp2 = "" . ($temp + 1);
-                        $year1 = $temp . "-" . substr($temp2, 2);
-                        echo '<option>' . $year1 . '</option>';
-                    }
-                }
-                for ($i = 0; $i <4; $i++) {
-                    if ($year_temp == $year2) {
-                        continue;
-                    } else {
-                        echo '<option>' . $year2 . '</option>';
-                        $temp = explode('-', $year2)[0];
-                        $temp -= 1;
-                        $temp2 = "" . ($temp + 1);
-                        $year2 = $temp . "-" . substr($temp2, 2);
-                    }
-                }
-                echo '<input type="hidden" class="form-control" placeholder="Year" id ="year_old" name="year_old" value="' . $year . '">';
-                ?>
-        </div>
-        
+        ?>
     </div>
+    <div class="form-group col-md-6">
+        <label for="year"><b>Year</b></label>
+        <select class="form-control" name="year_new" id="year_new">
+            <?php
+            $sql = "SELECT academic_year FROM current_sem_info WHERE currently_active=1";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_assoc($result);
+            $year1 = $row['academic_year'];
+            $year2 = $row['academic_year'];
+            // $selected = false;
+            // $temp3 = explode('-', $year_temp)[0];
+            // $temp4 = explode('-', $year1)[0];
+            // $temp5 = explode('-', $year2)[0];
+            echo "<option selected>" . $year_temp . "</option>";
+            for ($i = 0; $i < 2; $i++) {
+                // if ($temp3 == $year2 || $temp3 == $year1) 
+                // 
+                if ($year1 == $year_temp) {
+                    continue;
+                } else {
+                    $temp = explode('-', $year1)[0];
+                    $temp += 1;
+                    $temp2 = "" . ($temp + 1);
+                    $year1 = $temp . "-" . substr($temp2, 2);
+                    echo '<option>' . $year1 . '</option>';
+                }
+            }
+            for ($i = 0; $i < 4; $i++) {
+                if ($year_temp == $year2) {
+                    continue;
+                } else {
+                    echo '<option>' . $year2 . '</option>';
+                    $temp = explode('-', $year2)[0];
+                    $temp -= 1;
+                    $temp2 = "" . ($temp + 1);
+                    $year2 = $temp . "-" . substr($temp2, 2);
+                }
+            }
+            echo '<input type="hidden" class="form-control" placeholder="Year" id ="year_old" name="year_old" value="' . $year . '">';
+            ?>
+    </div>
+
+</div>
 <?php
-    echo '
+echo '
                       <br>
                       <button type="submit" class="btn btn-primary" id="update_response_btn" name="update_response">Update</button>
                   </form>
