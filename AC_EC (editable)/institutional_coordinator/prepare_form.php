@@ -189,6 +189,7 @@ include('../includes/header.php');
                                     <label class="custom-control-label" for="select_all_current_page"></label>
                                 </div>
                             </th>
+                            <th>Form ID</th>
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
@@ -208,6 +209,7 @@ include('../includes/header.php');
                     <tfoot>
                         <tr>
                             <th></th>
+                            <th>Form ID</th>
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
@@ -267,12 +269,12 @@ include('../includes/header.php');
     $("#delete_selected_response_btn").click(function(e) {
         alert("You have selected " + $("#dataTable-form tbody tr.selected").length + " record(s) for deletion");
         var delete_rows = $("#dataTable-form").DataTable().rows('.selected').data()
-        console.log(delete_rows)
+
         var delete_data = {}
         for (var i = 0; i < delete_rows.length; i++) {
             baseData = {}
-            baseData['year'] = delete_rows[i].year
-            baseData['sem'] = delete_rows[i].sem
+
+            baseData['form_id'] = $(delete_rows[i].form_id).text();
             // baseData['no'] = delete_rows[i].no
             delete_data[i] = baseData
             // console.log(baseData);
@@ -281,7 +283,8 @@ include('../includes/header.php');
         actual_data['type'] = 'current'
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
-        console.log(actual_delete_data_json)
+        console.log(actual_data);
+        return;
         $.ajax({
             type: "POST",
             url: "ic_queries/multioperation_queries/delete_multiple_form_ac.php",
@@ -425,6 +428,9 @@ include('../includes/header.php');
                     data: 'select-cbox'
                 },
                 {
+                    data: 'form_id'
+                },
+                {
                     data: 'sem'
                 },
                 {
@@ -477,7 +483,12 @@ include('../includes/header.php');
                 },
                 {
                     className: "cname",
-                    "targets": [1]
+                    "targets": [2]
+                },
+                {
+                    className: "form_id",
+                    "targets": [1],
+                    visible: false,
                 },
                 // { className: "cid", "targets": [ 1 ] },
                 // { className: "sem", "targets": [ 2 ] },
@@ -498,6 +509,7 @@ include('../includes/header.php');
         var formData = $('#dataTable-form').DataTable().row(aPos).data()
         // console.log(formData)
         form_post_data = {}
+        form_post_data['form_id'] = formData.form_id.split(">")[1].split("</")[0].trim()
         form_post_data['sem'] = formData.sem.split(">")[1].split("</")[0].trim()
         form_post_data['year'] = formData.year.split(">")[1].split("</")[0].trim()
         form_post_data['curr_sem'] = formData.curr_sem.split(">")[1].split("</")[0].trim()
@@ -512,7 +524,7 @@ include('../includes/header.php');
         // console.log(json_form_post_data)
         $.ajax({
             type: "POST",
-            url: "forms/audit_forms/load_audit_form_modal.php",
+            url: "forms/audit_forms/load_form_modal.php",
             // data: form_serialize, 
             // dataType: "json",
             data: json_form_post_data,

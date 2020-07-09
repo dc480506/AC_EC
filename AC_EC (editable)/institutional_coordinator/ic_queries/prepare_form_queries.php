@@ -85,9 +85,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             die("present");
         }
     } else if (isset($_POST['deleteForm'])) {
-        $sem = mysqli_escape_string($conn, $_POST['sem']);
-        $year = mysqli_escape_string($conn, $_POST['year']);
-        $sql = "DELETE FROM form WHERE sem='$sem' AND year='$year' AND form_type= 'audit'";
+        $form_id = mysqli_escape_string($conn, $_POST['form_id']);
+        $sql = "DELETE FROM form WHERE form_id='$form_id'";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
         echo 'done';
     } else if (isset($_POST['modifyForm'])) {

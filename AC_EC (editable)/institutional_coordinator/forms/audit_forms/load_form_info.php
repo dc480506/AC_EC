@@ -36,7 +36,7 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
 ## Fetch records
-$sql = "SELECT sem,year,curr_sem,program,start_timestamp,end_timestamp,no_of_preferences,allocate_status , currently_active,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM form_applicable_dept afd 
+$sql = "SELECT form_id, sem,year,curr_sem,program,start_timestamp,end_timestamp,no_of_preferences,allocate_status , currently_active,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM form_applicable_dept afd 
          INNER JOIN department d2 ON afd.dept_id=d2.dept_id WHERE afd.form_id = f.form_id
          GROUP BY 'all') as dept_name,
          (SELECT GROUP_CONCAT(name SEPARATOR ', ') FROM form_course_category_map fccm 
@@ -94,6 +94,7 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
                         <input type="checkbox" class="custom-control-input selectrow_current" id="selectrow_current' . $count . '">
                         <label class="custom-control-label" for="selectrow_current' . $count . '"></label>
                      </div>',
+      "form_id" => '<span class=' . $color . '>' . $row['form_id'] . '</span>',
       "sem" => '<span class=' . $color . '>' . $row['sem'] . '</span>',
       "year" => '<span class=' . $color . '>' . $row['year'] . '</span>',
       "curr_sem" => '<span class=' . $color . '>' . $row['curr_sem'] . '</span>',
