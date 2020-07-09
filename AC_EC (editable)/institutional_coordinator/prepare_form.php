@@ -28,7 +28,7 @@ include('../includes/header.php');
     }
 </style>
 <!-- Begin Page Content -->
-<div class="container-fluid" id="form_section">
+<div class="container-fluid" id="form_sect  ion">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row align-items-center">
@@ -192,6 +192,8 @@ include('../includes/header.php');
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
+                            <th>Program</th>
+                            <th>Courses Type</th>
                             <th>Dept. Applicable</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
@@ -209,6 +211,8 @@ include('../includes/header.php');
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
+                            <th>Program</th>
+                            <th>Courses Type</th>
                             <th>Dept. Applicable</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
@@ -397,7 +401,7 @@ include('../includes/header.php');
             serverMethod: 'post',
             aaSorting: [],
             ajax: {
-                'url': 'forms/audit_forms/load_audit_form_info.php'
+                'url': 'forms/audit_forms/load_form_info.php'
             },
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModal)
@@ -428,6 +432,12 @@ include('../includes/header.php');
                 },
                 {
                     data: 'curr_sem'
+                },
+                {
+                    data: 'program'
+                },
+                {
+                    data: 'course_types'
                 },
                 {
                     data: 'departments'

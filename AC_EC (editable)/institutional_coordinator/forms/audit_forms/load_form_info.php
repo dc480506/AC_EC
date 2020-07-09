@@ -17,9 +17,9 @@ if (isset($_POST['order'])) {
 $searchValue = $_POST['search']['value']; // Search value
 
 ## Search 
-$searchQuery = " ";
+$searchQuery = "1";
 if ($searchValue != '') {
-   $searchQuery = " and (year like '%" . $searchValue . "%' or 
+   $searchQuery .= " and (year like '%" . $searchValue . "%' or 
    sem like '%" . $searchValue . "%' 
    ) ";
 }
@@ -31,15 +31,18 @@ $totalRecords = $records['totalcount'];
 
 ## Total number of record with filtering
 // $sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 ".$searchQuery);
-$sel = mysqli_query($conn, "select count(*) as totalcountfilters from form WHERE form_type='audit' " . $searchQuery);
+$sel = mysqli_query($conn, "select count(*) as totalcountfilters from form WHERE " . $searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
 ## Fetch records
-$sql = "SELECT sem,year,curr_sem,start_timestamp,end_timestamp,no_of_preferences,allocate_status , currently_active,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM form_applicable_dept afd 
-         INNER JOIN department d2 ON afd.dept_id=d2.dept_id WHERE afd.sem=f.sem AND afd.year=f.year AND afd.no=f.no AND afd.form_type=f.form_type
-         GROUP BY 'all') as dept_name
-       FROM form f WHERE form_type='audit' "
+$sql = "SELECT sem,year,curr_sem,program,start_timestamp,end_timestamp,no_of_preferences,allocate_status , currently_active,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM form_applicable_dept afd 
+         INNER JOIN department d2 ON afd.dept_id=d2.dept_id WHERE afd.form_id = f.form_id
+         GROUP BY 'all') as dept_name,
+         (SELECT GROUP_CONCAT(name SEPARATOR ', ') FROM form_course_category_map fccm 
+         INNER JOIN course_types ct ON fccm.course_type_id=ct.id WHERE fccm.form_id = f.form_id
+         GROUP BY 'all') as course_types
+       FROM form f WHERE "
    . $searchQuery . $orderQuery . " limit " . $row . "," . $rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
@@ -94,6 +97,8 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "sem" => '<span class=' . $color . '>' . $row['sem'] . '</span>',
       "year" => '<span class=' . $color . '>' . $row['year'] . '</span>',
       "curr_sem" => '<span class=' . $color . '>' . $row['curr_sem'] . '</span>',
+      "program" => '<span class=' . $color . '>' . $row['program'] . '</span>',
+      "course_types" => '<span class=' . $color . '>' . $row['course_types'] . '</span>',
       "departments" => '<span class=' . $color . '>' . $row['dept_name'] . '</span>',
       "start_date" => '<span class=' . $color . '>' . $start_date . '</span>',
       "start_time" => '<span class=' . $color . '>' . $start_time . '</span>',
