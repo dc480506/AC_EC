@@ -378,8 +378,12 @@ include('../includes/header.php');
                     $('#dataTable-form').DataTable().draw(false);
                     $("#create_form_btn").text("Created Successfully")
                 } else {
-                    window.alert(data);
-                    $("#create_form_btn").text("Creation Failed")
+                    if (data == 'present') {
+                        $("#create_form_btn").text('Form Exists')
+                    } else {
+                        window.alert(data);
+                        $("#create_form_btn").text("Creation Failed")
+                    }
                 }
                 $('#spinner').hide();
             }
