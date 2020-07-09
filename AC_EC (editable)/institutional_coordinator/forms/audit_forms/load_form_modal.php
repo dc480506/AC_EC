@@ -3,6 +3,7 @@ include_once('../../verify.php');
 include_once('../../../config.php');
 $data = json_decode(file_get_contents("php://input"), true);
 $sem = mysqli_escape_string($conn, $data['sem']);
+$form_id = mysqli_escape_string($conn, $data['form_id']);
 $year = mysqli_escape_string($conn, $data['year']);
 $curr_sem = mysqli_escape_string($conn, $data['curr_sem']);
 $start_date = date("Y-m-d", strtotime(mysqli_escape_string($conn, $data['start_date'])));
@@ -12,7 +13,7 @@ $end_time = mysqli_escape_string($conn, $data['end_time']);
 $no_of_preferences = mysqli_escape_string($conn, $data['no_of_preferences']);
 $form_status = mysqli_escape_string($conn, $data['form_status']);
 
-$applicabeDepartmentsSql = 'select dept_id,dept_name , (if((select count(*) from form_applicable_dept acd inner join department d on acd.dept_id = d.dept_id where acd.dept_id=outerDept.dept_id and acd.sem="' . $sem . '" and acd.year="' . $year . '" and form_type="audit") > 0,"checked","")) as is_applicable from department as outerDept';
+$applicabeDepartmentsSql = "select dept_id,dept_name , (if((select count(*) from form_applicable_dept acd inner join department d on acd.dept_id = d.dept_id where acd.dept_id=outerDept.dept_id and acd.form_id='$form_id' ) > 0,'checked','')) as is_applicable from department as outerDept";
 $result = mysqli_query($conn, $applicabeDepartmentsSql);
 $depts = "";
 $c = 1;
@@ -59,8 +60,7 @@ echo '
                                             <i><small><b>' . $year . '</b></small> ?</i>
                                     </label>
                                     <br>
-                                    <input type="hidden" name="sem" value="' . $sem . '">
-                                    <input type="hidden" name="year" value="' . $year . '">
+                                    <input type="hidden" name="form_id" value="' . $form_id . '">
                                     <button type="submit" class="btn btn-primary" name="deleteForm">Yes, Delete</button>
                                     <button type="button" class="btn btn-secondary" name="no">No</button>
                                 </div>
@@ -76,7 +76,8 @@ echo '
                                             <label for="exampleInputSem"><b>Floating Semester</b></label>
                                             <input type="number" required class="form-control" disabled value="' . $sem . '">
                                             <input type="hidden" required class="form-control" name="sem" value="' . $sem . '">
-                                        </div>
+                                            <input type="hidden" required class="form-control" name="form_id" value="' . $form_id . '">
+                                            </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
@@ -146,8 +147,8 @@ if ($show_allocate) {
                                     <br>
                                     <input type="hidden" name="sem" value="' . $sem . '">
                                     <input type="hidden" name="year" value="' . $year . '">
-                                    <input type="hidden" name="type" value="audit">
-                                    <input type="hidden" name="no" value="0">
+                                    <input type="hidden" name="form_id" value="' . $form_id . '">
+
                                     <input type="hidden" name="no_of_preferences" value="' . $no_of_preferences . '">
                                     <button type="submit" class="btn btn-primary" role="button" name="allocate">Yes, Allocate</button>
                                     <a class="btn btn-secondary" href="prepare_form_ac.php" role="button" name="no">No</a>
