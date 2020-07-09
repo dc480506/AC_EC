@@ -553,6 +553,7 @@ include('includes/header.php');
         var yr2 = <?php echo mysqli_escape_string($conn, explode("-", $_POST['yearb'])[1]); ?>;
         var y3 = yr1 + "-" + yr2;
         var sem = <?php echo mysqli_escape_string($conn, $_POST['sem']); ?>;
+        var form_id = <?php echo mysqli_escape_string($conn, $_POST['form_id']); ?>;
         var currently_active = <?php echo mysqli_escape_string($conn, $_POST['currently_active']); ?>;
         for (var i = 0; i < delete_rows.length; i++) {
             baseData = {}
@@ -563,6 +564,7 @@ include('includes/header.php');
         var actual_data = {}
         actual_data['sem'] = sem
         actual_data['year'] = y3
+        actual_data['form_id'] = form_id;
         actual_data['type'] = 'audit'
         actual_data['currently_active'] = currently_active
         actual_data['no'] = '0'
