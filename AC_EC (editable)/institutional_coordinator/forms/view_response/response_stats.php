@@ -1,20 +1,18 @@
 <?php
 include_once('../../verify.php');
 include_once('../../../config.php');
-$data = json_decode(file_get_contents("php://input"),true); 
+$data = json_decode(file_get_contents("php://input"), true);
 $table = "student_form";
-$sem=$data['sem'];
-$year=$data['year'];
-$type=$data['type'];
-$no=$data['no'];
+
+$form_id = $data['form_id'];
 if ($data['currently_active'] >= 2) {
     $table .= "_log";
 }
-$sql = "SELECT COUNT(*) as expected FROM $table WHERE sem='$sem' AND year='$year' AND form_type='$type' and no='$no'";
+$sql = "SELECT COUNT(*) as expected FROM $table WHERE form_id='$form_id'";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 $expectedResponses = $row['expected'];
-$sql = "SELECT COUNT(*) as collected FROM $table WHERE sem='$sem' AND year='$year' AND form_type='$type' and no='$no' and form_filled=1";
+$sql = "SELECT COUNT(*) as collected FROM $table  WHERE form_id='$form_id' and form_filled=1";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 $collected = $row['collected'];
@@ -38,4 +36,3 @@ echo '
         </div>
     </div>
     ';
-?>

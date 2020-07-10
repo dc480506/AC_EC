@@ -33,7 +33,7 @@ $totalRecordwithFilter = $records['totalcountfilters'];
 //$prefas=1/$totalStudentCount;
 ## Fetch records
 $sql="SELECT cname,cid,
-(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM ".$_SESSION['type']."_course_floating_dept afd 
+(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM course_floating_dept afd 
 INNER JOIN department d ON afd.dept_id=d.dept_id WHERE ct.cid=afd.cid AND ct.sem=afd.sem AND ct.year=afd.year
 GROUP BY 'all') as offering_dept,
   max,min,no_of_allocated FROM `{$_SESSION['course_table']}` ct WHERE 1 "
@@ -71,4 +71,3 @@ $response = array(
 
 echo json_encode($response);
 // select cname,cid,sem,dept_name,max,min,no_of_allocated,(SELECT aad.dept_id as app FROM audit_course_applicable_dept aad WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year) from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1
-?>

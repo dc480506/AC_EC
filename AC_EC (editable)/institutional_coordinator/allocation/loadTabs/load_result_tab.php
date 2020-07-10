@@ -1,27 +1,30 @@
-<?php 
+<?php
 include_once('../../verify.php');
 include_once('../../../config.php');
-$args='["'.$_SESSION['sem'].'","'.$_SESSION['year'].'","'.$_SESSION['student_pref'].'","'.$_SESSION['student_course_table'].'","'.$_SESSION['course_allocate_info'].'","'.$_SESSION['course_table'].'","'.$_SESSION['pref_percent_table'].'","'.$_SESSION['pref_student_alloted_table'].'","'.$_SESSION['course_app_dept_table'].'","'.$_SESSION['no_of_preferences'].'","'.$servername.'","'.$username.'","'.$password.'","'.$dbname.'"]';
-$cmd='python ../algorithms/'.$_SESSION['algorithm_chosen'].'.py '.$args;
+$args = '["' . $_SESSION['sem'] . '","' . $_SESSION['year'] . '","' . $_SESSION['student_pref'] . '","' . $_SESSION['student_course_table'] . '","' . $_SESSION['course_allocate_info'] . '","' . $_SESSION['course_table'] . '","' . $_SESSION['pref_percent_table'] . '","' . $_SESSION['pref_student_alloted_table'] . '","' . $_SESSION['course_app_dept_table'] . '","' . $_SESSION['no_of_preferences'] . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $_SESSION['program'] . '"]';
+$cmd = 'python ../algorithms/' . $_SESSION['algorithm_chosen'] . '.py ' . $args;
 // echo $cmd;
-$output=shell_exec($cmd." 2>&1");
-//  echo $output;
+$output = shell_exec($cmd . " 2>&1");
+
 ?>
 <style>
-    .accordion-toggle{
-        cursor:pointer;
+    .accordion-toggle {
+        cursor: pointer;
     }
-    .accordion-toggle:hover{
+
+    .accordion-toggle:hover {
         background-color: #ffcccc;
     }
-    .accordion-toggle.open{
+
+    .accordion-toggle.open {
         background-color: #ffcccc;
     }
-    #spinner_prev{
+
+    #spinner_prev {
         position: fixed;
         top: 50%;
-        left:50%;
-        transform: translate(-50%,-50%);
+        left: 50%;
+        transform: translate(-50%, -50%);
         border: 1px solid black;
         border-radius: 0.2em;
         padding: 1em;
@@ -31,11 +34,11 @@ $output=shell_exec($cmd." 2>&1");
 <br>
 <h5 class="font-weight-bold text-dark mb-0">
     Allocation Method: <?php
-     if($_SESSION['algorithm_chosen']=="fcfs")
-        echo "First Come First Serve";
-     else if($_SESSION['algorithm_chosen']=="previous_sem_marks")
-        echo "Previous Semester Marks";
-     ?>
+                        if ($_SESSION['algorithm_chosen'] == "fcfs")
+                            echo "First Come First Serve";
+                        else if ($_SESSION['algorithm_chosen'] == "previous_sem_marks")
+                            echo "Previous Semester Marks";
+                        ?>
 </h5>
 <div class="tab-pane fade show active" id="nav-final-allocate" role="tabpanel" aria-labelledby="nav-final-allocate-tab">
     <br>
@@ -56,40 +59,40 @@ $output=shell_exec($cmd." 2>&1");
 
             <div id="pref_percent_stats_div" class="collapse show" aria-labelledby="pref_percent_stats" data-parent="#final_allocation_accordion">
                 <div class="card-body">
-                    <?php 
-                        include_once('../../../config.php');
-                        $sql="SELECT COUNT(*) as total FROM {$_SESSION['student_pref']}";
-                        $result=mysqli_query($conn,$sql);
-                        $row=mysqli_fetch_assoc($result);
-                        $totalResponses=$row['total'];
-                        $sql="SELECT COUNT(*) as allocated FROM {$_SESSION['student_course_table']}";
-                        $result=mysqli_query($conn,$sql);
-                        $row=mysqli_fetch_assoc($result);
-                        $allocated=$row['allocated'];
-                        $unallocated=$totalResponses-$allocated;
-                        echo '
+                    <?php
+                    include_once('../../../config.php');
+                    $sql = "SELECT COUNT(*) as total FROM {$_SESSION['student_pref']}";
+                    $result = mysqli_query($conn, $sql);
+                    $row = mysqli_fetch_assoc($result);
+                    $totalResponses = $row['total'];
+                    $sql = "SELECT COUNT(*) as allocated FROM {$_SESSION['student_course_table']}";
+                    $result = mysqli_query($conn, $sql);
+                    $row = mysqli_fetch_assoc($result);
+                    $allocated = $row['allocated'];
+                    $unallocated = $totalResponses - $allocated;
+                    echo '
                         <div class="row align-items-center">
                             <div class="col text-left">
                                 <h6 class="font-weight-bold text-dark mb-0">
-                                    Total Responses Collected: '.$totalResponses.'
+                                    Total Responses Collected: ' . $totalResponses . '
                                 </h6>
                             </div>
                             <div class="col text-left">
                                 <h6 class="font-weight-bold text-success mb-0">
-                                    No. of Students Allocated: '.$allocated.' ('.round($allocated*100/$totalResponses,2).'%)
+                                    No. of Students Allocated: ' . $allocated . ' (' . round($allocated * 100 / $totalResponses, 2) . '%)
                                 </h6>
                             </div>
                             <div class="col text-left">
                                 <h6 class="font-weight-bold text-danger mb-0">
-                                    No. of Students Unallocated: '.$unallocated.' ('.round($unallocated*100/$totalResponses,2).'%)
+                                    No. of Students Unallocated: ' . $unallocated . ' (' . round($unallocated * 100 / $totalResponses, 2) . '%)
                                 </h6>
                             </div>
                         </div>
                         ';
                     ?>
                     <style>
-                        .text-success{
-                            color:#2ecc71!important;
+                        .text-success {
+                            color: #2ecc71 !important;
                         }
                     </style>
                     <??>
@@ -141,9 +144,9 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Full Name</th>
                                     <th>Student's Dept.</th>
                                     <?php
-                                        if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
-                                            echo '<th>GPA</th>';
-                                        }
+                                    if ($_SESSION['algorithm_chosen'] == 'previous_sem_marks') {
+                                        echo '<th>GPA</th>';
+                                    }
                                     ?>
                                     <th>Timestamp</th>
                                     <th>Allocate</th>
@@ -156,9 +159,9 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Full Name</th>
                                     <th>Student's Dept.</th>
                                     <?php
-                                        if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
-                                            echo '<th>GPA</th>';
-                                        }
+                                    if ($_SESSION['algorithm_chosen'] == 'previous_sem_marks') {
+                                        echo '<th>GPA</th>';
+                                    }
                                     ?>
                                     <th>Timestamp</th>
                                     <th>Allocate</th>
@@ -188,9 +191,9 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Full Name</th>
                                     <th>Student's Dept.</th>
                                     <?php
-                                        if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
-                                            echo '<th>GPA</th>';
-                                        }
+                                    if ($_SESSION['algorithm_chosen'] == 'previous_sem_marks') {
+                                        echo '<th>GPA</th>';
+                                    }
                                     ?>
                                     <th>Timestamp</th>
                                     <th>Pref No Allotted</th>
@@ -204,9 +207,9 @@ $output=shell_exec($cmd." 2>&1");
                                     <th>Full Name</th>
                                     <th>Student's Dept.</th>
                                     <?php
-                                        if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
-                                            echo '<th>GPA</th>';
-                                        }
+                                    if ($_SESSION['algorithm_chosen'] == 'previous_sem_marks') {
+                                        echo '<th>GPA</th>';
+                                    }
                                     ?>
                                     <th>Timestamp</th>
                                     <th>Pref No Allotted</th>
@@ -217,7 +220,7 @@ $output=shell_exec($cmd." 2>&1");
                     </div>
                 </div>
             </div>
-            
+
             <div class="card-header accordion-toggle" id="course">
                 <h2 class="mb-0">
                     <button class="btn btn-link collapsed accordion-div" type="button">
@@ -258,7 +261,7 @@ $output=shell_exec($cmd." 2>&1");
                                 </tr>
                             </tfoot>
                         </table>
-                    </div>   
+                    </div>
                 </div>
             </div>
         </div>
@@ -277,135 +280,140 @@ $output=shell_exec($cmd." 2>&1");
 </div>
 <script>
     // $("#spinner").show();
-    var unallocated_loaded=false;
-    var allocated_loaded=false;
-    $(".accordion-toggle").on("click",function(){
+    var unallocated_loaded = false;
+    var allocated_loaded = false;
+    $(".accordion-toggle").on("click", function() {
         console.log($(this).next());
         $(this).toggleClass("open");
         $(this).next().slideToggle(200);
         $(this).next().toggleClass('show');
     })
     $("#dataTable-pref-percent").DataTable({
-            processing: true,
-            serverSide: true,
-            destroy: true,
-            serverMethod: 'post',
-            searching: false,
-            aaSorting: [],
-            lengthChange:false,
-            info:false,
-            "bPaginate":false,
-            // pageLength:50,
-            ajax: {
-                'url': '../allocation/loadInfo/result_tab/pref_percent_stats.php'
+        processing: true,
+        serverSide: true,
+        destroy: true,
+        serverMethod: 'post',
+        searching: false,
+        aaSorting: [],
+        lengthChange: false,
+        info: false,
+        "bPaginate": false,
+        // pageLength:50,
+        ajax: {
+            'url': '../allocation/loadInfo/result_tab/pref_percent_stats.php'
+        },
+        columns: [{
+                data: 'pref_no'
             },
-            columns: [{
-                    data: 'pref_no'
-                },
-                {
-                    data: 'no_of_stu'
-                },
-                {
-                    data: 'percent'
-                },
-            ],
-        })
-    function loadChart(){
-        var unallocated=<?php echo $unallocated.";";?>
+            {
+                data: 'no_of_stu'
+            },
+            {
+                data: 'percent'
+            },
+        ],
+    })
+
+    function loadChart() {
+        var unallocated = <?php echo $unallocated . ";"; ?>
         $.ajax({
-            url:'../allocation/loadInfo/result_tab/loadChart.php',
-            type:'POST',
-            data:"unallocated="+unallocated,
-            success:function(response){
+            url: '../allocation/loadInfo/result_tab/loadChart.php',
+            type: 'POST',
+            data: "unallocated=" + unallocated,
+            success: function(response) {
                 $("#chart-spinner").hide();
                 $("#chart-canvas-div").html(response);
             }
         })
     }
     loadChart();
-    function loadUnallocated(){
-       if(!unallocated_loaded){
-           unallocated_loaded=true;
-           $("#dataTable-unallocated").DataTable({
-            processing: true,
-            serverSide: true,
-            destroy: true,
-            serverMethod: 'post',
-            aaSorting: [],
-            ajax: {
-                'url': '../allocation/loadInfo/result_tab/unallocated_students.php'
-            },
-            fnDrawCallback: function() {
-                // $(".action-btn").on('click', loadModalCurrent)
-                // $(".selectrow").attr("disabled", true);
-                // $("th").removeClass('selectbox');
-                // $(".selectbox").click(function(e) {
-                //     var row = $(this).closest('tr')
-                //     var checkbox = $(this).find('input');
-                //     console.log(checkbox);
-                //     checkbox.attr("checked", !checkbox.attr("checked"));
-                //     row.toggleClass('selected table-secondary')
-                //     if ($("#dataTable-course tbody tr.selected").length != $("#dataTable-course tbody tr").length) {
-                //         $("#select_all").prop("checked", true)
-                //         $("#select_all").prop("checked", false)
-                //     } else {
-                //         $("#select_all").prop("checked", false)
-                //         $("#select_all").prop("checked", true)
-                //     }
-                // })
-            },
-            columns: [{
-                    data: 'email_id'
+
+    function loadUnallocated() {
+        if (!unallocated_loaded) {
+            unallocated_loaded = true;
+            $("#dataTable-unallocated").DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                serverMethod: 'post',
+                aaSorting: [],
+                ajax: {
+                    'url': '../allocation/loadInfo/result_tab/unallocated_students.php'
                 },
-                {
-                    data: 'rollno'
+                fnDrawCallback: function() {
+                    // $(".action-btn").on('click', loadModalCurrent)
+                    // $(".selectrow").attr("disabled", true);
+                    // $("th").removeClass('selectbox');
+                    // $(".selectbox").click(function(e) {
+                    //     var row = $(this).closest('tr')
+                    //     var checkbox = $(this).find('input');
+                    //     console.log(checkbox);
+                    //     checkbox.attr("checked", !checkbox.attr("checked"));
+                    //     row.toggleClass('selected table-secondary')
+                    //     if ($("#dataTable-course tbody tr.selected").length != $("#dataTable-course tbody tr").length) {
+                    //         $("#select_all").prop("checked", true)
+                    //         $("#select_all").prop("checked", false)
+                    //     } else {
+                    //         $("#select_all").prop("checked", false)
+                    //         $("#select_all").prop("checked", true)
+                    //     }
+                    // })
                 },
-                {
-                    data: 'fullname'
-                },
-                {
-                    data: 'dept_name'
-                },
-                <?php
-                    if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
+                columns: [{
+                        data: 'email_id'
+                    },
+                    {
+                        data: 'rollno'
+                    },
+                    {
+                        data: 'fullname'
+                    },
+                    {
+                        data: 'dept_name'
+                    },
+                    <?php
+                    if ($_SESSION['algorithm_chosen'] == 'previous_sem_marks') {
                         echo "
                         {
                             data: 'gpa'
                         }";
                     }
-                ?>,
-                {
-                    data: 'timestamp'
-                },
-                {
-                    data: 'action'
-                },
-            ],
-            columnDefs: [{
-                orderable: false ,
-                targets:
-                <?php
-                    if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
-                    echo "
+                    ?>,
+                    {
+                        data: 'timestamp'
+                    },
+                    {
+                        data: 'action'
+                    },
+                ],
+                columnDefs: [{
+                        orderable: false,
+                        targets: <?php
+                                    if ($_SESSION['algorithm_chosen'] == 'previous_sem_marks') {
+                                        echo "
                       [3,6],
                     ";
-                    }else{
-                    echo "
+                                    } else {
+                                        echo "
                      [3,5],
                     ";
-                    }
-                ?>
-                    // set orderable false for selected columns
-                     // column index (start from 0)
-                },
-                { className: "email_id", "targets": [ 0 ] },
+                                    }
+                                    ?>
+                        // set orderable false for selected columns
+                        // column index (start from 0)
+                    },
+                    {
+                        className: "email_id",
+                        "targets": [0]
+                    },
 
-            ],
-           })
-       }
+                ],
+            })
+        }
     }
     loadUnallocated();
-    function loadAllocated(){
+
+    function loadAllocated() {
         $("#dataTable-allocated").DataTable({
             processing: true,
             serverSide: true,
@@ -428,12 +436,12 @@ $output=shell_exec($cmd." 2>&1");
                     data: 'dept_name'
                 },
                 <?php
-                    if($_SESSION['algorithm_chosen']=='previous_sem_marks'){
-                        echo "
+                if ($_SESSION['algorithm_chosen'] == 'previous_sem_marks') {
+                    echo "
                         {
                             data: 'gpa'
                         }";
-                    }
+                }
                 ?>,
                 {
                     data: 'timestamp'
@@ -449,13 +457,17 @@ $output=shell_exec($cmd." 2>&1");
                     targets: [], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
-                { className: "email_id", "targets": [ 0 ] },
+                {
+                    className: "email_id",
+                    "targets": [0]
+                },
 
             ],
-           })
+        })
     }
     loadAllocated();
-    function loadCourses(){
+
+    function loadCourses() {
         $("#dataTable-courses").DataTable({
             processing: true,
             serverSide: true,
@@ -465,36 +477,35 @@ $output=shell_exec($cmd." 2>&1");
             dom: '<"d-flex justify-content-between"fBl>tip',
             buttons: [{
                 extend: 'excel',
-                title: `<?php 
-                if($_SESSION['type']=='audit'){
-                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-Final-Allocation-Course-Stats";
-                }
-                ?>`,
+                title: `<?php
+                        if ($_SESSION['type'] == 'audit') {
+                            echo "Audit-Sem-" . $_SESSION['sem'] . "-" . $_SESSION['year'] . "-Final-Allocation-Course-Stats";
+                        }
+                        ?>`,
                 text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
                 className: "btn btn-outline-primary  ",
                 action: newExportAction,
                 exportOptions: {
-                    columns: [0,1, 2, 3, 4, 5]
+                    columns: [0, 1, 2, 3, 4, 5]
                 }
             }, {
                 extend: "pdfHtml5",
-                title: `<?php 
-                if($_SESSION['type']=='audit'){
-                    echo "Audit-Sem-".$_SESSION['sem']."-".$_SESSION['year']."-Final-Allocation-Course-Stats";
-                }
-                ?>`,
+                title: `<?php
+                        if ($_SESSION['type'] == 'audit') {
+                            echo "Audit-Sem-" . $_SESSION['sem'] . "-" . $_SESSION['year'] . "-Final-Allocation-Course-Stats";
+                        }
+                        ?>`,
                 text: '<span> <i class="fas fa-download "></i> PDF</span>',
                 className: "btn btn-outline-primary  mx-2",
                 action: newExportAction,
                 exportOptions: {
-                    columns: [0,1, 2, 3, 4, 5]
+                    columns: [0, 1, 2, 3, 4, 5]
                 },
             }],
             ajax: {
                 'url': '../allocation/loadInfo/result_tab/course_status.php'
             },
-            columns: [
-                {
+            columns: [{
                     data: 'cname'
                 },
                 {
@@ -513,100 +524,97 @@ $output=shell_exec($cmd." 2>&1");
                     data: 'no_of_allocated'
                 },
                 {
-                    data:'view_analysis'
+                    data: 'view_analysis'
                 }
             ],
             columnDefs: [{
                     targets: [6], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
-                { className: "view_analysis", "targets": [ 6 ] },
+                {
+                    className: "view_analysis",
+                    "targets": [6]
+                },
             ],
-           })
+        })
     }
     loadCourses();
 
     // Additional Info Section
-    $("#dataTable-allocated").on('click','td.email_id',function(){
-    var tr = $(this).closest('tr');
-        var row = $("#dataTable-allocated").DataTable().row( tr );
- 
+    $("#dataTable-allocated").on('click', 'td.email_id', function() {
+        var tr = $(this).closest('tr');
+        var row = $("#dataTable-allocated").DataTable().row(tr);
+
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown table-warning');
-        }
-        else {
+        } else {
             // Open this row
-            var data={}
-            data['email_id']=row.data()['email_id'].split(">")[1].split("<")[0];
-            data_json=JSON.stringify(data)
+            var data = {}
+            data['email_id'] = row.data()['email_id'].split(">")[1].split("<")[0];
+            data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
                 type: "POST",
                 url: "../allocation/loadInfo/result_tab/loadAdditionalInfo/additional_info_response.php",
-                data: data_json, 
-                success: function(response)
-                {
-                row.child(response).show();
-                tr.addClass('shown table-warning');
+                data: data_json,
+                success: function(response) {
+                    row.child(response).show();
+                    tr.addClass('shown table-warning');
                 }
             });
             // row.child("<b>Hello</b>").show();
         }
     })
-    $("#dataTable-unallocated").on('click','td.email_id',function(){
-    var tr = $(this).closest('tr');
-        var row = $("#dataTable-unallocated").DataTable().row( tr );
- 
+    $("#dataTable-unallocated").on('click', 'td.email_id', function() {
+        var tr = $(this).closest('tr');
+        var row = $("#dataTable-unallocated").DataTable().row(tr);
+
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown table-warning');
-        }
-        else {
+        } else {
             // Open this row
-            var data={}
-            data['email_id']=row.data()['email_id'].split(">")[1].split("<")[0];
-            data_json=JSON.stringify(data)
+            var data = {}
+            data['email_id'] = row.data()['email_id'].split(">")[1].split("<")[0];
+            data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
                 type: "POST",
                 url: "../allocation/loadInfo/result_tab/loadAdditionalInfo/additional_info_response.php",
-                data: data_json, 
-                success: function(response)
-                {
-                row.child(response).show();
-                tr.addClass('shown table-warning');
+                data: data_json,
+                success: function(response) {
+                    row.child(response).show();
+                    tr.addClass('shown table-warning');
                 }
             });
             // row.child("<b>Hello</b>").show();
         }
     })
 
-    $("#dataTable-courses").on('click','td.view_analysis',function(){
+    $("#dataTable-courses").on('click', 'td.view_analysis', function() {
         var tr = $(this).closest('tr');
-        var row = $("#dataTable-courses").DataTable().row( tr );
- 
+        var row = $("#dataTable-courses").DataTable().row(tr);
+
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown table-warning');
-        }
-        else {
+        } else {
             // Open this row
-            var data={}
-            data['cid']=row.data()['cid'].split(">")[1].split("<")[0];
-            data_json=JSON.stringify(data)
+            var data = {}
+            data['cid'] = row.data()['cid'].split(">")[1].split("<")[0];
+            data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
                 type: "POST",
                 url: "../allocation/loadInfo/result_tab/loadAdditionalInfo/additional_info_course.php",
-                data: data_json, 
-                success: function(response)
-                {
-                row.child(response).show();
-                tr.addClass('shown table-warning');
+                data: data_json,
+                success: function(response) {
+                    row.child(response).show();
+                    tr.addClass('shown table-warning');
                 }
             });
             // row.child("<b>Hello</b>").show();
@@ -627,32 +635,32 @@ $output=shell_exec($cmd." 2>&1");
 
     //     }
     // })
-    $("#complete_allocation").submit(function(e){
+    $("#complete_allocation").submit(function(e) {
         e.preventDefault();
     })
     // Previous Button Action
-    $("#prev_btn").on("click",function(){
+    $("#prev_btn").on("click", function() {
         $("#nav-final-allocate-tab").removeClass("active")
         $("#nav-final-allocate-tab").addClass("disabled")
         // $("body").css("opacity",'0.5')
-        data_serialize="prev_result_tab=1"
+        data_serialize = "prev_result_tab=1"
         $.ajax({
             // url:'../allocation/loadPreviousTabs/load_allocation_analysis_tab_previous.php',
-            url:'../allocation/loadTabs/load_allocation_analysis_tab.php',
-            data:data_serialize,
-            method:"POST",
-            success:function(html){
+            url: '../allocation/loadTabs/load_allocation_analysis_tab.php',
+            data: data_serialize,
+            method: "POST",
+            success: function(html) {
                 $("#spinner_prev").hide()
                 $("#nav-result-tab").removeClass("disabled")
                 $("#nav-tabContent").html(html)
                 $("#nav-result-tab").addClass("active")
             },
-            beforeSend:function(){
-            //Loader daalna hai baadme
-            $("#complete_allocation").css("opacity",0.3)
-            $('#spinner_prev').show();
-            $('#complete_btn').attr('disabled',true);
-            $('#prev_btn').attr('disabled',true);
+            beforeSend: function() {
+                //Loader daalna hai baadme
+                $("#complete_allocation").css("opacity", 0.3)
+                $('#spinner_prev').show();
+                $('#complete_btn').attr('disabled', true);
+                $('#prev_btn').attr('disabled', true);
             },
         })
     })

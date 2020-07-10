@@ -55,12 +55,13 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
    $action = '<button type="button" class="btn btn-primary icon-btn action-btn">
                 <i class="fas fa-tools"></i>
             </button>';
-   $view = '<form action="forms/view_response/audit_view.php" method="post">
+   $view = '<form action="forms/view_response/view.php" method="post">
    <input type="hidden" name="sem" value="' . $row['sem'] . '">
    <input type="hidden" name="yearb" value="' . $row['year'] . '">
+   <input type="hidden" name="form_id" value="' . $row['form_id'] . '">
    <input type="hidden" name="currently_active" value="' . $row['currently_active'] . '">
    <input type="hidden" name="no_of_preferences" value="' . $row['no_of_preferences'] . '">
-   <input type="hidden" name="type_of_form" value="audit">
+   <input type="hidden" name="type_of_form" value="' . $row['course_types'] . '">
    <button type="submit"  name="view_response_btn" class="btn btn-primary icon-btn view-btn">
             <i class="fas fa-eye"></i>
         </button></form>';
