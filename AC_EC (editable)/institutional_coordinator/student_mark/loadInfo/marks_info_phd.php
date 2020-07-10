@@ -46,7 +46,7 @@ $sel = mysqli_query($conn,"select count(*) as totalcount from student_marks wher
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
-$query="select count(*) as totalcountfilters from student_marks m INNER JOIN student s ON m.email_id=s.email_id INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='PHD' and ".$searchQuery . "&& (" . $filterQuery . ")";
+$query="select count(*) as totalcountfilters from student_marks m INNER JOIN student s ON m.email_id=s.email_id INNER JOIN department d ON s.dept_id=d.dept_id WHERE m.program='PHD' and ".$searchQuery . "&& (" . $filterQuery . ")";
 $sel = mysqli_query($conn,$query);
 // echo $query;
 $records = mysqli_fetch_assoc($sel);
@@ -54,7 +54,7 @@ $totalRecordwithFilter = $records['totalcountfilters'];
 
 ##Fetch Record
 $sql="select m.email_id,m.rollno,CONCAT(fname,' ',mname,' ',lname) as fullname,dept_name,sem,gpa,year
-from student_marks m INNER JOIN student s ON m.email_id=s.email_id INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='PHD' and "
+from student_marks m INNER JOIN student s ON m.email_id=s.email_id INNER JOIN department d ON s.dept_id=d.dept_id WHERE m.program='PHD' and "
        .$searchQuery . " && (" . $filterQuery . ")". $orderQuery ." limit ".$row.",".$rowperpage;
 $studentRecords = mysqli_query($conn, $sql);
 $data = array();
@@ -89,4 +89,3 @@ $response = array(
 );
 
 echo json_encode($response);
-?>
