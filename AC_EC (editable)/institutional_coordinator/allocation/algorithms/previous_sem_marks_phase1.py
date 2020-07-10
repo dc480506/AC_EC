@@ -69,7 +69,7 @@ for x in range(1, int(argument[mapper['no_of_preferences']])):
     preferences += "s.pref"+str(x)+","
 preferences += "s.pref"+str(argument[mapper['no_of_preferences']])
 student_preference_query = "SELECT s.email_id,s.rollno,s.timestamp,m.gpa,stud.dept_id,"+preferences+" FROM " + \
-    argument[mapper['student_pref_table']]+" as s inner join student_marks as m on s.email_id=m.email_id and m.sem=s.sem-2 inner join student as stud on stud.email_id=m.email_id WHERE s.sem='" + \
+    argument[mapper['student_pref_table']]+" as s inner join student_marks as m on s.email_id=m.email_id and m.sem=s.sem-2 inner join student as stud on stud.email_id=m.email_id WHERE m.program='"+argument[12]+"' and s.sem='" + \
     argument[mapper['sem']]+"' and s.year='" + \
     argument[mapper['year']]+"' order by gpa DESC, timestamp ASC"
 print(student_preference_query)

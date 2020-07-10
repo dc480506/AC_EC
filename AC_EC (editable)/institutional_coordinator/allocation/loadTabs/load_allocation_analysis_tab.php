@@ -11,7 +11,7 @@ if (isset($_POST['prev_result_tab'])) {
     mysqli_query($conn, "DELETE FROM `{$_SESSION['course_allocate_info']}` WHERE 1");
     mysqli_query($conn, "UPDATE `{$_SESSION['student_pref']}` SET allocate_status='0' WHERE 1");
 }
-$args = '["' . $_SESSION['sem'] . '","' . $_SESSION['year'] . '","' . $_SESSION['student_pref'] . '","' . $_SESSION['student_course_table'] . '","' . $_SESSION['course_allocate_info'] . '","' . $_SESSION['course_table'] . '","' . $_SESSION['course_app_dept_table'] . '","' . $_SESSION['no_of_preferences'] . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '"]';
+$args = '["' . $_SESSION['sem'] . '","' . $_SESSION['year'] . '","' . $_SESSION['student_pref'] . '","' . $_SESSION['student_course_table'] . '","' . $_SESSION['course_allocate_info'] . '","' . $_SESSION['course_table'] . '","' . $_SESSION['course_app_dept_table'] . '","' . $_SESSION['no_of_preferences'] . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $_SESSION['program'] . '"]';
 $cmd = 'python ../algorithms/' . $_SESSION['algorithm_chosen'] . '_phase1.py ' . $args;
 echo $cmd;
 $output = shell_exec($cmd . " 2>&1");

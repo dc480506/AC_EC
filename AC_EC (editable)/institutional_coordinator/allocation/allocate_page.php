@@ -3,6 +3,7 @@ include('../../config.php');
 include_once('../verify.php');
 // if(!isset($_SESSION['sem'])){
 $form_id = $_POST['form_id'];
+$program_query = "select program from form where form_id='$form_id'";
 $course_types_sql = "select * from form_course_category_map inner join course_types on course_type_id = id where form_id='$form_id'";
 $result = mysqli_query($conn, $course_types_sql);
 $form_course_type_ids = array();
@@ -11,11 +12,13 @@ while ($row = mysqli_fetch_assoc($result)) {
     array_push($form_course_type_ids, $row['course_type_id']);
     array_push($form_course_types, $row['name']);
 }
+$program = mysqli_fetch_assoc(mysqli_query($conn, $program_query))['program'];
 
 $_SESSION['sem'] = $_POST['sem'];
 $_SESSION['year'] = $_POST['year'];
 $_SESSION['type'] = "temp";
 $_SESSION['form_id'] = $_POST['form_id'];
+$_SESSION['program'] = $program;
 $_SESSION['form_course_type_ids'] = $form_course_type_ids;
 $_SESSION['no_of_preferences'] = $_POST['no_of_preferences'];
 // }
