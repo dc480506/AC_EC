@@ -458,7 +458,7 @@ include('../includes/header.php');
                 <!-- PG ends --> 
                 <!-- PHD -->
                 <div class="tab-pane fade " id="nav-Phd" role="tabpanel" aria-labelledby="nav-Phd-tab">
-                    <br>
+                    
                     <div class="card-header py-3">
                         <div class="row align-items-center">
                             <div class="col text-right" id="delete_selected_Phd_div">
@@ -509,6 +509,7 @@ include('../includes/header.php');
 <!-- /.container-fluid -->
 <script type="text/javascript">
     var activeTab = "Ug";
+    console.log(activeTab);
     $(document).ready(function() {
         loadUg();
         $('#uploadstudent').on('hidden.bs.modal', function(e) {
@@ -804,7 +805,7 @@ include('../includes/header.php');
                     $("#update_student_btn").attr("disabled", false);
                 } else {
                     $("#update_student_btn").text("Updated Successfully");
-                    var row = $("#update-del-modalUg").closest('tr');
+                    var row = $("#update-del-modal").closest('tr');
                     var aPos = $("#dataTable-studentUg").dataTable().fnGetPosition(row.get(0));
                     var temp = $("#dataTable-studentUg").DataTable().row(aPos).data();
                     // console.log(temp)
@@ -1085,7 +1086,7 @@ function update_student_pg(e) {
                 $("#update_student_btn").attr("disabled", false);
             } else {
                 $("#update_student_btn").text("Updated Successfully");
-                var row = $("#update-del-modalPg").closest('tr');
+                var row = $("#update-del-modal").closest('tr');
                 var aPos = $("#dataTable-studentPg").dataTable().fnGetPosition(row.get(0));
                 var temp = $("#dataTable-studentPg").DataTable().row(aPos).data();
                 // console.log(temp)
@@ -1365,7 +1366,7 @@ function update_student_phd(e) {
                 $("#update_student_btn").attr("disabled", false);
             } else {
                 $("#update_student_btn").text("Updated Successfully");
-                var row = $("#update-del-modalPhd").closest('tr');
+                var row = $("#update-del-modal").closest('tr');
                 var aPos = $("#dataTable-studentPhd").dataTable().fnGetPosition(row.get(0));
                 var temp = $("#dataTable-studentPhd").DataTable().row(aPos).data();
                 // console.log(temp)
@@ -1434,9 +1435,18 @@ $("#dataTable-studentPhd").on('click', 'td.email_id', function() {
         success: function(data) {
             if ($.trim(data) == "Successful") {
                 $("#upload_student").text("Uploaded Successfully")
-                // loadUg();
-                // loadPg();
-                loadPhd();
+                if(activeTab=="Ug")
+                {
+                    loadUg();
+                }
+                else if(activeTab=="Pg")
+                {
+                    loadPg();
+                }
+                else{
+                    loadPhd();
+                }
+                
             } else {
                 $("#upload_student").text("Upload Failed")
                 alert(data);
