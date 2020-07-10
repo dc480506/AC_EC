@@ -3,7 +3,7 @@ session_start();
 if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     include_once('../../../config.php');
     $data = json_decode(file_get_contents("php://input"),true); 
-    if($data['type']=='current'){
+    if($data['type']=='student'){
         $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
         $row=mysqli_fetch_assoc($result);
         $delete_data=$data['delete_data'];

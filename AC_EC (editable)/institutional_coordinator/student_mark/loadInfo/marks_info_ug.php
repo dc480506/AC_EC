@@ -14,27 +14,48 @@ if(isset($_POST['order'])){
    // $columnSortOrder='asc';
    $orderQuery=' order by year desc,sem,rollno asc ';
 }
+
+#filters
+$filterQuery = "1 ";
+if (isset($_POST['filters'])) {
+   $filters = $_POST['filters'];
+   if (isset($filters['start_year'])) {
+      $filterQuery .= "&& year_of_admission >= " . $filters['start_year'] . " ";
+   }
+   if (isset($filters['end_year'])) {
+      $filterQuery .= "&& year_of_admission <= " . $filters['end_year'] . " ";
+   }
+   if (isset($filters['semesters'])) {
+      $filterQuery .= "&& current_sem in(" . "'" . implode("', '", $filters['semesters']) . "'" . ")" . " ";
+   }
+   if (isset($filters['depts'])) {
+      $filterQuery .= "&& dept_name in(" . "'" . implode("', '", $filters['depts']) . "'" . ")";
+   }
+}
+
 $searchValue = $_POST['search']['value']; // Search value
 
 ## Search 
 $searchQuery = "1";
 if($searchValue != ''){
-   $searchQuery = "gpa like '%".$searchValue."%' or sem like '%".$searchValue."%' or m.rollno like '%".$searchValue."%' or m.email_id like '%".$searchValue."%' or year like '%".$searchValue."%'";
+   $searchQuery = "( gpa like '%".$searchValue. "%' or dept_name like '%" . $searchValue . "%' or sem like '%".$searchValue."%' or m.rollno like '%".$searchValue."%' or m.email_id like '%".$searchValue."%' or year like '%".$searchValue."%')";
 }
 
 ## Total number of records without filtering
-$sel = mysqli_query($conn,"select count(*) as totalcount from student_marks");
+$sel = mysqli_query($conn,"select count(*) as totalcount from student_marks where program='UG' ");
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
-$sel = mysqli_query($conn,"select count(*) as totalcountfilters from student_marks m INNER JOIN student s ON m.email_id=s.email_id WHERE ".$searchQuery);
+$query="select count(*) as totalcountfilters from student_marks m INNER JOIN student s ON m.email_id=s.email_id INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='UG' and ".$searchQuery . "&& (" . $filterQuery . ")";
+$sel = mysqli_query($conn,$query);
+// echo $query;
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
 ##Fetch Record
-$sql="select m.email_id,m.rollno,CONCAT(fname,' ',mname,' ',lname) as fullname,sem,gpa,year
-from student_marks m INNER JOIN student s ON m.email_id=s.email_id WHERE "
-       .$searchQuery. $orderQuery ." limit ".$row.",".$rowperpage;
+$sql="select m.email_id,m.rollno,CONCAT(fname,' ',mname,' ',lname) as fullname,dept_name,sem,gpa,year
+from student_marks m INNER JOIN student s ON m.email_id=s.email_id INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='UG' and "
+       .$searchQuery . " && (" . $filterQuery . ")". $orderQuery ." limit ".$row.",".$rowperpage;
 $studentRecords = mysqli_query($conn, $sql);
 $data = array();
 $count=0;
@@ -49,10 +70,11 @@ while ($row = mysqli_fetch_assoc($studentRecords)) {
       "email_id"=>$row['email_id'],
       "rollno"=>$row['rollno'],
       "fullname"=>$row['fullname'],
+      "dept_name"=> $row['dept_name'],
       "sem"=>$row['sem'],
       "year"=>$row['year'],
       "gpa"=>$row['gpa'],
-      "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn-marks">
+      "action"=>'<button type="button" class="btn btn-primary icon-btn action-btn">
                     <i class="fas fa-tools"></i>
                 </button>',
        );

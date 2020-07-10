@@ -10,6 +10,7 @@ mapper={
         "username":7,
         "password":8,
         "dbname":9,
+		"program":10
         }
 header=[]
 header_id={}
@@ -36,10 +37,12 @@ except Exception as e:
     sys.exit(0)
 if argument[mapper['insert_by']]=='rollno':
 	select_student="SELECT email_id,rollno FROM student WHERE rollno=%s;"
-	insert="""INSERT into student_marks(email_id,rollno,sem,year,gpa) VALUES (%s,%s,%s,%s,%s) on DUPLICATE KEY UPDATE gpa=%s,year=%s;"""
+	insert="""INSERT into student_marks(email_id,rollno,sem,year,gpa,program) VALUES (%s,%s,%s,%s,%s,'""" + \
+    argument[mapper['program']] + """') on DUPLICATE KEY UPDATE gpa=%s,year=%s;"""
 elif argument[mapper['insert_by']]=='email_id':
 	select_student="SELECT email_id,rollno FROM student WHERE email_id=%s;"
-	insert="""INSERT into student_marks(email_id,rollno,sem,year,gpa) VALUES (%s,%s,%s,%s,%s) on DUPLICATE KEY UPDATE gpa=%s,year=%s;"""
+	insert="""INSERT into student_marks(email_id,rollno,sem,year,gpa,program) VALUES (%s,%s,%s,%s,%s,'""" + \
+    argument[mapper['program']] + """') on DUPLICATE KEY UPDATE gpa=%s,year=%s;"""
 sem=argument[mapper['sem']]
 year=argument[mapper['year']]
 student_mapper={'email_id':0, 'rollno':1}
