@@ -428,19 +428,17 @@ if (mysqli_num_rows($result1) == 0) { ?>
 
 <script src="https://kit.fontawesome.com/57397afa58.js" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<<<<<<< HEAD <!-- ajax to update timer dynamically -->
+ <!-- ajax to update timer dynamically -->
     <script type="text/javascript">
         setInterval(() => {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", "timer.php", false);
             xmlhttp.send(null);
             document.getElementById("response").innerHTML = xmlhttp.responseText;
-        }, 1000); ===
-        === =
-
-        <
-        script type = "text/javascript" >
-            var m = new Date("<?php echo " " . date_format($endTime, "Y m d H:i:s") ?>");
+        }, 1000); 
+</script>
+        <script type="text/javascript">
+        var m = new Date("<?php echo " " . date_format($endTime, "Y m d H:i:s") ?>");
         console.log(m);
         // var countDownDate = new Date("June 28, 2020 13:59:00").getTime();
         var countDownDate = (m.getTime());
@@ -492,8 +490,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
         //        document.getElementById("response").innerHTML=xmlhttp.responseText;
         //    }, 1000);
 
-        >>>
-        >>> > e489cab50bdd364b7f926b74ba2079c3b0f8d171
+       
         var ar = [];
         $('#ResetForm').click(function() {
             // console.log("hiiiii0");
@@ -552,7 +549,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
 
         });
     </script>
-    <<<<<<< HEAD=======>>>>>>> e489cab50bdd364b7f926b74ba2079c3b0f8d171
+   
         <?php include('../includes/footer.php');
         include('../includes/scripts.php');
         ?>
