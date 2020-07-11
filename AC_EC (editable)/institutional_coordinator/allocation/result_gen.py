@@ -198,6 +198,8 @@ try:
         print(e)
         print(copy_student_alloted_query)
 
+    # shutil.make_archive(folder_path, 'zip', folder_path)
+
     print("done+"+folder_path)
 
 except Exception as e:

@@ -1,40 +1,8 @@
 <?php
 include_once('../verify.php');
 include_once('../../config.php');
-function createZip($zip, $dir)
-{
-    if (is_dir($dir)) {
+include_once('../utils/zipArchive.php');
 
-        if ($dh = opendir($dir)) {
-            while (($file = readdir($dh)) !== false) {
-
-                // If file
-                if (is_file($dir . $file)) {
-                    if ($file != '' && $file != '.' && $file != '..') {
-
-                        $zip->addFile($dir . $file);
-                    }
-                } else {
-                    // If directory
-                    if (is_dir($dir . $file)) {
-
-                        if ($file != '' && $file != '.' && $file != '..') {
-
-                            // Add empty directory
-                            $zip->addEmptyDir($dir . $file);
-
-                            $folder = $dir . $file . '/';
-
-                            // Read data of the folder
-                            createZip($zip, $folder);
-                        }
-                    }
-                }
-            }
-            closedir($dh);
-        }
-    }
-}
 
 // {"username":"IC","email":"IC@somaiya.edu","role":"inst_coor","cid":"2UST511","active":0,"type":"temp",
 //     "form_id":"9","program":"UG","form_course_type_ids":["3"],"algorithm_chosen":"previous_sem_marks","sem":"5",
@@ -50,36 +18,22 @@ $output = shell_exec($cmd . " 2>&1");
 echo $output;
 $filepath = explode("+", $output)[1];
 $filepath = substr($filepath, 0, strlen($filepath) - 1);
-$download_folder_name = substr($filepath, strlen($base_dir));
-$zip = new ZipArchive();
-$filename = $base_dir . $download_folder_name . ".zip";
-echo $filename;
-if ($zip->open($filename, ZipArchive::CREATE) !== TRUE) {
-    exit("cannot open <$filename>\n");
-}
-
-
-
-// Create zip
-createZip($zip, $filepath);
-
-$zip->close();
-
-
-// Create zip
+$zipPath = $filepath . ".zip";
+echo $filepath;
+new GoodZipArchive($filepath, $zipPath);
 
 
 header('Content-Description: File Transfer');
-header('Content-Type: application/octet-stream');
-header('Content-Disposition: attachment; filename="' . basename($filename) . '"');
-header('Content-Transfer-Encoding: binary');
-header('Expires: 0');
-header('Cache-Control: must-revalidate');
+header('Content-Type: application/zip');
+header('Content-Disposition: attachment; filename="' . basename($zipPath) . '"');
+
+
 header('Pragma: public');
-header('Content-Length: ' . filesize($filename));
-flush(); // Flush system output buffer
-readfile($filename);
-// die();
+header('Content-Length: ' . filesize($zipPath));
+ob_clean();
+ob_end_flush();
+readfile($zipPath);
+die();
 
 echo '<br><br><br>';
 
