@@ -40,6 +40,7 @@ include('../includes/header.php');
                     <a class="nav-item nav-link" id="nav-course-tab" data-toggle="tab" href="#nav-course" role="tab" aria-controls="nav-course" aria-selected="true">Course Selection</a>
                     <a class="nav-item nav-link" id="nav-result-tab" data-toggle="tab" href="#nav-result" role="tab" aria-controls="nav-result" aria-selected="false">Allocation Analysis</a>
                     <a class="nav-item nav-link" id="nav-final-allocate-tab" data-toggle="tab" href="#nav-final-allocate" role="tab" aria-controls="nav-final-allocate" aria-selected="false">Final Allocation</a>
+                    <a class="nav-item nav-link" id="nav-complete-tab" data-toggle="tab" href="#nav-complete" role="tab" aria-controls="nav-complete" aria-selected="false">Complete</a>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
@@ -236,7 +237,7 @@ include('../includes/header.php');
                         </table>
                         <br>
                         <div class="modal-footer">
-                            
+
                             <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
                             <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
                         </div>
@@ -405,12 +406,43 @@ include('../includes/header.php');
 
                     <br>
                     <div class="modal-footer">
-                        
+
                         <button type="submit" class="btn btn-secondary align-center" name="previous">Previous</button>
                         <button type="submit" class="btn btn-primary align-center" name="Complete">Complete</button>
                     </div>
                 </div>
                 <!--Update end-->
+                <div class="tab-pane fade " id="nav-complete" role="tabpanel" aria-labelledby="nav-complete-tab">
+                    <form action="">
+
+                        <div class="form-group">
+                            <br>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                <label class="custom-control-label" for="customSwitch1">First Come First Serve</label>
+                            </div>
+                            <br>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                                <label class="custom-control-label" for="customSwitch2">Previous Semester Marks</label>
+                            </div>
+                            <br>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                                <label class="custom-control-label" for="customSwitch3">Cumulative Semester Marks</label>
+                            </div>
+                            <br>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch4">
+                                <label class="custom-control-label" for="customSwitch4">Profile Based</label>
+                            </div>
+                            <br>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary align-center" name="allocate">Next</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
