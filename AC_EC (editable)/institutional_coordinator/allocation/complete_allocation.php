@@ -15,29 +15,25 @@ include_once('../utils/zipArchive.php');
 $args = '["' . $_SESSION['sem'] . '","' . $_SESSION['year'] . '","' . $_SESSION['student_pref'] . '","' . $_SESSION['student_course_table'] . '","' . $_SESSION['course_allocate_info'] . '","' . $_SESSION['course_table'] . '","' . $_SESSION['pref_percent_table'] . '","' . $_SESSION['pref_student_alloted_table'] . '","' . $_SESSION['course_app_dept_table'] . '","' . $_SESSION['no_of_preferences'] . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $_SESSION['program'] . '","' . $_SESSION['form_id'] . '","' . $base_dir . ' "]';
 $cmd = 'python ./result_gen.py ' . $args;
 $output = shell_exec($cmd . " 2>&1");
-echo $output;
+// echo $output;
 $filepath = explode("+", $output)[1];
 $filepath = substr($filepath, 0, strlen($filepath) - 1);
 $zipPath = $filepath . ".zip";
-echo $filepath;
+// echo $filepath;
 new GoodZipArchive($filepath, $zipPath);
-
-
-header('Content-Description: File Transfer');
-header('Content-Type: application/zip');
-header('Content-Disposition: attachment; filename="' . basename($zipPath) . '"');
-
-
-header('Pragma: public');
-header('Content-Length: ' . filesize($zipPath));
-ob_clean();
-ob_end_flush();
-readfile($zipPath);
-die();
-
-echo '<br><br><br>';
-
 // $unallocated_query = "SELECT * FROM {$_SESSION['student_pref']} WHERE email_id not in (select email_id from {$_SESSION['student_course_table']})";
 
+?>
 
-echo json_encode($_SESSION);
+<div class="tab-pane fade show active d-flex flex-column justify-content-center align-items-center py-5" id="nav-allocate-method" role="tabpanel" aria-labelledby="nav-allocate-method-tab">
+    <h2>The allocation process is complete.</h2>
+    <h6>Click Download to get the allocation reports</h6>
+
+    <a href="download_reports.php?path=<?php echo urlencode(substr($zipPath, strlen($base_dir))); ?>" class=" btn btn-primary align-center" style="background-color: #28a745;border-color:#28a745">Download Reports</a>
+
+    <a disabled href="../../" class="btn btn-link text-primary"><u>Go back to portal</u></a>
+
+</div>
+<script>
+    $("#cancel_allocation").hide();
+</script>

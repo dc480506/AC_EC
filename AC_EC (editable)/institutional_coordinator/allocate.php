@@ -45,7 +45,7 @@ include('../includes/header.php');
             </nav>
             <div class="tab-content" id="nav-tabContent">
                 <!--Allocation method-->
-                <div class="tab-pane fade show active" id="nav-allocate-method" role="tabpanel" aria-labelledby="nav-allocate-method-tab">
+                <div class="tab-pane fade show active" style="border: 1px solid black;" id="nav-allocate-method" role="tabpanel" aria-labelledby="nav-allocate-method-tab">
                     <form action="">
 
                         <div class="form-group">

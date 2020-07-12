@@ -29,13 +29,13 @@ include('includes/header.php');
 <?php include('includes/topbar1.php'); ?>
 
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container-fluid w-100 px-1 flex-grow-1">
     <div class="card shadow mb-4">
         <style type="text/css">
             .card {
-                position: absolute;
+                /* position: absolute;
                 top: 80px;
-                left: 0px;
+                left: 0px; */
                 width: 100%;
             }
         </style>
@@ -59,7 +59,7 @@ include('includes/header.php');
                 </div>
             </div>
         </div>
-        <div class="modal-body" id="allocation-tabs">
+        <div class="modal-body h-100" id="allocation-tabs">
             <nav>
                 <div class="nav nav-tabs" id="allocation" role="tablist">
                     <a class="nav-item nav-link active" id="nav-allocate-method-tab" data-toggle="tab" href="#nav-allocate-method" role="tab" aria-controls="nav-allocate-method" aria-selected="true">Allocation Method</a>
