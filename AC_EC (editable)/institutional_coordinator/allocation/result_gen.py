@@ -202,9 +202,6 @@ try:
         print(e)
         print(copy_student_alloted_query)
 
-    copy_student_alloted_to_grade_table = "insert into student_courses_grade(email_id,cid,sem,year,course_type_id) SELECT email_id,cid,sem,year, (select course_type_id from course where cid=sc.cid and sem=sc.sem and year=sc.year) as course_type_id FROM " + \
-        argument[mapper['student_course_table']]+" as sc"
-
     # shutil.make_archive(folder_path, 'zip', folder_path)
 
     print("done+"+folder_path)
