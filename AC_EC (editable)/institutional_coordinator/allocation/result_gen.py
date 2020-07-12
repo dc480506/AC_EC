@@ -187,7 +187,7 @@ try:
             mycursor.execute(update_course_query.format(
                 int(x[3]), x[4], x[0], x[1], x[2]))
         except Exception as e:
-            print(e)
+            print("error+", e)
             sys.exit(0)
 
     copy_student_alloted_query = "insert into student_course_alloted (email_id,cid,sem,year,course_type_id) SELECT email_id,cid,sem,year, (select course_type_id from course where cid=sc.cid and sem=sc.sem and year=sc.year) as course_type_id FROM " + \
@@ -199,14 +199,17 @@ try:
         mycursor.execute(copy_student_alloted_query)
         mycursor.execute(copy_student_alloted_to_grade_table)
     except Exception as e:
-        print(e)
-
+        print("error+", e)
+        mycursor.close()
+        sys.exit(0)
     # shutil.make_archive(folder_path, 'zip', folder_path)
 
     print("done+"+folder_path)
 
 except Exception as e:
-    print(e)
+    print("error+", e)
+    mycursor.close()
+    sys.exit(0)
 
 finally:
     mydb.commit()

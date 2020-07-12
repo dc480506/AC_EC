@@ -25,7 +25,7 @@ if ($searchValue != '') {
 }
 
 ## Total number of records without filtering
-$sel = mysqli_query($conn, "select count(*) as totalcount from form WHERE form_type='audit'");
+$sel = mysqli_query($conn, "select count(*) as totalcount from form ");
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
