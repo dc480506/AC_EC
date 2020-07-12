@@ -37,3 +37,14 @@ new GoodZipArchive($filepath, $zipPath);
 <script>
     $("#cancel_allocation").hide();
 </script>
+<?php
+if (isset($_SESSION['course_table'])) {
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['course_table']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['course_app_dept_table']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['student_course_table']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['student_pref']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['course_allocate_info']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['pref_percent_table']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['pref_student_alloted_table']) . "`";
+}
+?>
