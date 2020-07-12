@@ -626,21 +626,9 @@ $output = shell_exec($cmd . " 2>&1");
             // row.child("<b>Hello</b>").show();
         }
     })
-    // $("#show_all_course_analysis").on('change',function(){
-    //     var rows=$("#dataTable-courses tbody tr")
-    //     console.log(rows)
-    //     if($(this).is(':checked')){
-
-    //     }else{
-    //     try{
-    //         $("#dataTable-courses tbody tr").child.hide()
-    //     }catch(err){
-
-    //     }
-    //         $("#dataTable-courses tbody tr").removeClass('shown table-warning')
-
-    //     }
-    // })
+    $("#show_all_course_analysis").on('change', function() {
+        $('.view_analysis').trigger('click');
+    })
     $("#complete_allocation").submit(function(e) {
         e.preventDefault();
         $("#nav-final-allocate-tab").removeClass("active")
