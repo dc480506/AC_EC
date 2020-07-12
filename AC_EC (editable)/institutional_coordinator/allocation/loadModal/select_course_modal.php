@@ -1,33 +1,33 @@
 <?php
 session_start();
-if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
+if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
     // echo 'Hi';
     include_once('../../../config.php');
-    $data = json_decode(file_get_contents("php://input"),true); 
-    $cid=mysqli_escape_string($conn,$data['cid']);
-    $cname=mysqli_escape_string($conn,$data['cname']);
-    $result = mysqli_query($conn,"select max,min from {$_SESSION['course_table']} WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}' and cid='{$cid}'");
-    $row=mysqli_fetch_assoc($result);
-    $max=$row['max'];
-    $min=$row['min'];
-    $result=mysqli_query($conn,"(SELECT GROUP_CONCAT(dept_id SEPARATOR ', ') as dept
+    $data = json_decode(file_get_contents("php://input"), true);
+    $cid = mysqli_escape_string($conn, $data['cid']);
+    $cname = mysqli_escape_string($conn, $data['cname']);
+    $result = mysqli_query($conn, "select max,min from {$_SESSION['course_table']} WHERE sem='{$_SESSION['sem']}' and year='{$_SESSION['year']}' and cid='{$cid}'");
+    $row = mysqli_fetch_assoc($result);
+    $max = $row['max'];
+    $min = $row['min'];
+    $result = mysqli_query($conn, "(SELECT GROUP_CONCAT(dept_id SEPARATOR ', ') as dept
                         FROM `{$_SESSION['course_app_dept_table']}` 
                         WHERE cid='{$cid}' AND sem='{$_SESSION['sem']}' AND year='{$_SESSION['year']}'
                         GROUP BY 'all')");
-    $str_arr=explode(", ",mysqli_fetch_assoc($result)['dept']);
-    $checkbox_div='';
+    $str_arr = explode(", ", mysqli_fetch_assoc($result)['dept']);
+    $checkbox_div = '';
 
-    $sql3 = "SELECT * FROM department WHERE dept_id NOT IN (".$exclude_dept.")";
+    $sql3 = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
     $dept_list = array();
     $result3 = mysqli_query($conn, $sql3);
     while ($row = mysqli_fetch_assoc($result3)) {
-      array_push($dept_list, $row['dept_id'], $row['dept_name']);
+        array_push($dept_list, $row['dept_id'], $row['dept_name']);
     }
     for ($i = 1; $i < count($dept_list); $i = $i + 2) {
         $checkbox_div .= '
-        <div class="custom-control custom-checkbox custom-control-inline">
+        <div style="display:none;" class="custom-control custom-checkbox custom-control-inline">
             <input type="checkbox" class="custom-control-input" id="applicableDeptCheck' . $i . '" name="check_dept[]" value="' . $dept_list[$i - 1] . '"';
-        if (in_array($dept_list[$i-1], $str_arr)) {
+        if (in_array($dept_list[$i - 1], $str_arr)) {
             $checkbox_div .= " checked";
         }
         $checkbox_div .= '>
@@ -62,9 +62,9 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                 <form id="delete_course">
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1"><i class="text-danger">*This will delete all the information related to the students</i>
-                                            <br>Are you sure you want to delete the course with <br> name <i><small><b>'.$cname.'</b></small></i>
-                                            ,Course ID <i><small><b>'.$cid.'</small></b></i> ,semester <i><small><b>'.$_SESSION["sem"].'</b></small></i>
-                                            And year <i><small><b>'.$_SESSION["year"].'</b></small></i>?
+                                            <br>Are you sure you want to delete the course with <br> name <i><small><b>' . $cname . '</b></small></i>
+                                            ,Course ID <i><small><b>' . $cid . '</small></b></i> ,semester <i><small><b>' . $_SESSION["sem"] . '</b></small></i>
+                                            And year <i><small><b>' . $_SESSION["year"] . '</b></small></i>?
                                         </label>
                                         <br>
                                         <input type="hidden" name="cid" value="' . $cid . '">
@@ -81,12 +81,12 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                         <div class="form-group col-md-12">
                                         <label for="cname"><b>Course Name</b></label>
                                             <input type="text" class="form-control" required="required" placeholder="Course Name" name="cname" value="' . $cname . '" disabled>
-                                            <input type="hidden" class="form-control"  name="cname" value="' . $cname. '">
+                                            <input type="hidden" class="form-control"  name="cname" value="' . $cname . '">
                                         </div>
                                         <div class="form-group col-md-12">
                                         <label for="cid"><b>Course ID</b></label>
                                             <input type="text" class="form-control" required="required" placeholder="Course Id" name="cid" value="' . $cid . '" disabled>
-                                            <input type="hidden" class="form-control"  name="cid" value="' . $cid. '">
+                                            <input type="hidden" class="form-control"  name="cid" value="' . $cid . '">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="min"><b>Minimum Limit</b></label> 
@@ -97,7 +97,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                             <input type="number" class="form-control"  placeholder="Maximum Strength" name="max_new" value="' . $max . '">
                                         </div>
                                     </div>
-                                    <label for="branch"><b>Applicable Departments</b></label>
+                                    <label style="display:none;" for="branch"><b>Applicable Departments</b></label>
                                     <br>
                                     ' . $checkbox_div . '
                                     <br>
@@ -116,8 +116,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                     </div>
                 </div>
             </div>';
-            // $name=$fname.' '.$mname.' '.$lname;
+    // $name=$fname.' '.$mname.' '.$lname;
 
-                                // echo 'Hi';
+    // echo 'Hi';
 }
-?>

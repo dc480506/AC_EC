@@ -28,4 +28,4 @@
 <body id="page-top">
 
   <!-- Page Wrapper -->
-  <div id="wrapper">
+  <div id="wrapper" class="h-100 d-flex flex-column">
