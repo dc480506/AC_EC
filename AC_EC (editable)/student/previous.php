@@ -88,7 +88,8 @@ include_once('verify.php');
                                                 <td> <?php echo $row1['student_attendance']; ?> </td>
                                                 </tr>
                                             
-                                            <?php} 
+                                            <?php
+                                            } 
 
                                         }
 
@@ -110,14 +111,14 @@ include_once('verify.php');
                              
 
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter<?php echo $count;?>">
+                                        <!-- <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter<?php echo $count;?>">
                                             <i class="fas fa-tools"></i>
-                                        </button>
+                                        </button> -->
 
                                         <!-- Modal -->
                                     
                                                     
-                                        <div class="modal fade" id="exampleModalCenter<?php echo $count;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <!-- <div class="modal fade" id="exampleModalCenter<?php echo $count;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -183,9 +184,9 @@ include_once('verify.php');
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </div> -->
+                                    <!-- </td> -->
+                                <!-- </tr> -->
                             <?php } ?>
                             </tbody>
                         </table>

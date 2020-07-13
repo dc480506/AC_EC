@@ -14,6 +14,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $_SESSION['cid'] = $cid;
         $_SESSION['sem'] = $sem;
         $_SESSION['year'] = $year;
+        $_SESSION['course_type_id']=$course_type_id;
         $_SESSION['active'] = 1;
 
         $sql = "SELECT timestamp,email_id,syllabus_path FROM course WHERE cid='$cid' AND sem='$sem' AND year='$year'  and course_type_id='$course_type_id' and program='$program'";
@@ -82,7 +83,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
+                    <a href="loadAdditionalInfo/additional_info_course_students.php">          
                     <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
                     </a>
                 </div>
@@ -97,6 +98,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $_SESSION['cid'] = $cid;
         $_SESSION['sem'] = $sem;
         $_SESSION['year'] = $year;
+        $_SESSION['course_type_id']=$course_type_id;
         $_SESSION['active'] = 0;
         $sql = "SELECT timestamp,email_id,syllabus_path FROM course WHERE cid='$cid' AND sem='$sem' AND year='$year'  and course_type_id='$course_type_id' and program='$program'";
         $result = mysqli_query($conn, $sql);
@@ -164,7 +166,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
+                    <a href="loadAdditionalInfo/additional_info_course_students.php">          
                     <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
                     </a>
                 </div>
@@ -179,6 +181,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $_SESSION['cid'] = $cid;
         $_SESSION['sem'] = $sem;
         $_SESSION['year'] = $year;
+        $_SESSION['course_type_id']=$course_type_id;
         $_SESSION['active'] = 2;
         $sql = "SELECT timestamp,email_id,syllabus_path FROM course_log WHERE cid='$cid' AND sem='$sem' AND year='$year' and course_type_id='$course_type_id'";
         $result = mysqli_query($conn, $sql);
@@ -243,7 +246,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
+                    <a href="loadAdditionalInfo/additional_info_course_students.php">          
                     <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
                     </a>
                 </div>
