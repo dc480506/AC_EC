@@ -107,6 +107,16 @@
 
       <span>Marks</span></a>
   </li>
+
+  
+  <hr class="sidebar-divider">
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="student_history.php">
+    <i class="fas fa-history"></i>
+
+      <span>Student history</span></a>
+  </li>
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
 
