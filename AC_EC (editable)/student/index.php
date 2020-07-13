@@ -40,6 +40,7 @@ include('../includes/header.php');
                     $yoa = $row['year_of_admission'];
                     $program = $row['program'];
                     $current_sem = $row['current_sem'];
+                    $_SESSION['program']=$row['program'];
                 }
             }
 
