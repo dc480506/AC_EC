@@ -1,18 +1,24 @@
-<?php 
- include_once('../../verify.php');
- include_once('../../../config.php');
- if(isset($_SESSION['course_table'])){
- mysqli_query($conn,"DROP TABLE `".$_SESSION['course_table'])."`";
- mysqli_query($conn,"DROP TABLE `".$_SESSION['course_app_dept_table'])."`";
- mysqli_query($conn,"DROP TABLE `".$_SESSION['student_course_table'])."`";
- mysqli_query($conn,"DROP TABLE `".$_SESSION['student_pref'])."`";
- mysqli_query($conn,"DROP TABLE `".$_SESSION['course_allocate_info'])."`";
- mysqli_query($conn,"DROP TABLE `".$_SESSION['pref_percent_table'])."`";
- mysqli_query($conn,"DROP TABLE `".$_SESSION['pref_student_alloted_table'])."`";
- }
+<?php
+include_once('../../verify.php');
+include_once('../../../config.php');
+if (isset($_SESSION['course_table'])) {
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['course_table']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['course_app_dept_table']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['student_course_table']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['student_pref']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['course_allocate_info']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['pref_percent_table']) . "`";
+    mysqli_query($conn, "DROP TABLE `" . $_SESSION['pref_student_alloted_table']) . "`";
+
+    $sql = "select is_allocated,allocation_results_path from form where form_id={$_SESSION['form_id']} ;";
+    $result = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+    if ($result['is_allocated'] == 1) {
+        header("Location: ../complete_allocation.php?path=" . urlencode($result['allocation_results_path']));
+    }
+}
 ?>
 <div class="tab-pane fade show active" id="nav-allocate-method" role="tabpanel" aria-labelledby="nav-allocate-method-tab">
-   <br>
+    <br>
     <div class="progress">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
     </div>
@@ -37,7 +43,7 @@
             </div>
             <br>
             <div class="custom-control custom-switch">
-                <input type="radio" class="custom-control-input" id="algo_selection_4" name="algo_selection" value="profile_based"> 
+                <input type="radio" class="custom-control-input" id="algo_selection_4" name="algo_selection" value="profile_based">
                 <label class="custom-control-label" for="algo_selection_4">Profile Based</label>
             </div>
             <br>
@@ -52,11 +58,11 @@
     <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
 </div>
 <style type="text/css">
-    #spinner{
+    #spinner {
         position: fixed;
         top: 50%;
-        left:50%;
-        transform: translate(-50%,-50%);
+        left: 50%;
+        transform: translate(-50%, -50%);
         border: 1px solid black;
         border-radius: 0.2em;
         padding: 1em;
@@ -64,25 +70,25 @@
     }
 </style>
 <script>
-    $("#allocation_method").submit(function(e){
+    $("#allocation_method").submit(function(e) {
         e.preventDefault();
-        var form=$(this);
-        form_serialize=form.serializeArray();
+        var form = $(this);
+        form_serialize = form.serializeArray();
         console.log(form_serialize);
         $("#nav-allocate-method-tab").removeClass("active")
         $("#nav-allocate-method-tab").addClass("disabled")
-        $("#allocation_method").css("opacity",0.3)
+        $("#allocation_method").css("opacity", 0.3)
         $.ajax({
-            type:"POST",
-            url:"loadTabs/load_course_selection_tab.php",
-            data:form_serialize,
-            beforeSend:function(){
-            //Loader daalna hai baadme
+            type: "POST",
+            url: "loadTabs/load_course_selection_tab.php",
+            data: form_serialize,
+            beforeSend: function() {
+                //Loader daalna hai baadme
                 $("#spinner").show();
-                $("#next_btn").attr('disabled',true)
+                $("#next_btn").attr('disabled', true)
 
             },
-            success:function(html){
+            success: function(html) {
                 $("#nav-course-tab").removeClass("disabled")
                 $("#nav-tabContent").html(html)
                 $("#nav-course-tab").addClass("active")
