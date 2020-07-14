@@ -118,6 +118,44 @@ if (isset($_POST['algo_selection'])) {
                         ?>
 </h5>
 <div class="tab-pane fade show active" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab">
+    <div class="modal fade" id="bulkUpdateModal" tabindex="-1" role="dialog" aria-labelledby="bulk Update" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">BULK UPDATE COURSES</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="bulkUpdateForm">
+                        <br>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group ">
+                                    <label for="min"><b>Minimum students</b></label>
+                                    <input type="number" min="0" class="form-control" id="min" name="min" placeholder="Minimum students" value="" required>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group ">
+                                    <label for="max"><b>Maximum students</b></label>
+                                    <input type="number" min="0" class="form-control" id="max" name="max" placeholder="Maximum students" value="" required>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" name="close">Close</button>
+                            <button type="submit" class="btn btn-primary" name="filter">Update</button>
+                        </div>
+                    </form>
+                    <!-- filter ends -->
+                </div>
+            </div>
+        </div>
+    </div>
     <br>
     <div class="progress">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%"></div>
@@ -199,7 +237,7 @@ if (isset($_POST['algo_selection'])) {
             aaSorting: [],
             pageLength: 50,
             // paging:false,
-            dom: '<"d-flex justify-content-between"fBl>tip',
+            dom: "<'d-flex justify-content-between'f<'#bulkUpdate'>Bl>tip",
             buttons: [{
                 extend: 'excel',
                 title: `<?php
@@ -226,6 +264,10 @@ if (isset($_POST['algo_selection'])) {
                 exportOptions: {
                     columns: [1, 2, 3, 4, 5, 6, 7]
                 },
+            }, {
+                text: "BULK UPDATE",
+                container: "#bulkUpdate",
+                className: "btn btn-outline-primary bulkUpdate"
             }],
             ajax: {
                 'url': '../allocation/loadInfo/select_course.php'
@@ -297,6 +339,8 @@ if (isset($_POST['algo_selection'])) {
                 // { className: "min", "targets": [ 6 ] }
             ],
         });
+
+        $('.bulkUpdate').detach().appendTo('#bulkUpdate')
     }
     $("#select_all").click(function(e) {
         //   var row=$(this).closest('tr')
@@ -308,6 +352,42 @@ if (isset($_POST['algo_selection'])) {
             $("#dataTable-course tbody tr").removeClass("selected table-secondary");
         }
         //   row.toggleClass('selected table-secondary')
+    })
+
+    $("#bulkUpdateForm").submit(function(e) {
+        console.log("a")
+        e.preventDefault();
+        var update_rows = $("#dataTable-course").DataTable().rows('.selected').data();
+        var update_data = [];
+        for (var i = 0; i < update_rows.length; i++) {
+            update_data.push($(update_rows[i].cid).text());
+        }
+        var formData = $(this).serializeArray();
+        var actual_data = {}
+        actual_data['type'] = 'student'
+        actual_data['update_data'] = update_data;
+        for (data of formData) {
+            actual_data[data.name] = data.value;
+        }
+        actual_delete_data_json = JSON.stringify(actual_data);
+        $.ajax({
+            type: "POST",
+            url: "../ic_queries/multioperation_queries/update_multiple_sandbox_courses.php",
+            data: actual_delete_data_json,
+            success: function(data) {
+                // console.log(data)
+                $("#dataTable-course").DataTable().draw(false);
+            }
+        })
+    });
+
+    $("body").on("click", ".bulkUpdate", function() {
+        var update_rows = $("#dataTable-course").DataTable().rows('.selected').data();
+        if (update_rows.length > 0) {
+            $("#bulkUpdateModal").modal('show');
+        } else {
+            alert("select some rows");
+        }
     })
 
     function loadModalCurrent() {
