@@ -97,6 +97,10 @@ include('../includes/header.php');
                                             <label for="post"><b>Post</b></label>
                                             <input type="text" class="form-control" id="post" name="post" placeholder="Column name of Post" value="post" required>
                                         </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="post"><b>Role</b></label>
+                                            <input type="text" class="form-control" id="role" name="role" placeholder="Column name of role" value="role" required>
+                                        </div>
                                     </div>
                                     <br>
                                     <div class="form-group files color">
@@ -219,7 +223,7 @@ include('../includes/header.php');
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="eid"><b>Employee ID</b></label>
-                                        <input type="text" class="form-control" id="eid" name="eid" placeholder="Employee Id">
+                                        <input type="text" class="form-control"  name="eid" placeholder="Employee Id">
                                         <!-- <span id="error_employee_id" class="text-danger"></span> -->
                                     </div>
                                 </div>
@@ -240,7 +244,20 @@ include('../includes/header.php');
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="postadd"><b>Post</b></label>
-                                        <input type="text" class="form-control" id="post" name="post" placeholder="post">
+                                        <input type="text" class="form-control" name="post" placeholder="post">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label for="role"><b>Role</b></label>
+                                        <div class="form-group">
+                                            <select class="form-control" required name="role">
+                                                <option value="inst_coor">Institutional coordinator</option>
+                                                <option value="hod">HOD</option>
+                                                <option value="faculty_co">Faculty coordinator</option>
+                                                <option value="faculty">Faculty</option>    
+                                            </select>
+                                        </div> 
                                     </div>
                                 </div>
 
@@ -311,6 +328,27 @@ include('../includes/header.php');
                                 ?>
                             </div>
 
+                            <div class="form-check">
+                                <label for="">Role</label>
+                                <br>
+                                <?php
+                                $roles = array();
+                                $email = $_SESSION['email'];
+
+                                $query = "SELECT distinct(role) FROM faculty";
+                                if ($result = mysqli_query($conn, $query)) {
+                                    $rowcount = mysqli_num_rows($result);
+                                    while ($row = mysqli_fetch_array($result)) {
+                                        $role = $row['role'];
+                                        echo '<div class="custom-control custom-checkbox custom-control-inline">
+                                                    <input type="checkbox" name="filter_role[]" class="custom-control-input" value="' . $role . '" id="filter_role_' . $role . '">
+                                                    <label class="custom-control-label" for="filter_role_' . $role . '">' . $role . '</label>
+                                                </div>';
+                                    }
+                                }
+                                ?>
+                            </div>
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-primary" id="clear-filters" name="clear">clear filters</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
@@ -337,6 +375,7 @@ include('../includes/header.php');
                         <th>Email Id</th>
                         <th>Department</th>
                         <th>Post</th>
+                        <th>Role</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -349,6 +388,7 @@ include('../includes/header.php');
                         <th>Email Id</th>
                         <th>Department</th>
                         <th>Post</th>
+                        <th>Role</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
@@ -409,6 +449,12 @@ include('../includes/header.php');
                     }
                     normalizedFilters.post.push(filter.value)
                     break;
+                case "filter_role[]":
+                if (!normalizedFilters.role) {
+                    normalizedFilters.role = []
+                }
+                normalizedFilters.role.push(filter.value)
+                break;
                 case "filter_dept[]":
                     if (!normalizedFilters.depts) {
                         normalizedFilters.depts = []
@@ -438,7 +484,7 @@ include('../includes/header.php');
                 className: "btn btn-outline-primary  ",
                 action: newExportAction,
                 exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6]
+                    columns: [1, 2, 3, 4, 5, 6, 7]
                 }
             }, {
                 extend: "pdfHtml5",
@@ -447,7 +493,7 @@ include('../includes/header.php');
                 className: "btn btn-outline-primary  mx-2",
                 action: newExportAction,
                 exportOptions: {
-                    columns: [1, 2, 3, 4, 5, 6]
+                    columns: [1, 2, 3, 4, 5, 6, 7]
                 },
             }],
             ajax: {
@@ -498,11 +544,14 @@ include('../includes/header.php');
                     data: 'post'
                 },
                 {
+                    data: 'role'
+                },
+                {
                     data: 'action'
                 },
             ],
             columnDefs: [{
-                    targets: [0, 7], // column index (start from 0)
+                    targets: [0, 8], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
                 {
@@ -641,7 +690,8 @@ include('../includes/header.php');
                     temp['faculty_code'] = form_serialize[5].value;
                     temp['employee_id'] = form_serialize[7].value;
                     temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
-                    temp['post'] = form_serialize[10].value;
+                    temp['post'] =  form_serialize[10].value;
+                    temp['role'] = form_serialize[11].value;
                     $('#dataTable-internal').dataTable().fnUpdate(temp, aPos, undefined, false);
                     $('.action-btn').off('click')
                     $('.action-btn').on('click', loadModalCurrent)
@@ -694,6 +744,25 @@ include('../includes/header.php');
         while ($row = mysqli_fetch_assoc($result)) {
             echo 'if(id=="' . $row['dept_id'] . '") return "' . $row['dept_name'] . '";';
         }
+        ?>
+        // if(id == "1") return "Comp";
+        // if(id == "2") return "ETRX";
+        // if(id == "3") return "EXTC";
+        // if(id == "4") return "IT";
+        // if(id == "5") return "MECH";
+    }
+    function id_to_name_convertor_role(role) {
+        <?php
+        // $sql = "SELECT distinct role FROM login_role";
+        // $result = mysqli_query($conn, $sql);
+        // while ($row = mysqli_fetch_assoc($result)){
+        //    echo ' if(role=="inst_coor") return "Institutional coordinator" ;';
+        //    echo '  if(role=="hod") return "HOD" ;';
+        //    echo ' if(role=="faculty_co") return "Faculty coordinator"; ';
+        //    echo 'if(role=="faculty") return "Faculty"; ';
+        // }
+        
+        
         ?>
         // if(id == "1") return "Comp";
         // if(id == "2") return "ETRX";
