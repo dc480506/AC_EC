@@ -19,6 +19,7 @@ mapper = {
     "password": 13,
     "dbname": 14,
     "program": 15,
+    "upload_constraint": 16,
 }
 header = []
 header_id = {}
@@ -35,7 +36,7 @@ data = file.sheet_by_index(0)
 for y in range(0, data.ncols):
     header.append(data.cell(0, y).value.lower())
 try:
-    for x in range(start_col, n-6):
+    for x in range(start_col, n-7):
         header_id[argument[x].lower()] = header.index(argument[x].lower())
 except Exception as e:
     print(re.findall(r"'(.*?)'", str(e),)
@@ -45,6 +46,12 @@ ts = argument[mapper["timestamp"]]
 added_by = argument[mapper["added"]]
 insert = """INSERT into student(email_id,rollno,fname,mname,lname,year_of_admission,dept_id,current_sem,timestamp,adding_email_id,program) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'""" + \
     argument[mapper['program']] + """');"""
+
+update = "update student set rollno=%s,fname=%s,mname=%s,lname=%s,year_of_admission=%s,dept_id=%s,current_sem=%s,timestamp=%s,adding_email_id=%s,program=%s where email_id=%s;"
+
+inserted_records_count = 0
+updated_records_count = 0
+
 try:
     for x in range(1, data.nrows):
         email = data.cell(
@@ -74,21 +81,45 @@ try:
                   year_of_admission, dept, current_sem, ts, added_by)
         # executing query
         try:
-            cursor.execute(insert, values)
+            if argument[mapper['upload_constraint']] == "2":
+                values = (rollno, fname, mname, lname,
+                          year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email)
+                updated_records_count += cursor.execute(update, values)
+            else:
+                cursor.execute(insert, values)
+                inserted_records_count += 1
         except Exception as e:
             if "Duplicate entry" in str(e):
-                print("Email: "+email+" Rollno: " +
-                      str(int(rollno))+" has duplicate entry.")
+                if argument[mapper['upload_constraint']] == "0":
+                    pass
+                elif argument[mapper['upload_constraint']] == "1":
+                    values = (rollno, fname, mname, lname,
+                              year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email)
+                    try:
+                        cursor.execute(update, values)
+                        updated_records_count += 1
+                    except Exception as e:
+                        print("error+" + e)
+                        sys.exit(0)
+                else:
+                    print("error+Email: "+email+" Rollno: " +
+                          str(int(rollno)) + " has duplicate entry.")
+                    sys.exit(0)
+
             elif "foreign key constraint fails" in str(e):
-                print("Department id: "+str(int(dept)) +
+                print("error+Department id: "+str(int(dept)) +
                       " does not exist/(if present, wrong value) in the table.")
-            print(e)
-            sys.exit(0)
+                sys.exit(0)
+            else:
+                print(e)
+                sys.exit(0)
+
 except Exception as e:
     print(str(e))
     sys.exit(0)
 # print("executed query")
 # commiting the query into db
 connection.commit()
-print("Successful")
+print('Successful+{"insertedRecords":%d,"updatedRecords":%d,"totalRecords": %d}' %
+      (inserted_records_count, updated_records_count, data.nrows-1))
 connection.close()
