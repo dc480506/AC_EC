@@ -73,7 +73,7 @@
     </div>
   </li>
 
-  <hr class="sidebar-divider">
+  <!-- <hr class="sidebar-divider">
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages10" aria-expanded="true" aria-controls="collapseUtilities">
       <i class="fas fa-user-graduate"></i>
@@ -88,7 +88,7 @@
 
       </div>
     </div>
-  </li>
+  </li> -->
 
 
   <hr class="sidebar-divider">
@@ -108,12 +108,12 @@
       <span>Marks</span></a>
   </li>
 
-  
+
   <hr class="sidebar-divider">
   <!-- Nav Item - Pages Collapse Menu -->
   <li class="nav-item">
     <a class="nav-link" href="student_history.php">
-    <i class="fas fa-history"></i>
+      <i class="fas fa-history"></i>
 
       <span>Student history</span></a>
   </li>
