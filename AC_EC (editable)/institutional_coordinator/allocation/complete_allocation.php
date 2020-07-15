@@ -14,14 +14,13 @@ include_once('../utils/zipArchive.php');
 $error = false;
 
 $zipPath = "";
-
 if (isset($_REQUEST['path'])) {
     $zipPath = $base_dir . $_REQUEST['path'];
 } else {
     $args = '["' . $_SESSION['sem'] . '","' . $_SESSION['year'] . '","' . $_SESSION['student_pref'] . '","' . $_SESSION['student_course_table'] . '","' . $_SESSION['course_allocate_info'] . '","' . $_SESSION['course_table'] . '","' . $_SESSION['pref_percent_table'] . '","' . $_SESSION['pref_student_alloted_table'] . '","' . $_SESSION['course_app_dept_table'] . '","' . $_SESSION['no_of_preferences'] . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $_SESSION['program'] . '","' . $_SESSION['form_id'] . '","' . $base_dir . ' "]';
     $cmd = 'python ./result_gen.py ' . $args;
     $outputs = explode("+", shell_exec($cmd . " 2>&1"));
-    // echo $output;
+    // echo json_encode($outputs);
 
     // echo "<h1>$outputs[0]</h1>";
     if ($outputs[0] == "done") {
@@ -39,11 +38,14 @@ if (isset($_REQUEST['path'])) {
 }
 if (!$error) {
 
+
     echo '<div class="tab-pane fade show active d-flex flex-column justify-content-center align-items-center py-5" id="nav-allocate-method" role="tabpanel" aria-labelledby="nav-allocate-method-tab">
     <h2>The allocation process is complete.</h2>
     <h6>Click Download to get the allocation reports</h6>
     
+    
     <a href="download_reports.php?path=' . urlencode(substr($zipPath, strlen($base_dir))) . '" class=" btn btn-primary align-center" style="background-color: #28a745;border-color:#28a745">Download Reports</a>
+    <a href="allocation_results.php" class=" btn btn-primary align-center mt-2" style="background-color: #28a745;border-color:#28a745">View Results</a>
     <a disabled href="../../index.php" class="btn btn-link text-primary"><u>Go back to portal</u></a>
     
     </div>';

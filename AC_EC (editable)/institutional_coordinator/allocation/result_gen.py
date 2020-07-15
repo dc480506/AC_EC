@@ -216,15 +216,19 @@ try:
         argument[mapper['student_course_table']] + " as sc"
 
     copy_student_alloted_to_grade_table = "insert into student_courses_grade (email_id, cid, sem, year, course_type_id) SELECT email_id, cid, sem, year, (select course_type_id from course where cid=sc.cid and sem=sc.sem and year=sc.year) as course_type_id FROM " + \
-        argument[mapper['student_course_table']]+" as sc"
-    # try:
-    # mycursor.execute(copy_student_alloted_query)
-    # mycursor.execute(copy_student_alloted_to_grade_table)
-    # except Exception as e:
-    #     print("error+", e)
-    #     mycursor.close()
-    #     sys.exit(0)
-    # shutil.make_archive(folder_path, 'zip', folder_path)
+        argument[mapper['student_course_table']] + " as sc"
+    update_in_student_preferences = "update student_preferences set allocate_status=1 where form_id='" + argument[mapper["form_id"]] + "' " + \
+        "and email_id in (select email_id from " + \
+        argument[mapper["student_course_table"]]+")"
+    try:
+        mycursor.execute(copy_student_alloted_query)
+        mycursor.execute(copy_student_alloted_to_grade_table)
+        mycursor.execute(update_in_student_preferences)
+    except Exception as e:
+        print("error+", e)
+        mycursor.close()
+        sys.exit(0)
+    shutil.make_archive(folder_path, 'zip', folder_path)
 
     print("done+"+folder_path)
 
