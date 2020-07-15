@@ -18,6 +18,15 @@ def styled_dept_floated_headers():
     return data
 
 
+def styled_unallocated_students_headers(worksheet):
+    data = ("Roll No", "Email", "Name", "Department")
+    for c in data:
+        c = cell.Cell(worksheet, column="A", row=1, value=c)
+        c.font = Font(bold=True)
+        yield c
+    return data
+
+
 def style_error(student_data, worksheet):
     for c in student_data:
         c = cell.Cell(worksheet, column="A", row=1, value=c)
@@ -174,6 +183,19 @@ try:
         dept_student_workbooks[key].save(
             dept_students_folder + "/" + key + ".xlsx")
 
+    unallocated_students_query = "SELECT p.email_id, p.rollno, CONCAT(fname, ' ', mname, ' ', lname) as fullname, dept_name, " +\
+        "p.timestamp FROM "+argument[mapper['student_pref_table']]+" p INNER JOIN student s " +\
+        "INNER JOIN department d ON p.email_id = s.email_id AND s.dept_id = d.dept_id WHERE allocate_status = '0' order by dept_name,p.rollno"
+
+    mycursor.execute(unallocated_students_query)
+    unallocated_workbook = Workbook()
+    unallocated_worksheet = unallocated_workbook.active
+    unallocated_worksheet.append(
+        styled_unallocated_students_headers(unallocated_worksheet))
+    for x in mycursor.fetchall():
+        unallocated_worksheet.append((x[1], x[0], x[2], x[3]))
+    unallocated_workbook.save(folder_path+"/unallocated_students.xlsx")
+
     course_query = "SELECT cid,sem,year,min,max FROM " + \
         argument[mapper['course_table']]+" WHERE sem='" + \
         argument[mapper['sem']]+"' and year='"+argument[mapper['year']]+"'"
@@ -195,13 +217,13 @@ try:
 
     copy_student_alloted_to_grade_table = "insert into student_courses_grade (email_id, cid, sem, year, course_type_id) SELECT email_id, cid, sem, year, (select course_type_id from course where cid=sc.cid and sem=sc.sem and year=sc.year) as course_type_id FROM " + \
         argument[mapper['student_course_table']]+" as sc"
-    try:
-        mycursor.execute(copy_student_alloted_query)
-        mycursor.execute(copy_student_alloted_to_grade_table)
-    except Exception as e:
-        print("error+", e)
-        mycursor.close()
-        sys.exit(0)
+    # try:
+    # mycursor.execute(copy_student_alloted_query)
+    # mycursor.execute(copy_student_alloted_to_grade_table)
+    # except Exception as e:
+    #     print("error+", e)
+    #     mycursor.close()
+    #     sys.exit(0)
     # shutil.make_archive(folder_path, 'zip', folder_path)
 
     print("done+"+folder_path)
