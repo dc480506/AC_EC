@@ -5,6 +5,12 @@
     include('sidebar.php');
     include('../includes/topbar_student.php');
 
+    //error giving query- select form_id from student_form where form_filled=0 and email_id='student_100@somaiya.edu';
+    //this query doesn't show result when ran on the database even if it is valid, but when run on the student_form table it shows
+    //Trying to retrieve forms for student's program which are not filled by student-
+    //select form_id from student_form where form_filled=0 and email_id='student_100@somaiya.edu' and form_id in (select form_id from form where curr_sem=4 and year='2020-21' and program='UG' );
+    //something like this and then checking form_course_category_map table to get the course name corresponding to form_id, but above query not working
+
     $course = array();
     $index = 0;
     $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
