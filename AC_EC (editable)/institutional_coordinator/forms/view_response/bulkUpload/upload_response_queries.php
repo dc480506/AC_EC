@@ -37,8 +37,9 @@ if ($npre > $current_pref_columns) {
     $sql = "ALTER TABLE student_preference_" . $type . substr($add_cols, 0, strlen($add_cols) - 1);
     mysqli_query($conn, $sql);
 }
+$upload_constraint = mysqli_escape_string($conn, $_POST['upload_constraint']);
 
-$args = '["' . $target_location . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $sem . '","' . $year . '","' . $form_id . '","' . $no . '","' . $status . '","' . $npre . '","' . $rno . '","' . $email . '","' . $tstamp;
+$args = '["' . $target_location . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $sem . '","' . $year . '","' . $form_id . '","' . $upload_constraint . '","' . $status . '","' . $npre . '","' . $rno . '","' . $email . '","' . $tstamp;
 for ($i = 1; $i <= $total_pref; $i++) {
     $args .= '","' . $npref[$i];
 }
