@@ -10,11 +10,13 @@ mapper={
         "email_col":8,
         "department_col":9,
         "post_col":10,
-        "host":11,
-        "username_db":13,
-        "password_db":15,
-        "dbname":14,
-        "file_location":12,
+        "role":11,
+        "host":12,
+        "username_db":14,
+        "password_db":16,
+        "dbname":15,
+        "file_location":13,
+        
        }
 header=[]
 header_id={}
@@ -26,7 +28,7 @@ data = file.sheet_by_index(0)
 for y in range(0,data.ncols):
     header.append(data.cell(0,y).value.lower())
 # print(header)
-if len(sys.argv) != 16:
+if len(sys.argv) != 17:
     end_col=4
 else:
     passw=sys.argv[mapper['password_db']]
@@ -35,9 +37,11 @@ try:
         # print(sys.argv[x])
         header_id[sys.argv[x].lower()]=header.index(sys.argv[x].lower())
 except Exception as e:
+    # print(e)
     print(re.findall(r"'(.*?)'",str(e),)[0]+" is not a column in the uploaded sheet")
     sys.exit(0)
-insert_faculty="""Insert into faculty(email_id,faculty_code,fname,mname,lname,employee_id,dept_id,post,added_by,timestamp) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"""
+insert_faculty="""Insert into faculty(email_id,faculty_code,employee_id,fname,mname,lname,dept_id,post,added_by,timestamp,role) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"""
+# print (insert_faculty)
 connection = pymysql.connect(host=sys.argv[mapper['host']], 
                             user=sys.argv[mapper['username_db']],
                             passwd=passw,
@@ -64,7 +68,9 @@ try:
         # print(dept_id)
         post=data.cell(x,header_id[sys.argv[mapper['post_col']].lower()]).value
         # print(post)
-        values=(email,fcode,fname,mname,lname,eid,dept_id,post,added,timestamp)
+        role=data.cell(x,header_id[sys.argv[mapper['role']].lower()]).value
+        # print(role)
+        values=(email,fcode,eid,fname,mname,lname,dept_id,post,added,timestamp,role)
         try:
             cursor.execute(insert_faculty,values)
         except Exception as e:
@@ -73,6 +79,8 @@ try:
             elif "foreign key constraint fails" in str(e):
                 print("Department id: "+str(int(dept_id))+ "does not exist/(if present, wrong value) in the table.")
             print("The upload was unsuccessful.")
+            print(values)
+            # print(e)
             sys.exit(0)
 except Exception as e:
     print(str(e))

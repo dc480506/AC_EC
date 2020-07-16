@@ -9,7 +9,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     $email_id=mysqli_escape_string($conn,$data['email_id']);
     $dept_name=mysqli_escape_string($conn,$data['dept_name']);
     // $post=mysqli_escape_string($conn,$data['post']);
-    $result = mysqli_query($conn,"select faculty_code,employee_id,fname,mname,lname,dept_id,post from faculty WHERE email_id='$email_id'");
+    $result = mysqli_query($conn,"select faculty_code,employee_id,fname,mname,lname,dept_id,post,role from faculty WHERE email_id='$email_id'");
     $row=mysqli_fetch_assoc($result);
     $faculty_code=$row['faculty_code'];
     $employee_id=$row['employee_id'];
@@ -18,6 +18,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
     $lname=$row['lname'];
     $dept_id=$row['dept_id'];
     $post=$row['post'];
+    $role=$row['role'];
     // $dept_applicable=mysqli_escape_string($conn,$data['dept_applicable']);
     // $floating_dept=mysqli_escape_string($conn,$data['dept_name']);
     $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
@@ -61,25 +62,25 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                             <!--Update-->
                             <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
                                 <form method="POST" id="update_internal_faculty">
-                                <div class="form-row mt-4">
-                                    <div class="form-group col-md-6">
-                                        <label for="fname"><b>First Name</b></label> 
-                                        <input type="text" class="form-control"  placeholder="First Name" name="fname_new" value="' . $fname . '">
+                                    <div class="form-row mt-4">
+                                        <div class="form-group col-md-6">
+                                            <label for="fname"><b>First Name</b></label> 
+                                            <input type="text" class="form-control"  placeholder="First Name" name="fname_new" value="' . $fname . '">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="mname"><b>Middle Name</b></label> 
+                                            <input type="text" class="form-control"  placeholder="Middle Name" name="mname_new" value="' . $mname . '">
+                                        </div><div class="form-group col-md-6">
+                                            <label for="lname"><b>Last Name</b></label> 
+                                            <input type="text" class="form-control"  placeholder="Last Name" name="lname_new" value="' . $lname . '">
+                                        </div>  
+                                        <div class="form-group col-md-6">
+                                            <label for="email_id"><b>Email ID</b></label>
+                                            <input type="email" class="form-control" required="required" placeholder="New Email Id" name="email_id_new" id="email_id_new" value="' . $email_id . '">
+                                            <input type="hidden" class="form-control"  name="email_id_old" id="email_id_old" value="' . $email_id. '">
+                                            <span id="error_email_id" class="text-danger"></span>
+                                        </div>                                   
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="mname"><b>Middle Name</b></label> 
-                                        <input type="text" class="form-control"  placeholder="Middle Name" name="mname_new" value="' . $mname . '">
-                                    </div><div class="form-group col-md-6">
-                                        <label for="lname"><b>Last Name</b></label> 
-                                        <input type="text" class="form-control"  placeholder="Last Name" name="lname_new" value="' . $lname . '">
-                                    </div>  
-                                    <div class="form-group col-md-6">
-                                        <label for="email_id"><b>Email ID</b></label>
-                                        <input type="email" class="form-control" required="required" placeholder="New Email Id" name="email_id_new" id="email_id_new" value="' . $email_id . '">
-                                        <input type="hidden" class="form-control"  name="email_id_old" id="email_id_old" value="' . $email_id. '">
-                                        <span id="error_email_id" class="text-danger"></span>
-                                    </div>                                   
-                                </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="faculty_code"><b>Short Name</b></label>
@@ -114,16 +115,33 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                             <input type="text" class="form-control" required="required" name="post_new" placeholder="New Post" value="' . $post . '">
                                         </div>
                                     </div>
-                                    <br>
-                                    <button type="submit" class="btn btn-primary" id="update_internal_faculty_btn" name="update_internal_faculty">Update</button>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="role"><b>Role</b></label>
+                                            <div class="form-group">
+                                                <select class="form-control" required name="role_new">
+                                                    <option value="inst_coor">Institutional coordinator</option>
+                                                    <option value="hod">HOD</option>
+                                                    <option value="faculty_co">Faculty coordinator</option>
+                                                    <option value="faculty">Faculty</option>    
+                                                </select>
+                                                
+                                             </div> 
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <button type="submit" class="btn btn-primary" id="update_internal_faculty_btn" name="update_internal_faculty">Update</button>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                        </div>
+                                    </div>
                                 </form>
-                                <br>
+                            
                             </div>
                             <!--end Update-->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
-                            </div>
+                  
                         </div>
                     </div>
                     </div>
