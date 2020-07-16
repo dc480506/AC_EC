@@ -102,6 +102,16 @@ include('../includes/header.php');
                                             <input type="text" class="form-control" id="role" name="role" placeholder="Column name of role" value="role" required>
                                         </div>
                                     </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="rno"><b>Upload </b></label>
+                                            <select class="form-control" id="upload_constraint" name="upload_constraint" required>
+                                                <option value="0">Only insert new Records</option>
+                                                <option value="1">Insert and update Existing</option>
+                                                <option value="2">Only Update existing records</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <br>
                                     <div class="form-group files color">
                                         <!-- <input type="file" class="form-control" accept=".xls,.xlsx"> -->
@@ -223,7 +233,7 @@ include('../includes/header.php');
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="eid"><b>Employee ID</b></label>
-                                        <input type="text" class="form-control"  name="eid" placeholder="Employee Id">
+                                        <input type="text" class="form-control" name="eid" placeholder="Employee Id">
                                         <!-- <span id="error_employee_id" class="text-danger"></span> -->
                                     </div>
                                 </div>
@@ -255,9 +265,9 @@ include('../includes/header.php');
                                                 <option value="inst_coor">Institutional coordinator</option>
                                                 <option value="hod">HOD</option>
                                                 <option value="faculty_co">Faculty coordinator</option>
-                                                <option value="faculty">Faculty</option>    
+                                                <option value="faculty">Faculty</option>
                                             </select>
-                                        </div> 
+                                        </div>
                                     </div>
                                 </div>
 
@@ -412,12 +422,16 @@ include('../includes/header.php');
             type: 'POST',
             data: formData,
             success: function(data) {
-                if ($.trim(data) == "Successful") {
+                let [status, response] = $.trim(data).split("+");
+                console.log(status)
+                if (status == "Successful") {
                     $("#upload_internal").text("Uploaded Successfully")
+                    const resData = JSON.parse(response);
+                    alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
                     loadCurrent();
                 } else {
                     $("#upload_internal").text("Upload Failed")
-                    alert(data);
+                    alert(response);
                 }
                 // form.reset();
             },
@@ -450,11 +464,11 @@ include('../includes/header.php');
                     normalizedFilters.post.push(filter.value)
                     break;
                 case "filter_role[]":
-                if (!normalizedFilters.role) {
-                    normalizedFilters.role = []
-                }
-                normalizedFilters.role.push(filter.value)
-                break;
+                    if (!normalizedFilters.role) {
+                        normalizedFilters.role = []
+                    }
+                    normalizedFilters.role.push(filter.value)
+                    break;
                 case "filter_dept[]":
                     if (!normalizedFilters.depts) {
                         normalizedFilters.depts = []
@@ -690,7 +704,7 @@ include('../includes/header.php');
                     temp['faculty_code'] = form_serialize[5].value;
                     temp['employee_id'] = form_serialize[7].value;
                     temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
-                    temp['post'] =  form_serialize[10].value;
+                    temp['post'] = form_serialize[10].value;
                     temp['role'] = form_serialize[11].value;
                     $('#dataTable-internal').dataTable().fnUpdate(temp, aPos, undefined, false);
                     $('.action-btn').off('click')
@@ -719,8 +733,8 @@ include('../includes/header.php');
             data['faculty_code'] = row.data()['faculty_code'];
             console.log(row.data());
             data['type'] = 'faculty';
-            data['email_id']=row.data()['email_id'];
-            
+            data['email_id'] = row.data()['email_id'];
+
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
@@ -751,6 +765,7 @@ include('../includes/header.php');
         // if(id == "4") return "IT";
         // if(id == "5") return "MECH";
     }
+
     function id_to_name_convertor_role(role) {
         <?php
         // $sql = "SELECT distinct role FROM login_role";
@@ -761,8 +776,8 @@ include('../includes/header.php');
         //    echo ' if(role=="faculty_co") return "Faculty coordinator"; ';
         //    echo 'if(role=="faculty") return "Faculty"; ';
         // }
-        
-        
+
+
         ?>
         // if(id == "1") return "Comp";
         // if(id == "2") return "ETRX";

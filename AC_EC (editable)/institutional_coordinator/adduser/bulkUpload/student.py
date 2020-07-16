@@ -115,7 +115,7 @@ try:
                 sys.exit(0)
 
 except Exception as e:
-    print(str(e))
+    print("error+", e)
     sys.exit(0)
 # print("executed query")
 # commiting the query into db
