@@ -37,14 +37,25 @@ try:
 except Exception as e:
     print(re.findall(r"'(.*?)'",str(e),)[0]+" is not a column in the uploaded sheet")
     sys.exit(0)
-insert_faculty="""Insert into faculty(email_id,faculty_code,fname,mname,lname,employee_id,dept_id,post,added_by,timestamp) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"""
-connection = pymysql.connect(host=sys.argv[mapper['host']], 
-                            user=sys.argv[mapper['username_db']],
-                            passwd=passw,
-                            database=sys.argv[mapper['dbname']])
+insert_faculty = """Insert into faculty(email_id,faculty_code,employee_id,fname,mname,lname,dept_id,post,added_by,timestamp,role) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"""
+update_faculty = "update faculty set faculty_code=%s,employee_id=%s,fname=%s,mname=%s,lname=%s,dept_id=%s,post=%s,added_by=%s,timestamp=%s,role=%s where email_id=%s"
+insert_faculty_login="""Insert into login_role(username,email_id,password,password_set,role) VALUES(%s,%s,%s,%s,%s);"""
+update_faculty_login = "update login_role set role=%s where email_id=%s"
+
+# print (insert_faculty)
+connection = pymysql.connect(host=sys.argv[mapper['host']],
+                             user=sys.argv[mapper['username_db']],
+                             passwd=passw,
+                             database=sys.argv[mapper['dbname']])
 cursor = connection.cursor()
-timestamp=sys.argv[mapper['timestamp']]
-added=sys.argv[mapper['added']]
+timestamp = sys.argv[mapper['timestamp']]
+added = sys.argv[mapper['added']]
+upload_constraint = sys.argv[mapper['upload_constraint']]
+
+password_set=0
+inserted_records_count = 0
+updated_records_count = 0
+
 try:
     for x in range(1,data.nrows):
         # print(header_id[sys.argv[mapper['cid_col']]])
@@ -58,18 +69,53 @@ try:
         # print(eid)
         fcode=data.cell(x,header_id[sys.argv[mapper['fcode_col']].lower()]).value
         # print(fcode)
-        email=data.cell(x,header_id[sys.argv[mapper['email_col']].lower()]).value
+        email = data.cell(
+            x, header_id[sys.argv[mapper['email_col']].lower()]).value
+        email_arr=(re.split(r'@',email))
+        username=email_arr[0]
+        password=email_arr[0]
         # print(email)
         dept_id=data.cell(x,header_id[sys.argv[mapper['department_col']].lower()]).value
         # print(dept_id)
         post=data.cell(x,header_id[sys.argv[mapper['post_col']].lower()]).value
         # print(post)
-        values=(email,fcode,fname,mname,lname,eid,dept_id,post,added,timestamp)
+        role = data.cell(x, header_id[sys.argv[mapper['role']].lower()]).value
+        # print(role)
+        values = (email, fcode, eid, fname, mname, lname,
+                  dept_id, post, added, timestamp, role)
+        values_login=(username,email,password,password_set,role)
         try:
-            cursor.execute(insert_faculty,values)
+            if upload_constraint == "2":
+                values = (fcode, eid, fname, mname, lname,
+                          dept_id, post, added, timestamp, role, email)
+                values2=(role,email)
+                updated_records_count += cursor.execute(update_faculty, values)
+                cursor.execute(update_faculty_login, values2)
+            else:
+                cursor.execute(insert_faculty, values)
+                cursor.execute(insert_faculty_login, values_login)
+                inserted_records_count += 1
         except Exception as e:
             if "Duplicate entry" in str(e):
-                print("Email: "+email+" Short name: "+str(fcode)+" Employee id: "+str(int(eid))+" Department id: "+str(int(dept_id))+" has duplicate entry.")
+                if upload_constraint == "0":
+                    pass
+                elif upload_constraint == "1":
+
+                    values = (fcode, eid, fname, mname, lname,
+                          dept_id, post, added, timestamp, role, email)
+                    values2=(role,email)      
+                    try:
+                        cursor.execute(update_faculty, values)
+                        cursor.execute(update_faculty_login, values2)
+                        updated_records_count += 1
+                    except Exception as e:
+                        print("error+" + str(e))
+                        sys.exit(0)
+                else:
+                    print("error+Email: "+email+" eid: " +
+                          str(eid) + " has duplicate entry.")
+                    sys.exit(0)
+
             elif "foreign key constraint fails" in str(e):
                 print("Department id: "+str(int(dept_id))+ "does not exist/(if present, wrong value) in the table.")
             print("The upload was unsuccessful.")
