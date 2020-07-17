@@ -3,190 +3,137 @@ include('../../config.php');
 include_once('../verify.php');
 ?>
 
-
-
 <?php
 include('includes/header.php');
- include('includes/topbar1.php'); ?>
+include('includes/topbar1.php'); ?>
 
 <?php
-
-
-    $email_id= $_SESSION['email_id'];
-    $result = mysqli_query($conn,"select * from student WHERE email_id='$email_id' ");
+    $email_id= $_SESSION['email_id'] ;
+    $result = mysqli_query($conn,"select * from student WHERE email_id='$email_id'");
     $row=mysqli_fetch_assoc($result);
     $year=$row['year_of_admission'];
     $rollno=$row['rollno'];
     $current_sem=$row['current_sem'];
     $name=$row['fname'].' '.$row['mname'].' '.$row['lname'];
-
 ?>
 
-<!-- Begin Page Content -->
-<div class="container-fluid">
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <!-- Card Header -->
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h5 class="font-weight-bold text-primary mb-0">
-                        <?php 
+                <div class="col">
+                <h4 class="font-weight-bold text-primary mb-0 pb-2">
+                <?php 
                         echo 'Courses Info: Name - '.$name;
                         echo ', Roll Number - '.$rollno.' and Semester - '.$current_sem ;
-                      
                         ?>
-                    </h5>
-                </div>
-                <style>
-                a:hover{
-                    text-decoration:none;
-                }
-                </style>
-
-                <div class="col-md-4 text-right">
-                    <a id="go-back" href="../addstudent.php" >  
-                        <button  class="btn btn-danger btn-icon-split" style="width:120px">
-                        <span class="icon text-white-50 pull-left">
-                         <i class="fas fa-angle-double-left"></i>
-                        </span>
-                        <span class="text">Back</span>
-                        </button>
-                    </a>    
+                </h4>
                 </div>
             </div>
-        </div>
-      
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Course Name</th>
-                            <th>Course ID</th>
-                            <th>Year</th>
-                            <th>Semester</th>
-                            <th>Floating Departments</th>
-                            <th>About</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Course Name</th>
-                            <th>Course ID</th>
-                            <th>Year</th>
-                            <th>Semester</th>
-                            <th>Floating Departments</th>
-                            <th>About</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                    <?php 
-                        $sql="SELECT sal.cid,sal.sem,sal.year,acl.cname,(SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM audit_course_floating_dept_log afd 
-                        INNER JOIN department d2 ON afd.dept_id=d2.dept_id WHERE acl.cid=afd.cid AND acl.sem=afd.sem AND acl.year=afd.year
-                        GROUP BY 'all') as dept_name,f.fname,f.mname,f.lname,sal.complete_status,sal.student_attendence FROM student_audit_log AS sal INNER Join audit_course_log AS acl on sal.cid=acl.cid AND sal.year=acl.year AND sal.sem=acl.sem INNER Join faculty_audit_log AS fal on fal.cid=acl.cid AND fal.sem=acl.sem AND fal.year=acl.year INNER Join  faculty AS f on f.email_id=fal.email_id WHERE sal.email_id='$email_id'";
-                        $result =mysqli_query($conn,$sql);
-                        $count=0;
-                        while($row = mysqli_fetch_array($result)) 
-                        {
-                    ?>
-                        <tr>
-                            <td><?php echo $row['cname'];?></td>
-                            <td><?php echo $row['cid'];?></td>
-                            <td><?php echo $row['year'];?></td>
-                            <td><?php echo $row['sem'];?></td>
-                            <td><?php echo $row['dept_name'];?></td>
-                            <td>
 
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter<?php echo $count;?>">
-                                    <i class="fas fa-tools"></i>
-                                </button>
 
-                                <!-- Modal -->
-                            
+            <div class="card shadow mb-4">
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <th>Course Type </th>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Year</th>
+                                    <th>Semester</th>
+                                    <th>Marks </th>
+                                    <th>Completion Status</th>
+                                    <th>Attendance</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Course Type </th>
+                                    <th>Course Name</th>
+                                    <th>Course ID</th>
+                                    <th>Year</th>
+                                    <th>Semester</th>
+                                    <th>Marks </th>
+                                    <th>Completion Status</th>
+                                    <th>Attendance</th>
+                                    
+                                    
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                            <?php 
+
+                                $sql1= "SELECT sca.cid, sca.sem,sca.course_type_id,sca.year,c.cname,course_types.name,course_types.is_gradable from student_course_alloted as sca inner join course as c on sca.cid=c.cid inner join course_types on c.course_type_id=course_types.id where sca.email_id='$email_id'";
+                                $sql2="SELECT sca.cid, sca.sem,sca.course_type_id,sca.year,c.cname,course_types.name,course_types.is_gradable from student_course_alloted_log as sca inner join course_log as c on sca.cid=c.cid inner join course_types on c.course_type_id=course_types.id where sca.email_id='$email_id'";
+                                $sql=$sql1 ." UNION ALL ".$sql2;
+                                // echo $sql;
+                                $result1=mysqli_query($conn,$sql);
+                                $count=0;
+
+                                while($row=mysqli_fetch_array($result1)){
+
+                                    $sem=$row['sem']; 
+                                    $year=$row['year'];
+                                    $cid= $row['cid'];
+                                    $course_type_id=$row['course_type_id'];
+
+                                    ?>
+
+                                    <tr>
+                                        <td><?php echo $row['name']; ?> </td>
+                                        <td><?php echo $row['cname']; ?> </td>
+                                        <td><?php echo $row['cid']; ?> </td>
+                                        <td><?php echo $row['year']; ?></td>
+                                        <td><?php echo $row['sem']; ?></td>
+
+                                        <?php if($row['is_gradable']==1){
+
+                                            $sql1="SELECT scg.marks,scg.complete_status,scg.student_attendance from student_courses_grade as scg,student_course_alloted as sca where scg.email_id='$email_id' AND scg.cid='$cid' and scg.course_type_id='$course_type_id' AND scg.sem='$sem' and scg.year='$year'";
+                                            $sql2="SELECT scg.marks,scg.complete_status,scg.student_attendance from student_courses_grade_log as scg,student_course_alloted_log as sca where scg.email_id='$email_id' AND scg.cid='$cid' and scg.course_type_id='$course_type_id' AND scg.sem='$sem' and scg.year='$year'";
+                                            $sql=$sql1 ." UNION ALL ".$sql2;
+                                            $result2= mysqli_query($conn,$sql);
+                                            while($row1=mysqli_fetch_array($result2))
+                                            {  ?>
+                                                
+                                                <td> <?php echo $row1['marks']; ?> </td>
+                                                <td> <?php echo $row1['complete_status']; ?> </td>
+                                                <td> <?php echo $row1['student_attendance']; ?> </td>
+                                                </tr>
                                             
-                                <div class="modal fade" id="exampleModalCenter<?php echo $count;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalCenterTitle<?php echo $count;?>">About</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="exampleInputUsername1"><b>Faculty Name</b></label>
-                                                            <br>
-                                                            <span><?php
-                                                                echo" {$row['fname']} {$row['mname']} {$row['lname']}";?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class=" col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="exampleInputUsername1"><b>Course Status</b></label>
-                                                            <br>
-                                                            <span><?php 
-                                                            if($row['complete_status']==1)
-                                                                echo "Completed";
-                                                            else
-                                                                echo "Incomplete";
-                                                            ?></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="exampleInputUsername1"><b>Syllabus Link</b></label>
-                                                            <br>
-                                                            <span>aayega jaldi ayega</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class=" col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="exampleInputUsername1"><b>Attendance</b></label>
-                                                            <br>
-                                                            <span><?php echo $row['student_attendence'];?></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="exampleInputUsername1"><b>Marks</b></label>
-                                                            <br>
-                                                            <span>woh bhi milenge tension mat le!!!<?php echo $count;
-                                                            $count++;
-                                                            ?></span>
-                                                        </div>
-                                                    </div>
+                                            <?php
+                                            } 
 
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                    </tbody>
-                </table>
+                                        }
+
+                                        else{
+                                                $sql1="SELECT scng.complete_status,scng.student_attendance from student_courses_nongrade as scng,student_course_alloted as sca where scng.email_id='$email_id' AND scng.cid='$cid' and scng.course_type_id='$course_type_id' AND scng.sem='$sem' and scng.year='$year'";
+                                                $sql2="SELECT scng.complete_status,scng.student_attendance from student_courses_nongrade_log as scng,student_course_alloted as sca where scng.email_id='$email_id' AND scng.cid='$cid' and scng.course_type_id='$course_type_id' AND scng.sem='$sem' and scng.year='$year'";
+                                                $sql=$sql1 ." UNION ALL ".$sql2;
+                                                $result3= mysqli_query($conn,$sql);
+                                                while($row2=mysqli_fetch_array($result3)){
+                                                    ?> 
+                                                    <td> <?php echo 'NA' ?> </td>
+                                                    <td> <?php echo $row2['complete_status']; ?> </td>
+                                                    <td> <?php echo $row2['student_attendance']; ?> </td>
+                                                    </tr>
+
+                                               <?php }
+                                            }
+                                 ?>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-       
 
-   
+    </div>
     <!-- /.container-fluid -->
 
-    <?php 
-    include('includes/footer.php');
+    <?php include('includes/footer.php');
     include('includes/scripts.php');
     ?>
