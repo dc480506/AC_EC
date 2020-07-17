@@ -8,6 +8,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
         $row=mysqli_fetch_assoc($result);
         $delete_data=$data['delete_data'];
         $del_condition=" (";
+        $del_condition2=" (";
         // echo var_dump($delete_data);
         foreach($delete_data as $key=>$val){
             // echo var_dump($val);
