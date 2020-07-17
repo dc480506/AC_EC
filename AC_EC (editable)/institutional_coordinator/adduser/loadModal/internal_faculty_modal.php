@@ -99,12 +99,19 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                         <div class="form-group col-md-6">
                                             <label for="dept_name"><b>Department</b></label>
                                             <div class="form-group">
-                                                <select class="form-control" required name="dept_id">
+                                                <select class="form-control" required name="dept_id" value="' .$dept_name. '">
                                                     ';
                                                     $sql = "SELECT * FROM department";
                                                     $result = mysqli_query($conn, $sql);
                                                     while ($row = mysqli_fetch_assoc($result)) {
-                                                        echo '<option value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
+                                                        if($row['dept_id']== $dept_id)
+                                                        {
+                                                            echo '<option selected value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
+                                                        }
+                                                       else{
+                                                        echo '<option  value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
+                                                       }
+                                                    
                                                     }
                                                     echo '
                                                 </select>
@@ -120,10 +127,47 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                             <label for="role"><b>Role</b></label>
                                             <div class="form-group">
                                                 <select class="form-control" required name="role_new">
-                                                    <option value="inst_coor">Institutional coordinator</option>
-                                                    <option value="hod">HOD</option>
+                                                '
+                                                ;
+                                                if($role=="hod"){
+                                                   echo'   <option value="inst_coor">Institutional coordinator</option>
+                                                   <option selected value="hod">HOD</option>
+                                                   <option value="faculty_co">Faculty coordinator</option>
+                                                   <option value="faculty">Faculty</option>  
+                                                   ';
+                                                }
+                                                elseif ($role=="inst_coor") {
+                                                    echo'   <option selected value="inst_coor">Institutional coordinator</option>
+                                                   <option value="hod">HOD</option>
+                                                   <option value="faculty_co">Faculty coordinator</option>
+                                                   <option value="faculty">Faculty</option>  
+                                                   ';
+                                                }
+                                                elseif ($role=="faculty") {
+                                                    echo'   <option value="inst_coor">Institutional coordinator</option>
+                                                    <option  value="hod">HOD</option>
                                                     <option value="faculty_co">Faculty coordinator</option>
-                                                    <option value="faculty">Faculty</option>    
+                                                    <option  selected value="faculty">Faculty</option>  
+                                                    '; 
+                                                }
+                                                elseif ($role=="faculty_coor") {
+                                                    echo'   <option value="inst_coor">Institutional coordinator</option>
+                                                   <option  value="hod">HOD</option>
+                                                   <option  selected value="faculty_co">Faculty coordinator</option>
+                                                   <option value="faculty">Faculty</option>  
+                                                   ';
+                                                }
+                                                else{
+                                                    echo'   <option value="inst_coor">Institutional coordinator</option>
+                                                    <option  value="hod">HOD</option>
+                                                    <option  value="faculty_co">Faculty coordinator</option>
+                                                    <option  selected value="faculty">Faculty</option>  
+                                                    ';
+                                                }
+                                              
+                                                
+                                                echo '
+                                                  
                                                 </select>
                                                 
                                              </div> 

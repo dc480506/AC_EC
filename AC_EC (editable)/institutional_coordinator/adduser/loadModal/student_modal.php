@@ -127,8 +127,16 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                                     $sql = "SELECT * FROM department";
                                                     $result = mysqli_query($conn, $sql);
                                                     while ($row = mysqli_fetch_assoc($result)) {
-                                                        echo '<option value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
+                                                        if($row['dept_id']== $dept_id)
+                                                        {
+                                                            echo '<option selected value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
+                                                        }
+                                                       else{
+                                                        echo '<option  value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
+                                                       }
+                                                    
                                                     }
+                                                  
                                                     echo '
                                                 </select>
                                              </div> 

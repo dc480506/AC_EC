@@ -8,6 +8,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $sql="DELETE FROM faculty WHERE email_id='$email'";
         echo $sql;
         mysqli_query($conn,$sql);
+        mysqli_query($conn,"DELETE FROM login_role WHERE email_id='$email'");
     }else if(isset($_POST['update_faculty'])){
         $name=mysqli_escape_string($conn,$_POST['name']);
         $newemail=mysqli_escape_string($conn,$_POST['newemail']);
@@ -21,7 +22,9 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $names=explode(" ",$name);
 
         $sql="UPDATE faculty SET fname='$names[0]',mname='$names[1]',lname='$names[2]',email_id='$newemail',faculty_code='$faculty_code',employee_id='$eid',dept_id='$dept_id',role='$role',post='$post' WHERE email_id='$oldemail'";
+        $sql2="UPDATE login_role SET email_id='$newemail',role='$role' WHERE email_id='$oldemail'";
         mysqli_query($conn,$sql);
+        mysqli_query($conn,$sql2);
 
     }else if(isset($_POST['add_faculty'])){
         $name=mysqli_escape_string($conn,$_POST['name']);
@@ -40,11 +43,15 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $sql="SELECT username FROM login_role WHERE email_id='$email'";
         $result=mysqli_query($conn,$sql);
         $row=mysqli_fetch_assoc($result);
-        $username=$row['username'];
-
+        // $username=$row['username'];
+        $email_arr=preg_split("/[@\s]/",$email);
+        $username=$email_arr[0];
+        $password=$email_arr[0];
+        $password_set=0;
         $sql="INSERT INTO faculty(`email_id`,`faculty_code`,`employee_id`, `fname`, `mname`, `lname`, `dept_id`, `post`,`role`, `username`,`added_by`,`timestamp`) VALUES ('$email','$faculty_code',$eid,'$names[0]','$names[1]','$names[2]','$dept_id', '$post','$role', '$username','$added_by','$timestamp')";
+        $sql2="INSERT INTO login_role(`username`,`email_id`,`password`,`password_set`,`role`) VALUES ('$username','$email','$password',$password_set,'$role')";
         mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
+        mysqli_query($conn,$sql2) or die(mysqli_error($conn));
          
             header("Location: ../addfaculty_internal.php");
         
@@ -53,6 +60,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         $email_id=mysqli_escape_string($conn,$_POST['email_id']);
             $sql="DELETE FROM faculty WHERE email_id='$email_id'";
         mysqli_query($conn,$sql);
+        mysqli_query($conn,"DELETE FROM login_role WHERE email_id='$email_id'");
         // header("Location: ../addcourse_ac.php");
         exit();
     }
@@ -79,14 +87,20 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
                 echo "Exists_email_id";
             }else{
                 $sql="UPDATE `faculty` SET `email_id`='$email_id_new',`faculty_code`='$faculty_code_new',`employee_id`='$employee_id_new',`fname`='$fname_new',
-                `mname`='$mname_new',`lname`='$lname_new',`dept_id`='$dept_id',`post`='$post_new',`role`=`$role_new`
+                `mname`='$mname_new',`lname`='$lname_new',`dept_id`='$dept_id',`post`='$post_new',`role`='$role_new'
                 WHERE `email_id`='$email_id_old' AND `faculty_code`='$faculty_code_old'";
+                $sql2="UPDATE login_role SET email_id='$email_id_new',role='$role_new' WHERE email_id='$email_id_old'";
+                // echo"
+                // <script>
+                // console.log(". $sql.");</script>";
                 mysqli_query($conn,$sql);
+                mysqli_query($conn,$sql2);
                 // header("Location: ../addfaculty_internal.php");
                 exit();    
             }
         }
         else if ($faculty_code_new != $faculty_code_old){
+            // echo $sql;
             $results = mysqli_query($conn,"select faculty_code from faculty where faculty_code='$faculty_code_new'");
             if(mysqli_num_rows($results) > 0){
                 // echo "<script> 
@@ -95,9 +109,11 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
                 echo "Exists_faculty_code";
             }else{
                 $sql="UPDATE `faculty` SET `email_id`='$email_id_new',`faculty_code`='$faculty_code_new',`employee_id`='$employee_id_new',`fname`='$fname_new',
-                `mname`='$mname_new',`lname`='$lname_new',`dept_id`='$dept_id',`post`='$post_new',`role`=`$role_new`
+                `mname`='$mname_new',`lname`='$lname_new',`dept_id`='$dept_id',`post`='$post_new',`role`='$role_new'
                 WHERE `email_id`='$email_id_old' AND `faculty_code`='$faculty_code_old'";
                 mysqli_query($conn,$sql);
+                $sql2="UPDATE login_role SET email_id='$email_id_new',role='$role_new' WHERE email_id='$email_id_old'";
+                mysqli_query($conn,$sql2);
                 // header("Location: ../addfaculty_internal.php");
                 exit();    
             }
@@ -111,18 +127,23 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
                 echo "Exists_employee_id";
             }else{
                 $sql="UPDATE `faculty` SET `email_id`='$email_id_new',`faculty_code`='$faculty_code_new',`employee_id`='$employee_id_new',`fname`='$fname_new',
-                `mname`='$mname_new',`lname`='$lname_new',`dept_id`='$dept_id',`post`='$post_new',`role`=`$role_new`
+                `mname`='$mname_new',`lname`='$lname_new',`dept_id`='$dept_id',`post`='$post_new',`role`='$role_new'
                 WHERE `email_id`='$email_id_old' AND `faculty_code`='$faculty_code_old'";
                 mysqli_query($conn,$sql);
+                $sql2="UPDATE login_role SET email_id='$email_id_new',role='$role_new' WHERE email_id='$email_id_old'";
+                mysqli_query($conn,$sql2);
+                
                 // header("Location: ../addfaculty_internal.php");
                 exit();    
             }
         }
         else{
             $sql="UPDATE `faculty` SET `email_id`='$email_id_new',`faculty_code`='$faculty_code_new',`employee_id`='$employee_id_new',`fname`='$fname_new',
-            `mname`='$mname_new',`lname`='$lname_new',`dept_id`='$dept_id',`post`='$post_new',`role`=`$role_new`
+            `mname`='$mname_new',`lname`='$lname_new',`dept_id`='$dept_id',`post`='$post_new',`role`='$role_new'
             WHERE `email_id`='$email_id_old' AND `faculty_code`='$faculty_code_old'";
             mysqli_query($conn,$sql);
+            $sql2="UPDATE login_role SET email_id='$email_id_new',role='$role_new' WHERE email_id='$email_id_old'";
+            mysqli_query($conn,$sql2);
             // header("Location: ../addfaculty_internal.php");
             exit();
         } 
