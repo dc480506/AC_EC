@@ -46,6 +46,8 @@ except Exception as e:
     sys.exit(0)
 insert_faculty = """Insert into faculty(email_id,faculty_code,employee_id,fname,mname,lname,dept_id,post,added_by,timestamp,role) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"""
 update_faculty = "update faculty set faculty_code=%s,employee_id=%s,fname=%s,mname=%s,lname=%s,dept_id=%s,post=%s,added_by=%s,timestamp=%s,role=%s where email_id=%s"
+insert_faculty_login="""Insert into login_role(username,email_id,password,password_set,role) VALUES(%s,%s,%s,%s,%s);"""
+update_faculty_login = "update login_role set role=%s where email_id=%s"
 
 # print (insert_faculty)
 connection = pymysql.connect(host=sys.argv[mapper['host']],
@@ -57,7 +59,7 @@ timestamp = sys.argv[mapper['timestamp']]
 added = sys.argv[mapper['added']]
 upload_constraint = sys.argv[mapper['upload_constraint']]
 
-
+password_set=0
 inserted_records_count = 0
 updated_records_count = 0
 
@@ -81,6 +83,9 @@ try:
         # print(fcode)
         email = data.cell(
             x, header_id[sys.argv[mapper['email_col']].lower()]).value
+        email_arr=(re.split(r'@',email))
+        username=email_arr[0]
+        password=email_arr[0]
         # print(email)
         dept_id = data.cell(
             x, header_id[sys.argv[mapper['department_col']].lower()]).value
@@ -92,23 +97,30 @@ try:
         # print(role)
         values = (email, fcode, eid, fname, mname, lname,
                   dept_id, post, added, timestamp, role)
+        values_login=(username,email,password,password_set,role)
         try:
             if upload_constraint == "2":
                 values = (fcode, eid, fname, mname, lname,
                           dept_id, post, added, timestamp, role, email)
+                values2=(role,email)
                 updated_records_count += cursor.execute(update_faculty, values)
+                cursor.execute(update_faculty_login, values2)
             else:
                 cursor.execute(insert_faculty, values)
+                cursor.execute(insert_faculty_login, values_login)
                 inserted_records_count += 1
         except Exception as e:
             if "Duplicate entry" in str(e):
                 if upload_constraint == "0":
                     pass
                 elif upload_constraint == "1":
-                    values = (str(fcode), str(eid), str(fname), str(mname), str(lname),
-                              str(dept_id), str(post), str(added), str(timestamp), str(role), str(email))
+
+                    values = (fcode, eid, fname, mname, lname,
+                          dept_id, post, added, timestamp, role, email)
+                    values2=(role,email)      
                     try:
                         cursor.execute(update_faculty, values)
+                        cursor.execute(update_faculty_login, values2)
                         updated_records_count += 1
                     except Exception as e:
                         print("error+" + str(e))
