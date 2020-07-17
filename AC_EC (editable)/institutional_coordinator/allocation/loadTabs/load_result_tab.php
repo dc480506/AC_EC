@@ -382,10 +382,9 @@ $output = shell_exec($cmd . " 2>&1");
                         echo "
                         {
                             data: 'gpa'
-                        }";
+                        },";
                     }
-                    ?>,
-                    {
+                    ?> {
                         data: 'timestamp'
                     },
                     {
@@ -446,10 +445,9 @@ $output = shell_exec($cmd . " 2>&1");
                     echo "
                         {
                             data: 'gpa'
-                        }";
+                        },";
                 }
-                ?>,
-                {
+                ?> {
                     data: 'timestamp'
                 },
                 {
