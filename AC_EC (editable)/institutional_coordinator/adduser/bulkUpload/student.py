@@ -49,6 +49,10 @@ insert = """INSERT into student(email_id,rollno,fname,mname,lname,year_of_admiss
 
 update = "update student set rollno=%s,fname=%s,mname=%s,lname=%s,year_of_admission=%s,dept_id=%s,current_sem=%s,timestamp=%s,adding_email_id=%s,program=%s where email_id=%s;"
 
+insert_student_login="""Insert into login_role(username,email_id,password,password_set,role) VALUES(%s,%s,%s,%s,%s);"""
+password_set=0
+role="student"
+
 inserted_records_count = 0
 updated_records_count = 0
 
@@ -59,6 +63,8 @@ try:
         # print(email)
         rollno = data.cell(
             x, header_id[argument[mapper['rollno']].lower()]).value
+        username=int(rollno)
+        password=rollno
         # print(rollno)
         fname = data.cell(
             x, header_id[argument[mapper['fname']].lower()]).value
@@ -79,6 +85,7 @@ try:
         # print(current_sem)
         values = (email, rollno, fname, mname, lname,
                   year_of_admission, dept, current_sem, ts, added_by)
+        values_login=(username,email,password,password_set,role)
         # executing query
         try:
             if argument[mapper['upload_constraint']] == "2":
@@ -87,6 +94,7 @@ try:
                 updated_records_count += cursor.execute(update, values)
             else:
                 cursor.execute(insert, values)
+                cursor.execute(insert_student_login, values_login)
                 inserted_records_count += 1
         except Exception as e:
             if "Duplicate entry" in str(e):
