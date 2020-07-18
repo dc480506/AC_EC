@@ -15,31 +15,20 @@
         $timestamp=date_format(date_create($row['timestamp']),'d-M-Y h:i:s A');
         $added_by=$row['added_by'];
        
-        // $sql="SELECT post,fname,mname,lname,faculty_code FROM faculty_audit fa INNER JOIN faculty f ON fa.cid='$cid' AND fa.sem='$sem' AND fa.year='$year' AND fa.email_id=f.email_id";
-        // $result=mysqli_query($conn,$sql);
-        // $faculty_info="";
-        // if(mysqli_num_rows($result)==0){
-        //     $faculty_info="<p><i><small>No faculties found for this course</small></i></p>";
-        // }else{
-        //     $i=1;
-        //     while($row=mysqli_fetch_assoc($result)){
-        //         $faculty_info.="<p><small>".$i.") ".$row['post'].". ".$row['fname']." ".$row['mname']." ".$row['lname']." (".$row['faculty_code'].")</small></p>";
-        //         $i++;
-        //     }
-        // }
-
             //get courses taught
             $email_id=$data['email_id'];
-            // echo $email_id;
-            $sql1="SELECT `cname` from course c where c.cid in (select `cid` from faculty_course_alloted where currently_active=1 and email_id='$email_id')";
-        
+           
+            // $sql1="SELECT `cname` from course c where c.cid in (select `cid` from faculty_course_alloted where currently_active=1 and email_id='$email_id')";
+            $sql1="SELECT cname,c.sem  from course c, faculty_course_alloted f where c.cid=f.cid and c.course_type_id=f.course_type_id and c.sem=f.sem and c.year=f.year and c.currently_active=1 and f.email_id='$email_id'";
+            // echo $sql1;
             $result1 = mysqli_query($conn,$sql1);
-            $str=array();
+            $rowcount=mysqli_num_rows($result1);
+            // $str=array();
             
-            while($row1=mysqli_fetch_assoc($result1))
-            {
-                array_push($str, $row1['cname']);
-            }
+            // while($row1=mysqli_fetch_assoc($result1))
+            // {
+            //     array_push($str, $row1['cname']);
+            // }
             
         echo '
             <div class="form-row">
@@ -52,11 +41,12 @@
                     <small><span>'.$timestamp.'</span></small>
                 </div>
                
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="Courses_info"><b>Courses Info: </b></label>
-                    <a data-toggle="modal" href="#myModal">View</a>
+           
+                <div class="form-group col-md-4">
+                    <a data-toggle="modal" href="#myModal">          
+                        <button type="submit" class="btn btn-primary"  role="button" id="student_courses">View alloted courses</button>    
+                    </a>
+                 
                 </div>
             </div>
 
@@ -75,14 +65,17 @@
                     <div class="modal-body">
                     
                     
-                    <?php if(count($str)>0)
+                    <?php 
+                    // echo $rowcount;
+                    if($rowcount)
                     {?>
                      <h5 class="text-primary">Courses alloted currently:</h5>
                     <br>
                     
                     <ul>
-                    <?php foreach($str as $val) {
-                       ?><li><?php echo $val;?></li> 
+                    <?php
+                      while($row1=mysqli_fetch_assoc($result1)) {
+                       ?><li><?php echo $row1['cname'] . " - ".$row1['sem'] ?></li> 
                     <?php } ?>
            </ul>
            <?php
