@@ -35,6 +35,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
         //     $sql="DELETE FROM audit_course_log WHERE email_id='$email_id' AND sem='$sem' AND year='$year'";
         // }
         mysqli_query($conn,$sql);
+        mysqli_query($conn,"DELETE FROM login_role WHERE email_id='$email_id'");
         // header("Location: ../addcourse_ac.php");
         exit();
     }
@@ -69,6 +70,7 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
                 `mname`='$mname_new',`lname`='$lname_new',`year_of_admission`='$year_of_admission_new',`dept_id`='$dept_id',
                 `current_sem`='$current_sem_new' WHERE `email_id`='$email_id_old' AND `rollno`='$rollno_old'";
                 mysqli_query($conn,$sql);
+                mysqli_query($conn,"UPDATE `login_role` SET `email_id`='$email_id_new' WHERE `email_id`='$email_id_old'");
                 exit();    
             }
         }

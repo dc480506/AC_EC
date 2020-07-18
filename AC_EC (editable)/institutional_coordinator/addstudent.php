@@ -83,9 +83,9 @@ include('../includes/header.php');
                                                 <div class="form-group col-md-12">
                                                     <label for="rno"><b>Program</b></label>
                                                     <select class="form-control" id="program" name="program" required>
-                                                        <option value="UG">UG</option>
+                                                        <option  value="UG">UG</option>
                                                         <option value="PG">PG</option>
-                                                        <option value="PHD">PhD</option>
+                                                        <option  value="PHD">PhD</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -639,7 +639,7 @@ include('../includes/header.php');
                         console.log(checkbox);
                         checkbox.attr("checked", !checkbox.attr("checked"));
                         row.toggleClass('selected table-secondary')
-                        if ($("#dataTable-student tbody tr.selected").length != $("#dataTable-studentUg tbody tr").length) {
+                        if ($("#dataTable-studentUg tbody tr.selected").length != $("#dataTable-studentUg tbody tr").length) {
                             $("#select_allUg").prop("checked", true)
                             $("#select_allUg").prop("checked", false)
                         } else {
@@ -767,12 +767,12 @@ include('../includes/header.php');
                                 //    alert(data); // show response from the php script.
                                 $("#delete_student_btn").text("Deleted Successfully");
                                 var row = $("#update-del-modal").closest('tr');
-                                var aPos = $("#dataTable-student").dataTable().fnGetPosition(row.get(0));
+                                var aPos = $("#dataTable-studentUg").dataTable().fnGetPosition(row.get(0));
                                 $('#update-del-modal').modal('hide');
                                 $('body').removeClass('modal-open');
                                 $('.modal-backdrop').remove();
                                 // row.remove();
-                                $("#dataTable-student").DataTable().row(aPos).remove().draw(false);
+                                $("#dataTable-studentUg").DataTable().row(aPos).remove().draw(false);
                                 // console.log(aPos);
                                 // console.log(row)
                             }
@@ -920,7 +920,7 @@ include('../includes/header.php');
                         console.log(checkbox);
                         checkbox.attr("checked", !checkbox.attr("checked"));
                         row.toggleClass('selected table-secondary')
-                        if ($("#dataTable-student tbody tr.selected").length != $("#dataTable-studentPg tbody tr").length) {
+                        if ($("#dataTable-studentPg tbody tr.selected").length != $("#dataTable-studentPg tbody tr").length) {
                             $("#select_allPg").prop("checked", true)
                             $("#select_allPg").prop("checked", false)
                         } else {
@@ -1048,12 +1048,12 @@ include('../includes/header.php');
                                 //    alert(data); // show response from the php script.
                                 $("#delete_student_btn").text("Deleted Successfully");
                                 var row = $("#update-del-modal").closest('tr');
-                                var aPos = $("#dataTable-student").dataTable().fnGetPosition(row.get(0));
+                                var aPos = $("#dataTable-studentPg").dataTable().fnGetPosition(row.get(0));
                                 $('#update-del-modal').modal('hide');
                                 $('body').removeClass('modal-open');
                                 $('.modal-backdrop').remove();
                                 // row.remove();
-                                $("#dataTable-student").DataTable().row(aPos).remove().draw(false);
+                                $("#dataTable-studentPg").DataTable().row(aPos).remove().draw(false);
                                 // console.log(aPos);
                                 // console.log(row)
                             }
@@ -1200,7 +1200,7 @@ include('../includes/header.php');
                         console.log(checkbox);
                         checkbox.attr("checked", !checkbox.attr("checked"));
                         row.toggleClass('selected table-secondary')
-                        if ($("#dataTable-student tbody tr.selected").length != $("#dataTable-studentPhd tbody tr").length) {
+                        if ($("#dataTable-studentPhd tbody tr.selected").length != $("#dataTable-studentPhd tbody tr").length) {
                             $("#select_allPhd").prop("checked", true)
                             $("#select_allPhd").prop("checked", false)
                         } else {
@@ -1328,12 +1328,12 @@ include('../includes/header.php');
                                 //    alert(data); // show response from the php script.
                                 $("#delete_student_btn").text("Deleted Successfully");
                                 var row = $("#update-del-modal").closest('tr');
-                                var aPos = $("#dataTable-student").dataTable().fnGetPosition(row.get(0));
+                                var aPos = $("#dataTable-studentPhd").dataTable().fnGetPosition(row.get(0));
                                 $('#update-del-modal').modal('hide');
                                 $('body').removeClass('modal-open');
                                 $('.modal-backdrop').remove();
                                 // row.remove();
-                                $("#dataTable-student").DataTable().row(aPos).remove().draw(false);
+                                $("#dataTable-studentPhd").DataTable().row(aPos).remove().draw(false);
                                 // console.log(aPos);
                                 // console.log(row)
                             }
