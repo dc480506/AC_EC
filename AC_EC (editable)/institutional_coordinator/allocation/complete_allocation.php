@@ -38,7 +38,6 @@ if (isset($_REQUEST['path'])) {
 }
 if (!$error) {
 
-
     echo '<div class="tab-pane fade show active d-flex flex-column justify-content-center align-items-center py-5" id="nav-allocate-method" role="tabpanel" aria-labelledby="nav-allocate-method-tab">
     <h2>The allocation process is complete.</h2>
     <h6>Click Download to get the allocation reports</h6>

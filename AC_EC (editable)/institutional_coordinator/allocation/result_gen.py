@@ -228,7 +228,7 @@ try:
         print("error+", e)
         mycursor.close()
         sys.exit(0)
-    shutil.make_archive(folder_path, 'zip', folder_path)
+    # shutil.make_archive(folder_path, 'zip', folder_path)
 
     print("done+"+folder_path)
 
