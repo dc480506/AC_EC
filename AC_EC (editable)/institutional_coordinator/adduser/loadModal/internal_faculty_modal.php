@@ -53,8 +53,20 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                         </label>
                                         <br>
                                         <input type="hidden" name="email_id" value="' . $email_id . '">
-                                        <button type="submit" class="btn btn-primary" id="delete_internal_faculty_btn" name="delete_internal_faculty">Yes</button>
-                                        <button type="button" class="btn btn-secondary" name="no">No</button>
+                                        <div class="row">
+                                            <div class="col-md-6 text-left">
+                                                <button type="submit" class="btn btn-primary" id="delete_internal_faculty_btn" name="delete_internal_faculty">Yes</button>
+                                                <button type="button" class="btn btn-secondary" name="no">No</button>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                            </div>
+                                        </div>
+
+
+                                     
+                                           
+                                    
                                     </div>
                                 </form>
                             </div>
@@ -174,10 +186,10 @@ if(isset($_SESSION['email']) && $_SESSION['role']=='inst_coor'){
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 text-center">
                                             <button type="submit" class="btn btn-primary" id="update_internal_faculty_btn" name="update_internal_faculty">Update</button>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 text-center">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                                         </div>
                                     </div>
