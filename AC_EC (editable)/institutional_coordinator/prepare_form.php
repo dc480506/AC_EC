@@ -220,6 +220,7 @@ include('../includes/header.php');
             getCourseTypes: true,
             program: program
         };
+        console.log(data);
         $.ajax({
             type: "POST",
             url: "ic_queries/prepare_form_queries.php",
