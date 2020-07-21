@@ -8,9 +8,11 @@ if (isset($_POST['submit'])) {
   // echo $login_user;
   // echo $Password;
 
-  $sql = "SELECT * FROM login_role l left join (faculty f inner join department d on f.dept_id = d.dept_id) on l.email_id = f.email_id where l.username='$login_user' AND l.password='$Password'";
+  $sql = "SELECT l.role,l.email_id,f.dept_id,d.dept_name FROM login_role l left join (faculty f inner join department d on f.dept_id = d.dept_id) on l.email_id = f.email_id where l.username='$login_user' AND l.password='$Password'";
+  // die($sql);
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  // die(json_encode($row));
   $count = mysqli_num_rows($result);
   if ($count == 1) {
     session_start();
@@ -48,7 +50,4 @@ if (isset($_POST['submit'])) {
           </script>";
     header("location:index.php");
   }
-}
-
-
 }
