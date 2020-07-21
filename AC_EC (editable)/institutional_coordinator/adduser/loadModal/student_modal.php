@@ -173,7 +173,6 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                             </div>
                         </div>
                     </div>
-                    </div>
                 </div>
             </div>';
     // $name=$fname.' '.$mname.' '.$lname;
