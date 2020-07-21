@@ -83,9 +83,9 @@ include('../includes/header.php');
                                                 <div class="form-group col-md-12">
                                                     <label for="rno"><b>Program</b></label>
                                                     <select class="form-control" id="program" name="program" required>
-                                                        <option  value="UG">UG</option>
+                                                        <option value="UG">UG</option>
                                                         <option value="PG">PG</option>
-                                                        <option  value="PHD">PhD</option>
+                                                        <option value="PHD">PhD</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -254,35 +254,35 @@ include('../includes/header.php');
                                     <label for="">Semester</label>
                                     <br />
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="1" id="semester_1">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="1" id="semester_1">
                                         <label class="custom-control-label" for="semester_1">1</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="2" id="semester_2">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="2" id="semester_2">
                                         <label class="custom-control-label" for="semester_2">2</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="3" id="semester_3">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="3" id="semester_3">
                                         <label class="custom-control-label" for="semester_3">3</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="4" id="semester_4">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="4" id="semester_4">
                                         <label class="custom-control-label" for="semester_4">4</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="5" id="semester_5">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="5" id="semester_5">
                                         <label class="custom-control-label" for="semester_5">5</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="6" id="semester_6">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="6" id="semester_6">
                                         <label class="custom-control-label" for="semester_6">6</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="7" id="semester_7">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="7" id="semester_7">
                                         <label class="custom-control-label" for="semester_7">7</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="8" id="semester_8">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="8" id="semester_8">
                                         <label class="custom-control-label" for="semester_8">8</label>
                                     </div>
 
@@ -295,13 +295,14 @@ include('../includes/header.php');
                                     $dept_names = array();
                                     $email = $_SESSION['email'];
                                     $department = 'department';
-                                    $query = "SELECT distinct(dept_name) FROM department";
+                                    $roleRestriction = in_array($_SESSION['role'], array("faculty_co", "HOD")) ? "where dept_id={$_SESSION['dept_id']}" : "";
+                                    $query = "SELECT distinct(dept_name) FROM department $roleRestriction";
                                     if ($result = mysqli_query($conn, $query)) {
                                         $rowcount = mysqli_num_rows($result);
                                         while ($row = mysqli_fetch_array($result)) {
                                             $dept_name = $row['dept_name'];
                                             echo '<div class="custom-control custom-checkbox custom-control-inline">
-                                                    <input type="checkbox" name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
+                                                    <input type="checkbox" checked name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
                                                     <label class="custom-control-label" for="filter_dept_' . $dept_name . '">' . $dept_name . '</label>
                                                 </div>';
                                         }
