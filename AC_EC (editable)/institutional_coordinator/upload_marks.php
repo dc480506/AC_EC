@@ -688,7 +688,7 @@ function loadUg() {
             buttons: [{
                 extend: 'excel',
                 title: "student-data",
-                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
                 className: "btn btn-outline-primary  ",
                 action: newExportAction,
                 exportOptions: {
@@ -917,7 +917,7 @@ function loadPg() {
             buttons: [{
                 extend: 'excel',
                 title: "student-data",
-                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
                 className: "btn btn-outline-primary  ",
                 action: newExportAction,
                 exportOptions: {
@@ -1143,7 +1143,7 @@ function loadPhd() {
             buttons: [{
                 extend: 'excel',
                 title: "student-data",
-                text: '<span> <i class="fas fa-download "></i> CSV</span>',
+                text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
                 className: "btn btn-outline-primary  ",
                 action: newExportAction,
                 exportOptions: {
