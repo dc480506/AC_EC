@@ -30,6 +30,27 @@ include('../includes/header.php');
                 </div>
             </div>
             <br>
+            <div class="modal fade " id="invalidstudents" tabindex="-1" role="dialog" aria-labelledby="invalid-students" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="invalid-students">INVALID STUDENTS LIST </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h6><b>Following students do not belong to <?php echo $_SESSION['dept_name']  ?> department:</b></h6>
+                            <ul id="invalidstudentslist">
+                                <li>abc</li>
+                                <li>def</li>
+                                <li>ghi</li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Upload div -->
             <div class="modal fade" id="uploadstudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1444,12 +1465,24 @@ include('../includes/header.php');
                 type: 'POST',
                 data: formData,
                 success: function(data) {
+
                     let [status, response] = $.trim(data).split("+");
+
                     if (status == "Successful") {
                         $("#upload_student").text("Uploaded Successfully")
-                        console.log(response)
                         const resData = JSON.parse(response);
-                        alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                        console.log(resData)
+                        if (resData.errors.wrongDept.length > 0) {
+                            $('#invalidstudentslist').empty();
+                            resData.errors.wrongDept.forEach((entry) => {
+                                $('#invalidstudentslist').append(`<li class='text-danger'>${entry.email} - ${id_to_name_convertor_dept(entry.dept)}</li>`)
+                            })
+                            $('#uploadstudent').modal('hide');
+                            $('#invalidstudents').modal('show')
+                        } else {
+
+                            alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                        }
                         if (activeTab == "Ug") {
                             loadUg();
                         } else if (activeTab == "Pg") {
