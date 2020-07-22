@@ -1069,6 +1069,7 @@ include('../includes/header.php');
     $("body").on("click", ".bulkUpdate", function() {
         var update_rows = $("#dataTable-studentUg").DataTable().rows('.selected').data();
         if (update_rows.length > 0) {
+            $("#updatebtnUg").text("Update");
             $("#bulkUpdateModalUg").modal('show');
         } else {
             alert("select some rows");
@@ -1400,6 +1401,7 @@ $.ajax({
 $("body").on("click", ".bulkUpdatePg", function() {
 var update_rows = $("#dataTable-studentPg").DataTable().rows('.selected').data();
 if (update_rows.length > 0) {
+    $("#updatebtnUg").text("Update");
     $("#bulkUpdateModalPg").modal('show');
 } else {
     alert("select some rows");
@@ -1693,6 +1695,7 @@ $("#select_allPhd").click(function(e) {
 })
 
 $("#bulkUpdateFormPhd").submit(function(e) {
+
 // console.log("a")
 e.preventDefault();
 var update_rows = $("#dataTable-studentPhd").DataTable().rows('.selected').data();
@@ -1723,6 +1726,7 @@ $.ajax({
         $("#updatebtnPhd").text("Updated Successfully");
         // console.log(data)
         $("#dataTable-studentPhd").DataTable().draw(false);
+     
     }
 })
 });
@@ -1730,11 +1734,13 @@ $.ajax({
 $("body").on("click", ".bulkUpdatePhd", function() {
 var update_rows = $("#dataTable-studentPhd").DataTable().rows('.selected').data();
 if (update_rows.length > 0) {
+    $("#updatebtnUg").text("Update");
     $("#bulkUpdateModalPhd").modal('show');
 } else {
     alert("select some rows");
 }
 })
+
 
 $("#delete_selected_Phd_btn").click(function(e) {
     alert("You have selected " + $("#dataTable-studentPhd tbody tr.selected").length + " record(s) for deletion");
