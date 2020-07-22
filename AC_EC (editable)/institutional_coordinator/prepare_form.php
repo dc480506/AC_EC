@@ -111,13 +111,13 @@ include('../includes/header.php');
                                             }
                                         }
                                     }
-                                        $deptName=id_to_name_convertor_dept($_SESSION['dept_id'],$result1);
+                                        
                                         $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
                                         $result = mysqli_query($conn, $sql);
                                         $c = 8;
                                         if($_SESSION['role']=='faculty_co')
                                         {
-                                           
+                                            $deptName=id_to_name_convertor_dept($_SESSION['dept_id'],$result1);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                           
 
@@ -383,6 +383,7 @@ include('../includes/header.php');
     $("#create-form").submit(function(e) {
         e.preventDefault();
         var data = $(this).serializeArray();
+        console.log(data);
         data.push({
             name: "createForm",
             value: "1"
@@ -398,14 +399,17 @@ include('../includes/header.php');
                 $("#create_form_btn").attr("disabled", true)
             },
             success: function(data) {
-                if ($.trim(data) == "done") {
+                console.log($.trim(data));
+                if ($.trim(data)=="done") {
+                    console.log("success!");
                     $('#dataTable-form').DataTable().draw(false);
+                    
                     $("#create_form_btn").text("Created Successfully")
                 } else {
                     if (data == 'present') {
                         $("#create_form_btn").text('Form Exists')
                     } else {
-                        window.alert(data);
+                        // window.alert(data);
                         $("#create_form_btn").text("Creation Failed")
                     }
                 }

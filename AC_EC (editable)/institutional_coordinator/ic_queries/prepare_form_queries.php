@@ -12,6 +12,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
         $start_date = mysqli_escape_string($conn, $_POST['start_date']);
         $start_time = mysqli_escape_string($conn, $_POST['start_time']);
         $dept_applicable = $_POST['dept_applicable'];
+        
         $program = mysqli_escape_string($conn, $_POST['program']);
         $course_type_id = $_POST['course_type_id'];
 
@@ -80,7 +81,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
             }
             mysqli_close($conn);
             // mysqli_autocommit($conn,TRUE);
-            echo " done";
+            echo "done";
         } else {
             die("present");
         }
@@ -143,6 +144,19 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
         echo "done";
     } elseif (isset($_POST['getCourseTypes'])) {
         $program = mysqli_escape_string($conn, $_POST['program']);
+        if($_SESSION['role']=='faculty_co')
+        {
+        $sql = "select id,name from course_types where program='$program' and is_closed_elective=1";
+        $result = mysqli_query($conn, $sql);
+        $options = '';
+        while ($row = mysqli_fetch_assoc($result)) {
+            $options .= "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+        }
+
+        echo $options;
+    }
+    else
+    {
         $sql = "select id,name from course_types where program='$program'";
         $result = mysqli_query($conn, $sql);
         $options = '';
@@ -151,5 +165,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
         }
 
         echo $options;
+    }
     }
 }
