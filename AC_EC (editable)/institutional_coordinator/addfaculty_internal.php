@@ -216,11 +216,11 @@ include('../includes/header.php');
                                 <div class="form-row mt-4">
                                     <div class="form-group col-md-6">
                                         <label for="name"><b>Name</b></label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="name">
+                                        <input required type="text" class="form-control" id="name" name="name" placeholder="name">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="emailid"><b>Email Address</b></label>
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="email@gmail.com">
+                                        <input required type="email" class="form-control" id="email" name="email" placeholder="email@gmail.com">
                                         <!-- <span id="error_email_id" class="text-danger"></span> -->
 
                                     </div>
@@ -228,25 +228,34 @@ include('../includes/header.php');
                                 <div class="form-row mt-4">
                                     <div class="form-group col-md-6">
                                         <label for="faculty_code"><b>Faculty Code</b></label>
-                                        <input type="text" class="form-control" id="faculty_code" name="faculty_code" placeholder="faculty code">
+                                        <input required type="text" class="form-control" id="faculty_code" name="faculty_code" placeholder="faculty code">
                                         <!-- <span id="error_faculty_code" class="text-danger"></span> -->
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="eid"><b>Employee ID</b></label>
-                                        <input type="text" class="form-control" name="eid" placeholder="Employee Id">
+                                        <input required type="text" class="form-control" name="eid" placeholder="Employee Id">
                                         <!-- <span id="error_employee_id" class="text-danger"></span> -->
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="department"><b>Department</b></label>
-                                        <select class="form-control" required name="dept">
+                                        <select required class="form-control" required name="dept">
                                             <?php
                                             include_once("../config.php");
-                                            $sql = "SELECT * FROM department";
-                                            $result = mysqli_query($conn, $sql);
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                echo '<option value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                            if ($_SESSION['role'] == "inst_coor") {
+
+                                                $sql = "SELECT * FROM department";
+                                                $result = mysqli_query($conn, $sql);
+                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                    if ($row['dept_id'] == $dept_id) {
+                                                        echo '<option selected value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                                    } else {
+                                                        echo '<option  value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                                    }
+                                                }
+                                            } else if (in_array($_SESSION['role'], array('faculty_co', "HOD"))) {
+                                                echo '<option  value="' . $_SESSION['dept_id'] . '">' . $_SESSION['dept_name'] . '</option>';
                                             }
                                             ?>
                                         </select>
@@ -254,18 +263,28 @@ include('../includes/header.php');
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="postadd"><b>Post</b></label>
-                                        <input type="text" class="form-control" name="post" placeholder="post">
+                                        <input required type="text" class="form-control" name="post" placeholder="post">
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <label for="role"><b>Role</b></label>
                                         <div class="form-group">
-                                            <select class="form-control" required name="role">
-                                                <option value="inst_coor">Institutional coordinator</option>
-                                                <option value="hod">HOD</option>
-                                                <option value="faculty_co">Faculty coordinator</option>
-                                                <option value="faculty">Faculty</option>
+                                            <select required class="form-control" required name="role">
+                                                <?php $roles_applicable = array();
+                                                $flag = false;
+                                                foreach ($roles as $key => $value) {
+                                                    if ($flag) {
+                                                        $roles_applicable[$key] = $value;
+                                                    }
+                                                    if ($key == $_SESSION["role"]) {
+                                                        $flag = 1;
+                                                    }
+                                                }
+
+                                                foreach ($roles_applicable as $key => $value) {
+                                                    echo "<option value='$key'>$value</option>";
+                                                } ?>
                                             </select>
                                         </div>
                                     </div>
@@ -299,6 +318,7 @@ include('../includes/header.php');
                                 <label for="">Department</label>
                                 <br>
                                 <?php
+
                                 $dept_names = array();
                                 $email = $_SESSION['email'];
                                 $department = 'department';
