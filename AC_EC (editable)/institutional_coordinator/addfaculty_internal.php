@@ -201,6 +201,27 @@ include('../includes/header.php');
                 </div>
             </div>
             <!-- Modal -->
+            <div class="modal fade " id="invalidfaculty" tabindex="-1" role="dialog" aria-labelledby="invalid-students" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="invalid-faculty">INVALID STUDENTS LIST </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h6><b>Following FACULTY do not belong to <?php echo $_SESSION['dept_name']  ?> department:</b></h6>
+                            <ul id="invalidfacultylist">
+                                <li>abc</li>
+                                <li>def</li>
+                                <li>ghi</li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -322,13 +343,14 @@ include('../includes/header.php');
                                 $dept_names = array();
                                 $email = $_SESSION['email'];
                                 $department = 'department';
-                                $query = "SELECT distinct(dept_name) FROM department";
+                                $roleRestriction = in_array($_SESSION['role'], array("faculty_co", "HOD")) ? "where dept_id={$_SESSION['dept_id']}" : "";
+                                $query = "SELECT distinct(dept_name) FROM department $roleRestriction";
                                 if ($result = mysqli_query($conn, $query)) {
                                     $rowcount = mysqli_num_rows($result);
                                     while ($row = mysqli_fetch_array($result)) {
                                         $dept_name = $row['dept_name'];
                                         echo '<div class="custom-control custom-checkbox custom-control-inline">
-                                                    <input type="checkbox" name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
+                                                    <input type="checkbox" checked name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
                                                     <label class="custom-control-label" for="filter_dept_' . $dept_name . '">' . $dept_name . '</label>
                                                 </div>';
                                     }
@@ -350,7 +372,7 @@ include('../includes/header.php');
                                     while ($row = mysqli_fetch_array($result)) {
                                         $post = $row['post'];
                                         echo '<div class="custom-control custom-checkbox custom-control-inline">
-                                                    <input type="checkbox" name="filter_post[]" class="custom-control-input" value="' . $post . '" id="filter_post_' . $post . '">
+                                                    <input checked type="checkbox" name="filter_post[]" class="custom-control-input" value="' . $post . '" id="filter_post_' . $post . '">
                                                     <label class="custom-control-label" for="filter_post_' . $post . '">' . $post . '</label>
                                                 </div>';
                                     }
@@ -371,7 +393,7 @@ include('../includes/header.php');
                                     while ($row = mysqli_fetch_array($result)) {
                                         $role = $row['role'];
                                         echo '<div class="custom-control custom-checkbox custom-control-inline">
-                                                    <input type="checkbox" name="filter_role[]" class="custom-control-input" value="' . $role . '" id="filter_role_' . $role . '">
+                                                    <input checked type="checkbox" name="filter_role[]" class="custom-control-input" value="' . $role . '" id="filter_role_' . $role . '">
                                                     <label class="custom-control-label" for="filter_role_' . $role . '">' . $role . '</label>
                                                 </div>';
                                     }
@@ -435,19 +457,30 @@ include('../includes/header.php');
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
-        $("#upload_internal").attr("disabled", true);
-        $("#upload_internal").text("Uploading...")
+        // $("#upload_internal").attr("disabled", true);
+        // $("#upload_internal").text("Uploading...")
         $.ajax({
             url: "adduser/bulkUpload/add_internalfaculty.php",
             type: 'POST',
             data: formData,
             success: function(data) {
+
                 let [status, response] = $.trim(data).split("+");
                 console.log(status)
                 if (status == "Successful") {
-                    $("#upload_internal").text("Uploaded Successfully")
                     const resData = JSON.parse(response);
-                    alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                    console.log(resData)
+                    if (resData.errors.wrongDept.length > 0) {
+                        $('#invalidfacultylist').empty();
+                        resData.errors.wrongDept.forEach((entry) => {
+                            $('#invalidfacultylist').append(`<li class='text-danger'>${entry.email} - ${id_to_name_convertor_dept(entry.dept)}</li>`)
+                        })
+                        $('#uploadinternal').modal('hide');
+                        $('#invalidfaculty').modal('show')
+                    } else {
+
+                        alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                    }
                     loadCurrent();
                 } else {
                     $("#upload_internal").text("Upload Failed")

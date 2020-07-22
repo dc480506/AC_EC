@@ -55,7 +55,7 @@ update = "update student set rollno=%s,fname=%s,mname=%s,lname=%s,year_of_admiss
 insert_student_login = """Insert into login_role(username,email_id,password,password_set,role) VALUES(%s,%s,%s,%s,%s);"""
 password_set = 0
 role = "student"
-login_role = argument[mapper['role']]
+
 
 inserted_records_count = 0
 updated_records_count = 0
@@ -65,7 +65,7 @@ errors = {"wrongDept": []}
 def insert_record(update_values, values_insert, values_login):
     global updated_records_count, inserted_records_count, argument
     if argument[mapper['upload_constraint']] == "2":
-        updated_records_count += cursor.execute(update, values)
+        updated_records_count += cursor.execute(update, update_values)
     else:
         cursor.execute(insert, values)
         cursor.execute(insert_student_login, values_login)
