@@ -40,9 +40,21 @@ if (isset($_POST['filters'])) {
       $filterQuery .= "&& dept_name in(" . "'" . implode("', '", $filters['depts']) . "'" . ")";
    }
 }
-$role_restriction = "";
+
+$roles_applicable = array();
+$flag = false;
+foreach ($roles as $key => $value) {
+   if ($flag) {
+      array_push($roles_applicable, $key);
+   }
+   if ($key == $_SESSION["role"]) {
+      $flag = 1;
+   }
+}
+$role_restriction = " and f.role in ('" . implode("','", $roles_applicable) . "')";
 if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
-   $role_restriction = " and f.dept_id='{$_SESSION['dept_id']}' ";
+
+   $role_restriction .= " and f.dept_id='{$_SESSION['dept_id']}' ";
 }
 
 ## Total number of records without filtering
