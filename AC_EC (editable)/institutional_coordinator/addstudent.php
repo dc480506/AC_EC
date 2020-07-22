@@ -45,6 +45,27 @@ include('../includes/header.php');
                 </div>
             </div>
             <br>
+            <div class="modal fade " id="invalidstudents" tabindex="-1" role="dialog" aria-labelledby="invalid-students" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="invalid-students">INVALID STUDENTS LIST </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h6><b>Following students do not belong to <?php echo $_SESSION['dept_name']  ?> department:</b></h6>
+                            <ul id="invalidstudentslist">
+                                <li>abc</li>
+                                <li>def</li>
+                                <li>ghi</li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Upload div -->
             <div class="modal fade" id="uploadstudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -98,9 +119,9 @@ include('../includes/header.php');
                                                 <div class="form-group col-md-12">
                                                     <label for="rno"><b>Program</b></label>
                                                     <select class="form-control" id="program" name="program" required>
-                                                        <option  value="UG">UG</option>
+                                                        <option value="UG">UG</option>
                                                         <option value="PG">PG</option>
-                                                        <option  value="PHD">PhD</option>
+                                                        <option value="PHD">PhD</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -269,35 +290,35 @@ include('../includes/header.php');
                                     <label for="">Semester</label>
                                     <br />
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="1" id="semester_1">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="1" id="semester_1">
                                         <label class="custom-control-label" for="semester_1">1</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="2" id="semester_2">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="2" id="semester_2">
                                         <label class="custom-control-label" for="semester_2">2</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="3" id="semester_3">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="3" id="semester_3">
                                         <label class="custom-control-label" for="semester_3">3</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="4" id="semester_4">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="4" id="semester_4">
                                         <label class="custom-control-label" for="semester_4">4</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="5" id="semester_5">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="5" id="semester_5">
                                         <label class="custom-control-label" for="semester_5">5</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="6" id="semester_6">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="6" id="semester_6">
                                         <label class="custom-control-label" for="semester_6">6</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="7" id="semester_7">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="7" id="semester_7">
                                         <label class="custom-control-label" for="semester_7">7</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" name="filter_semester[]" class="custom-control-input" value="8" id="semester_8">
+                                        <input type="checkbox" checked name="filter_semester[]" class="custom-control-input" value="8" id="semester_8">
                                         <label class="custom-control-label" for="semester_8">8</label>
                                     </div>
 
@@ -310,13 +331,14 @@ include('../includes/header.php');
                                     $dept_names = array();
                                     $email = $_SESSION['email'];
                                     $department = 'department';
-                                    $query = "SELECT distinct(dept_name) FROM department";
+                                    $roleRestriction = in_array($_SESSION['role'], array("faculty_co", "HOD")) ? "where dept_id={$_SESSION['dept_id']}" : "";
+                                    $query = "SELECT distinct(dept_name) FROM department $roleRestriction";
                                     if ($result = mysqli_query($conn, $query)) {
                                         $rowcount = mysqli_num_rows($result);
                                         while ($row = mysqli_fetch_array($result)) {
                                             $dept_name = $row['dept_name'];
                                             echo '<div class="custom-control custom-checkbox custom-control-inline">
-                                                    <input type="checkbox" name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
+                                                    <input type="checkbox" checked name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
                                                     <label class="custom-control-label" for="filter_dept_' . $dept_name . '">' . $dept_name . '</label>
                                                 </div>';
                                         }
@@ -1047,6 +1069,7 @@ include('../includes/header.php');
     $("body").on("click", ".bulkUpdate", function() {
         var update_rows = $("#dataTable-studentUg").DataTable().rows('.selected').data();
         if (update_rows.length > 0) {
+            $("#updatebtnUg").text("Update");
             $("#bulkUpdateModalUg").modal('show');
         } else {
             alert("select some rows");
@@ -1378,6 +1401,7 @@ $.ajax({
 $("body").on("click", ".bulkUpdatePg", function() {
 var update_rows = $("#dataTable-studentPg").DataTable().rows('.selected').data();
 if (update_rows.length > 0) {
+    $("#updatebtnUg").text("Update");
     $("#bulkUpdateModalPg").modal('show');
 } else {
     alert("select some rows");
@@ -1671,6 +1695,7 @@ $("#select_allPhd").click(function(e) {
 })
 
 $("#bulkUpdateFormPhd").submit(function(e) {
+
 // console.log("a")
 e.preventDefault();
 var update_rows = $("#dataTable-studentPhd").DataTable().rows('.selected').data();
@@ -1701,6 +1726,7 @@ $.ajax({
         $("#updatebtnPhd").text("Updated Successfully");
         // console.log(data)
         $("#dataTable-studentPhd").DataTable().draw(false);
+     
     }
 })
 });
@@ -1708,11 +1734,13 @@ $.ajax({
 $("body").on("click", ".bulkUpdatePhd", function() {
 var update_rows = $("#dataTable-studentPhd").DataTable().rows('.selected').data();
 if (update_rows.length > 0) {
+    $("#updatebtnUg").text("Update");
     $("#bulkUpdateModalPhd").modal('show');
 } else {
     alert("select some rows");
 }
 })
+
 
 $("#delete_selected_Phd_btn").click(function(e) {
     alert("You have selected " + $("#dataTable-studentPhd tbody tr.selected").length + " record(s) for deletion");
@@ -1895,12 +1923,24 @@ $("#dataTable-studentPhd").on('click', 'td.email_id', function() {
                 type: 'POST',
                 data: formData,
                 success: function(data) {
+
                     let [status, response] = $.trim(data).split("+");
+
                     if (status == "Successful") {
                         $("#upload_student").text("Uploaded Successfully")
-                        console.log(response)
                         const resData = JSON.parse(response);
-                        alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                        console.log(resData)
+                        if (resData.errors.wrongDept.length > 0) {
+                            $('#invalidstudentslist').empty();
+                            resData.errors.wrongDept.forEach((entry) => {
+                                $('#invalidstudentslist').append(`<li class='text-danger'>${entry.email} - ${id_to_name_convertor_dept(entry.dept)}</li>`)
+                            })
+                            $('#uploadstudent').modal('hide');
+                            $('#invalidstudents').modal('show')
+                        } else {
+
+                            alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                        }
                         if (activeTab == "Ug") {
                             loadUg();
                         } else if (activeTab == "Pg") {

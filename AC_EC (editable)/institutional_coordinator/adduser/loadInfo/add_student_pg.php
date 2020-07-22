@@ -41,21 +41,29 @@ $searchQuery = "1";
 if ($searchValue != '') {
    $searchQuery = "(email_id like '%" . $searchValue . "%' or current_sem like '%" . $searchValue . "%' or rollno like '%" . $searchValue . "%' or dept_name like '%" . $searchValue . "%' or fname like '%" . $searchValue . "%' or mname like '%" . $searchValue . "%' or lname like '%" . $searchValue . "%' or year_of_admission like '%" . $searchValue . "%' )";
 }
+$role_restriction = "";
+if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
+   $role_restriction = " and s.dept_id='{$_SESSION['dept_id']}' ";
+}
 
 ## Total number of records without filtering
-$sel = mysqli_query($conn, "select count(*) as totalcount from student WHERE program='PG'");
+$sql = "select count(*) as totalcount from student s WHERE s.program='PG' " . $role_restriction;
+$sel = mysqli_query($conn, $sql);
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
 ## Total number of record with filtering
-$sel = mysqli_query($conn, "select count(*) as totalcountfilters from student s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='PG' and " . $searchQuery . "&& (" . $filterQuery . ")");
+
+$sqlFiltered = "select count(*) as totalcountfilters from student s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='PG'" . $role_restriction . " && " . $searchQuery . "&& (" . $filterQuery . ")";
+// die($sqlFiltered);
+$sel = mysqli_query($conn, $sqlFiltered);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
 ## Fetch records
 
 $sql = "select email_id,rollno,current_sem,dept_name,CONCAT(fname,' ',mname,' ',lname) as name,year_of_admission  
-       from student s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='PG' and "
+       from student s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='PG'" . $role_restriction . " && "
    . $searchQuery . "&& (" . $filterQuery . ")" . $orderQuery . " limit " . $row . "," . $rowperpage;
 // echo $sql;
 $studentRecords = mysqli_query($conn, $sql);
@@ -65,7 +73,7 @@ $fullname = "";
 while ($row = mysqli_fetch_assoc($studentRecords)) {
 
    $data[] = array(
-      
+
       "select-cbox" => '<div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input selectrow" id="selectrow' . $count . '">
                         <label class="custom-control-label" for="selectrow' . $count . '"></label>

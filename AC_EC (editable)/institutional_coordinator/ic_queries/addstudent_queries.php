@@ -1,6 +1,7 @@
 <?php
 session_start();
-if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
+$allowed_roles = array("inst_coor", "faculty_co", "HOD");
+if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
     include_once("../../config.php");
     if(isset($_POST['save_changes'])){
         $fname=mysqli_escape_string($conn,$_POST['fname']);
@@ -100,4 +101,3 @@ if(isset($_SESSION['email']) && $_SESSION['role']=="inst_coor"){
     }
 
 }
-?>
