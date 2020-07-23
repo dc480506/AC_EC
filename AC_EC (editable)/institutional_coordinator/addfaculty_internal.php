@@ -201,6 +201,27 @@ include('../includes/header.php');
                 </div>
             </div>
             <!-- Modal -->
+            <div class="modal fade " id="invalidfaculty" tabindex="-1" role="dialog" aria-labelledby="invalid-students" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="invalid-faculty">INVALID STUDENTS LIST </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h6><b>Following FACULTY do not belong to <?php echo $_SESSION['dept_name']  ?> department:</b></h6>
+                            <ul id="invalidfacultylist">
+                                <li>abc</li>
+                                <li>def</li>
+                                <li>ghi</li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -216,11 +237,11 @@ include('../includes/header.php');
                                 <div class="form-row mt-4">
                                     <div class="form-group col-md-6">
                                         <label for="name"><b>Name</b></label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="name">
+                                        <input required type="text" class="form-control" id="name" name="name" placeholder="name">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="emailid"><b>Email Address</b></label>
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="email@gmail.com">
+                                        <input required type="email" class="form-control" id="email" name="email" placeholder="email@gmail.com">
                                         <!-- <span id="error_email_id" class="text-danger"></span> -->
 
                                     </div>
@@ -228,25 +249,34 @@ include('../includes/header.php');
                                 <div class="form-row mt-4">
                                     <div class="form-group col-md-6">
                                         <label for="faculty_code"><b>Faculty Code</b></label>
-                                        <input type="text" class="form-control" id="faculty_code" name="faculty_code" placeholder="faculty code">
+                                        <input required type="text" class="form-control" id="faculty_code" name="faculty_code" placeholder="faculty code">
                                         <!-- <span id="error_faculty_code" class="text-danger"></span> -->
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="eid"><b>Employee ID</b></label>
-                                        <input type="text" class="form-control" name="eid" placeholder="Employee Id">
+                                        <input required type="text" class="form-control" name="eid" placeholder="Employee Id">
                                         <!-- <span id="error_employee_id" class="text-danger"></span> -->
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="department"><b>Department</b></label>
-                                        <select class="form-control" required name="dept">
+                                        <select required class="form-control" required name="dept">
                                             <?php
                                             include_once("../config.php");
-                                            $sql = "SELECT * FROM department";
-                                            $result = mysqli_query($conn, $sql);
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                echo '<option value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                            if ($_SESSION['role'] == "inst_coor") {
+
+                                                $sql = "SELECT * FROM department";
+                                                $result = mysqli_query($conn, $sql);
+                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                    if ($row['dept_id'] == $dept_id) {
+                                                        echo '<option selected value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                                    } else {
+                                                        echo '<option  value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                                    }
+                                                }
+                                            } else if (in_array($_SESSION['role'], array('faculty_co', "HOD"))) {
+                                                echo '<option  value="' . $_SESSION['dept_id'] . '">' . $_SESSION['dept_name'] . '</option>';
                                             }
                                             ?>
                                         </select>
@@ -254,18 +284,28 @@ include('../includes/header.php');
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="postadd"><b>Post</b></label>
-                                        <input type="text" class="form-control" name="post" placeholder="post">
+                                        <input required type="text" class="form-control" name="post" placeholder="post">
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <label for="role"><b>Role</b></label>
                                         <div class="form-group">
-                                            <select class="form-control" required name="role">
-                                                <option value="inst_coor">Institutional coordinator</option>
-                                                <option value="hod">HOD</option>
-                                                <option value="faculty_co">Faculty coordinator</option>
-                                                <option value="faculty">Faculty</option>
+                                            <select required class="form-control" required name="role">
+                                                <?php $roles_applicable = array();
+                                                $flag = false;
+                                                foreach ($roles as $key => $value) {
+                                                    if ($flag) {
+                                                        $roles_applicable[$key] = $value;
+                                                    }
+                                                    if ($key == $_SESSION["role"]) {
+                                                        $flag = 1;
+                                                    }
+                                                }
+
+                                                foreach ($roles_applicable as $key => $value) {
+                                                    echo "<option value='$key'>$value</option>";
+                                                } ?>
                                             </select>
                                         </div>
                                     </div>
@@ -299,16 +339,18 @@ include('../includes/header.php');
                                 <label for="">Department</label>
                                 <br>
                                 <?php
+
                                 $dept_names = array();
                                 $email = $_SESSION['email'];
                                 $department = 'department';
-                                $query = "SELECT distinct(dept_name) FROM department";
+                                $roleRestriction = in_array($_SESSION['role'], array("faculty_co", "HOD")) ? "where dept_id={$_SESSION['dept_id']}" : "";
+                                $query = "SELECT distinct(dept_name) FROM department $roleRestriction";
                                 if ($result = mysqli_query($conn, $query)) {
                                     $rowcount = mysqli_num_rows($result);
                                     while ($row = mysqli_fetch_array($result)) {
                                         $dept_name = $row['dept_name'];
                                         echo '<div class="custom-control custom-checkbox custom-control-inline">
-                                                    <input type="checkbox" name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
+                                                    <input type="checkbox" checked name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
                                                     <label class="custom-control-label" for="filter_dept_' . $dept_name . '">' . $dept_name . '</label>
                                                 </div>';
                                     }
@@ -330,7 +372,7 @@ include('../includes/header.php');
                                     while ($row = mysqli_fetch_array($result)) {
                                         $post = $row['post'];
                                         echo '<div class="custom-control custom-checkbox custom-control-inline">
-                                                    <input type="checkbox" name="filter_post[]" class="custom-control-input" value="' . $post . '" id="filter_post_' . $post . '">
+                                                    <input checked type="checkbox" name="filter_post[]" class="custom-control-input" value="' . $post . '" id="filter_post_' . $post . '">
                                                     <label class="custom-control-label" for="filter_post_' . $post . '">' . $post . '</label>
                                                 </div>';
                                     }
@@ -351,7 +393,7 @@ include('../includes/header.php');
                                     while ($row = mysqli_fetch_array($result)) {
                                         $role = $row['role'];
                                         echo '<div class="custom-control custom-checkbox custom-control-inline">
-                                                    <input type="checkbox" name="filter_role[]" class="custom-control-input" value="' . $role . '" id="filter_role_' . $role . '">
+                                                    <input checked type="checkbox" name="filter_role[]" class="custom-control-input" value="' . $role . '" id="filter_role_' . $role . '">
                                                     <label class="custom-control-label" for="filter_role_' . $role . '">' . $role . '</label>
                                                 </div>';
                                     }
@@ -415,19 +457,30 @@ include('../includes/header.php');
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
-        $("#upload_internal").attr("disabled", true);
-        $("#upload_internal").text("Uploading...")
+        // $("#upload_internal").attr("disabled", true);
+        // $("#upload_internal").text("Uploading...")
         $.ajax({
             url: "adduser/bulkUpload/add_internalfaculty.php",
             type: 'POST',
             data: formData,
             success: function(data) {
+
                 let [status, response] = $.trim(data).split("+");
                 console.log(status)
                 if (status == "Successful") {
-                    $("#upload_internal").text("Uploaded Successfully")
                     const resData = JSON.parse(response);
-                    alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                    console.log(resData)
+                    if (resData.errors.wrongDept.length > 0) {
+                        $('#invalidfacultylist').empty();
+                        resData.errors.wrongDept.forEach((entry) => {
+                            $('#invalidfacultylist').append(`<li class='text-danger'>${entry.email} - ${id_to_name_convertor_dept(entry.dept)}</li>`)
+                        })
+                        $('#uploadinternal').modal('hide');
+                        $('#invalidfaculty').modal('show')
+                    } else {
+
+                        alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                    }
                     loadCurrent();
                 } else {
                     $("#upload_internal").text("Upload Failed")
