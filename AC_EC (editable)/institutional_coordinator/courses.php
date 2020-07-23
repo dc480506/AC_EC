@@ -107,8 +107,8 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                                     <?php
                                     $years = array();
                                     $email = $_SESSION['email'];
-
-                                    $query = "SELECT distinct(year) FROM audit_course UNION SELECT distinct(year) FROM audit_course_log ORDER by year desc";
+                                    $condition = "program='{$_POST['program']}' and course_type_id=$course_type_id ";
+                                    $query = "SELECT distinct(year) FROM course where $condition UNION SELECT distinct(year) FROM course_log where $condition ORDER by year desc";
                                     if ($result = mysqli_query($conn, $query)) {
                                         $rowcount = mysqli_num_rows($result);
                                         while ($row = mysqli_fetch_array($result)) {
@@ -540,36 +540,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                                                     }
                                                     ?>
                                                     <br>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
-                                                        <label class="form-check-label" for="exampleCheck1">Similar previous course</label>
-                                                    </div>
-                                                    <div id="map_section" style="display: none;">
-                                                        <!-- <input type="hidden" value="0" id="total_prev" name="total_prev"> -->
-                                                        <!-- <div id="map_sec1" style="display :none;"> -->
-                                                        <!-- <h5 class="modal-title">Previous Course 1</h5>
-                                                            <div class="form-group" id="previous_field1" style="display: block;">
-                                                                <label for="previous_field1"><b>Course ID</b></label>
-                                                                <input type="text" class="form-control" id="previous_id1" name="prevcid1" placeholder="Course Id">
-                                                            </div>
-                                                            <div class="form-group" id="previous_field2" style="display: block;">
-                                                                <label for="previous_field2"><b>Previous Semester</b></label>
-                                                                <input type="text" class="form-control" id="previous_sem1" name="prevsem1" placeholder="Previous Semester">
-                                                            </div>
-                                                            <div class="form-group" id="previous_field3" style="display: block;">
-                                                                <label for="previous_field3"><b>Previous Year</b></label>
-                                                                <input type="text" class="form-control" id="previous_year1" name="prevyear1" placeholder="Previous Year">
-                                                            </div> -->
-                                                        <!-- </div> -->
-                                                    </div>
-                                                    <BR>
-                                                    <div class="form-group">
 
-                                                        <button type="button" id="add_prev" class="btn btn-primary" style="display: none;">Add</button>
-                                                        <!-- <button type="button" id="rem_prev" class="btn btn-primary" style="display: none;">Remove the Previous Course</button> -->
-                                                        <input type="hidden" value="0" id="total_prev" name="total_prev">
-
-                                                    </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" id="close_add_course_form" data-dismiss="modal" name="close">Close</button>
                                                         <button type="submit" id="add_course_btn" class="btn btn-primary" name="add_course">Add</button>
