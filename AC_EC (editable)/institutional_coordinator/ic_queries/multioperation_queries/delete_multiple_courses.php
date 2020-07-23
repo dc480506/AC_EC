@@ -28,6 +28,8 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
     } else if ($data['type'] == 'upcoming') {
         $delete_data = $data['delete_data'];
         $del_condition = " (";
+        $course_type_id = $data['course_type_id'];
+        $program = $data['program'];
         // echo var_dump($delete_data);
         foreach ($delete_data as $key => $val) {
             // echo var_dump($val);
@@ -41,6 +43,8 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
         $sql = "DELETE FROM course WHERE course_type_id = '$course_type_id' AND program='$program' AND currently_active=0 and " . $del_condition;
         mysqli_query($conn, $sql);
     } else if ($data['type'] == 'previous') {
+        $course_type_id = $data['course_type_id'];
+        $program = $data['program'];
         $delete_data = $data['delete_data'];
         $del_condition = " (";
         // echo var_dump($delete_data);

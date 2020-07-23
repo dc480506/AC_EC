@@ -8,7 +8,7 @@ $CLIENT_ID = "444425785443-5mh44gn88jrf46t217t7i4m62r4ui1ro.apps.googleuserconte
 $google_api_path = "../../../google-api-php-client-2.4.0/";
 $base_dir = "C:/xampp/uploads/AC_EC/";
 $conn = new mysqli($servername, $username, $password, $dbname, $port);
-$exclude_dept = "6";
+$exclude_dept = "6,7";
 $other_pref_cols_audit_count = 9;
 $hash_key = "35621";
 $roles = array("inst_coor" => "institutional Co-ordinator", "HOD" => "HOD", "faculty_co" => "faculty Co-ordinator", "faculty" => "Faculty");

@@ -11,6 +11,8 @@ include('../includes/header.php');
 $course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
 $sql = "select name from course_types where id='$course_type_id'";
 $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
+$is_closed_elective = $_POST['is_closed_elective'];
+
 ?>
 
 <!-- Begin Page Content -->
@@ -492,18 +494,42 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                                                         <!-- <select class="form-control" required name="dept">-->
                                                         <?php
                                                         include_once('../config.php');
-                                                        $sql = "SELECT * FROM department";
-                                                        $result = mysqli_query($conn, $sql);
                                                         $c = 8;
-                                                        while ($row = mysqli_fetch_assoc($result)) {
-                                                            echo '
+                                                        if ($_SESSION['role'] == "inst_coor") {
+
+                                                            $sql = "SELECT * FROM department";
+                                                            $result = mysqli_query($conn, $sql);
+                                                            $c = 8;
+                                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                                echo '
                                                         <div class="custom-control custom-checkbox custom-control-inline">
                                                             <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
                                                             <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
                                                         </div>
                                                         ';
-                                                            $c++;
+                                                                $c++;
+                                                            }
+                                                        } else if (in_array($_SESSION['role'], array('faculty_co', "HOD"))) {
+                                                            echo '  
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" checked class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $_SESSION['dept_id'] . '">
+                                                                <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
+                                                            </div>';
                                                         }
+
+
+                                                        // $sql = "SELECT * FROM department";
+                                                        // $result = mysqli_query($conn, $sql);
+                                                        // $c = 8;
+                                                        // while ($row = mysqli_fetch_assoc($result)) {
+                                                        //     echo '
+                                                        // <div class="custom-control custom-checkbox custom-control-inline">
+                                                        //     <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
+                                                        //     <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                        // </div>
+                                                        // ';
+                                                        //     $c++;
+                                                        // }
                                                         ?>
 
                                                     </div>
@@ -520,23 +546,33 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                                                     </div>
                                                     <label for="branch"><b>Branches to opt for</b></label>
                                                     <br>
-                                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                                        <input type="checkbox" class="custom-control-input" id="applicable_dept_upcoming_cb7" checked>
-                                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb7"><small>All</small></label>
-                                                    </div>
+
                                                     <?php
                                                     include_once('../config.php');
-                                                    $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    $c = 8;
-                                                    while ($row = mysqli_fetch_assoc($result)) {
-                                                        echo '
-                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                    if ($is_closed_elective == 0) {
+                                                        echo '<div class="custom-control custom-checkbox custom-control-inline">
+                                                        <input type="checkbox" class="custom-control-input" id="applicable_dept_upcoming_cb7" checked>
+                                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb7"><small>All</small></label>
+                                                    </div>';
+                                                        $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
+                                                        $result = mysqli_query($conn, $sql);
+                                                        $c = 8;
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                            echo '
+                                                        <div class="custom-control custom-checkbox custom-control-inline">
                                                         <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
                                                         <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                                    </div>
-                                                    ';
-                                                        $c++;
+                                                        </div>
+                                                        ';
+                                                            $c++;
+                                                        }
+                                                    } else {
+                                                        echo '
+                                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $_SESSION['dept_id'] . '" checked>
+                                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
+                                                        </div>
+                                                        ';
                                                     }
                                                     ?>
                                                     <br>
@@ -3353,6 +3389,16 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             name: $("#add_course_btn").attr('name'),
             value: $("#add_course_btn").attr('value')
         });
+        form_serialize.push({
+            name: "program",
+            value: '<?php echo $_POST['program']; ?>'
+        });
+        form_serialize.push({
+            name: "course_type_id",
+            value: '<?php echo $course_type_id; ?>'
+        });
+
+
         $("#add_course_btn").text("Adding...");
         $("#add_course_btn").attr("disabled", true);
         $.ajax({
@@ -3373,6 +3419,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                 } else {
                     $("#add_course_btn").text("Added Successfully");
                     $('add_upcoming_max_error').remove();
+                    $(`#dataTable-${activeTab}`).DataTable().ajax.reload(false);
                 }
             }
         });
