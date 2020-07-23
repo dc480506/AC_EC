@@ -12,7 +12,7 @@ $course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
 $sql = "select name from course_types where id='$course_type_id'";
 $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
 $is_closed_elective = $_POST['is_closed_elective'];
-
+// die($is_closed_elective == 1 ? "hello" : "hi");
 ?>
 
 <!-- Begin Page Content -->
@@ -496,18 +496,30 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                                         include_once('../config.php');
                                                         $c = 8;
                                                         if ($_SESSION['role'] == "inst_coor") {
-
                                                             $sql = "SELECT * FROM department";
                                                             $result = mysqli_query($conn, $sql);
                                                             $c = 8;
+                                                            if ($is_closed_elective == "1") {
+                                                                echo '<select class="form-control" required id="exampleInputFloatingDept" name="floating_check_dept[]" required>
+                                                                <option disabled></option>';
+                                                            }
+
                                                             while ($row = mysqli_fetch_assoc($result)) {
-                                                                echo '
-                                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                                            <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
-                                                            <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                                        </div>
-                                                        ';
+                                                                if ($is_closed_elective == "1") {
+                                                                    echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
+                                                                } else {
+
+                                                                    echo '
+                                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                                    <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
+                                                                    <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                                    </div>
+                                                                    ';
+                                                                }
                                                                 $c++;
+                                                            }
+                                                            if ($is_closed_elective == "1") {
+                                                                echo '</select>';
                                                             }
                                                         } else if (in_array($_SESSION['role'], array('faculty_co', "HOD"))) {
                                                             echo '  
@@ -549,14 +561,15 @@ $is_closed_elective = $_POST['is_closed_elective'];
 
                                                     <?php
                                                     include_once('../config.php');
+                                                    $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
+                                                    $result = mysqli_query($conn, $sql);
+                                                    $c = 8;
                                                     if ($is_closed_elective == 0) {
                                                         echo '<div class="custom-control custom-checkbox custom-control-inline">
                                                         <input type="checkbox" class="custom-control-input" id="applicable_dept_upcoming_cb7" checked>
                                                         <label class="custom-control-label" for="applicable_dept_upcoming_cb7"><small>All</small></label>
                                                     </div>';
-                                                        $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
-                                                        $result = mysqli_query($conn, $sql);
-                                                        $c = 8;
+
                                                         while ($row = mysqli_fetch_assoc($result)) {
                                                             echo '
                                                         <div class="custom-control custom-checkbox custom-control-inline">
@@ -567,12 +580,23 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                                             $c++;
                                                         }
                                                     } else {
-                                                        echo '
-                                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $_SESSION['dept_id'] . '" checked>
-                                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
-                                                        </div>
-                                                        ';
+                                                        if ($_SESSION['role'] == "inst_coor") {
+                                                            echo '<input type="text" class="form-control" required readonly id= "exampleInputApplicableDept" name= "check_dept[]" />';
+                                                            // echo '<select class="form-control" required id="exampleInputApplicableDept" name="check_dept[]" required>';
+                                                            // while ($row = mysqli_fetch_assoc($result)) {
+                                                            //     echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
+                                                            //     $c++;
+                                                            // }
+                                                            // echo "</select>";
+                                                        } else {
+                                                            echo '
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                            
+                                                            <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $_SESSION['dept_id'] . '" checked>
+                                                            <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
+                                                            </div>
+                                                            ';
+                                                        }
                                                     }
                                                     ?>
                                                     <br>
@@ -1115,6 +1139,10 @@ $is_closed_elective = $_POST['is_closed_elective'];
 </div>
 <!-- /.container-fluid -->
 <script>
+    $('#exampleInputFloatingDept').change(function() {
+        $("#exampleInputApplicableDept").val($(this).find(":selected").text())
+    })
+
     function showMapSection() {
         var checkBox = document.getElementById("map_cbox");
 
@@ -1660,6 +1688,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         // delete courseData.action
         // delete courseData.allocate_faculty
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['is_closed_elective'] = '<?php echo $is_closed_elective; ?>';
         courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
@@ -2334,6 +2363,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         // delete courseData.action
         // delete courseData.allocate_faculty
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['is_closed_elective'] = '<?php echo $is_closed_elective; ?>';
         courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
@@ -3010,6 +3040,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         // delete courseData.action
         // delete courseData.allocate_faculty
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['is_closed_elective'] = '<?php echo $is_closed_elective; ?>';
         courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
