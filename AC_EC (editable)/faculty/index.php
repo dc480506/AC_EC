@@ -18,16 +18,22 @@ include('../includes/header.php');
                     <?php
                     $email = $_SESSION['email'];
                     $fname = 'fname';
+                    $mname='mname';
                     $lname = 'lname';
+                    $post= 'prof';
+                    $emp_id='1';
                     $department = 'department';
                     $mobile = '9876543201';
                     $image = "../vendor/img/person1.jpg";
-                    $query = "SELECT fname, lname, dept_id FROM faculty WHERE email_id = '$email'";
+                    $query = "SELECT fname,mname,lname,employee_id,post ,dept_id FROM faculty WHERE email_id = '$email'";
                     if ($result = mysqli_query($conn, $query)) {
                         $rowcount = mysqli_num_rows($result);
                         if ($rowcount == 1) {
                             $row = mysqli_fetch_assoc($result);
                             $fname = $row['fname'];
+                            $mname= $row['mname'];
+                            $emp_id= $row['employee_id'];
+                            $post=$row['post'];
                             $lname = $row['lname'];
                             $dept_id = $row['dept_id'];
                             $query = "SELECT dept_name FROM department WHERE dept_id = '$dept_id'";
@@ -44,12 +50,14 @@ include('../includes/header.php');
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo $fname . ' ' . $lname; ?></p>
-                                    <p class="text-dark"> <span><b>Email : </b></span><?php echo $email; ?></p>
+                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo $fname . ' ' . $mname.' ' . $lname; ?></p>
+                                    <p class="text-dark"> <span><b>ID : </b></span><?php echo $emp_id; ?> </p>
+                                    <p class="text-dark"> <span><b>POST : </b></span><?php echo $post; ?> </p>
                                 </div>
                                 <div class="col-md-6">
                                     <p class="text-dark"> <span><b>Department : </b></span><?php echo $department; ?> </p>
                                     <p class="text-dark"> <span><b>Mobile No. : </b></span><?php echo $mobile; ?></p>
+                                    <p class="text-dark"> <span><b>Email : </b></span><?php echo $email; ?></p>
                                 </div>
                             </div>
                         </div>
@@ -78,31 +86,48 @@ include('../includes/header.php');
                                 <tr>
                                     <th>Course Name</th>
                                     <th>Course ID</th>
+                                    <th>Course Type </th>
                                     <th>Semester</th>
                                     <th>Year</th>
-                                    <th>Course Strength</th>
                                     <th>Student Data</th>
-                                    <th>Erasure</th>
+                                    <th>Erasure </th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th>Course Name</th>
                                     <th>Course ID</th>
+                                    <th>Course Type </th>
                                     <th>Semester</th>
                                     <th>Year</th>
-                                    <th>Course Strength</th>
                                     <th>Student Data</th>
-                                    <th>Erasure</th>
+                                    <th>Erasure </th>
                                 </tr>
                             </tfoot>
                             <tbody>
-                                <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>6</td>
-                                    <td>30</td>
+
+                            <?php 
+                            
+                                $sql="SELECT fca.cid,fca.course_type_id,fca.sem,fca.year,ctype.name,course.cname from faculty_course_alloted as fca, course, course_types as ctype where fca.cid=course.cid and fca.course_type_id=ctype.id and fca.email_id='$email'";
+                                $result = mysqli_query($conn, $sql);
+                                $count = 0;
+
+                                while ($row = mysqli_fetch_array($result)) {  ?>
+                                    <tr>
+                                        <td><?php echo $row['cname']; ?></td>
+
+                                        <td><?php echo $row['cid']; ?></td>
+
+                                        <td><?php echo $row['name']; ?></td>
+
+                                        <td><?php echo $row['sem']; ?></td>
+
+                                        <td><?php echo $row['year']; ?></td>
+                                    </tr>
+                            
+                               
+
+                            <!-- select fca.cid,fca.course_type_id,fca.sem,fca.year,ctype.name,course.cname from faculty_course_alloted as fca, course, course_types as ctype where fca.cid=course.cid and fca.course_type_id=ctype.id and fca.email_id="faculty@somaiya.edu" -->
                                     <td>
 
                                         <!-- Button trigger modal -->
@@ -246,6 +271,7 @@ include('../includes/header.php');
                                             </div>
                                         </div>
                                     </td>
+                                    <?php } ?> 
                                 </tr>
                             </tbody>
                         </table>
