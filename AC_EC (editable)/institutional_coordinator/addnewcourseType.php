@@ -106,7 +106,6 @@ include('../includes/header.php');
                                         <input type="checkbox" checked class="custom-control-input" id="edit_is_gradable" name="edit_is_gradable" value="">
                                         <label class="custom-control-label" for="edit_is_gradable">Is Gradable</label>
                                     </div>
-                                    <br>
                                     <div class="custom-control custom-checkbox custom-control-inline">
                                         <input type="checkbox" checked class="custom-control-input" id="edit_is_closed_elective" name="edit_is_closed_elective" value="">
                                         <label class="custom-control-label" for="edit_is_closed_elective">Is Closed Elective</label>
@@ -241,14 +240,13 @@ include('../includes/header.php');
         var target_row = $(this).closest("tr");
         var aPos = $("#dataTable-coursetypes").dataTable().fnGetPosition(target_row.get(0));
         var courseTypeData = $('#dataTable-coursetypes').DataTable().row(aPos).data();
-        console.log("coursetypedata:",courseTypeData);
         $("#edit_course_type_form #courseTypeName").val(courseTypeData.name)
         $("#edit_course_type_form #courseTypeId").val(courseTypeData.course_type_id)
         $("#edit_course_type_form #program").val(courseTypeData.program);
-        
-        console.log("from edit modal",courseTypeData.is_closed_elective);
+        console.log(courseTypeData.is_gradable)
         $("#edit_course_type_form #edit_is_gradable").attr("checked", courseTypeData.is_gradable == "yes" ? true : false)
         $("#edit_course_type_form #edit_is_closed_elective").attr("checked", courseTypeData.is_closed_elective == "yes" ? true : false)
+
         $("#edit_course_type_form").submit(editCourseType);
         $('#editCourseType').modal("show");
     }
@@ -256,7 +254,6 @@ include('../includes/header.php');
     function editCourseType(e) {
         e.preventDefault();
         const form = $(this).serializeArray();
-        console.log("from edit course type",form);
         form.push({
             name: "edit_course_type",
             value: "true"
@@ -267,20 +264,16 @@ include('../includes/header.php');
             value: is_gradable
         });
         var is_closed_elective = $("#edit_course_type_form #edit_is_closed_elective").attr("checked") ? 1 : 0;
-      
         form.push({
             name: "is_closed_elective",
             value: is_closed_elective
         });
-        console.log("after pushing:",form);
         $.ajax({
             method: "POST",
             data: form,
             url: "ic_queries/addcourse_type_queries.php",
             success: function(data) {
-                console.log(data);
                 if (data == "edited") {
-                    console.log("hey");
                     $("#editCourseType").modal("hide");
                     loadCurrent();
                 } else {
@@ -355,7 +348,6 @@ include('../includes/header.php');
                 {
                     data: 'is_closed_elective'
                 },
-
                 // {
                 //     data: 'dept_name'
                 // },

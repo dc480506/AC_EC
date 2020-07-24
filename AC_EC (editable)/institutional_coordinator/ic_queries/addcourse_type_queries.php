@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
+if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION['role']=='faculty_co')) {
     include_once("../../config.php");
     //For Course deletion
     if (isset($_POST['add_new_course_type'])) {
