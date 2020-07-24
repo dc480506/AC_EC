@@ -1,7 +1,8 @@
 <?php
 // echo 'Hi';
 session_start();
-if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
+$allowed_roles = array("inst_coor", "faculty_co", "HOD");
+if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
   // echo 'Hi';
   include_once('../../../config.php');
   $data = json_decode(file_get_contents("php://input"), true);

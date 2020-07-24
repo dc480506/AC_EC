@@ -501,12 +501,14 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                                             $c = 8;
                                                             if ($is_closed_elective == "1") {
                                                                 echo '<select class="form-control" required id="exampleInputFloatingDept" name="floating_check_dept[]" required>
-                                                                <option disabled></option>';
+                                                                <option ></option>';
                                                             }
 
                                                             while ($row = mysqli_fetch_assoc($result)) {
+
                                                                 if ($is_closed_elective == "1") {
-                                                                    echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
+                                                                    if (!in_array($row["dept_id"], explode(",", $exclude_dept)))
+                                                                        echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
                                                                 } else {
 
                                                                     echo '
@@ -581,7 +583,8 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                                         }
                                                     } else {
                                                         if ($_SESSION['role'] == "inst_coor") {
-                                                            echo '<input type="text" class="form-control" required readonly id= "exampleInputApplicableDept" name= "check_dept[]" />';
+                                                            echo '<input type="text" class="form-control" required readonly id= "exampleInputApplicableDept"  />';
+                                                            echo '<input type="hidden" id= "exampleInputApplicableDeptVal" name= "check_dept[]" />';
                                                             // echo '<select class="form-control" required id="exampleInputApplicableDept" name="check_dept[]" required>';
                                                             // while ($row = mysqli_fetch_assoc($result)) {
                                                             //     echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
@@ -1141,6 +1144,12 @@ $is_closed_elective = $_POST['is_closed_elective'];
 <script>
     $('#exampleInputFloatingDept').change(function() {
         $("#exampleInputApplicableDept").val($(this).find(":selected").text())
+        $("#exampleInputApplicableDeptVal").val($(this).val())
+    })
+    $('body').on('change', "#exampleInputFloatingDeptUpdate", function() {
+        console.log($(this).find(":selected").text());
+        $("#exampleInputApplicableDeptUpdate").val($(this).find(":selected").text());
+        $("#exampleInputApplicableDeptUpdateVal").val($(this).val());
     })
 
     function showMapSection() {
