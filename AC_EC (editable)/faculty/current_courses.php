@@ -173,7 +173,7 @@ include('../includes/header.php');
                     <?php
                     $email = $_SESSION['email'];
                     $department = 'department';
-                    $query = "SELECT sem FROM faculty_audit NATURAL JOIN audit_course WHERE email_id = '$email'";
+                    $query = "SELECT sem FROM faculty_course_allocated NATURAL JOIN course WHERE email_id = '$email'";
                     if ($result = mysqli_query($conn, $query)) {
                       $rowcount = mysqli_num_rows($result);
                       while ($row = mysqli_fetch_array($result)) {
