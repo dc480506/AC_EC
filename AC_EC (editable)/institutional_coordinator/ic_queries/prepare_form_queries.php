@@ -62,7 +62,6 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
                         INNER JOIN course as ac ON ac.cid= a.newcid
                         EXCEPT SELECT email_id,cid,course_type_id,sem,year,cname FROM hide_student_course WHERE sem='$sem' AND year='$year' and course_type_id in $course_types_string;";
 
-            echo $sql_course_type_map;
             mysqli_query($conn, $sql_course_type_map) or die(mysqli_error($conn));
             mysqli_query($conn, $newsql) or die(mysqli_error($conn));
             mysqli_query($conn, $hidesql) or die(mysqli_error($conn) . " " . $hidesql);
