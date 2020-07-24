@@ -84,6 +84,17 @@
     }
   }
 
+  function disp6() {
+    var checkBox = document.getElementById("exampleCheck6");
+    var field2 = document.getElementById("exampleFormControlSelect6");
+    if (checkBox.checked == true) {
+      field2.style.display = "block";
+
+    } else {
+      field2.style.display = "none";
+    }
+  }
+
   function newExportAction(e, dt, button, config) {
     var self = this;
     var oldStart = dt.settings()[0]._iDisplayStart;

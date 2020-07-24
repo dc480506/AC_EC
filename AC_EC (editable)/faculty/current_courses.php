@@ -133,7 +133,7 @@ include('../includes/header.php');
                     <?php
                     $email = $_SESSION['email'];
                     $department = 'department';
-                    $query = "SELECT cname FROM faculty_audit NATURAL JOIN audit_course WHERE email_id = '$email'";
+                    $query = "SELECT cname FROM faculty_course_alloted NATURAL JOIN course WHERE email_id = '$email'";
                     if ($result = mysqli_query($conn, $query)) {
                       $rowcount = mysqli_num_rows($result);
                       while ($row = mysqli_fetch_array($result)) {
@@ -153,7 +153,7 @@ include('../includes/header.php');
                     <?php
                     $email = $_SESSION['email'];
                     $department = 'department';
-                    $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
+                    $query = "SELECT cid FROM faculty_course_alloted WHERE email_id = '$email'";
                     if ($result = mysqli_query($conn, $query)) {
                       $rowcount = mysqli_num_rows($result);
                       while ($row = mysqli_fetch_array($result)) {
@@ -194,7 +194,7 @@ include('../includes/header.php');
                     $dept_names = array();
                     $email = $_SESSION['email'];
                     $department = 'department';
-                    $query = "SELECT distinct(dept_name) FROM faculty_audit NATURAL JOIN audit_course NATURAL JOIN department WHERE email_id = '$email'";
+                    $query = "SELECT distinct(dept_name) FROM faculty_course_alloted NATURAL JOIN course_applicable_dept NATURAL JOIN department WHERE email_id = '$email'";
                     if ($result = mysqli_query($conn, $query)) {
                       $rowcount = mysqli_num_rows($result);
                       while ($row = mysqli_fetch_array($result)) {
@@ -217,6 +217,27 @@ include('../includes/header.php');
                   </select>
                 </div> -->
 
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck6" onclick="disp6()" name="sem_cbox">
+                  <label class="form-check-label" for="exampleFormControlSelect6">Program</label>
+                  <select class="form-control" style="display: none" id="exampleFormControlSelect6" name="sem">
+                    <?php
+                    $email = $_SESSION['email'];
+                    $department = 'department';
+                    $query = "SELECT course.program FROM faculty_course_alloted, course WHERE faculty_course_alloted.email_id = '$email' and faculty_course_alloted.cid=course.cid";
+                    if ($result = mysqli_query($conn, $query)) {
+                      $rowcount = mysqli_num_rows($result);
+                      while ($row = mysqli_fetch_array($result)) {
+                        $prog = $row['program'];
+                        echo '
+                                      <option>' . $prog . '<option>
+                                    ';
+                      }
+                    }
+                    ?>
+                  </select>
+                </div>
+
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
                   <button type="submit" class="btn btn-outline-primary" name="filter">Filter</button>
@@ -231,6 +252,7 @@ include('../includes/header.php');
             <table class="table table-bordered table-responsive" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
+                  <th>Roll No. </th>
                   <th>First Name</th>
                   <th>Middle Name</th>
                   <th>Last Name</th>
@@ -238,14 +260,19 @@ include('../includes/header.php');
                   <th>Email Address</th>
                   <th>Semester</th>
                   <th>Department</th>
+                  <th>Program </th>
+                  <th>Course Type </th>
                   <th>Course Name</th>
+                  <th>Course ID</th>
                   <th>Attendance</th>
                   <th>Marks</th>
+                  <th>Completion Status </th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tfoot>
                 <tr>
+                  <th>Roll No. </th>
                   <th>First Name</th>
                   <th>Middle Name</th>
                   <th>Last Name</th>
@@ -253,35 +280,43 @@ include('../includes/header.php');
                   <th>Email Address</th>
                   <th>Semester</th>
                   <th>Department</th>
+                  <th>Program</th>
+                  <th>Course Type </th>
                   <th>Course Name</th>
+                  <th>Course ID</th>
                   <th>Attendance</th>
                   <th>Marks</th>
+                  <th>Completion Status </th>
                   <th>Action</th>
                 </tr>
               </tfoot>
               <tbody>
                 <?php
                 $email = $_SESSION['email'];
-                $query = "SELECT cid FROM faculty_audit WHERE email_id = '$email'";
+                $query = "SELECT faculty_course_alloted.cid,course.isgradable , faculty_course_alloted.course_type_id, course_types.name FROM faculty_course_alloted,course_types,course WHERE faculty_course_alloted.cid=course.cid and faculty_course_alloted.email_id = '$email' and faculty_course_alloted.course_type_id=course_types.id";
                 if ($result = mysqli_query($conn, $query)) {
 
                   while ($row = mysqli_fetch_array($result)) {
                     $cid = $row['cid'];
+                    $ctype=$row['name'];
+                    $isgradale=$row['isgradable'];
 
-                    $query1 = "SELECT cname, dept_id FROM audit_course WHERE cid = '$cid'";
+
+                    $query1 = "SELECT course.cname, course_applicable_dept.dept_id FROM course,course_applicable_dept WHERE 
+                    course.cid = '$cid' and course_applicable_dept.cid='$cid'";
                     $result1 = mysqli_query($conn, $query1);
                     $row1 = mysqli_fetch_assoc($result1);
                     $cname = $row1['cname'];
                     $dept_id = $row1['dept_id'];
 
-                    $query2 = "SELECT email_id, sem, year, student_attendance FROM student_audit WHERE cid = '$cid'";
+                    $query2 = "SELECT email_id, sem, year FROM student_course_alloted WHERE cid = '$cid'";
                     if ($result2 = mysqli_query($conn, $query2)) {
 
                       while ($row2 = mysqli_fetch_array($result2)) {
                         $email_id = $row2['email_id'];
                         $sem = $row2['sem'];
                         $year = $row2['year'];
-                        $attendance = $row2['student_attendance'];
+                        
                         $query3 = "SELECT rollno, fname, mname, lname, dept_id FROM student WHERE email_id = '$email_id'";
                         $result3 = mysqli_query($conn, $query3);
                         $row3 = mysqli_fetch_assoc($result3);
@@ -290,6 +325,28 @@ include('../includes/header.php');
                         $mname = $row3['mname'];
                         $lname = $row3['lname'];
 
+                        if($isgradable==1){
+                          $subquery= "SELECT marks, completion_status, student_attendance from student_courses_grade where  email_id= ' $email_id' and cid='$cid ' ";
+                          $sub_result = mysqli_query($conn,$subquery);  
+                          $sub_row=mysqli_fetch_assoc($sub_result);
+
+                          $marks= $sub_row['marks'];
+                            $comp_stat=$sub_row['completion_status'];
+                            $attendance=$sub_row['student_attendance'];
+                          
+                        }
+
+                        else{
+                          $subquery= "SELECT completion_status, student_attendance from student_courses_nongrade where  email_id= ' $email_id' and cid='$cid ' ";
+                          $sub_result = mysqli_query($conn,$subquery);
+                            $sub_row=mysqli_fetch_assoc($sub_result);
+
+                            $marks= 'NA';
+                            $comp_stat=$sub_row['completion_status'];
+                            $attendance=$sub_row['student_attendance'];
+                          
+                        }
+
                         $query4 = "SELECT dept_name FROM department WHERE dept_id = '$dept_id'";
                         $result4 = mysqli_query($conn, $query4);
                         $row4 = mysqli_fetch_assoc($result4);
@@ -297,6 +354,7 @@ include('../includes/header.php');
 
                         echo '
                                   <tr>
+                                    <td>' . $rollno . '</td>
                                     <td>' . $fname . '</td>
                                     <td>' . $mname . '</td>
                                     <td>' . $lname . '</td>
@@ -304,9 +362,14 @@ include('../includes/header.php');
                                     <td>' . $email_id . '</td>
                                     <td>' . $sem . '</td>
                                     <td>' . $dept_name . '</td>
+                                    <td>' . $prog . '</td>
+                                    <td>' . $ctype . '</td>
                                     <td>' . $cname . '</td>
+                                    <td>' . $cid . '</td>
                                     <td>' . $attendance . '</td>
-                                    <td>' . $rollno . '</td>
+                                    <td>' . $marks . '</td>
+                                    <td>' . $comp_stat . '</td>
+                                    
                                     <td>
 
                                         <!-- Button trigger modal -->
