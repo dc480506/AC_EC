@@ -15,6 +15,8 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
   $course_type_id = mysqli_escape_string($conn, $data['course_type_id']);
   $dept_applicable = mysqli_escape_string($conn, $data['dept_applicable']);
   $floating_dept = mysqli_escape_string($conn, $data['dept_name']);
+  $is_closed_elective = mysqli_escape_string($conn, $data['is_closed_elective']) == 1;
+
   $result = mysqli_query($conn, "select academic_year from current_sem_info WHERE currently_active=1");
   $row = mysqli_fetch_assoc($result);
 
@@ -89,41 +91,68 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
   }
 
 
-  $checkbox_div = '';
-  $floating_checkbox_div = '';
+
+  $applicable_dept_div = '';
+  $floating_dept_div = '';
   $sql3 = "SELECT * FROM department";
   $dept_list = array();
+  $dept_ids = array();
   $result3 = mysqli_query($conn, $sql3);
   while ($row = mysqli_fetch_assoc($result3)) {
     array_push($dept_list, $row['dept_id'], $row['dept_name']);
+    $dept_ids[$row['dept_name']] = $row['dept_id'];
   }
   $str_arr = explode(", ", $dept_applicable);
   $str_arr2 = explode(", ", $floating_dept);
+  $exclude_dept_arr = explode(',', $exclude_dept);
+
+  // die(json_encode($dept_applicable));
+
+  if ($is_closed_elective) {
+    if (in_array($_SESSION['role'], array("faculty_co", "HOD"))) {
+      $applicable_dept_div .= '
+        <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" checked disabled  class="custom-control-input" id="applicableDeptCheck1" name="check_dept[]" value="' . $_SESSION['dept_id'] . '">
+            <label class="custom-control-label" for="applicableDeptCheck1"><small>' . $_SESSION['dept_name'] . '</small></label>
+        </div>
+        ';
+    } elseif ($_SESSION['role'] == 'inst_coor') {
+
+      $applicable_dept_div = '<input type="text" class="form-control" required value="' . $floating_dept . '" readonly id= "exampleInputApplicableDeptUpdate" />';
+      $applicable_dept_div .= '<input type="hidden" value="' . $dept_ids[$floating_dept] . '"  id= "exampleInputApplicableDeptUpdateVal" name= "check_dept[]" />';
+      $floating_dept_div = '<select class="form-control" required id="exampleInputFloatingDeptUpdate" name="floating_check_dept[]" required>';
+      for ($i = 1; $i < count($dept_list); $i = $i + 2) {
+        if (!in_array($dept_list[$i - 1], $exclude_dept_arr)) {
+          $isChecked = in_array($dept_list[$i], $str_arr) ? "selected" : "";
+          echo $dept_list[$i];
+          $floating_dept_div .= "<option $isChecked value='{$dept_list[$i - 1]}'>{$dept_list[$i]}</option>";
+        }
+      }
+      $floating_dept_div .= "</select>";
+    }
+  }
+
   for ($i = 1; $i < count($dept_list); $i = $i + 2) {
     // For applicable dept
-    if ($dept_list[$i - 1] != $exclude_dept) {
-      $checkbox_div .= '
+    if (!$is_closed_elective && !in_array($dept_list[$i - 1], $exclude_dept_arr)) {
+      $isChecked = in_array($dept_list[$i], $str_arr) ? "checked" : "";
+      $applicable_dept_div .= '
         <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" class="custom-control-input" id="applicableDeptCheck' . $i . '" name="check_dept[]" value="' . $dept_list[$i - 1] . '"';
-      if (in_array($dept_list[$i], $str_arr)) {
-        $checkbox_div .= " checked";
-      }
-      $checkbox_div .= '>
+            <input type="checkbox" ' . $isChecked . ' class="custom-control-input" id="applicableDeptCheck' . $i . '" name="check_dept[]" value="' . $dept_list[$i - 1] . '">
             <label class="custom-control-label" for="applicableDeptCheck' . $i   . '"><small>' . $dept_list[$i] . '</small></label>
         </div>
         ';
     }
     // For floating dept
-    $floating_checkbox_div .= '
-        <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" class="custom-control-input" id="floatingDeptCheck' . $i . '" name="floating_check_dept[]" value="' . $dept_list[$i - 1] . '"';
-    if (in_array($dept_list[$i], $str_arr2)) {
-      $floating_checkbox_div .= " checked";
+    if (((!$is_closed_elective && $_SESSION['role'] == "inst_coor") || (in_array($_SESSION['role'], array("faculty_co", "HOD")) && $_SESSION['dept_name'] == $dept_list[$i]))) {
+      $isChecked = in_array($dept_list[$i], $str_arr2) ? "checked" : "";
+      $isEnabled = in_array($_SESSION['role'], array("faculty_co", "HOD")) ? "disabled" : "";
+      $floating_dept_div .= '
+      <div class="custom-control custom-checkbox custom-control-inline">
+        <input type="checkbox" ' . $isChecked . ' ' . $isEnabled . ' class="custom-control-input" id="floatingDeptCheck' . $i . '" name="floating_check_dept[]" value="' . $dept_list[$i - 1] . '">
+        <label class="custom-control-label" for="floatingDeptCheck' . $i   . '"><small>' . $dept_list[$i] . '</small></label>
+      </div>';
     }
-    $floating_checkbox_div .= '>
-            <label class="custom-control-label" for="floatingDeptCheck' . $i   . '"><small>' . $dept_list[$i] . '</small></label>
-        </div>
-        ';
   }
   // $dept_div .= '<div class="form-group">
   //                 <label for="exampleInputDepartment"><b>Floating Department</b></label>
@@ -235,7 +264,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                           </div>
                           <label for="floatingdept"><b>Floating Department</b></label>
                           <br>
-                          ' . $floating_checkbox_div . '
+                          ' . $floating_dept_div . '
                           <br>
                           <br>
                           <div class="form-row">
@@ -251,7 +280,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                           </div>
                           <label for="branch"><b>Branches to opt for</b></label>
                           <br>
-                          ' . $checkbox_div . '
+                          ' . $applicable_dept_div . '
                           <br>
                           <button type="submit" class="btn btn-primary" id="update_course_btn" name="update_course">Update</button>
                         </form>
