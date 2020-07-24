@@ -17,7 +17,10 @@ $target_location = $base_dir . $file_name;
 move_uploaded_file($_FILES['Uploadfile']['tmp_name'], $target_location);
 date_default_timezone_set('Asia/Kolkata');
 $timestamp = date("Y-m-d H:i:s");
-$args = '["' . $sem . '","' . $year . '","' . $_SESSION['email'] . '","' . $timestamp . '","' . $cname . '","' . $cid . '","' . $floating_dept . '","' . $min . '","' . $max . '","' . $ad . '","' . $target_location . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $program . '","' . $course_type_id . '"]';
+$is_closed_elective = $_POST['is_closed_elective'];
+$role = $_SESSION['role'];
+$uploader_dept_id = isset($_SESSION['dept_id']) ? $_SESSION['dept_id'] : "";
+$args = '["' . $sem . '","' . $year . '","' . $_SESSION['email'] . '","' . $timestamp . '","' . $cname . '","' . $cid . '","' . $floating_dept . '","' . $min . '","' . $max . '","' . $ad . '","' . $target_location . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $program . '","' . $course_type_id . '","' . $role . '","' . $uploader_dept_id . '","' . $is_closed_elective . '"]';
 $cmd = 'python current_course_upload.py ' . $args;
 $output = shell_exec($cmd . " 2>&1");
 if (strpos($output, "Duplicate entry")) {

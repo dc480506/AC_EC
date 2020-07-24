@@ -2,6 +2,7 @@ import pymysql
 import xlrd
 import sys
 import re
+import json
 # print(sys.argv[1])
 args = list(map(str.strip, sys.argv[1].strip('[]').split(',')))
 mapper = {"sem": 0,
@@ -21,6 +22,9 @@ mapper = {"sem": 0,
           "dbname": 14,
           "program": 15,
           "course_type_id": 16,
+          "login_role": 17,
+          "uploader_dept_id": 18,
+          "is_closed_elective": 19
           }
 startcol_index = 4
 header = []
@@ -32,7 +36,7 @@ for y in range(0, data.ncols):
     header.append(data.cell(0, y).value.lower())
 # print(header)
 try:
-    for x in range(startcol_index, len(args)-7):
+    for x in range(startcol_index, len(args)-10):
         # print(args[x])
         header_id[args[x].lower()] = header.index(args[x].lower())
 except Exception as e:
@@ -59,6 +63,28 @@ email_id = args[mapper['email_id']]
 # print(email_id)
 program = args[mapper['program']]
 course_type_id = args[mapper['course_type_id']]
+uploader_role = args[mapper['login_role']]
+uploader_dept_id = args[mapper['uploader_dept_id']]
+is_closed_elective = int(args[mapper['is_closed_elective']])
+errors = {"invalidFloatingDept": [], "invalidApplicableDept": []}
+
+
+def is_valid_closed_elective(floating_dept, applicable_dept):
+    if len(floating_dept) == 1 and len(applicable_dept) == 1 and floating_dept[0] == applicable_dept[0]:
+        return True
+    else:
+        return False
+
+
+def exec_queries(queries, cid, cname, floating_dept, applicable_dept):
+    global errors, is_closed_elective
+    if is_closed_elective and not is_valid_closed_elective(floating_dept, applicable_dept):
+        errors['invalidApplicableDept'].append({"cid": cid, "cname": cname})
+        return
+    for query in queries:
+        cursor.execute(query)
+
+
 try:
     for x in range(1, data.nrows):
         # print(header_id[args[mapper['cid_col']]])
@@ -75,7 +101,7 @@ try:
                   0, program, course_type_id)
         audit_table_query = insert_audit + str(values)
         # **********Floating dept**********
-        floating_dept = list(map(str.strip, str(data.cell(
+        floating_dept = list(map(float, str(data.cell(
             x, header_id[args[mapper['floating_dept_col']].lower()]).value).split(",")))
         values = ""
         for i in range(len(floating_dept)):
@@ -84,7 +110,7 @@ try:
         values = values[0:len(values)-1]
         audit_floating_table_query = insert_audit_floating + str(values)
         # **********Applicable dept**********
-        applicable_dept = list(map(str.strip, str(data.cell(
+        applicable_dept = list(map(float, str(data.cell(
             x, header_id[args[mapper['applicable_dept_col']].lower()]).value).split(",")))
         values = ""
         for i in range(len(applicable_dept)):
@@ -95,11 +121,22 @@ try:
         # print(audit_table_query)
         # print(audit_applicable_table_query)
         # print(values)
-        cursor.execute(audit_table_query)
-        cursor.execute(audit_floating_table_query)
-        cursor.execute(audit_applicable_table_query)
+
+        if (uploader_role in ['HOD', 'faculty_co']):
+            if (int(uploader_dept_id) in floating_dept):
+                exec_queries(
+                    [audit_table_query, audit_floating_table_query, audit_applicable_table_query], cid, cname, floating_dept, applicable_dept)
+
+            else:
+                errors['invalidFloatingDept'].append(
+                    {"cid": cid, 'cname': cname})
+        elif uploader_role == 'inst_coor':
+            exec_queries(
+                [audit_table_query, audit_floating_table_query, audit_applicable_table_query], cid, cname, floating_dept, applicable_dept)
+
+
 except Exception as e:
-    print(str(e))
+    print("error+"+str(e))
     sys.exit(0)
 connection.commit()
-print("Successful")
+print("successful+"+json.dumps(errors))

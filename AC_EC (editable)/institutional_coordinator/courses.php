@@ -31,6 +31,21 @@ $is_closed_elective = $_POST['is_closed_elective'];
                     </button>
                 </div>
             </div>
+            <div class="modal fade " id="invalidCourses" tabindex="-1" role="dialog" aria-labelledby="invalid-students" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="invalid-students">INVALID STUDENTS LIST </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="invalidCoursesBody">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -1333,6 +1348,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         var formData = new FormData(this);
         formData.append("program", "<?php echo $_POST['program']; ?>")
         formData.append("course_type_id", "<?php echo $course_type_id; ?>")
+        formData.append("is_closed_elective", "<?php echo $is_closed_elective == 1 ? 1 : 0; ?>")
         $("#upload_current").attr("disabled", true);
         $("#upload_current").text("Uploading...")
         $.ajax({
@@ -1340,14 +1356,9 @@ $is_closed_elective = $_POST['is_closed_elective'];
             type: 'POST',
             data: formData,
             success: function(data) {
-                if ($.trim(data) == "Successful") {
-                    $("#upload_current").text("Uploaded Successfully")
-                    loadCurrent();
-                } else {
-                    $("#upload_current").text("Upload Failed")
-                    alert(data);
-                }
-                // form.reset();
+                console.log(data);
+                // return;
+                bulkUploadSuccess(data, loadCurrent)
             },
             cache: false,
             contentType: false,
@@ -2041,6 +2052,47 @@ $is_closed_elective = $_POST['is_closed_elective'];
         }
     })
 
+    function bulkUploadSuccess(data, callback) {
+        let [status, response] = $.trim(data).split("+");
+        // alert(status);
+        if (status == "successful") {
+            $("#upload_student").text("Uploaded Successfully")
+            const resData = JSON.parse(response);
+            console.log(resData)
+            var errorsFlag = false;
+            console.log(resData)
+            Object.keys(resData).forEach(key => {
+                if (resData[key].length > 0) {
+                    errorsFlag = true;
+                    switch (key) {
+                        case "invalidFloatingDept":
+                            $("#invalidCoursesBody").append('<h6><b>Following courses are not floated by your department</b></h6><ul>');
+                            break;
+                        case "invalidApplicableDept":
+                            $("#invalidCoursesBody").append('<h6><b>Following courses are not applicable to ypur department for closed elective:</b></h6><ul>');
+                            break;
+                    }
+                    resData[key].forEach(course => {
+                        $("#invalidCoursesBody").append(`<li class='text-danger'>${course.cid} - ${course.cname}</li>`);
+                    })
+                    $("#invalidCoursesBody").append(`</ul><br>`);
+                }
+            })
+            if (errorsFlag) {
+                $('.modal').modal('hide');
+                $('#invalidCourses').modal('show');
+            } else {
+                alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                $("#upload_upcoming").text("Uploaded Successfully")
+            }
+            callback();
+        } else {
+            $("#upload_upcoming").text("Upload Failed")
+            alert(response);
+        }
+        // form.reset();
+    }
+
     // ***********Upcoming course Section************
     $("#bulkUploadUpcoming").submit(function(e) {
         e.preventDefault();
@@ -2048,21 +2100,15 @@ $is_closed_elective = $_POST['is_closed_elective'];
         var formData = new FormData(this);
         formData.append("program", "<?php echo $_POST['program']; ?>")
         formData.append("course_type_id", "<?php echo $course_type_id; ?>")
-        $("#upload_upcoming").attr("disabled", true);
-        $("#upload_upcoming").text("Uploading...")
+        formData.append("is_closed_elective", "<?php echo $is_closed_elective == 1 ? 1 : 0; ?>")
+        // $("#upload_upcoming").attr("disabled", true);
+        // $("#upload_upcoming").text("Uploading...")
         $.ajax({
             url: "course/bulkUpload/upcoming_course_upload.php",
             type: 'POST',
             data: formData,
             success: function(data) {
-                if ($.trim(data) == "Successful") {
-                    $("#upload_upcoming").text("Uploaded Successfully")
-                    loadUpcoming();
-                } else {
-                    $("#upload_upcoming").text("Upload Failed")
-                    alert(data);
-                }
-                // form.reset();
+                bulkUploadSuccess(data, loadUpcoming)
             },
             cache: false,
             contentType: false,
@@ -2724,7 +2770,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         var formData = new FormData(this);
         formData.append("program", "<?php echo $_POST['program']; ?>")
         formData.append("course_type_id", "<?php echo $course_type_id; ?>")
-
+        formData.append("is_closed_elective", "<?php echo $is_closed_elective == 1 ? 1 : 0; ?>")
         $("#upload_previous").attr("disabled", true);
         $("#upload_previous").text("Uploading...")
         $.ajax({
@@ -2732,13 +2778,8 @@ $is_closed_elective = $_POST['is_closed_elective'];
             type: 'POST',
             data: formData,
             success: function(data) {
-                if ($.trim(data) == "Successful") {
-                    $("#upload_previous").text("Uploaded Successfully")
-                    loadPrevious();
-                } else {
-                    $("#upload_previous").text("Upload Failed")
-                    alert(data);
-                }
+                console.log(data);
+                bulkUploadSuccess(data, loadPrevious)
                 // form.reset();
             },
             cache: false,
