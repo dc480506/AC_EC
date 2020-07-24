@@ -59,7 +59,7 @@ if (isset($_POST['filters'])) {
 
 $role_restriction = "1";
 if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
-   $role_restriction = " (c.cid,c.sem,c.year,c.course_type_id) in (select cid,sem,year,course_type_id from course_floating_dept where program='$program' and dept_id='{$_SESSION['dept_id']}')";
+   $role_restriction = " (c.cid,c.sem,c.year,c.course_type_id) in (select cid,sem,year,course_type_id from course_floating_dept_log where program='$program' and dept_id='{$_SESSION['dept_id']}')";
 }
 
 
