@@ -11,6 +11,8 @@ include('../includes/header.php');
 $course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
 $sql = "select name from course_types where id='$course_type_id'";
 $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
+$is_closed_elective = $_POST['is_closed_elective'];
+// die($is_closed_elective == 1 ? "hello" : "hi");
 ?>
 
 <!-- Begin Page Content -->
@@ -27,6 +29,21 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
                         <i class="fas fa-filter"></i>
                     </button>
+                </div>
+            </div>
+            <div class="modal fade " id="invalidCourses" tabindex="-1" role="dialog" aria-labelledby="invalid-students" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="invalid-students">INVALID STUDENTS LIST </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="invalidCoursesBody">
+
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
@@ -107,8 +124,8 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                                     <?php
                                     $years = array();
                                     $email = $_SESSION['email'];
-
-                                    $query = "SELECT distinct(year) FROM audit_course UNION SELECT distinct(year) FROM audit_course_log ORDER by year desc";
+                                    $condition = "program='{$_POST['program']}' and course_type_id=$course_type_id ";
+                                    $query = "SELECT distinct(year) FROM course where $condition UNION SELECT distinct(year) FROM course_log where $condition ORDER by year desc";
                                     if ($result = mysqli_query($conn, $query)) {
                                         $rowcount = mysqli_num_rows($result);
                                         while ($row = mysqli_fetch_array($result)) {
@@ -492,18 +509,56 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                                                         <!-- <select class="form-control" required name="dept">-->
                                                         <?php
                                                         include_once('../config.php');
-                                                        $sql = "SELECT * FROM department";
-                                                        $result = mysqli_query($conn, $sql);
                                                         $c = 8;
-                                                        while ($row = mysqli_fetch_assoc($result)) {
-                                                            echo '
-                                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                                            <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
-                                                            <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                                        </div>
-                                                        ';
-                                                            $c++;
+                                                        if ($_SESSION['role'] == "inst_coor") {
+                                                            $sql = "SELECT * FROM department";
+                                                            $result = mysqli_query($conn, $sql);
+                                                            $c = 8;
+                                                            if ($is_closed_elective == "1") {
+                                                                echo '<select class="form-control" required id="exampleInputFloatingDept" name="floating_check_dept[]" required>
+                                                                <option ></option>';
+                                                            }
+
+                                                            while ($row = mysqli_fetch_assoc($result)) {
+
+                                                                if ($is_closed_elective == "1") {
+                                                                    if (!in_array($row["dept_id"], explode(",", $exclude_dept)))
+                                                                        echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
+                                                                } else {
+
+                                                                    echo '
+                                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                                    <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
+                                                                    <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                                    </div>
+                                                                    ';
+                                                                }
+                                                                $c++;
+                                                            }
+                                                            if ($is_closed_elective == "1") {
+                                                                echo '</select>';
+                                                            }
+                                                        } else if (in_array($_SESSION['role'], array('faculty_co', "HOD"))) {
+                                                            echo '  
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" checked class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $_SESSION['dept_id'] . '">
+                                                                <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
+                                                            </div>';
                                                         }
+
+
+                                                        // $sql = "SELECT * FROM department";
+                                                        // $result = mysqli_query($conn, $sql);
+                                                        // $c = 8;
+                                                        // while ($row = mysqli_fetch_assoc($result)) {
+                                                        //     echo '
+                                                        // <div class="custom-control custom-checkbox custom-control-inline">
+                                                        //     <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
+                                                        //     <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                        // </div>
+                                                        // ';
+                                                        //     $c++;
+                                                        // }
                                                         ?>
 
                                                     </div>
@@ -520,56 +575,50 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                                                     </div>
                                                     <label for="branch"><b>Branches to opt for</b></label>
                                                     <br>
-                                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                                        <input type="checkbox" class="custom-control-input" id="applicable_dept_upcoming_cb7" checked>
-                                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb7"><small>All</small></label>
-                                                    </div>
+
                                                     <?php
                                                     include_once('../config.php');
                                                     $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
                                                     $result = mysqli_query($conn, $sql);
                                                     $c = 8;
-                                                    while ($row = mysqli_fetch_assoc($result)) {
-                                                        echo '
-                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                    if ($is_closed_elective == 0) {
+                                                        echo '<div class="custom-control custom-checkbox custom-control-inline">
+                                                        <input type="checkbox" class="custom-control-input" id="applicable_dept_upcoming_cb7" checked>
+                                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb7"><small>All</small></label>
+                                                    </div>';
+
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                            echo '
+                                                        <div class="custom-control custom-checkbox custom-control-inline">
                                                         <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
                                                         <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                                    </div>
-                                                    ';
-                                                        $c++;
+                                                        </div>
+                                                        ';
+                                                            $c++;
+                                                        }
+                                                    } else {
+                                                        if ($_SESSION['role'] == "inst_coor") {
+                                                            echo '<input type="text" class="form-control" required readonly id= "exampleInputApplicableDept"  />';
+                                                            echo '<input type="hidden" id= "exampleInputApplicableDeptVal" name= "check_dept[]" />';
+                                                            // echo '<select class="form-control" required id="exampleInputApplicableDept" name="check_dept[]" required>';
+                                                            // while ($row = mysqli_fetch_assoc($result)) {
+                                                            //     echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
+                                                            //     $c++;
+                                                            // }
+                                                            // echo "</select>";
+                                                        } else {
+                                                            echo '
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                            
+                                                            <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $_SESSION['dept_id'] . '" checked>
+                                                            <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
+                                                            </div>
+                                                            ';
+                                                        }
                                                     }
                                                     ?>
                                                     <br>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="map_cbox" name="map_cbox" onclick="showMapSection()">
-                                                        <label class="form-check-label" for="exampleCheck1">Similar previous course</label>
-                                                    </div>
-                                                    <div id="map_section" style="display: none;">
-                                                        <!-- <input type="hidden" value="0" id="total_prev" name="total_prev"> -->
-                                                        <!-- <div id="map_sec1" style="display :none;"> -->
-                                                        <!-- <h5 class="modal-title">Previous Course 1</h5>
-                                                            <div class="form-group" id="previous_field1" style="display: block;">
-                                                                <label for="previous_field1"><b>Course ID</b></label>
-                                                                <input type="text" class="form-control" id="previous_id1" name="prevcid1" placeholder="Course Id">
-                                                            </div>
-                                                            <div class="form-group" id="previous_field2" style="display: block;">
-                                                                <label for="previous_field2"><b>Previous Semester</b></label>
-                                                                <input type="text" class="form-control" id="previous_sem1" name="prevsem1" placeholder="Previous Semester">
-                                                            </div>
-                                                            <div class="form-group" id="previous_field3" style="display: block;">
-                                                                <label for="previous_field3"><b>Previous Year</b></label>
-                                                                <input type="text" class="form-control" id="previous_year1" name="prevyear1" placeholder="Previous Year">
-                                                            </div> -->
-                                                        <!-- </div> -->
-                                                    </div>
-                                                    <BR>
-                                                    <div class="form-group">
 
-                                                        <button type="button" id="add_prev" class="btn btn-primary" style="display: none;">Add</button>
-                                                        <!-- <button type="button" id="rem_prev" class="btn btn-primary" style="display: none;">Remove the Previous Course</button> -->
-                                                        <input type="hidden" value="0" id="total_prev" name="total_prev">
-
-                                                    </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" id="close_add_course_form" data-dismiss="modal" name="close">Close</button>
                                                         <button type="submit" id="add_course_btn" class="btn btn-primary" name="add_course">Add</button>
@@ -1108,6 +1157,16 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
 </div>
 <!-- /.container-fluid -->
 <script>
+    $('#exampleInputFloatingDept').change(function() {
+        $("#exampleInputApplicableDept").val($(this).find(":selected").text())
+        $("#exampleInputApplicableDeptVal").val($(this).val())
+    })
+    $('body').on('change', "#exampleInputFloatingDeptUpdate", function() {
+        console.log($(this).find(":selected").text());
+        $("#exampleInputApplicableDeptUpdate").val($(this).find(":selected").text());
+        $("#exampleInputApplicableDeptUpdateVal").val($(this).val());
+    })
+
     function showMapSection() {
         var checkBox = document.getElementById("map_cbox");
 
@@ -1289,6 +1348,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var formData = new FormData(this);
         formData.append("program", "<?php echo $_POST['program']; ?>")
         formData.append("course_type_id", "<?php echo $course_type_id; ?>")
+        formData.append("is_closed_elective", "<?php echo $is_closed_elective == 1 ? 1 : 0; ?>")
         $("#upload_current").attr("disabled", true);
         $("#upload_current").text("Uploading...")
         $.ajax({
@@ -1296,14 +1356,9 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             type: 'POST',
             data: formData,
             success: function(data) {
-                if ($.trim(data) == "Successful") {
-                    $("#upload_current").text("Uploaded Successfully")
-                    loadCurrent();
-                } else {
-                    $("#upload_current").text("Upload Failed")
-                    alert(data);
-                }
-                // form.reset();
+                console.log(data);
+                // return;
+                bulkUploadSuccess(data, loadCurrent)
             },
             cache: false,
             contentType: false,
@@ -1653,6 +1708,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         // delete courseData.action
         // delete courseData.allocate_faculty
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['is_closed_elective'] = '<?php echo $is_closed_elective; ?>';
         courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
@@ -1996,6 +2052,47 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         }
     })
 
+    function bulkUploadSuccess(data, callback) {
+        let [status, response] = $.trim(data).split("+");
+        // alert(status);
+        if (status == "successful") {
+            $("#upload_student").text("Uploaded Successfully")
+            const resData = JSON.parse(response);
+            console.log(resData)
+            var errorsFlag = false;
+            console.log(resData)
+            Object.keys(resData).forEach(key => {
+                if (resData[key].length > 0) {
+                    errorsFlag = true;
+                    switch (key) {
+                        case "invalidFloatingDept":
+                            $("#invalidCoursesBody").append('<h6><b>Following courses are not floated by your department</b></h6><ul>');
+                            break;
+                        case "invalidApplicableDept":
+                            $("#invalidCoursesBody").append('<h6><b>Following courses are not applicable to ypur department for closed elective:</b></h6><ul>');
+                            break;
+                    }
+                    resData[key].forEach(course => {
+                        $("#invalidCoursesBody").append(`<li class='text-danger'>${course.cid} - ${course.cname}</li>`);
+                    })
+                    $("#invalidCoursesBody").append(`</ul><br>`);
+                }
+            })
+            if (errorsFlag) {
+                $('.modal').modal('hide');
+                $('#invalidCourses').modal('show');
+            } else {
+                alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                $("#upload_upcoming").text("Uploaded Successfully")
+            }
+            callback();
+        } else {
+            $("#upload_upcoming").text("Upload Failed")
+            alert(response);
+        }
+        // form.reset();
+    }
+
     // ***********Upcoming course Section************
     $("#bulkUploadUpcoming").submit(function(e) {
         e.preventDefault();
@@ -2003,21 +2100,15 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var formData = new FormData(this);
         formData.append("program", "<?php echo $_POST['program']; ?>")
         formData.append("course_type_id", "<?php echo $course_type_id; ?>")
-        $("#upload_upcoming").attr("disabled", true);
-        $("#upload_upcoming").text("Uploading...")
+        formData.append("is_closed_elective", "<?php echo $is_closed_elective == 1 ? 1 : 0; ?>")
+        // $("#upload_upcoming").attr("disabled", true);
+        // $("#upload_upcoming").text("Uploading...")
         $.ajax({
             url: "course/bulkUpload/upcoming_course_upload.php",
             type: 'POST',
             data: formData,
             success: function(data) {
-                if ($.trim(data) == "Successful") {
-                    $("#upload_upcoming").text("Uploaded Successfully")
-                    loadUpcoming();
-                } else {
-                    $("#upload_upcoming").text("Upload Failed")
-                    alert(data);
-                }
-                // form.reset();
+                bulkUploadSuccess(data, loadUpcoming)
             },
             cache: false,
             contentType: false,
@@ -2327,6 +2418,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         // delete courseData.action
         // delete courseData.allocate_faculty
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['is_closed_elective'] = '<?php echo $is_closed_elective; ?>';
         courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
@@ -2678,7 +2770,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         var formData = new FormData(this);
         formData.append("program", "<?php echo $_POST['program']; ?>")
         formData.append("course_type_id", "<?php echo $course_type_id; ?>")
-
+        formData.append("is_closed_elective", "<?php echo $is_closed_elective == 1 ? 1 : 0; ?>")
         $("#upload_previous").attr("disabled", true);
         $("#upload_previous").text("Uploading...")
         $.ajax({
@@ -2686,13 +2778,8 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             type: 'POST',
             data: formData,
             success: function(data) {
-                if ($.trim(data) == "Successful") {
-                    $("#upload_previous").text("Uploaded Successfully")
-                    loadPrevious();
-                } else {
-                    $("#upload_previous").text("Upload Failed")
-                    alert(data);
-                }
+                console.log(data);
+                bulkUploadSuccess(data, loadPrevious)
                 // form.reset();
             },
             cache: false,
@@ -3003,6 +3090,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
         // delete courseData.action
         // delete courseData.allocate_faculty
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
+        courseData['is_closed_elective'] = '<?php echo $is_closed_elective; ?>';
         courseData['program'] = '<?php echo $_POST['program']; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
@@ -3382,6 +3470,16 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
             name: $("#add_course_btn").attr('name'),
             value: $("#add_course_btn").attr('value')
         });
+        form_serialize.push({
+            name: "program",
+            value: '<?php echo $_POST['program']; ?>'
+        });
+        form_serialize.push({
+            name: "course_type_id",
+            value: '<?php echo $course_type_id; ?>'
+        });
+
+
         $("#add_course_btn").text("Adding...");
         $("#add_course_btn").attr("disabled", true);
         $.ajax({
@@ -3402,6 +3500,7 @@ $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
                 } else {
                     $("#add_course_btn").text("Added Successfully");
                     $('add_upcoming_max_error').remove();
+                    $(`#dataTable-${activeTab}`).DataTable().ajax.reload(false);
                 }
             }
         });

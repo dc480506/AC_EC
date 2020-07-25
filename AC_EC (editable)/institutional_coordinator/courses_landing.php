@@ -22,19 +22,20 @@ include('../includes/header.php');
             </div>
         </div>
         <div class="card-body">
-            <form action="courses.php" method="POST">
+            <form action="courses.php" method="POST" id="courseTypesForm">
                 <div class="form-group">
                     <h5><label for="FormControlSelect1">Select Course:</label></h5>
                     <input type="text" name="program" hidden value="<?php echo $program; ?>" />
-                    <select class="form-control" id="FormControlSelect1" name="course_type_id">
+                    <input type="text" id='is_closed_elective' name="is_closed_elective" hidden />
+                    <select class="form-control" id="course_type_select" name="course_type_id">
 
                         <?php
-                        $query = "SELECT name,id FROM course_types WHERE program='$program'";
+                        $query = "SELECT name,id,is_closed_elective FROM course_types WHERE program='$program'";
                         $coursetypes = mysqli_query($conn, $query);
                         $rowcount = mysqli_num_rows($coursetypes);
 
                         while ($row = mysqli_fetch_array($coursetypes)) {
-                            echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+                            echo "<option value='" . $row['id'] . "' data-isClosed='{$row['is_closed_elective']}'>" . $row['name'] . "</option>";
                         }
                         ?>
                     </select>
@@ -50,7 +51,15 @@ include('../includes/header.php');
 </div>
 
 <script>
-    console.log("<?php echo $program ?>")
+    $('#courseTypesForm').submit(function(e) {
+        // e.preventDefault();
+        console.log($('#is_closed_elective').val())
+    })
+    $('#course_type_select').change(function(e) {
+
+        $('#is_closed_elective').val($(this).find(':selected').data('isclosed'))
+
+    })
 </script>
 
 <!-- <form action="#" method="post">
