@@ -9,17 +9,22 @@ $index = 0;
 $sql = "SELECT sem_type,academic_year FROM current_sem_info WHERE currently_active=1";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
+// echo json_encode($row);
 // while ($row = mysqli_fetch_assoc($result)) {
 if ($row['sem_type'] == 'EVEN') {
     $temp = explode('-', $row['academic_year'])[0];
     $temp += 1;
+  
     $temp2 = "" . ($temp + 1);
     $year_val = $temp . "-" . substr($temp2, 2);
+  
 } else {
     $year_val = $row['academic_year'];
 }
+// echo $row['academic_year'];
+// echo $year_val;
 // TO get timestamp(start as well as end fOr a particular student) OF a FORM
-$sql1 = "SELECT form.start_timestamp,form.end_timestamp,sem,year,form.no_of_preferences FROM form INNER JOIN student ON form.curr_sem=student.current_sem AND student.email_id='{$_SESSION['email']}' AND form.form_type='audit' AND year='$year_val'";
+$sql1 = "SELECT form.start_timestamp,form.end_timestamp,sem,year,form.no_of_preferences FROM form INNER JOIN student ON form.curr_sem=student.current_sem AND student.email_id='{$_SESSION['email']}' AND form.program='{$_SESSION['program']}' AND year='$year_val'";
 $result1 = mysqli_query($conn, $sql1);
 if (mysqli_num_rows($result1) == 0) { ?>
     <div class="container-fluid">
@@ -156,6 +161,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
         $_SESSION['sem'] = $sem;
         $sql7 = "SELECT * FROM student_form WHERE form_type='audit' AND sem='$sem' AND year='{$row1['year']}' AND no=0 AND email_id='{$_SESSION['email']}'";
         $result7 = mysqli_query($conn, $sql7);
+        // echo json_encode($result7);
         if (mysqli_num_rows($result7) > 0) {
             $row7 = mysqli_fetch_assoc($result7);
             if ($row7['form_filled'] == 0) {
@@ -184,10 +190,10 @@ if (mysqli_num_rows($result1) == 0) { ?>
                                         <h1 class="h3 mb-4 text-gray-800">Form</h1>
                                     </div>
                                     <div class="row align-items-center">
-                                        <<<<<<< HEAD <h6 class="card-description"> Audit Courses </h6>
-                                            =======
+                                        <h6 class="card-description"> Audit Courses </h6>
+
                                             <h5 class="card-description"> Audit Courses </h5>
-                                            >>>>>>> e489cab50bdd364b7f926b74ba2079c3b0f8d171
+                                           
                                             <br>
                                     </div>
                                     <div class="row float-right text-danger" id="response">
@@ -196,11 +202,11 @@ if (mysqli_num_rows($result1) == 0) { ?>
                                 </div>
                                 <div class="card-body">
                                     <!-- echo $_SERVER['PHP_SELF']; -->
-                                    <<<<<<< HEAD <form id="prefForm" method="post" action="student_queries/store_preference_audit.php">
-                                        =======
+                                   <form id="prefForm" method="post" action="student_queries/store_preference_audit.php">
+                                        
 
                                         <form id="prefForm" onsubmit="return confirmpref();" method="post" action="student_queries/store_preference_audit.php">
-                                            >>>>>>> e489cab50bdd364b7f926b74ba2079c3b0f8d171
+                                           
                                             <?php
                                             for ($i = 1; $i <= $row1['no_of_preferences']; $i++) { ?>
                                                 <h4 style="color:gray;"><?php echo "Preference $i"; ?></h4>
@@ -222,10 +228,10 @@ if (mysqli_num_rows($result1) == 0) { ?>
                                             <?php } ?>
                                             <div class="modal-footer">
                                                 <button id="ResetForm" type="reset" class="btn btn-danger align-center">Clear</button>
-                                                <<<<<<< HEAD <!-- <input type="reset" class="btn btn-danger" id="ResetForm" value="Reset"> -->
-                                                    =======
+                                                <!-- <input type="reset" class="btn btn-danger" id="ResetForm" value="Reset"> -->
+                                                   
 
-                                                    >>>>>>> e489cab50bdd364b7f926b74ba2079c3b0f8d171
+                                                    
                                                     <button id="button" type="submit" class="btn btn-primary align-center" name="submit">Submit</button>
 
                                                     <!-- <input type="button" name="btn" value="Submit" id="submitBtn" 
@@ -428,19 +434,17 @@ if (mysqli_num_rows($result1) == 0) { ?>
 
 <script src="https://kit.fontawesome.com/57397afa58.js" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<<<<<<< HEAD <!-- ajax to update timer dynamically -->
+ <!-- ajax to update timer dynamically -->
     <script type="text/javascript">
         setInterval(() => {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", "timer.php", false);
             xmlhttp.send(null);
             document.getElementById("response").innerHTML = xmlhttp.responseText;
-        }, 1000); ===
-        === =
-
-        <
-        script type = "text/javascript" >
-            var m = new Date("<?php echo " " . date_format($endTime, "Y m d H:i:s") ?>");
+        }, 1000); 
+</script>
+        <script type="text/javascript">
+        var m = new Date("<?php echo " " . date_format($endTime, "Y m d H:i:s") ?>");
         console.log(m);
         // var countDownDate = new Date("June 28, 2020 13:59:00").getTime();
         var countDownDate = (m.getTime());
@@ -492,8 +496,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
         //        document.getElementById("response").innerHTML=xmlhttp.responseText;
         //    }, 1000);
 
-        >>>
-        >>> > e489cab50bdd364b7f926b74ba2079c3b0f8d171
+       
         var ar = [];
         $('#ResetForm').click(function() {
             // console.log("hiiiii0");
@@ -552,7 +555,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
 
         });
     </script>
-    <<<<<<< HEAD=======>>>>>>> e489cab50bdd364b7f926b74ba2079c3b0f8d171
+   
         <?php include('../includes/footer.php');
         include('../includes/scripts.php');
         ?>

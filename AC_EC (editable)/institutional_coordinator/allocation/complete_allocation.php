@@ -34,13 +34,15 @@ if (isset($_REQUEST['path'])) {
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
     } else {
         $error = true;
+        
     }
 }
 if (!$error) {
 
     echo '<div class="tab-pane fade show active d-flex flex-column justify-content-center align-items-center py-5" id="nav-allocate-method" role="tabpanel" aria-labelledby="nav-allocate-method-tab">
-    <h2>The allocation process is complete.</h2>
-    <h6>Click Download to get the allocation reports</h6>
+    <h2 class="text-success">Allocation process successfully completed  <i class="far fa-calendar-check"></i></h2>
+    <br>
+    <h6>Click on Download to get the allocation reports.</h6>
     
     
     <a href="download_reports.php?path=' . urlencode(substr($zipPath, strlen($base_dir))) . '" class=" btn btn-primary align-center" style="background-color: #28a745;border-color:#28a745">Download Reports</a>
