@@ -227,6 +227,8 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     // $dept_name=mysqli_escape_string($conn,$_POST['dept']);
     $max = mysqli_escape_string($conn, $_POST['max']);
     $min = mysqli_escape_string($conn, $_POST['min']);
+    $program = mysqli_escape_string($conn, $_POST['program']);
+    $course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
     $email = $_SESSION['email'];
     date_default_timezone_set('Asia/Kolkata');
     $timestamp = date("Y-m-d H:i:s");
@@ -243,42 +245,42 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     if ($max < $min) {
         echo "add_up_max_error";
     } else {
-        $results = mysqli_query($conn, "select * from audit_course where cid='$cid' and sem='$sem'");
+        $results = mysqli_query($conn, "select * from course where cid='$cid' and sem='$sem' and program='$program' and course_type_id='$course_type_id' ");
         if (mysqli_num_rows($results) > 0) {
             echo "add_up_cid_error";
         } else {
-            $sql = "INSERT INTO audit_course(`cid`,`sem`,`year`,`cname`,`min`,`max`,`email_id`,`timestamp`) VALUES('$cid','$sem','$year','$cname','$min','$max','$email','$timestamp')";
+            $sql = "INSERT INTO course(`cid`,`sem`,`year`,`program`,`course_type_id`,`cname`,`min`,`max`,`email_id`,`timestamp`) VALUES('$cid','$sem','$year','$program','$course_type_id','$cname','$min','$max','$email','$timestamp')";
             mysqli_query($conn, $sql);
         }
 
         $Values = "";
         foreach ($_POST['floating_check_dept'] as $u) {
-            $Values .= "('$cid','$sem','$year','$u'),";
+            $Values .= "('$cid','$course_type_id','$program','$sem','$year','$u'),";
         }
-        $sql = "INSERT INTO audit_course_floating_dept VALUES " . substr($Values, 0, strlen($Values) - 1);
+        $sql = "INSERT INTO course_floating_dept VALUES " . substr($Values, 0, strlen($Values) - 1);
         mysqli_query($conn, $sql);
         $Values = "";
         foreach ($_POST['check_dept'] as $u) {
-            $Values .= "('$cid','$sem','$year','$u'),";
+            $Values .= "('$cid','$sem','$year','$u','$course_type_id','$program'),";
         };
-        $sql = "INSERT INTO audit_course_applicable_dept VALUES " . substr($Values, 0, strlen($Values) - 1);
+        $sql = "INSERT INTO course_applicable_dept VALUES " . substr($Values, 0, strlen($Values) - 1);
         mysqli_query($conn, $sql);
 
-        if (isset($_POST['map_cbox'])) {
-            $total_prev = mysqli_escape_string($conn, $_POST['total_prev']);
-            $temp = 1;
-            $tuples = "";
-            for ($i = 0; $i < $total_prev; $i++) {
-                $prevcid = mysqli_escape_string($conn, $_POST['prevcid' . $temp]);
-                $prevsem = mysqli_escape_string($conn, $_POST['prevsem' . $temp]);
-                $prevyear = mysqli_escape_string($conn, $_POST['prevyear' . $temp]);
-                // echo ''.$prevcid.'';
-                $tuples .= "('$cid','$sem','$year','$prevcid','$prevsem','$prevyear'),";
-                $temp++;
-            }
-            $sql = "INSERT into audit_map VALUES " . substr($tuples, 0, strlen($tuples) - 1);
-            $result = mysqli_query($conn, $sql);
-        }
+        // if (isset($_POST['map_cbox'])) {
+        //     $total_prev = mysqli_escape_string($conn, $_POST['total_prev']);
+        //     $temp = 1;
+        //     $tuples = "";
+        //     for ($i = 0; $i < $total_prev; $i++) {
+        //         $prevcid = mysqli_escape_string($conn, $_POST['prevcid' . $temp]);
+        //         $prevsem = mysqli_escape_string($conn, $_POST['prevsem' . $temp]);
+        //         $prevyear = mysqli_escape_string($conn, $_POST['prevyear' . $temp]);
+        //         // echo ''.$prevcid.'';
+        //         $tuples .= "('$cid','$sem','$year','$prevcid','$prevsem','$prevyear'),";
+        //         $temp++;
+        //     }
+        //     $sql = "INSERT into audit_map VALUES " . substr($tuples, 0, strlen($tuples) - 1);
+        //     $result = mysqli_query($conn, $sql);
+        // }
     }
 } else if (isset($_POST['course_remove'])) {
     $oldcid = mysqli_escape_string($conn, $_POST['oldcid']);

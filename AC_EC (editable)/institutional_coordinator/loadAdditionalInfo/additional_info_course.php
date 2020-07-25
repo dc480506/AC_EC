@@ -1,6 +1,7 @@
 <?php
 session_start();
-if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
+$allowed_roles = array("inst_coor", "faculty_co", "HOD");
+if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
     include_once('../../config.php');
     $data = json_decode(file_get_contents("php://input"), true);
     if ($data['type'] == "current") {
@@ -14,7 +15,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $_SESSION['cid'] = $cid;
         $_SESSION['sem'] = $sem;
         $_SESSION['year'] = $year;
-        $_SESSION['course_type_id']=$course_type_id;
+        $_SESSION['course_type_id'] = $course_type_id;
         $_SESSION['active'] = 1;
 
         $sql = "SELECT timestamp,email_id,syllabus_path FROM course WHERE cid='$cid' AND sem='$sem' AND year='$year'  and course_type_id='$course_type_id' and program='$program'";
@@ -98,7 +99,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $_SESSION['cid'] = $cid;
         $_SESSION['sem'] = $sem;
         $_SESSION['year'] = $year;
-        $_SESSION['course_type_id']=$course_type_id;
+        $_SESSION['course_type_id'] = $course_type_id;
         $_SESSION['active'] = 0;
         $sql = "SELECT timestamp,email_id,syllabus_path FROM course WHERE cid='$cid' AND sem='$sem' AND year='$year'  and course_type_id='$course_type_id' and program='$program'";
         $result = mysqli_query($conn, $sql);
@@ -181,7 +182,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
         $_SESSION['cid'] = $cid;
         $_SESSION['sem'] = $sem;
         $_SESSION['year'] = $year;
-        $_SESSION['course_type_id']=$course_type_id;
+        $_SESSION['course_type_id'] = $course_type_id;
         $_SESSION['active'] = 2;
         $sql = "SELECT timestamp,email_id,syllabus_path FROM course_log WHERE cid='$cid' AND sem='$sem' AND year='$year' and course_type_id='$course_type_id'";
         $result = mysqli_query($conn, $sql);
