@@ -272,6 +272,7 @@ $output = shell_exec($cmd . " 2>&1");
 
             <button type="button" class="btn btn-secondary align-center" id="prev_btn" name="previous">Previous</button>
             <button type="submit" class="btn btn-primary align-center" id="complete_btn" name="Complete">Complete</button>
+            <!-- <a href="complete_allocation.php" class="btn btn-primary align-center">Complete</a> -->
         </div>
     </form>
     <div id="spinner_prev" style="display: none;">

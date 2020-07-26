@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
+if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION['role']=='faculty_co')) {
     include_once("../../config.php");
     //For Course deletion
     if (isset($_POST['add_new_course_type'])) {
@@ -8,7 +8,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
         $program = mysqli_escape_string($conn, $_POST['program']);
         $program = mysqli_escape_string($conn, $_POST['program']);
         $is_gradable = mysqli_escape_string($conn, $_POST['is_gradable']);
-        $sql = "insert into course_types(name,program,is_gradable) values ('$course_type_name','$program','$is_gradable')";
+        $is_closed_elective=mysqli_escape_string($conn, $_POST['is_closed_elective']);
+        $sql = "insert into course_types(name,program,is_gradable,is_closed_elective) values ('$course_type_name','$program','$is_gradable',$is_closed_elective)";
 
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
         echo "added";
@@ -58,6 +59,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
                 "name" => $row['name'],
                 "program" => $row['program'],
                 "is_gradable" => $row['is_gradable'] == 0 ? "no" : "yes",
+                "is_closed_elective" => $row['is_closed_elective'] == 0 ? "no" : "yes",
                 // "name" => $row['name'],
                 // "current_sem" => $row['current_sem'],
                 // "dept_name" => $row['dept_name'],
@@ -92,8 +94,10 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
         $course_type_id = mysqli_escape_string($conn, $_POST['courseTypeId']);
         $course_type_name = mysqli_escape_string($conn, $_POST['courseTypeName']);
         $is_gradable = mysqli_escape_string($conn, $_POST['is_gradable']);
+        $is_closed_elective=mysqli_escape_string($conn, $_POST['is_closed_elective']);
+        
         mysqli_escape_string($conn, $_POST['courseTypeId']);
-        $sql = "UPDATE course_types set name='$course_type_name',is_gradable='$is_gradable' where id = '$course_type_id'";
+        $sql = "UPDATE course_types set name='$course_type_name',is_gradable='$is_gradable',is_closed_elective='$is_closed_elective' where id = '$course_type_id'";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
         echo "edited";
     } else {

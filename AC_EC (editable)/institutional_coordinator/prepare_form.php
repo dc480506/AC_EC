@@ -94,12 +94,51 @@ include('../includes/header.php');
                                         <label for=""><b>Departments Applicable</b></label>
                                         <br>
                                         <!-- <select class="form-control" required name="dept">-->
+                                        
                                         <?php
                                         include_once('../config.php');
+                                       $sql = "SELECT * FROM department";
+                                        $result1 = mysqli_query($conn, $sql);
+
+                                       function id_to_name_convertor_dept($id,$res) {
+                                        
+                                        include_once('../config.php');
+                                        
+                                        while ($row = mysqli_fetch_assoc($res)) {
+                                            if($row['dept_id']==$id)
+                                            {
+                                                return $row['dept_name'];
+                                            }
+                                        }
+                                    }
+                                        
                                         $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
                                         $result = mysqli_query($conn, $sql);
                                         $c = 8;
+                                        if($_SESSION['role']=='faculty_co')
+                                        {
+                                            $deptName=id_to_name_convertor_dept($_SESSION['dept_id'],$result1);
                                         while ($row = mysqli_fetch_assoc($result)) {
+                                          
+
+                                                if($row['dept_name']==$deptName )
+                                                {
+                                                   
+                                                echo  '
+                                                
+                                                <div class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" checked class="custom-control-input" id="dept_applicable_cb' . $c . '"  name="dept_applicable[]" value="' . $row['dept_id'] . '">
+                                                            <label class="custom-control-label" for="dept_applicable_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                        </div>
+                                                        ';
+                                            $c++;
+                                                }
+                                                
+                                            }
+                                        }
+                                            else
+                                            {
+                                                while ($row = mysqli_fetch_assoc($result)) { 
                                             echo '
                                                         <div class="custom-control custom-checkbox custom-control-inline">
                                                             <input type="checkbox" checked class="custom-control-input" id="dept_applicable_cb' . $c . '"  name="dept_applicable[]" value="' . $row['dept_id'] . '">
@@ -108,6 +147,8 @@ include('../includes/header.php');
                                                         ';
                                             $c++;
                                         }
+                                    }
+                                    
                                         ?>
 
                                     </div>
@@ -214,12 +255,14 @@ include('../includes/header.php');
 
 <!-- /.container-fluid -->
 <script>
+
     $('#create-form #program').change(function(e) {
         var program = $(this).val();
         let data = {
             getCourseTypes: true,
             program: program
         };
+        console.log(data);
         $.ajax({
             type: "POST",
             url: "ic_queries/prepare_form_queries.php",
@@ -340,6 +383,7 @@ include('../includes/header.php');
     $("#create-form").submit(function(e) {
         e.preventDefault();
         var data = $(this).serializeArray();
+        console.log(data);
         data.push({
             name: "createForm",
             value: "1"
@@ -355,14 +399,17 @@ include('../includes/header.php');
                 $("#create_form_btn").attr("disabled", true)
             },
             success: function(data) {
-                if ($.trim(data) == "done") {
+                console.log($.trim(data));
+                if ($.trim(data)=="done") {
+                    console.log("success!");
                     $('#dataTable-form').DataTable().draw(false);
+                    
                     $("#create_form_btn").text("Created Successfully")
                 } else {
                     if (data == 'present') {
                         $("#create_form_btn").text('Form Exists')
                     } else {
-                        window.alert(data);
+                        // window.alert(data);
                         $("#create_form_btn").text("Creation Failed")
                     }
                 }

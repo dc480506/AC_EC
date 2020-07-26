@@ -106,6 +106,10 @@ include('../includes/header.php');
                                         <input type="checkbox" checked class="custom-control-input" id="edit_is_gradable" name="edit_is_gradable" value="">
                                         <label class="custom-control-label" for="edit_is_gradable">Is Gradable</label>
                                     </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" checked class="custom-control-input" id="edit_is_closed_elective" name="edit_is_closed_elective" value="">
+                                        <label class="custom-control-label" for="edit_is_closed_elective">Is Closed Elective</label>
+                                    </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" id="close_edit_course_form" data-dismiss="modal" name="close">Close</button>
                                         <button type="submit" id="edit_course_btn" class="btn btn-primary" name="edit_course_type">Edit</button>
@@ -137,6 +141,7 @@ include('../includes/header.php');
                                 <th>Course Type</th>
                                 <th>Program</th>
                                 <th>Graded</th>
+                                <th>Closed Elective</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -147,6 +152,7 @@ include('../includes/header.php');
                                 <th>Course Type</th>
                                 <th>Program</th>
                                 <th>Graded</th>
+                                <th>Closed Elective</th>
                                 <th>Actions</th>
                             </tr>
                         </tfoot>
@@ -239,7 +245,8 @@ include('../includes/header.php');
         $("#edit_course_type_form #program").val(courseTypeData.program);
         console.log(courseTypeData.is_closed_elective)
         $("#edit_course_type_form #edit_is_gradable").attr("checked", courseTypeData.is_gradable == "yes" ? true : false)
-        // $("#edit_course_type_form #edit_is_closed_elective").attr("checked", courseTypeData.is_closed_elective == "yes" ? true : false)
+        $("#edit_course_type_form #edit_is_closed_elective").attr("checked", courseTypeData.is_closed_elective == "yes" ? true : false)
+
         $("#edit_course_type_form").submit(editCourseType);
         $('#editCourseType').modal("show");
     }
@@ -251,10 +258,15 @@ include('../includes/header.php');
             name: "edit_course_type",
             value: "true"
         });
-        var is_gradable = $("#edit_course_type_form #is_gradable").attr("checked") ? 1 : 0;
+        var is_gradable = $("#edit_course_type_form #edit_is_gradable").attr("checked") ? 1 : 0;
         form.push({
             name: "is_gradable",
             value: is_gradable
+        });
+        var is_closed_elective = $("#edit_course_type_form #edit_is_closed_elective").attr("checked") ? 1 : 0;
+        form.push({
+            name: "is_closed_elective",
+            value: is_closed_elective
         });
         $.ajax({
             method: "POST",
@@ -333,7 +345,9 @@ include('../includes/header.php');
                 {
                     data: 'is_gradable'
                 },
-
+                {
+                    data: 'is_closed_elective'
+                },
                 // {
                 //     data: 'dept_name'
                 // },
