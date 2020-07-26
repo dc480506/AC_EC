@@ -2,6 +2,8 @@
 include_once('../verify.php');
 include_once('../../config.php');
 include_once('../utils/zipArchive.php');
+include_once('../utils/email_queue.php');
+
 
 
 // {"username":"IC","email":"IC@somaiya.edu","role":"inst_coor","cid":"2UST511","active":0,"type":"temp",
@@ -12,6 +14,7 @@ include_once('../utils/zipArchive.php');
 //     "course_allocate_info":"f1094e_course_info","pref_percent_table":"f1094e_pref_percent",
 //     "pref_student_alloted_table":"f1094e_pref_student_alloted"}
 $error = false;
+// die($_SESSION['pref_student_alloted_table']);
 
 $zipPath = "";
 if (isset($_REQUEST['path'])) {
@@ -32,6 +35,7 @@ if (isset($_REQUEST['path'])) {
         new GoodZipArchive($filepath, $zipPath);
         $sql = "update form set is_allocated=1 , allocation_results_path='" . substr($zipPath, strlen($base_dir)) . "' where form_id={$_SESSION['form_id']}";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        EmailQueue::getInstance()->sendCourseAllotmentEmailToStudents();
     } else {
         $error = true;
     }
