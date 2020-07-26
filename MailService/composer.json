@@ -1,0 +1,12 @@
+{
+    "name": "isha/mail-service",
+    "authors": [
+        {
+            "name": "ishajoglekar13",
+            "email": "ijoglekar16@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.1"
+    }
+}
