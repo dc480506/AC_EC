@@ -51,21 +51,30 @@ $result3 = mysqli_query($conn, $sql3);
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                           
+                        <thead>
+                            <th>Preferences</th>
+                            <th>Course Id</th>
+                            <th>Course Name</th>
+                        </thead>
                             <?php
                                 $sql4="SELECT * FROM student_preferences where email_id='".$email_id."' AND form_id=$form_id";
-                                echo $sql4;
+                                // echo $sql4;
                                 
                                 $result4 = mysqli_query($conn, $sql4);
                                 $row4=mysqli_fetch_assoc($result4);
-                                
+                           
                                 for($j=1;$j<=$row1['no_of_preferences'];$j++)
                                     {
                                         $var="pref".$j; 
+                                        $query="SELECT cname from course where cid='$row4[$var]'";
+                                        // echo $query;
+                                        $result = mysqli_query($conn, $query);
+                                        $row=mysqli_fetch_assoc($result);
                                         ?>
                                         <tr>
-                                       <th>Preference <?php echo $j?> </th>     
+                                       <td>Preference <?php echo $j?> </td>     
                                         <td><?php echo $row4[$var]?> </td>
+                                        <td><?php echo $row['cname']?> </td>
                                         </tr>
                                     
                                 <?php } 

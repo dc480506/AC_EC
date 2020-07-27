@@ -36,7 +36,7 @@
   <li class="nav-item">
     <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
       <i class="far fa-file"></i> -->
-      <a class="nav-link" href="form.php">
+      <a class="nav-link" href="forms.php">
       <i class="far fa-file"></i>
       <span>Form</span>
     </a>
