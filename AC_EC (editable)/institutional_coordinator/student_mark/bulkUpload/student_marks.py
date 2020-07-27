@@ -91,7 +91,47 @@ try:
         # executing query
         values = (student_data[0][student_mapper['email_id']], student_data[0]
                   [student_mapper['rollno']], sem, year, marks, marks, year)
+        values_login=(insert_col,name,sem,year,marks,insert_col_name)
         cursor.execute(insert, values)
+         # executing query
+        try:
+            if login_role in ['faculty_co', 'HOD']:
+                if int(dept) == int(argument[mapper["uploader_dept"]]):
+                    update_values = (rollno, fname, mname, lname,
+                                     year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email)
+                    insert_record(update_values, values, values_login)
+                else:
+                    errors['wrongDept'].append({"email": email, "dept": dept})
+            elif login_role in ['inst_coor']:
+                update_values = (rollno, fname, mname, lname,
+                                 year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email_id)
+                insert_record(update_values, values, values_login)
+
+        except Exception as e:
+            if "Duplicate entry" in str(e):
+                if argument[mapper['upload_constraint']] == "0":
+                    pass
+                elif argument[mapper['upload_constraint']] == "1":
+                    values = (rollno, fname, mname, lname,
+                              year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email_id)
+                    try:
+                        cursor.execute(update, values)
+                        updated_records_count += 1
+                    except Exception as e:
+                        print("error+" + e)
+                        sys.exit(0)
+                else:
+                    print("error+Email: "+email_id+" Rollno: " +
+                          str(int(rollno)) + " has duplicate entry.")
+                    sys.exit(0)
+
+            elif "foreign key constraint fails" in str(e):
+                print("error+Department id: "+str(int(dept)) +
+                      " does not exist/(if present, wrong value) in the table.")
+                sys.exit(0)
+            else:
+                print(e)
+                sys.exit(0)
 except Exception as e:
     print(str(e))
     sys.exit(0)
