@@ -258,7 +258,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <a href="loadAdditionalInfo/additional_info_course_students.php">          
-                    <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+                    <button ' . $role_restriction . ' type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
                     </a>
                 </div>
             </div>
