@@ -1,6 +1,9 @@
 
 <?php
+require_once __DIR__ ."../../../../MailService/PHPMailerHelper.php";
+include_once('../utils/email_queue.php');
 session_start();
+
 if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
   include_once("../../config.php");
   if (isset($_POST['faculty_unallocate']) || isset($_POST['faculty_unallocate_upcoming']) || isset($_POST['faculty_unallocate_log'])) {
@@ -66,13 +69,20 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
 
     if (isset($_POST['allocate_faculty_audit'])) {
       $sql = "INSERT INTO faculty_course_alloted VALUES ('$email_id','$cid','$course_type_id','$sem','$year','1')";
+      // die("Heyyyy");
     } else if (isset($_POST['allocate_faculty_audit_upcoming'])) {
       $sql = "INSERT INTO faculty_course_alloted VALUES ('$email_id','$cid','$course_type_id','$sem','$year','0')";
     } else if (isset($_POST['allocate_faculty_audit_log'])) {
       $sql = "INSERT INTO faculty_course_alloted_log VALUES ('$email_id','$cid','$course_type_id','$sem','$year')";
     }
 
-    mysqli_query($conn, $sql) or die($sql);
+      $insertResult = mysqli_query($conn, $sql) or die($sql);
+      if($insertResult){
+        // $mail = new PHPMailerHelper();
+        // $mail->sendEmailToFaculty($email_id,$cid,$sem,$year,$program,$course_type_id);
+
+        EmailQueue::getInstance()->sendCourseAllotmentEmailToFaculty($email_id,$cid,$sem,$year,$program,$course_type_id);
+      }
 
     if (isset($_POST['allocate_faculty_audit'])) {
       $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_course_alloted NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND course_type_id='$course_type_id' AND currently_active='1'";
