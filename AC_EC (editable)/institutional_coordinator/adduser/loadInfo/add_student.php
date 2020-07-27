@@ -3,6 +3,7 @@ include_once('../../verify.php');
 include_once('../../../config.php');
 $draw = $_POST['draw'];
 $row = $_POST['start'];
+$program = $_POST['program'];
 
 $rowperpage = $_POST['length']; // Rows display per page
 if (isset($_POST['order'])) {
@@ -47,14 +48,14 @@ if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
 }
 
 ## Total number of records without filtering
-$sql = "select count(*) as totalcount from student s WHERE s.program='UG' " . $role_restriction;
+$sql = "select count(*) as totalcount from student s WHERE s.program='$program' " . $role_restriction;
 $sel = mysqli_query($conn, $sql);
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
 ## Total number of record with filtering
 
-$sqlFiltered = "select count(*) as totalcountfilters from student s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='UG'" . $role_restriction . " && " . $searchQuery . "&& (" . $filterQuery . ")";
+$sqlFiltered = "select count(*) as totalcountfilters from student s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='$program'" . $role_restriction . " && " . $searchQuery . "&& (" . $filterQuery . ")";
 // die($sqlFiltered);
 $sel = mysqli_query($conn, $sqlFiltered);
 $records = mysqli_fetch_assoc($sel);
@@ -63,7 +64,7 @@ $totalRecordwithFilter = $records['totalcountfilters'];
 ## Fetch records
 
 $sql = "select email_id,rollno,current_sem,dept_name,CONCAT(fname,' ',mname,' ',lname) as name,year_of_admission  
-       from student s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='UG'" . $role_restriction . " && "
+       from student s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='$program'" . $role_restriction . " && "
    . $searchQuery . "&& (" . $filterQuery . ")" . $orderQuery . " limit " . $row . "," . $rowperpage;
 // echo $sql;
 $studentRecords = mysqli_query($conn, $sql);
