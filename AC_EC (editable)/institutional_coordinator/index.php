@@ -21,234 +21,32 @@ include('../includes/header.php');
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Name : </b></span>Name Surname</p>
-                                    <p class="text-dark"> <span><b>Email : </b></span>email@gmail.com</p>
+                                    <?php
+                                    $user = array(
+                                        "fname" => "Name",
+                                        "lname" => "surname",
+                                        "email_id" => "email@gmail.com",
+                                        "dept_name" => "Dept."
+                                    );
+                                    $sql = "select * from login_role lg inner join faculty f inner join department d on f.email_id=lg.email_id and f.dept_id=d.dept_id where lg.email_id = '{$_SESSION['email']}';";
+                                    $user_res = mysqli_query($conn, $sql);
+                                    if (mysqli_num_rows($user_res) > 0) {
+                                        $user = mysqli_fetch_assoc($user_res);
+                                    }
+                                    ?>
+                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo "{$user['fname']} {$user['lname']}" ?></p>
+                                    <p class="text-dark"> <span><b>Email : </b></span><?php echo "{$user['email_id']}" ?></p>
+                                    <p class="text-dark"> <span><b>Department : </b></span><?php echo "{$user['dept_name']}" ?> </p>
                                 </div>
-                                <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Department : </b></span>Computer </p>
-                                    <p class="text-dark"> <span><b>Mobile No. : </b></span>1234567890</p>
-                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-12 grid-margin stretch-card mt-2">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <h3 class="mb-0"><strong>My Current Course</strong></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- card start(loop) -->
-        <div class="col-md-12 grid-margin stretch-card mt-2 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-stripped" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Course Name</th>
-                                    <th>Course ID</th>
-                                    <th>Semester</th>
-                                    <th>Year</th>
-                                    <th>Course Strength</th>
-                                    <th>Student Data</th>
-                                    <th>Erasure</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Course Name</th>
-                                    <th>Course ID</th>
-                                    <th>Semester</th>
-                                    <th>Year</th>
-                                    <th>Course Strength</th>
-                                    <th>Student Data</th>
-                                    <th>Erasure</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>6</td>
-                                    <td>30</td>
-                                    <td>
 
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter1">
-                                            <i class="fas fa-upload"></i>
-                                        </button>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalCenterTitle1">Upload Your File </h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="container">
-                                                            <form method="post" action="#" id="#">
-                                                                <div class="form-group files color">
-                                                                    <input type="file" class="form-control" multiple="">
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                    <style type="text/css">
-                                                        .files input {
-                                                            outline: 2px dashed #92b0b3;
-                                                            outline-offset: -10px;
-                                                            -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
-                                                            transition: outline-offset .15s ease-in-out, background-color .15s linear;
-                                                            padding: 120px 0px 85px 35%;
-                                                            text-align: center !important;
-                                                            margin: 0;
-                                                            width: 100% !important;
-                                                        }
-
-                                                        .files input:focus {
-                                                            outline: 2px dashed #92b0b3;
-                                                            outline-offset: -10px;
-                                                            -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
-                                                            transition: outline-offset .15s ease-in-out, background-color .15s linear;
-                                                            border: 1px solid #92b0b3;
-                                                        }
-
-                                                        .files {
-                                                            position: relative
-                                                        }
-
-                                                        .files:after {
-                                                            pointer-events: none;
-                                                            position: absolute;
-                                                            top: 60px;
-                                                            left: 0;
-                                                            width: 50px;
-                                                            right: 0;
-                                                            height: 56px;
-                                                            content: "";
-                                                            background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
-                                                            display: block;
-                                                            margin: 0 auto;
-                                                            background-size: 100%;
-                                                            background-repeat: no-repeat;
-                                                        }
-
-                                                        .color input {
-                                                            background-color: #f1f1f1;
-                                                        }
-
-                                                        .files:before {
-                                                            position: absolute;
-                                                            bottom: 10px;
-                                                            left: 0;
-                                                            pointer-events: none;
-                                                            width: 100%;
-                                                            right: 0;
-                                                            height: 57px;
-                                                            display: block;
-                                                            margin: 0 auto;
-                                                            color: #2ea591;
-                                                            font-weight: 600;
-                                                            text-transform: capitalize;
-                                                            text-align: center;
-                                                        }
-                                                    </style>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                        <button type="button" class="btn btn-primary" name="save_changes">Upload</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                    <td>
-
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary icon-btn" data-toggle="modal" data-target="#exampleModalCenter2">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalCenterTitle2">Action</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <nav>
-                                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                                <a class="nav-item nav-link active" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab" aria-controls="nav-delete" aria-selected="true">Deletion</a>
-                                                            </div>
-                                                        </nav>
-                                                        <div class="tab-content" id="nav-tabContent">
-                                                            <!--Deletion-->
-                                                            <div class="tab-pane fade show active" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
-                                                                <form action="">
-                                                                    <div class="form-group">
-                                                                        <label for="exampleFormControlSelect1"><b>Are you sure you want to delete the uploaded data?</b>
-                                                                        </label>
-                                                                        <br>
-                                                                        <button type="submit" class="btn btn-primary" name="yes">Yes</button>
-                                                                        <button type="submit" class="btn btn-secondary" name="no">No</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                            <!--end Deletion-->
-                                                        </div>
-
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
-                                                            <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- card end(loop) -->
-        <div class="col-md-12 grid-margin stretch-card mt-2">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h4 class="m-0 font-weight-bold text-primary">Semester Switch</h4>
-                        </div>
-                        <div class="col text-right">
-                            <button type="button" class="btn btn-danger" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
-                                <i class="fas fa-sync">&nbsp;</i>Switch
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
-        </div>
-        
     </div>
 </div>
 <!-- /.container-fluid -->
