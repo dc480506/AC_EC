@@ -1,17 +1,10 @@
 <?php
 include('../../config.php');
-require_once __DIR__ ."../../../../MailService/PHPMailerHelper.php";
-
 
 class EmailQueue
 {
-    private static $emailQueueInstance;
-    
-   
+    private static $emailQueueInstance;   
     public $conn;
-    
-    // public $student_course_table=null;
-    // public $pref_student_allocated=null;
     public $GET_STUDENTS_QUERY='';
     public $GET_FACULTY_QUERY ='';
     
@@ -19,8 +12,6 @@ class EmailQueue
     {
         global $dbname, $servername, $username, $password, $port;
         $this->conn = new mysqli($servername, $username, $password, $dbname, $port);    
-        // $this->student_course_table = $_SESSION['student_course_table'];   
-        // $this->pref_student_allocated = $_SESSION['pref_student_alloted_table'];         
     }
     public static function getInstance()
     {
@@ -62,13 +53,11 @@ class EmailQueue
     
     private function getStudentsData()
     {
-        // die($this->GET_STUDENTS_QUERY);
         return $this->conn->query($this->GET_STUDENTS_QUERY);
     }
 
     private function getFacultyData()
     {
-        // die($this->GET_STUDENTS_QUERY);
         return $this->conn->query($this->GET_FACULTY_QUERY);
     }
 
@@ -84,7 +73,6 @@ class EmailQueue
         }
 
         $insert_to_email_queue_query = substr($insert_to_email_queue_query, 0, strlen($insert_to_email_queue_query) - 1) . ";";
-        // die($insert_to_email_queue_query);
         $this->conn->query($insert_to_email_queue_query);
         
     }
@@ -101,7 +89,6 @@ class EmailQueue
         }
 
         $insert_to_email_queue_query = substr($insert_to_email_queue_query, 0, strlen($insert_to_email_queue_query) - 1) . ";";
-        // die($insert_to_email_queue_query);
         $this->conn->query($insert_to_email_queue_query);
         
     }
