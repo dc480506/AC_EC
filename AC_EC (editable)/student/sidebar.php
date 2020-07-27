@@ -40,13 +40,7 @@
       <i class="far fa-file"></i>
       <span>Form</span>
     </a>
-    <!-- <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="audit_form.php">Audit Course</a>
-        <a class="collapse-item" href="form.php">Interdisciplinary Course</a>
-        <a class="collapse-item" href="elective_form.php">Elective Course</a>
-      </div>
-    </div> -->
+
   </li>
 
   <!-- Divider -->
