@@ -39,20 +39,25 @@ if ($searchValue != '') {
    $searchQuery = "(email_id like '%" . $searchValue . "%' or rollno like '%" . $searchValue . "%' or dept_name like '%" . $searchValue . "%' or fname like '%" . $searchValue . "%' or mname like '%" . $searchValue . "%' or lname like '%" . $searchValue . "%' or year_of_admission like '%" . $searchValue . "%' )";
 }
 
+$role_restriction = "1";
+if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
+   $role_restriction = "s.dept_id='{$_SESSION['dept_id']}' ";
+}
+
 ## Total number of records without filtering
-$sel = mysqli_query($conn, "select count(*) as totalcount from student_log WHERE program='UG'");
+$sel = mysqli_query($conn, "select count(*) as totalcount from student_log s WHERE s.program='UG' and $role_restriction");
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
 ## Total number of record with filtering
-$sel = mysqli_query($conn, "select count(*) as totalcountfilters from student_log s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='UG' and " . $searchQuery . "&& (" . $filterQuery . ")");
+$sel = mysqli_query($conn, "select count(*) as totalcountfilters from student_log s INNER JOIN department d ON s.dept_id=d.dept_id WHERE $role_restriction and s.program='UG' and " . $searchQuery . "&& (" . $filterQuery . ")");
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
 ## Fetch records
 
 $sql = "select email_id,rollno,dept_name,CONCAT(fname,' ',mname,' ',lname) as name,year_of_admission  
-       from student_log s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='UG' and "
+       from student_log s INNER JOIN department d ON s.dept_id=d.dept_id WHERE $role_restriction and s.program='UG' and "
    . $searchQuery . "&& (" . $filterQuery . ")" . $orderQuery . " limit " . $row . "," . $rowperpage;
 // echo $sql;
 $studentRecords = mysqli_query($conn, $sql);
@@ -62,7 +67,7 @@ $fullname = "";
 while ($row = mysqli_fetch_assoc($studentRecords)) {
 
    $data[] = array(
-      
+
       "select-cbox" => '<div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input selectrow" id="selectrow' . $count . '">
                         <label class="custom-control-label" for="selectrow' . $count . '"></label>
