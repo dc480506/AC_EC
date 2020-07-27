@@ -57,14 +57,16 @@ if (isset($_POST['filters'])) {
    }
 }
 
-$role_restriction = "1";
+$role_restriction = "";
 if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
-   $role_restriction = " (c.cid,c.sem,c.year,c.course_type_id) in (select cid,sem,year,course_type_id from course_floating_dept_log where program='$program' and dept_id='{$_SESSION['dept_id']}')";
+   $role_restriction = ", (SELECT count(*) as is_current_dept from course_floating_dept_log cad 
+         where c.cid = cad.cid and c.sem = cad.sem and c.year = cad.year and cad.course_type_id=c.course_type_id 
+         and cad.dept_id='{$_SESSION['dept_id']}') as is_current_dept";
 }
 
 
 ## Total number of records without filtering
-$sel = mysqli_query($conn, "select count(*) as totalcount from course_log c WHERE c.course_type_id = '$course_type_id' AND c.program= '$program' and $role_restriction");
+$sel = mysqli_query($conn, "select count(*) as totalcount from course_log c WHERE c.course_type_id = '$course_type_id' AND c.program= '$program' ");
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
@@ -74,7 +76,7 @@ $totalRecords = $records['totalcount'];
 // $records = mysqli_fetch_assoc($sel);
 // $totalRecordwithFilter = $records['totalcountfilters'];
 $sql = "SELECT DISTINCT c.cid,c.sem,c.year FROM course_log c INNER JOIN course_floating_dept_log afd 
-INNER JOIN department d ON c.cid=afd.cid AND c.sem=afd.sem AND c.year=afd.year AND c.course_type_id=afd.course_type_id AND afd.dept_id=d.dept_id WHERE  c.course_type_id = '$course_type_id' AND c.program= '$program' and $role_restriction"
+INNER JOIN department d ON c.cid=afd.cid AND c.sem=afd.sem AND c.year=afd.year AND c.course_type_id=afd.course_type_id AND afd.dept_id=d.dept_id WHERE  c.course_type_id = '$course_type_id' AND c.program= '$program' "
    . $searchQuery . " && " . $filterQuery2 . " " . $deptQuery;
 // echo $sql;
 $sel = mysqli_query($conn, $sql);
@@ -106,15 +108,21 @@ $sql = "select c.cname,c.cid,c.sem,
          (SELECT GROUP_CONCAT(dept_name SEPARATOR ', ') FROM course_applicable_dept_log aad 
          INNER JOIN department ad ON aad.dept_id=ad.dept_id WHERE c.cid=aad.cid AND c.sem=aad.sem AND c.year=aad.year AND  c.course_type_id=aad.course_type_id
          GROUP BY 'all') as app 
-      from course_log c WHERE c.course_type_id = '$course_type_id' AND c.program= '$program' and $role_restriction "
+         $role_restriction
+      from course_log c WHERE c.course_type_id = '$course_type_id' AND c.program= '$program' "
    . $searchQuery . " HAVING " . $filterQuery . " " . $deptQuery . " " . $orderQuery . " limit " . $row . "," . $rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();
 $count = 0;
 while ($row = mysqli_fetch_assoc($courseRecords)) {
+   $disabled = "";
+   if (isset($row['is_current_dept']) && (int)$row['is_current_dept'] == 0) {
+      $disabled = "disabled";
+   }
+
    $data[] = array(
       "select-cbox" => '<div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input selectrow_previous" id="selectrow_previous' . $count . '">
+                        <input ' . $disabled . ' type="checkbox" class="custom-control-input selectrow_previous" id="selectrow_previous' . $count . '">
                         <label class="custom-control-label" for="selectrow_previous' . $count . '"></label>
                      </div>',
       "cname" => $row['cname'],
@@ -126,10 +134,10 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
       "max" => $row['max'],
       "min" => $row['min'],
       "no_of_allocated" => $row['no_of_allocated'],
-      "allocate_faculty" => '<button type="button" class="btn btn-primary icon-btn allocate-btn">
+      "allocate_faculty" => '<button ' . $disabled . ' type="button" class="btn btn-primary icon-btn allocate-btn">
                               <i class="fas fa-chalkboard-teacher"></i>
                           </button>',
-      "action" => '<button type="button" class="btn btn-primary icon-btn action-btn">
+      "action" => '<button ' . $disabled . ' type="button" class="btn btn-primary icon-btn action-btn">
                     <i class="fas fa-tools"></i>
                 </button>',
    );
