@@ -12,7 +12,6 @@ if (isset($_POST['submit'])) {
   // die($sql);
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-  // die(json_encode($row));
   $count = mysqli_num_rows($result);
   if ($count == 1) {
     session_start();
@@ -28,6 +27,13 @@ if (isset($_POST['submit'])) {
       exit();
     } else if ($row['role'] == 'faculty_co') {
       $_SESSION['role'] = 'faculty_co';
+      $_SESSION['dept_id'] = $row['dept_id'];
+      $_SESSION['dept_name'] = $row['dept_name'];
+      header("location: institutional_coordinator/index.php");
+      exit();
+    } else if ($row['role'] == 'HOD') {
+      // die(json_encode($row));
+      $_SESSION['role'] = 'HOD';
       $_SESSION['dept_id'] = $row['dept_id'];
       $_SESSION['dept_name'] = $row['dept_name'];
       header("location: institutional_coordinator/index.php");
