@@ -1,4 +1,4 @@
-
+  
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -6,9 +6,8 @@ use PHPMailer\PHPMailer\Exception;
 
 require_once __DIR__."./vendor/autoload.php";
 
-class PHPMailerHelper{
 
-// die("in php mailer");
+class PHPMailerHelper{
     private $servername = "localhost";
     private $password = "";
     private $username = "root";
@@ -18,7 +17,6 @@ class PHPMailerHelper{
     private $conn;
     public function __construct(){
         $mail = new PHPMailer();
-        // die("hey");
         $this->conn = new mysqli($this->servername,$this->username, $this->password, $this->dbname, $this->port);
         try { 
             $mail = new PHPMailer(); // create a new object
@@ -29,8 +27,8 @@ class PHPMailerHelper{
             $mail->Host = "smtp.gmail.com";
             $mail->Port = 465; // or 587
             $mail->IsHTML(true);           
-            $mail->Username   = 'email@gmail.com';                  
-            $mail->Password   = 'EnterYourPassword';                                                                   
+            $mail->Username   = 'ijoglekar16@gmail.com';                  
+            $mail->Password   = 'Arch@ngels23';                                                                   
             $mail->Port       = 465;    
                     
         } catch (Exception $e) { 
@@ -43,8 +41,6 @@ class PHPMailerHelper{
     
    
     public function sendEmail(){
-        // die("hey");
-        
         while(true){
             $query = "select * from email_queue where email_sent = 0 limit 10 ";
             $result = mysqli_query($this->conn,$query);
@@ -72,12 +68,10 @@ class PHPMailerHelper{
                         $updateQuery  = "Update email_queue set email_sent = 1 where id =  {$row['id']}";
                         $this->conn->query($updateQuery);
 
-                        // Util::redirect("dashboard/blank.php");
                     }
                     else
                     {
                         echo "Error";
-                        // Util::redirect("dashboard/forgot-password.php");
                     }
                 }
             }else{
@@ -86,10 +80,10 @@ class PHPMailerHelper{
         
         }
     }
-
 }
 
 $myMail = new PHPMailerHelper();
 $myMail->sendEmail();
+
 
 
