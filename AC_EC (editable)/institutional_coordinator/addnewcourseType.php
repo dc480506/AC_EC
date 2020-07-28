@@ -57,7 +57,7 @@ include('../includes/header.php');
                                         <label class="custom-control-label" for="is_gradable">Is Gradable</label>
                                     </div>
                                     <br>
-                                
+
                                     <div class="custom-control custom-checkbox custom-control-inline">
                                         <input type="checkbox" checked class="custom-control-input" id="is_closed_elective" name="is_closed_elective" value="">
                                         <label class="custom-control-label" for="is_closed_elective">Is Closed Elective</label>
@@ -183,7 +183,7 @@ include('../includes/header.php');
             name: "is_gradable",
             value: is_gradable
         });
-        var is_closed_elective=$("#add_new_course_type_form #is_closed_elective").attr("checked") ? 1 : 0;
+        var is_closed_elective = $("#add_new_course_type_form #is_closed_elective").attr("checked") ? 1 : 0;
         form.push({
             name: "is_closed_elective",
             value: is_closed_elective
@@ -243,7 +243,7 @@ include('../includes/header.php');
         $("#edit_course_type_form #courseTypeName").val(courseTypeData.name)
         $("#edit_course_type_form #courseTypeId").val(courseTypeData.course_type_id)
         $("#edit_course_type_form #program").val(courseTypeData.program);
-        console.log(courseTypeData.is_gradable)
+        console.log(courseTypeData.is_closed_elective)
         $("#edit_course_type_form #edit_is_gradable").attr("checked", courseTypeData.is_gradable == "yes" ? true : false)
         $("#edit_course_type_form #edit_is_closed_elective").attr("checked", courseTypeData.is_closed_elective == "yes" ? true : false)
 
