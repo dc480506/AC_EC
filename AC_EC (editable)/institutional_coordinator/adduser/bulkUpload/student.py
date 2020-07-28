@@ -56,6 +56,7 @@ insert_student_login = """Insert into login_role(username,email_id,password,pass
 password_set = 0
 role = "student"
 
+login_role = argument[mapper['role']]
 
 inserted_records_count = 0
 updated_records_count = 0

@@ -12,8 +12,7 @@ if (isset($_POST['order'])) {
    $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
    $orderQuery = " order by $columnName $columnSortOrder ";
 } else {
-   // $columnName='sem';
-   // $columnSortOrder='asc';
+
    $orderQuery = ' order by current_sem,rollno asc ';
 }
 
@@ -66,7 +65,7 @@ $totalRecordwithFilter = $records['totalcountfilters'];
 $sql = "select email_id,rollno,current_sem,dept_name,CONCAT(fname,' ',mname,' ',lname) as name,year_of_admission  
        from student s INNER JOIN department d ON s.dept_id=d.dept_id WHERE s.program='$program'" . $role_restriction . " && "
    . $searchQuery . "&& (" . $filterQuery . ")" . $orderQuery . " limit " . $row . "," . $rowperpage;
-// echo $sql;
+
 $studentRecords = mysqli_query($conn, $sql);
 $data = array();
 $count = 0;
