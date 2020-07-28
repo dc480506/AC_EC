@@ -1,6 +1,8 @@
-
 <?php
+
+require_once __DIR__."../../utils/email_queue.php";
 session_start();
+$insertFlag=false;
 if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
   include_once("../../config.php");
   if (isset($_POST['faculty_unallocate']) || isset($_POST['faculty_unallocate_upcoming']) || isset($_POST['faculty_unallocate_log'])) {
@@ -66,13 +68,26 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
 
     if (isset($_POST['allocate_faculty_audit'])) {
       $sql = "INSERT INTO faculty_course_alloted VALUES ('$email_id','$cid','$course_type_id','$sem','$year','1')";
+      $insertFlag = true;
+      EmailQueue::getInstance()->sendCourseAllotmentEmailToFaculty($email_id,$cid,$sem,$year,$program,$course_type_id);
+     
     } else if (isset($_POST['allocate_faculty_audit_upcoming'])) {
       $sql = "INSERT INTO faculty_course_alloted VALUES ('$email_id','$cid','$course_type_id','$sem','$year','0')";
+      $insertFlag = true;
+      EmailQueue::getInstance()->sendCourseAllotmentEmailToFaculty($email_id,$cid,$sem,$year,$program,$course_type_id);
+    
     } else if (isset($_POST['allocate_faculty_audit_log'])) {
       $sql = "INSERT INTO faculty_course_alloted_log VALUES ('$email_id','$cid','$course_type_id','$sem','$year')";
+      $insertFlag = true;
+      
+
     }
 
-    mysqli_query($conn, $sql) or die($sql);
+    $result = mysqli_query($conn, $sql) or die($sql);
+    if($result){
+      EmailQueue::getInstance()->sendCourseAllotmentEmailToFaculty($email_id,$cid,$sem,$year,$program,$course_type_id);
+    }
+  
 
     if (isset($_POST['allocate_faculty_audit'])) {
       $sql = "SELECT email_id, faculty_code, fname,mname,lname FROM faculty_course_alloted NATURAL JOIN faculty WHERE cid = '$cid' AND sem = '$sem' AND year = '$year' AND course_type_id='$course_type_id' AND currently_active='1'";
