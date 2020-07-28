@@ -11,7 +11,8 @@
   if(isset($_SESSION['role'])){
     if($_SESSION['role']=='faculty_co' ||  $_SESSION['role']=='HOD'){
   ?>
-     <a href="./faculty_coordinator/index.php" class="btn btn-primary">Student Portal</a>
+     <a href="./../faculty/index.php" class="btn btn-primary">Faculty Portal</a>     
+     <a href="./../institutional_coordinator/index.php" class="btn btn-primary ml-2">Admin Portal</a>     
   <?php
     }
   }

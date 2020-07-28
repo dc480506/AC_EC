@@ -12,6 +12,7 @@ $result = mysqli_query($conn, $fetch_facco_dept);
 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $_SESSION['dept_id'] = $row['dept_id'];
 $_SESSION['dept_name'] = $row['dept_name'];
+die("hey");
 ?>
 
 <!-- Begin Page Content -->
