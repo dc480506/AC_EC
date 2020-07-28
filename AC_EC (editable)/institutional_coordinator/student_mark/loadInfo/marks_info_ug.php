@@ -41,12 +41,20 @@ if ($searchValue != '') {
    $searchQuery = "( gpa like '%" . $searchValue . "%' or dept_name like '%" . $searchValue . "%' or sem like '%" . $searchValue . "%' or m.rollno like '%" . $searchValue . "%' or m.email_id like '%" . $searchValue . "%' or year like '%" . $searchValue . "%')";
 }
 
+$role_restriction = "";
+if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
+   $role_restriction = " and s.dept_id='{$_SESSION['dept_id']}' ";
+}
+
+
 ## Total number of records without filtering
-$sel = mysqli_query($conn, "select count(*) as totalcount from student_marks where program='UG' ");
+$query="select count(*) as totalcount from student_marks s where program='UG' ";
+$sel = mysqli_query($conn,$query);
+// echo $query;
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
-$query = "select count(*) as totalcountfilters from student_marks m INNER JOIN student s ON m.email_id=s.email_id INNER JOIN department d ON s.dept_id=d.dept_id WHERE m.program='UG' and " . $searchQuery . "&& (" . $filterQuery . ")";
+$query = "select count(*) as totalcountfilters from student_marks m INNER JOIN student s ON m.email_id=s.email_id INNER JOIN department d ON s.dept_id=d.dept_id WHERE m.program='UG' " . $role_restriction. " and " . $searchQuery . "&& (" . $filterQuery . ")";
 $sel = mysqli_query($conn, $query);
 // echo $query;
 $records = mysqli_fetch_assoc($sel);
@@ -54,7 +62,7 @@ $totalRecordwithFilter = $records['totalcountfilters'];
 
 ##Fetch Record
 $sql = "select m.email_id,m.rollno,CONCAT(fname,' ',mname,' ',lname) as fullname,dept_name,sem,gpa,year
-from student_marks m INNER JOIN student s ON m.email_id=s.email_id INNER JOIN department d ON s.dept_id=d.dept_id WHERE m.program='UG' && "
+from student_marks m INNER JOIN student s ON m.email_id=s.email_id INNER JOIN department d ON s.dept_id=d.dept_id WHERE m.program='UG' " . $role_restriction. " && "
    . $searchQuery . " && (" . $filterQuery . ")" . $orderQuery . " limit " . $row . "," . $rowperpage;
 $studentRecords = mysqli_query($conn, $sql);
 $data = array();
