@@ -74,11 +74,15 @@ for($j=1;$j<=$row1['no_of_preferences'];$j++)
                       Form</h1>
                     </div>
                     <div class="row align-items-center">
-                        <h5 class="card-description"> Courses </h5>
-                        <br>    
+                        <div class="col-md-6">
+                            <h5 class="card-description"> Courses </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="float-right text-danger" id="response">
+                            </div>
+                        </div>
                     </div>
-                    <div class="row float-right text-danger" id="response">
-                    </div>
+                  
                      
                 </div>
                 <div class="card-body">

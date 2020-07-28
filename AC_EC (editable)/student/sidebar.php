@@ -38,7 +38,7 @@
       <i class="far fa-file"></i> -->
       <a class="nav-link" href="forms.php">
       <i class="far fa-file"></i>
-      <span>Form</span>
+      <span>Forms</span>
     </a>
 
   </li>
