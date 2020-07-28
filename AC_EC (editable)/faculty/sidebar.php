@@ -19,34 +19,16 @@
   <hr class="sidebar-divider">
   <!-- Nav Item - Pages Collapse Menu -->
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+    <a class="nav-link" href="previous.php">
       <i class="fas fa-history"></i>
-      <span>Previous Courses</span>
-    </a>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="previous_ac.php">Audit Course</a>
-        <a class="collapse-item" href="previous_idc.php">Interdisciplinary Course</a>
-        <a class="collapse-item" href="previous_cec.php">Close Elective Course</a>
-        <a class="collapse-item" href="previous_oec.php">Open Elective Course</a>
-      </div>
-    </div>
+      <span>Previous Courses</span></a>
   </li>
   <hr class="sidebar-divider">
   <!-- Nav Item - Utilities Collapse Menu -->
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-      <i class="fas fa-chalkboard-teacher"></i>
-      <span>Current Courses</span>
-    </a>
-    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="current_ac.php">Audit Course</a>
-        <a class="collapse-item" href="current_idc.php">Interdisciplinary Course</a>
-        <a class="collapse-item" href="current_cec.php">Close Elective Course</a>
-        <a class="collapse-item" href="current_oec.php">Open Elective Course</a>
-      </div>
-    </div>
+    <a class="nav-link" href="current_courses.php">
+    <i class="fas fa-chalkboard-teacher"></i>
+      <span>Current Courses</span></a>
   </li>
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">

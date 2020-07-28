@@ -1,19 +1,40 @@
 <?php
 session_start();
-if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
+$allowed_roles = array("inst_coor", "faculty_co", "HOD");
+if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
     include_once('../../config.php');
     $data = json_decode(file_get_contents("php://input"), true);
+    $cid = $data['cid'];
+    $sem = $data['sem'];
+    $year = $data['year'];
+    $course_type_id = $data['course_type_id'];
+    $program = $data['program'];
+
+    $role_restriction = "";
+
+    if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
+        $sql = "select * from course_floating_dept where cid='$cid' AND sem='$sem' AND year='$year' and course_type_id='$course_type_id' 
+            and program='$program' and dept_id='{$_SESSION['dept_id']}' 
+             union
+            select * from course_floating_dept_log where cid='$cid' AND sem='$sem' AND year='$year' and course_type_id='$course_type_id' 
+            and program='$program' and dept_id='{$_SESSION['dept_id']}'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) == 0) {
+            $role_restriction = "disabled";
+        }
+    }
     if ($data['type'] == "current") {
-        $cid = $data['cid'];
-        $sem = $data['sem'];
-        $course_type_id = $data['course_type_id'];
-        $program = $data['program'];
+
         $result = mysqli_query($conn, "select academic_year from current_sem_info WHERE currently_active=1");
         $row = mysqli_fetch_assoc($result);
         $year = $row['academic_year'];
         $_SESSION['cid'] = $cid;
         $_SESSION['sem'] = $sem;
         $_SESSION['year'] = $year;
+<<<<<<< HEAD
+=======
+        $_SESSION['course_type_id'] = $course_type_id;
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
         $_SESSION['active'] = 1;
 
         $sql = "SELECT timestamp,email_id,syllabus_path FROM course WHERE cid='$cid' AND sem='$sem' AND year='$year'  and course_type_id='$course_type_id' and program='$program'";
@@ -55,6 +76,8 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                 $i++;
             }
         }
+
+
         echo '
             <div class="form-row">
                 <div class="form-group col-md-4">
@@ -82,21 +105,26 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
+<<<<<<< HEAD
                     <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
                     <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+=======
+                    <a href="loadAdditionalInfo/additional_info_course_students.php">          
+                    <button ' . $role_restriction . ' type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
                     </a>
                 </div>
             </div>
         ';
     } else if ($data['type'] == 'upcoming') {
-        $cid = $data['cid'];
-        $sem = $data['sem'];
-        $year = $data['year'];
-        $course_type_id = $data['course_type_id'];
-        $program = $data['program'];
+
         $_SESSION['cid'] = $cid;
         $_SESSION['sem'] = $sem;
         $_SESSION['year'] = $year;
+<<<<<<< HEAD
+=======
+        $_SESSION['course_type_id'] = $course_type_id;
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
         $_SESSION['active'] = 0;
         $sql = "SELECT timestamp,email_id,syllabus_path FROM course WHERE cid='$cid' AND sem='$sem' AND year='$year'  and course_type_id='$course_type_id' and program='$program'";
         $result = mysqli_query($conn, $sql);
@@ -164,21 +192,26 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
+<<<<<<< HEAD
                     <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
                     <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+=======
+                    <a href="loadAdditionalInfo/additional_info_course_students.php">          
+                    <button ' . $role_restriction . ' type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
                     </a>
                 </div>
             </div>
         ';
     } else if ($data['type'] == 'previous') {
-        $cid = $data['cid'];
-        $sem = $data['sem'];
-        $year = $data['year'];
-        $course_type_id = $data['course_type_id'];
-        $program = $data['program'];
+
         $_SESSION['cid'] = $cid;
         $_SESSION['sem'] = $sem;
         $_SESSION['year'] = $year;
+<<<<<<< HEAD
+=======
+        $_SESSION['course_type_id'] = $course_type_id;
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
         $_SESSION['active'] = 2;
         $sql = "SELECT timestamp,email_id,syllabus_path FROM course_log WHERE cid='$cid' AND sem='$sem' AND year='$year' and course_type_id='$course_type_id'";
         $result = mysqli_query($conn, $sql);
@@ -243,8 +276,13 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
+<<<<<<< HEAD
                     <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
                     <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+=======
+                    <a href="loadAdditionalInfo/additional_info_course_students.php">          
+                    <button ' . $role_restriction . ' type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
                     </a>
                 </div>
             </div>

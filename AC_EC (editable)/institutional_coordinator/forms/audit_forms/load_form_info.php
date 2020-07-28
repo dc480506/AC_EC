@@ -23,15 +23,24 @@ if ($searchValue != '') {
    sem like '%" . $searchValue . "%' 
    ) ";
 }
+$role_restriction = array("", "1");
+if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
+   $role_restriction[0] = "inner join login_role lr inner join faculty fac on f.email_id=lr.email_id and lr.email_id = fac.email_id";
+   $role_restriction[1] = "fac.dept_id = '{$_SESSION['dept_id']}'";
+}
 
 ## Total number of records without filtering
+<<<<<<< HEAD
 $sel = mysqli_query($conn, "select count(*) as totalcount from form WHERE form_type='audit'");
+=======
+$sel = mysqli_query($conn, "select count(*) as totalcount from form f $role_restriction[0]  where $role_restriction[1]");
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 
 ## Total number of record with filtering
 // $sel = mysqli_query($conn,"select count(*) as totalcountfilters from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1 ".$searchQuery);
-$sel = mysqli_query($conn, "select count(*) as totalcountfilters from form WHERE " . $searchQuery);
+$sel = mysqli_query($conn, "select count(*) as totalcountfilters from form f $role_restriction[0] where $role_restriction[1] and " . $searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['totalcountfilters'];
 
@@ -42,7 +51,7 @@ $sql = "SELECT form_id, sem,year,curr_sem,program,start_timestamp,end_timestamp,
          (SELECT GROUP_CONCAT(name SEPARATOR ', ') FROM form_course_category_map fccm 
          INNER JOIN course_types ct ON fccm.course_type_id=ct.id WHERE fccm.form_id = f.form_id
          GROUP BY 'all') as course_types
-       FROM form f WHERE "
+       FROM form f $role_restriction[0] where $role_restriction[1] and "
    . $searchQuery . $orderQuery . " limit " . $row . "," . $rowperpage;
 $courseRecords = mysqli_query($conn, $sql);
 $data = array();

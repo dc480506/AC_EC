@@ -2,6 +2,7 @@ import pymysql
 import xlrd
 import sys
 import re
+import json
 mapper = {
     "added": 0,
     "timestamp": 1,
@@ -19,6 +20,12 @@ mapper = {
     "password": 13,
     "dbname": 14,
     "program": 15,
+<<<<<<< HEAD
+=======
+    "upload_constraint": 16,
+    "role": 17,
+    "uploader_dept": 18
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 }
 header = []
 header_id = {}
@@ -35,7 +42,11 @@ data = file.sheet_by_index(0)
 for y in range(0, data.ncols):
     header.append(data.cell(0, y).value.lower())
 try:
+<<<<<<< HEAD
     for x in range(start_col, n-6):
+=======
+    for x in range(start_col, n-9):
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
         header_id[argument[x].lower()] = header.index(argument[x].lower())
 except Exception as e:
     print(re.findall(r"'(.*?)'", str(e),)
@@ -45,6 +56,32 @@ ts = argument[mapper["timestamp"]]
 added_by = argument[mapper["added"]]
 insert = """INSERT into student(email_id,rollno,fname,mname,lname,year_of_admission,dept_id,current_sem,timestamp,adding_email_id,program) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'""" + \
     argument[mapper['program']] + """');"""
+<<<<<<< HEAD
+=======
+
+update = "update student set rollno=%s,fname=%s,mname=%s,lname=%s,year_of_admission=%s,dept_id=%s,current_sem=%s,timestamp=%s,adding_email_id=%s,program=%s where email_id=%s;"
+
+insert_student_login = """Insert into login_role(username,email_id,password,password_set,role) VALUES(%s,%s,%s,%s,%s);"""
+password_set = 0
+role = "student"
+
+
+inserted_records_count = 0
+updated_records_count = 0
+errors = {"wrongDept": []}
+
+
+def insert_record(update_values, values_insert, values_login):
+    global updated_records_count, inserted_records_count, argument
+    if argument[mapper['upload_constraint']] == "2":
+        updated_records_count += cursor.execute(update, update_values)
+    else:
+        cursor.execute(insert, values)
+        cursor.execute(insert_student_login, values_login)
+        inserted_records_count += 1
+
+
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 try:
     for x in range(1, data.nrows):
         email = data.cell(
@@ -52,6 +89,8 @@ try:
         # print(email)
         rollno = data.cell(
             x, header_id[argument[mapper['rollno']].lower()]).value
+        username = int(rollno)
+        password = rollno
         # print(rollno)
         fname = data.cell(
             x, header_id[argument[mapper['fname']].lower()]).value
@@ -72,9 +111,25 @@ try:
         # print(current_sem)
         values = (email, rollno, fname, mname, lname,
                   year_of_admission, dept, current_sem, ts, added_by)
+        values_login = (username, email, password, password_set, role)
         # executing query
         try:
+<<<<<<< HEAD
             cursor.execute(insert, values)
+=======
+            if login_role in ['faculty_co', 'HOD']:
+                if int(dept) == int(argument[mapper["uploader_dept"]]):
+                    update_values = (rollno, fname, mname, lname,
+                                     year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email)
+                    insert_record(update_values, values, values_login)
+                else:
+                    errors['wrongDept'].append({"email": email, "dept": dept})
+            elif login_role in ['inst_coor']:
+                update_values = (rollno, fname, mname, lname,
+                                 year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email)
+                insert_record(update_values, values, values_login)
+
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
         except Exception as e:
             if "Duplicate entry" in str(e):
                 print("Email: "+email+" Rollno: " +
@@ -90,5 +145,12 @@ except Exception as e:
 # print("executed query")
 # commiting the query into db
 connection.commit()
+<<<<<<< HEAD
 print("Successful")
+=======
+output = {"insertedRecords": inserted_records_count,
+          "updatedRecords": updated_records_count, "totalRecords": data.nrows-1, "errors": errors}
+print('Successful+%s' %
+      (json.dumps(output)))
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 connection.close()

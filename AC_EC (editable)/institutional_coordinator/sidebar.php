@@ -7,7 +7,17 @@
     <div class="sidebar-brand-icon ">
       <i class="far fa-user"></i>
     </div>
-    <div class="sidebar-brand-text mx-3">Institute Coordinator</div>
+    <div class="sidebar-brand-text mx-3">
+      <?php
+      if ($_SESSION['role'] == "inst_coor") {
+        echo "INSTITUTIONAL COORDINATOR";
+      } else if ($_SESSION['role'] == 'faculty_co') {
+        echo "FACULTY COORDINATOR " . strtoupper($_SESSION['dept_name']);
+      } else if ($_SESSION['role'] == 'HOD') {
+        echo "HOD " . strtoupper($_SESSION['dept_name']);
+      }
+      ?>
+    </div>
   </a>
 
   <!-- Divider -->
