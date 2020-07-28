@@ -33,7 +33,7 @@ include('../includes/header.php');
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Audit Course Form Records</h4>
+                    <h4 class="font-weight-bold text-primary mb-0">Form Records</h4>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@ include('../includes/header.php');
                         <div class="modal-content">
                             <div class="modal-body">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalCenterTitle2">Prepare Audit Course Form</h5>
+                                    <h5 class="modal-title" id="exampleModalCenterTitle2">Prepare Course Form</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
