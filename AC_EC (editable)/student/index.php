@@ -49,7 +49,7 @@ include('../includes/header.php');
             // $count= mysqli_num_rows($result);
             // echo 'hello';
             // $_SESSION['sem']=$row['current_sem'];
-            // $_SESSION['rollno']=$row['rollno'];
+            $_SESSION['rollno']=$row['rollno'];
             // $_SESSION['year']=$row['year'];
             // if($count==1)
             // {

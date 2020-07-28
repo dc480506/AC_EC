@@ -18,8 +18,10 @@ if ($row['sem_type'] == 'EVEN') {
 } else {
     $year_val = $row['academic_year'];
 }
+
 // TO get timestamp(start as well as end fOr a particular student) OF a FORM
-$sql1 = "SELECT form.start_timestamp,form.end_timestamp,sem,year,form.no_of_preferences FROM form INNER JOIN student ON form.curr_sem=student.current_sem AND student.email_id='{$_SESSION['email']}' AND form.form_type='audit' AND year='$year_val'";
+$sql1 = "SELECT f.start_timestamp,f.end_timestamp,f.sem,f.year,f.no_of_preferences FROM form f INNER JOIN student s ON f.curr_sem=s.current_sem where s.email_id='{$_SESSION['email']}' AND f.year='$year_val'";
+// echo $sql1;
 $result1 = mysqli_query($conn, $sql1);
 if (mysqli_num_rows($result1) == 0) { ?>
     <div class="container-fluid">
@@ -69,24 +71,6 @@ if (mysqli_num_rows($result1) == 0) { ?>
             ::-webkit-scrollbar {
                 display: none !important
             }
-
-            /* option:disabled{
-   color: red;
-} */
-
-            /* option[disabled] {
-     background-color: black; }  */
-            /* option:disabled {
-    background-color: red;
-    font-weight: bold;
-} */
-            /* select:invalid {
-   background: red;
-} */
-            /*Specific to chrome and firefox*/
-            /* select[disabled='disabled'] {
-                background-color: black;
-            } */
             option:disabled {
                 color: red;
             }
@@ -129,42 +113,26 @@ if (mysqli_num_rows($result1) == 0) { ?>
         </div>
         <?php }
 
-    // if($allow==1){
     else {
-        //    $info=$row1['end_timestamp'];
-        //    //function to show time remaining
-        //    function give_diff($in)
-        //     {
-        //         $datetime1 = date("Y-m-d H:i:s");
-        //         $date=new DateTime($datetime1);
-        //         // echo  " ". date_format($date,"Y/m/d H:i");
-        //         // echo " $in";
-        //         $datetime2 = new DateTime($in);
-        //         // echo " ". date_format($datetime2,"Y/m/d H:i");
-        //         $interval = $datetime2->diff($date);
-        //         echo $interval->format("Closes in %d days, %h hours, %i minutes and %s seconds.");
 
-        //     }
-        //     give_diff($info);
-
-        //session variable to store end timestamp
         $_SESSION['endTime'] = $row1['end_timestamp'];
         $endTime = new DateTime($_SESSION['endTime']);
         $sem = $row1['sem'];
         $year = $row1['year'];
         $_SESSION['year'] = $year;
         $_SESSION['sem'] = $sem;
-        $sql7 = "SELECT * FROM student_form WHERE form_type='audit' AND sem='$sem' AND year='{$row1['year']}' AND no=0 AND email_id='{$_SESSION['email']}'";
+        $sql7 = "SELECT * FROM student_form s inner join form f on s.form_id=f.form_id  where  s.email_id='{$_SESSION['email']}' ";
+        echo $sql7;
         $result7 = mysqli_query($conn, $sql7);
         if (mysqli_num_rows($result7) > 0) {
             $row7 = mysqli_fetch_assoc($result7);
             if ($row7['form_filled'] == 0) {
-                $sql2 = "SELECT audit_course.cname,audit_course.cid,audit_course.year FROM audit_course 
-          INNER JOIN student ON audit_course.sem='$sem' AND audit_course.year='$year' AND student.email_id='{$_SESSION['email']}' 
-          AND student.dept_id IN(SELECT dept_id FROM audit_course_applicable_dept aca 
-                                 WHERE aca.cid=audit_course.cid AND aca.sem=audit_course.sem AND aca.year=audit_course.year) 
-          EXCEPT (SELECT hide_student_audit_course.cname, hide_student_audit_course.cid,hide_student_audit_course.year FROM hide_student_audit_course 
-                  INNER JOIN student ON hide_student_audit_course.email_id=student.email_id AND hide_student_audit_course.sem='$sem' AND student.email_id='{$_SESSION['email']}')";
+                $sql2 = "SELECT course.cname,course.cid,course.year FROM course 
+          INNER JOIN student ON course.sem='$sem' AND course.year='$year' AND student.email_id='{$_SESSION['email']}' 
+          AND student.dept_id IN(SELECT dept_id FROM course_applicable_dept aca 
+                                 WHERE aca.cid=course.cid AND aca.sem=course.sem AND aca.year=course.year) 
+          EXCEPT (SELECT hide_student_course.cname, hide_student_course.cid,hide_student_course.year FROM hide_student_course 
+                  INNER JOIN student ON hide_student_course.email_id=student.email_id AND hide_student_course.sem='$sem' AND student.email_id='{$_SESSION['email']}')";
                 $result2 = mysqli_query($conn, $sql2);
                 while ($row2 = mysqli_fetch_array($result2)) {
                     $course[$index] = $row2;
@@ -189,7 +157,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
                                             <h5 class="card-description"> Audit Courses </h5>
                                             >>>>>>> e489cab50bdd364b7f926b74ba2079c3b0f8d171
                                             <br>
-                                    </div>
+                                </div>
                                     <div class="row float-right text-danger" id="response">
                                     </div>
 
@@ -222,18 +190,13 @@ if (mysqli_num_rows($result1) == 0) { ?>
                                             <?php } ?>
                                             <div class="modal-footer">
                                                 <button id="ResetForm" type="reset" class="btn btn-danger align-center">Clear</button>
-                                                <<<<<<< HEAD <!-- <input type="reset" class="btn btn-danger" id="ResetForm" value="Reset"> -->
-                                                    =======
+                                            <input type="reset" class="btn btn-danger" id="ResetForm" value="Reset">
+                                                 
 
-                                                    >>>>>>> e489cab50bdd364b7f926b74ba2079c3b0f8d171
+                                           
                                                     <button id="button" type="submit" class="btn btn-primary align-center" name="submit">Submit</button>
 
-                                                    <!-- <input type="button" name="btn" value="Submit" id="submitBtn" 
-                               data-toggle="modal" data-target="#confirmModal" data-modal-type="confirm" 
-                               class="btn btn-primary align-center"> -->
-
-                                                    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-
+               
                                             </div>
                                         </form>
                                 </div>
@@ -242,7 +205,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
                     </div>
 
                     <!-- confirm modal -->
-                    <!-- <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -254,7 +217,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
         <div class="modal-body">Are you sure you want to submit the following details?
 
                 <!-- We display the details entered by the user here -->
-                    <!-- <table class="table">
+                     <table class="table">
                     <tr>
                         <th>ID</th>
                         <td id="cidd"></td>
@@ -274,7 +237,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
         </div>
       </div>
     </div>
-  </div> -->
+  </div> 
 
                 </div>
 
@@ -288,7 +251,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
                 $row5 = mysqli_fetch_array($result5);
                 $c_name = array();
                 for ($i = 1; $i <= $row1['no_of_preferences']; $i++) {
-                    $sql6 = "SELECT cname,cid FROM audit_course WHERE cid='{$row5["pref" .$i . ""]}'";
+                    $sql6 = "SELECT cname,cid FROM course WHERE cid='{$row5["pref" .$i . ""]}'";
                     $result6 = mysqli_query($conn, $sql6);
                     $row6 = mysqli_fetch_array($result6);
                     $c_name[$i] = $row6['cname'];
@@ -328,9 +291,9 @@ if (mysqli_num_rows($result1) == 0) { ?>
                                     <?php  } ?>
 
 
-                                    <!-- <div class="modal-footer">
+                                    <div class="modal-footer">
                         <button type="modify" class="btn btn-primary align-center" name="modify">Modify</button>
-                    </div> -->
+                    </div>
                                 </div>
                             </div>
                         </div>
@@ -378,35 +341,26 @@ if (mysqli_num_rows($result1) == 0) { ?>
     // });
 
 
-    // $('#submitc').click(function(){
-    //     console.log("hii");
-    //      /* when the submit button in the modal is clicked, submit the form */
-    //     var formm=document.getElementById('prefForm');
-    //     console.log(formm);
-    //     // var form1=$('#prefForm');
-    //     //  console.log(form1);
-    //     //  form1.submit();
-    //     // formm.submit();
-    //     // $('form').submit();
-
-
-    // });
-    // function openModal()
-    // {
-    //     $('#confirmModal').modal('show');
-    //     $('#submitc').click(function(e){
-    //         e.preventDefault();
-    //    var formm=document.getElementById('prefForm');
-    //     console.log(formm);
-    //     formm.submit();
-    //     });
-    // }
-    // $('#prefForm').on('submit', function(e){
-    //     e.preventDefault();
-    //     openModal();
-
-
-    // });
+    $('#submitc').click(function(){
+        console.log("hii");
+         /* when the submit button in the modal is clicked, submit the form */
+        var formm=document.getElementById('prefForm');
+        console.log(formm);
+    });
+    function openModal()
+    {
+        $('#confirmModal').modal('show');
+        $('#submitc').click(function(e){
+            e.preventDefault();
+       var formm=document.getElementById('prefForm');
+        console.log(formm);
+        formm.submit();
+        });
+    }
+    $('#prefForm').on('submit', function(e){
+        e.preventDefault();
+        openModal();
+    });
 </script>
 
 <!-- /.container-fluid -->
@@ -462,12 +416,12 @@ if (mysqli_num_rows($result1) == 0) { ?>
 
                 document.getElementById("response").innerHTML = `<p style="font-size:17px;"><i class="fas fa-stopwatch" style="font-size:30px;"></i>&nbsp;` + "Form closes in " + days + " days, " + hours + " hours, " +
                     minutes + " minutes " + "and " + seconds + " seconds.";
-                // if(distance==0)
-                // {
-                //     console.log("here");
-                //     document.getElementById("response").innerHTML = "Expired";
-                //     window.location.reload();
-                // }
+                if(distance==0)
+                {
+                    console.log("here");
+                    document.getElementById("response").innerHTML = "Expired";
+                    window.location.reload();
+                }
                 console.log("now1:" + now1);
                 console.log(m);
                 var res = (now1.toString()).localeCompare(m.toString());
@@ -485,21 +439,19 @@ if (mysqli_num_rows($result1) == 0) { ?>
                 }
             }
         }, 1000);
-        //    setInterval(() => {
-        //        var xmlhttp=new XMLHttpRequest();
-        //        xmlhttp.open("GET","timer.php",false);
-        //        xmlhttp.send(null);
-        //        document.getElementById("response").innerHTML=xmlhttp.responseText;
-        //    }, 1000);
+           setInterval(() => {
+               var xmlhttp=new XMLHttpRequest();
+               xmlhttp.open("GET","timer.php",false);
+               xmlhttp.send(null);
+               document.getElementById("response").innerHTML=xmlhttp.responseText;
+           }, 1000);
 
-        >>>
-        >>> > e489cab50bdd364b7f926b74ba2079c3b0f8d171
         var ar = [];
         $('#ResetForm').click(function() {
-            // console.log("hiiiii0");
-            // Reset the form
-            // $('.dropdown-toggle option :selected')
-            // console.log(ar);
+            console.log("hiiiii0");
+            Reset the form
+            $('.dropdown-toggle option :selected')
+            console.log(ar);
             var elems = document.getElementsByTagName('option');
             for (var i = 0, iLen = elems.length; i < iLen; i++) {
                 elems[i].disabled = false;
@@ -507,52 +459,52 @@ if (mysqli_num_rows($result1) == 0) { ?>
             console.log(elems);
             document.getElementById('prefForm').reset();
 
-            // var selVal = [];
-            // $(".dropdown-toggle").each(function() {
-            //     selVal.push(this.value);
-            // });
+            var selVal = [];
+            $(".dropdown-toggle").each(function() {
+                selVal.push(this.value);
+            });
 
-            // $(this).siblings(".dropdown-toggle").find("option").prop("disabled", false);
-            // $(".dropdown-toggle").eq(0).trigger('change');
+            $(this).siblings(".dropdown-toggle").find("option").prop("disabled", false);
+            $(".dropdown-toggle").eq(0).trigger('change');
 
-            // if($(".me").prop("disabled", "disabled"))
-            // {
-            //     console.log("hey");
-            //     $(".me").prop("disabled", false);
-            // }
+            if($(".me").prop("disabled", "disabled"))
+            {
+                console.log("hey");
+                $(".me").prop("disabled", false);
+            }
 
-            // $('.dropdown-toggle').find('option').prop("disabled", false);
-            // $('.dropdown-menu').find('option').removeAttr("disabled");
-            // $(".dropdown-toggle option").prop('disabled',false);
+            $('.dropdown-toggle').find('option').prop("disabled", false);
+            $('.dropdown-menu').find('option').removeAttr("disabled");
+            $(".dropdown-toggle option").prop('disabled',false);
 
-            //     $(".dropdown-toggle").each(function() {
-            //         console.log("found");
-            //         $('.dropdown-toggle').find("option").prop('disabled', false);
+                $(".dropdown-toggle").each(function() {
+                    console.log("found");
+                    $('.dropdown-toggle').find("option").prop('disabled', false);
 
-            // });
-            //    var arr=[];
-            //     $(".dropdown-toggle option:selected").each((i,items)=>{
-            //         // arr.push(items);
+            });
+               var arr=[];
+                $(".dropdown-toggle option:selected").each((i,items)=>{
+                    // arr.push(items);
 
-            //         // $(items).attr('disabled',false);
-
-
-            //     });
-            //     console.log(items);
+                    // $(items).attr('disabled',false);
 
 
-            // var select=$(".dropdown-toggle");
-            // if(select.find("option"))
-            // {
-            //     console.log("hi");
-            // }
-            // select.find("option:disabled").prop("disabled", false);
-            // select.find("option").each(function(index,item.attr('disabled',false);
+                });
+                console.log(items);
+
+
+            var select=$(".dropdown-toggle");
+            if(select.find("option"))
+            {
+                console.log("hi");
+            }
+            select.find("option:disabled").prop("disabled", false);
+            select.find("option").each(function(index,item.attr('disabled',false);
 
 
         });
     </script>
-    <<<<<<< HEAD=======>>>>>>> e489cab50bdd364b7f926b74ba2079c3b0f8d171
+
         <?php include('../includes/footer.php');
         include('../includes/scripts.php');
         ?>
