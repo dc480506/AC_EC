@@ -30,7 +30,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
     } else if (isset($_POST['delete_student'])) {
 
         $email_id = mysqli_escape_string($conn, $_POST['email_id']);
-        $logger->studentDeleted($_SESSION['email_id'], $email_id, $_POST['program']);
+        $logger->studentDeleted($_SESSION['email'], $email_id, $_POST['program']);
         // $sem=mysqli_escape_string($conn,$_POST['sem']);
         // $year=mysqli_escape_string($conn,$_POST['year']);
         if (isset($_POST['delete_student'])) {
@@ -75,7 +75,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                 `mname`='$mname_new',`lname`='$lname_new',`year_of_admission`='$year_of_admission_new',`dept_id`='$dept_id',
                 `current_sem`='$current_sem_new' WHERE `email_id`='$email_id_old' AND `rollno`='$rollno_old'";
                 mysqli_query($conn, $sql);
-                $logger->studentModified($_SESSION['email_id'], $email_id_old, $program);
+                $logger->studentModified($_SESSION['email'], $email_id_old, $program);
                 mysqli_query($conn, "UPDATE `login_role` SET `email_id`='$email_id_new' WHERE `email_id`='$email_id_old'");
                 exit();
             }
@@ -91,7 +91,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                 $sql = "UPDATE `student` SET `email_id`='$email_id_new',`rollno`='$rollno_new',`fname`='$fname_new',
                 `mname`='$mname_new',`lname`='$lname_new',`year_of_admission`='$year_of_admission_new',`dept_id`='$dept_id',
                 `current_sem`='$current_sem_new' WHERE `email_id`='$email_id_old' AND `rollno`='$rollno_old'";
-                $logger->studentModified($_SESSION['email_id'], $email_id_old, $program);
+                $logger->studentModified($_SESSION['email'], $email_id_old, $program);
                 mysqli_query($conn, $sql);
                 exit();
             }
@@ -99,7 +99,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
             $sql = "UPDATE `student` SET `email_id`='$email_id_new',`rollno`='$rollno_new',`fname`='$fname_new',
             `mname`='$mname_new',`lname`='$lname_new',`year_of_admission`='$year_of_admission_new',`dept_id`='$dept_id',
             `current_sem`='$current_sem_new' WHERE `email_id`='$email_id_old' AND `rollno`='$rollno_old'";
-            $logger->studentModified($_SESSION['email_id'], $email_id_old, $program);
+            $logger->studentModified($_SESSION['email'], $email_id_old, $program);
             mysqli_query($conn, $sql);
             exit();
         }
