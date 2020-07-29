@@ -1,11 +1,14 @@
 <?php
 include('../../config.php');
 include_once('../verify.php');
+include_once("../../Logger/StudentLogger.php");
 ?>
 
 <?php
 include('includes/header.php');
-include('includes/topbar1.php'); ?>
+include('includes/topbar1.php');
+$logger = StudentLogger::getLogger();
+?>
 
 <?php
 $email_id = $_SESSION['email_id'];
@@ -15,6 +18,7 @@ $year = $row['year_of_admission'];
 $rollno = $row['rollno'];
 $current_sem = $row['current_sem'];
 $name = $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'];
+$logger->studentsRecordsViewed($_SESSION['email'], "student courses enrolled", $email_id)
 ?>
 
 

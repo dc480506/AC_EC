@@ -33,10 +33,14 @@ class StudentLogger extends ActivityLogger
         $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, "Student record was inserted", $affectedUser);
     }
 
-    public function studentsRecordsViewed($performing_user, $pageAffected)
+    public function studentsRecordsViewed($performing_user, $pageAffected, $affectedUser = '')
     {
         $operationPerformed = "READ";
-        $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, "$pageAffected page was viewed");
+        if ($affectedUser == '') {
+            $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, "$pageAffected page was viewed");
+        } else {
+            $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, "$pageAffected page was viewed", $affectedUser);
+        }
     }
 
     public function studentMarksDeleted($performing_user, $affectedUser)
