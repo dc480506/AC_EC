@@ -13,7 +13,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
 
     $sql = "DELETE FROM student_marks WHERE email_id='$email_id' AND sem='$sem' AND year='$year'";
     mysqli_query($conn, $sql);
-    $logger->studentMarksDeleted($_SESSION['email_id'], $email_id);
+    $logger->studentMarksDeleted($_SESSION['email'], $email_id);
     echo $sql;
   } else if (isset($_POST['update_marks'])) {
     $email_id = mysqli_escape_string($conn, $_POST['email_id_student']);
@@ -28,15 +28,15 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
 
     if ($semold != $semnew) {
       $status = "update sem from $semold to $semnew for $email_id";
-      $logger->studentMarksUpdated($_SESSION['email_id'], $email_id, $status);
+      $logger->studentMarksUpdated($_SESSION['email'], $email_id, $status);
     }
     if ($yearold != $yearnew) {
       $status = "update year from $yearold to $yearnew for $email_id";
-      $logger->studentMarksUpdated($_SESSION['email_id'], $email_id, $status);
+      $logger->studentMarksUpdated($_SESSION['email'], $email_id, $status);
     }
     if ($gpaold != $gpa) {
       $status = "update GPA from $gpaold to $gpa for $email_id (sem-$semnew AY $yearnew)";
-      $logger->studentMarksUpdated($_SESSION['email_id'], $email_id, $status);
+      $logger->studentMarksUpdated($_SESSION['email'], $email_id, $status);
     }
 
     $sql = "UPDATE `student_marks` SET `sem` = '$semnew', `gpa` = '$gpa', `year` = '$yearnew' WHERE `student_marks`.`email_id` = '$email_id' AND `student_marks`.`sem` = $semold AND `student_marks`.`year` = '$yearold'";

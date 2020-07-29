@@ -93,6 +93,6 @@ $response = array(
 );
 
 if ($_POST['pageView'] == "true") {
-   $logger->studentsRecordsViewed($_SESSION['email_id'], "PHD student marks");
+   $logger->studentsRecordsViewed($_SESSION['email'], "PHD student marks");
 }
 echo json_encode($response);

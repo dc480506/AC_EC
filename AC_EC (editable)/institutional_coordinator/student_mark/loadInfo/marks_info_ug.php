@@ -92,7 +92,7 @@ $response = array(
    "aaData" => $data
 );
 if ($_POST['pageView'] == "true") {
-   $logger->studentsRecordsViewed($_SESSION['email_id'], "UG student marks");
+   $logger->studentsRecordsViewed($_SESSION['email'], "UG student marks");
 }
 
 echo json_encode($response);

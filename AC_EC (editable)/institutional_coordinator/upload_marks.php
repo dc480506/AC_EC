@@ -807,7 +807,7 @@ include('../includes/header.php');
             data: actual_delete_data_json,
             success: function(data) {
                 // console.log(data)
-                $("#dataTable-studentUg").DataTable().draw(false);
+                loadUg();
             }
         })
     })
@@ -1037,7 +1037,7 @@ include('../includes/header.php');
             data: actual_delete_data_json,
             success: function(data) {
                 // console.log(data)
-                $("#dataTable-studentPg").DataTable().draw(false);
+                loadPg();
             }
         })
     })
@@ -1264,7 +1264,7 @@ include('../includes/header.php');
             data: actual_delete_data_json,
             success: function(data) {
                 // console.log(data)
-                $("#dataTable-studentPhd").DataTable().draw(false);
+                loadPhd();
             }
         })
     })
