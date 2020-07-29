@@ -834,7 +834,7 @@ $dept_result2 = mysqli_query($conn, $sql);
         var activeTab = "Ug";
         console.log(activeTab);
         $(document).ready(function() {
-            loadData("UG");
+            loadData("UG", true);
             $('#uploadstudent').on('hidden.bs.modal', function(e) {
                 document.querySelector("#bulkUploadstudent").reset();
                 $("#upload_student").text("Upload")
@@ -867,6 +867,10 @@ $dept_result2 = mysqli_query($conn, $sql);
                             name: $("#delete_student_btn").attr('name'),
                             value: $("#delete_student_btn").attr('value')
                         });
+                        form_serialize.push({
+                            name: "program",
+                            value: program
+                        });
                         $("#delete_student_btn").text("Deleting...");
                         $("#delete_student_btn").attr("disabled", true);
                         $.ajax({
@@ -874,7 +878,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                             url: "ic_queries/addstudent_queries.php",
                             data: form_serialize,
                             success: function(data) {
-                                //    alert(data); // show response from the php script.
+                                alert(data); // show response from the php script.
                                 $("#delete_student_btn").text("Deleted Successfully");
                                 var row = $("#update-del-modal").closest('tr');
                                 var aPos = $(`#dataTable-student${program}`).dataTable().fnGetPosition(row.get(0));
@@ -882,7 +886,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                                 $('body').removeClass('modal-open');
                                 $('.modal-backdrop').remove();
                                 // row.remove();
-                                $(`#dataTable-student${program}`).DataTable().row(aPos).remove().draw(false);
+                                loadData(program);
                                 // console.log(aPos);
                                 // console.log(row)
                             }
@@ -905,6 +909,10 @@ $dept_result2 = mysqli_query($conn, $sql);
             form_serialize.push({
                 name: $("#update_student_btn").attr('name'),
                 value: $("#update_student_btn").attr('value')
+            });
+            form_serialize.push({
+                name: 'program',
+                value: program
             });
             $("#update_student_btn").text("Updating...");
             $("#update_student_btn").attr("disabled", true);
@@ -978,7 +986,8 @@ $dept_result2 = mysqli_query($conn, $sql);
             }
         }
 
-        function loadData(program) {
+        function loadData(program, loadPage = false) {
+            console.log(loadPage);
             // document.querySelector("#addCoursebtn").style.display="none"
             $(`#dataTable-student${program}`).DataTable({
                 processing: true,
@@ -1015,6 +1024,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                     "data": function(d) {
                         d.filters = getFilters();
                         d.program = program;
+                        d.pageView = loadPage;
                         return d
                     }
                 },
@@ -1150,11 +1160,11 @@ $dept_result2 = mysqli_query($conn, $sql);
             console.log(activeTab);
             clearFilters();
             if (activeTab == 'Ug') {
-                loadData("UG")
+                loadData("UG", true)
             } else if (activeTab == 'Pg') {
-                loadData("PG")
+                loadData("PG", true)
             } else if (activeTab == 'Phd') {
-                loadData("PHD")
+                loadData("PHD", true)
             }
         });
 

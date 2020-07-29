@@ -11,11 +11,11 @@ class StudentLogger extends ActivityLogger
         return self::$LoggerInstance;
     }
 
-    public function studentModified($performing_user, $affectedUser, $status)
+    public function studentModified($performing_user, $affectedUser, $program)
     {
-        $pageAffected = "studentRecords";
+        $pageAffected = "$program student records";
         $operationPerformed = "UPDATE";
-        $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, $status, $affectedUser);
+        $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, "updated details for $affectedUser", $affectedUser);
     }
 
     public function studentDeleted($performing_user, $affectedUser, $program)

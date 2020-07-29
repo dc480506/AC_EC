@@ -1,9 +1,15 @@
 <?php
 include_once('../../verify.php');
 include_once('../../../config.php');
+include("../../../Logger/StudentLogger.php");
+$logger = StudentLogger::getLogger();
+
 $draw = $_POST['draw'];
 $row = $_POST['start'];
 $program = $_POST['program'];
+if ($_POST['pageView'] == "true") {
+   $logger->studentsRecordsViewed($_SESSION['email'], "$program student records");
+}
 
 $rowperpage = $_POST['length']; // Rows display per page
 if (isset($_POST['order'])) {
