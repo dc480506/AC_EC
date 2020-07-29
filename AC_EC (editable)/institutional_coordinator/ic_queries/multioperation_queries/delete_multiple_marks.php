@@ -16,13 +16,14 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
             $del_condition .= "email_id='" . $val['email_id'] . "' AND ";
             $del_condition .= "sem='" . $val['sem'] . "' AND ";
             $del_condition .= "year='" . $val['year'] . "') OR (";
+            $logger->studentMarksDeleted($_SESSION['email'], $val['email_id']);
         }
         // echo $del_condition;
         $del_condition = substr($del_condition, 0, strlen($del_condition) - 4);
         // echo $del_condition;
         $sql = "DELETE FROM student_marks WHERE " . $del_condition;
         mysqli_query($conn, $sql);
-        $logger->studentMarksDeleted($_SESSION['email'], $val['email_id']);
+
         echo $sql;
     }
 }

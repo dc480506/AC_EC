@@ -995,7 +995,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                 destroy: true,
                 serverMethod: 'post',
                 aaSorting: [],
-                dom: "<'d-flex justify-content-between'f<'#bulkUpdate'>Bl>tip",
+                dom: `<'d-flex justify-content-between'f<'#bulkUpdate${program}'>Bl>tip`,
                 buttons: [{
                     extend: 'excel',
                     title: "student-data",
@@ -1016,8 +1016,8 @@ $dept_result2 = mysqli_query($conn, $sql);
                     },
                 }, {
                     text: "BULK UPDATE",
-                    container: "#bulkUpdate",
-                    className: "btn btn-outline-primary bulkUpdate"
+                    container: `#bulkUpdate${program}`,
+                    className: `btn btn-outline-primary bulkUpdate${program}`
                 }],
                 ajax: {
                     'url': 'adduser/loadInfo/add_student.php',
@@ -1092,7 +1092,7 @@ $dept_result2 = mysqli_query($conn, $sql);
 
                 ],
             });
-            $('.bulkUpdate').detach().appendTo('#bulkUpdate')
+            $(`.bulkUpdate${program}`).detach().appendTo(`#bulkUpdate${program}`)
         }
 
         function selectAllEntries(program, selectButton) {
@@ -1187,6 +1187,7 @@ $dept_result2 = mysqli_query($conn, $sql);
             for (var i = 0; i < update_rows.length; i++) {
                 baseData = {}
                 baseData['email_id'] = update_rows[i].email_id
+                baseData['program'] = "UG"
                 update_data[i] = baseData
             }
             console.log(update_data);
@@ -1205,6 +1206,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                 data: actual_update_data_json,
                 success: function(data) {
                     $("#updatebtnUg").text("Updated Successfully");
+                    loadData("UG");
                     $("#dataTable-studentUg").DataTable().draw(false);
                 }
             })
@@ -1219,6 +1221,7 @@ $dept_result2 = mysqli_query($conn, $sql);
             for (var i = 0; i < update_rows.length; i++) {
                 baseData = {}
                 baseData['email_id'] = update_rows[i].email_id
+                baseData['program'] = "PG"
                 // baseData['rollno'] = delete_rows[i].rollno
                 update_data[i] = baseData
                 // update_data.push($(update_rows[i].email_id).text());
@@ -1240,7 +1243,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                 success: function(data) {
                     $("#updatebtnPg").text("Updated Successfully");
                     // console.log(data)
-                    $("#dataTable-studentPg").DataTable().draw(false);
+                    loadData("PG");
                 }
             })
         });
@@ -1255,6 +1258,7 @@ $dept_result2 = mysqli_query($conn, $sql);
             for (var i = 0; i < update_rows.length; i++) {
                 baseData = {}
                 baseData['email_id'] = update_rows[i].email_id
+                baseData['program'] = "PHD"
                 // baseData['rollno'] = delete_rows[i].rollno
                 update_data[i] = baseData
                 // update_data.push($(update_rows[i].email_id).text());
@@ -1276,13 +1280,13 @@ $dept_result2 = mysqli_query($conn, $sql);
                 success: function(data) {
                     $("#updatebtnPhd").text("Updated Successfully");
                     // console.log(data)
-                    $("#dataTable-studentPhd").DataTable().draw(false);
+                    loadData("PHD");
 
                 }
             })
         });
 
-        $("body").on("click", ".bulkUpdate", function() {
+        $("body").on("click", ".bulkUpdateUG", function() {
             var update_rows = $("#dataTable-studentUG").DataTable().rows('.selected').data();
             if (update_rows.length > 0) {
                 $("#updatebtnUg").text("Update");
@@ -1292,7 +1296,7 @@ $dept_result2 = mysqli_query($conn, $sql);
             }
         })
 
-        $("body").on("click", ".bulkUpdatePg", function() {
+        $("body").on("click", ".bulkUpdatePG", function() {
             var update_rows = $("#dataTable-studentPG").DataTable().rows('.selected').data();
             if (update_rows.length > 0) {
                 $("#updatebtnUg").text("Update");
@@ -1302,7 +1306,7 @@ $dept_result2 = mysqli_query($conn, $sql);
             }
         })
 
-        $("body").on("click", ".bulkUpdatePhd", function() {
+        $("body").on("click", ".bulkUpdatePHD", function() {
             var update_rows = $("#dataTable-studentPHD").DataTable().rows('.selected').data();
             if (update_rows.length > 0) {
                 $("#updatebtnUg").text("Update");
@@ -1320,6 +1324,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                 baseData = {}
                 baseData['email_id'] = delete_rows[i].email_id
                 baseData['rollno'] = delete_rows[i].rollno
+                baseData['program'] = program
                 delete_data[i] = baseData
             }
             var actual_data = {}
@@ -1332,7 +1337,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                 url: "ic_queries/multioperation_queries/delete_multiple_student.php",
                 data: actual_delete_data_json,
                 success: function(data) {
-                    $(`#dataTable-student${program}`).DataTable().draw(false);
+                    loadData(program);
                 }
             })
         }
