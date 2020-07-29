@@ -8,16 +8,16 @@ include('../includes/header.php');
 
 <?php include('../includes/topbar.php'); ?>
 <?php
-    $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
-    $row_yr=mysqli_fetch_assoc($result);
-    $year1=$row_yr['academic_year'];
-    $year2=$row_yr['academic_year'];
+$result = mysqli_query($conn, "select academic_year from current_sem_info WHERE currently_active=1");
+$row_yr = mysqli_fetch_assoc($result);
+$year1 = $row_yr['academic_year'];
+$year2 = $row_yr['academic_year'];
 
-    $sql = "SELECT * FROM department";
-    $dept_result = mysqli_query($conn, $sql);
-    $dept_result1 = mysqli_query($conn, $sql);
-    $dept_result2 = mysqli_query($conn, $sql);
-    // echo $year;
+$sql = "SELECT * FROM department";
+$dept_result = mysqli_query($conn, $sql);
+$dept_result1 = mysqli_query($conn, $sql);
+$dept_result2 = mysqli_query($conn, $sql);
+// echo $year;
 ?>
 
 <!-- Begin Page Content -->
@@ -33,11 +33,9 @@ include('../includes/header.php');
                     <button type="button" class="btn btn-primary" name="addstudent" data-toggle="modal" data-target="#uploadstudent">
                         <i class="fas fa-upload"></i>
                     </button>
-                    <!-- <button type="button" class="btn btn-primary" name="updatestudent" data-toggle="modal" data-target="#updatestudent">
-                        <i class="fas fa-edit"></i>
-                    </button> -->
+
                 </div>
-                
+
                 <div class="col text-right">
                     <button type="button" id="filterToggle" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
                         <i class="fas fa-filter"></i>
@@ -413,55 +411,55 @@ include('../includes/header.php');
                 <div class="tab-content" id="nav-tabContent">
                     <!--UG-->
                     <div class="tab-pane fade show active " id="nav-Ug" role="tabpanel" aria-labelledby="nav-Ug-tab">
-                    <!-- BULK UPDATE UG FORM -->
+                        <!-- BULK UPDATE UG FORM -->
                         <div class="modal fade" id="bulkUpdateModalUg" tabindex="-1" role="dialog" aria-labelledby="bulk UpdateUg" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-body">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalCenterTitle">BULK UPDATE COURSES</h5>
-                                            <button  type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <form id="bulkUpdateFormUg">
-                                       
+
                                             <br>
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="form-group ">
                                                         <label for="semUg"><b>Semester</b></label>
                                                         <select class="form-control" id="semUg" name="sem" placeholder="Semester" value="" required>
-                                                          <?php
+                                                            <?php
                                                             $i = 1;
                                                             for ($i = 1; $i <= 8; $i++) {
-                                                            echo '<option value="';
-                                                            echo $i;
-                                                            echo '"';
-                                                            echo ">";
-                                                            echo $i;
-                                                            echo '</option>';
-                                                        }
-                                                        ?>
+                                                                echo '<option value="';
+                                                                echo $i;
+                                                                echo '"';
+                                                                echo ">";
+                                                                echo $i;
+                                                                echo '</option>';
+                                                            }
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group ">
                                                         <label for="yearUg"><b>Year</b></label>
-                                                        <select class="form-control"  id="yearUg" name="year" placeholder="Year" value="" required>
-                                                        <?php 
-                                                            $year1=$row_yr['academic_year'];
-                                                            $year2=$row_yr['academic_year'];
-                                                             for ($i = 0; $i < 2; $i++) {
+                                                        <select class="form-control" id="yearUg" name="year" placeholder="Year" value="" required>
+                                                            <?php
+                                                            $year1 = $row_yr['academic_year'];
+                                                            $year2 = $row_yr['academic_year'];
+                                                            for ($i = 0; $i < 2; $i++) {
                                                                 $temp = explode('-', $year1)[0];
                                                                 $temp += 1;
                                                                 $temp2 = "" . ($temp + 1);
                                                                 $year1 = $temp . "-" . substr($temp2, 2);
-                                                                $year1_value=$temp;
+                                                                $year1_value = $temp;
                                                                 echo '<option>' . $year1_value . '</option>';
-                                                                }
-                                                                for ($i = 0; $i < 4; $i++) {
+                                                            }
+                                                            for ($i = 0; $i < 4; $i++) {
                                                                 if ($year == $year1) {
                                                                     $year_dropdown .= "<option selected>" . $year1_value . "</option>";
                                                                 }
@@ -472,30 +470,27 @@ include('../includes/header.php');
                                                                 $year2 = $temp . "-" . substr($temp2, 2);
                                                                 echo '<option>' . $year2_value . '</option>';
                                                             }
-                                                        ?>
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group ">
                                                         <label for="dept_idUg"><b>Department</b></label>
-                                                        <select   class="form-control" id="dept_idUg" name="dept_id" placeholder="Dept_id" value="" required>
+                                                        <select class="form-control" id="dept_idUg" name="dept_id" placeholder="Dept_id" value="" required>
                                                             <?php
-                                                             while ($row = mysqli_fetch_assoc($dept_result)) {
-                                                                if($row['dept_id']== $dept_id)
-                                                                {
-                                                                    echo '<option selected value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
+                                                            while ($row = mysqli_fetch_assoc($dept_result)) {
+                                                                if ($row['dept_id'] == $dept_id) {
+                                                                    echo '<option selected value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                                                } else {
+                                                                    echo '<option  value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
                                                                 }
-                                                            else{
-                                                                echo '<option  value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
-                                                            }
-                                                            
                                                             }
                                                             ?>
                                                         </select>
                                                     </div>
                                                 </div>
-                                               
+
                                             </div>
                                             <br />
                                             <div class="modal-footer">
@@ -503,12 +498,12 @@ include('../includes/header.php');
                                                 <button type="submit" id="updatebtnUg" class="btn btn-primary" name="filter">Update</button>
                                             </div>
                                         </form>
-                                      
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    <!-- BULK UPDATE UG FORM -->
+                        <!-- BULK UPDATE UG FORM -->
                         <br>
                         <div class="card-header py-3">
                             <div class="row align-items-center">
@@ -520,13 +515,13 @@ include('../includes/header.php');
                             </div>
                         </div>
                         <br>
-                        <table class="table table-bordered table-responsive" id="dataTable-studentUg" width="100%" cellspacing="0">
+                        <table class="table table-bordered table-responsive" id="dataTable-studentUG" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="select_allUg">
-                                            <label class="custom-control-label" for="select_allUg"></label>
+                                            <input type="checkbox" class="custom-control-input" id="select_allUG">
+                                            <label class="custom-control-label" for="select_allUG"></label>
                                         </div>
                                     </th>
                                     <th>Email Id</th>
@@ -555,55 +550,55 @@ include('../includes/header.php');
                     <!-- UG ends -->
                     <!--PG-->
                     <div class="tab-pane fade " id="nav-Pg" role="tabpanel" aria-labelledby="nav-Pg-tab">
-                    <!-- BULK UPDATE PG FORM -->
-                    <div class="modal fade" id="bulkUpdateModalPg" tabindex="-1" role="dialog" aria-labelledby="bulk UpdatePg" aria-hidden="true">
+                        <!-- BULK UPDATE PG FORM -->
+                        <div class="modal fade" id="bulkUpdateModalPg" tabindex="-1" role="dialog" aria-labelledby="bulk UpdatePg" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-body">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalCenterTitle">BULK UPDATE COURSES</h5>
-                                            <button  type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <form id="bulkUpdateFormPg">
-                                       
+
                                             <br>
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="form-group ">
                                                         <label for="semPg"><b>Semester</b></label>
                                                         <select class="form-control" id="semPg" name="sem" placeholder="Semester" value="" required>
-                                                          <?php
+                                                            <?php
                                                             $i = 1;
                                                             for ($i = 1; $i <= 8; $i++) {
-                                                            echo '<option value="';
-                                                            echo $i;
-                                                            echo '"';
-                                                            echo ">";
-                                                            echo $i;
-                                                            echo '</option>';
-                                                        }
-                                                        ?>
+                                                                echo '<option value="';
+                                                                echo $i;
+                                                                echo '"';
+                                                                echo ">";
+                                                                echo $i;
+                                                                echo '</option>';
+                                                            }
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group ">
                                                         <label for="yearPg"><b>Year</b></label>
-                                                        <select class="form-control"  id="yearPg" name="year" placeholder="Year" value="" required>
-                                                        <?php 
-                                                            $year1=$row_yr['academic_year'];
-                                                            $year2=$row_yr['academic_year'];
-                                                             for ($i = 0; $i < 2; $i++) {
+                                                        <select class="form-control" id="yearPg" name="year" placeholder="Year" value="" required>
+                                                            <?php
+                                                            $year1 = $row_yr['academic_year'];
+                                                            $year2 = $row_yr['academic_year'];
+                                                            for ($i = 0; $i < 2; $i++) {
                                                                 $temp = explode('-', $year1)[0];
                                                                 $temp += 1;
                                                                 $temp2 = "" . ($temp + 1);
                                                                 $year1 = $temp . "-" . substr($temp2, 2);
-                                                                $year1_value=$temp;
+                                                                $year1_value = $temp;
                                                                 echo '<option>' . $year1_value . '</option>';
-                                                                }
-                                                                for ($i = 0; $i < 4; $i++) {
+                                                            }
+                                                            for ($i = 0; $i < 4; $i++) {
                                                                 if ($year == $year1) {
                                                                     $year_dropdown .= "<option selected>" . $year1_value . "</option>";
                                                                 }
@@ -614,30 +609,27 @@ include('../includes/header.php');
                                                                 $year2 = $temp . "-" . substr($temp2, 2);
                                                                 echo '<option>' . $year2_value . '</option>';
                                                             }
-                                                        ?>
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group ">
                                                         <label for="dept_idPg"><b>Department</b></label>
-                                                        <select   class="form-control" id="dept_idPg" name="dept_id" placeholder="Dept_id" value="" required>
+                                                        <select class="form-control" id="dept_idPg" name="dept_id" placeholder="Dept_id" value="" required>
                                                             <?php
-                                                             while ($row = mysqli_fetch_assoc($dept_result1)) {
-                                                                if($row['dept_id']== $dept_id)
-                                                                {
-                                                                    echo '<option selected value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
+                                                            while ($row = mysqli_fetch_assoc($dept_result1)) {
+                                                                if ($row['dept_id'] == $dept_id) {
+                                                                    echo '<option selected value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                                                } else {
+                                                                    echo '<option  value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
                                                                 }
-                                                            else{
-                                                                echo '<option  value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
-                                                            }
-                                                            
                                                             }
                                                             ?>
                                                         </select>
                                                     </div>
                                                 </div>
-                                               
+
                                             </div>
                                             <br />
                                             <div class="modal-footer">
@@ -645,12 +637,12 @@ include('../includes/header.php');
                                                 <button type="submit" id="updatebtnPg" class="btn btn-primary" name="filter">Update</button>
                                             </div>
                                         </form>
-                                      
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    <!-- BULK UPDATE PG FORM -->
+                        <!-- BULK UPDATE PG FORM -->
                         <br>
                         <div class="card-header py-3">
                             <div class="row align-items-center">
@@ -662,13 +654,13 @@ include('../includes/header.php');
                             </div>
                         </div>
                         <br>
-                        <table class="table table-bordered table-responsive" id="dataTable-studentPg" width="100%" cellspacing="0">
+                        <table class="table table-bordered table-responsive" id="dataTable-studentPG" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="select_allPg">
-                                            <label class="custom-control-label" for="select_allPg"></label>
+                                            <input type="checkbox" class="custom-control-input" id="select_allPG">
+                                            <label class="custom-control-label" for="select_allPG"></label>
                                         </div>
                                     </th>
                                     <th>Email Id</th>
@@ -697,55 +689,55 @@ include('../includes/header.php');
                     <!-- PG ends -->
                     <!-- PHD -->
                     <div class="tab-pane fade " id="nav-Phd" role="tabpanel" aria-labelledby="nav-Phd-tab">
-  <!-- BULK UPDATE PHD FORM -->
-  <div class="modal fade" id="bulkUpdateModalPhd" tabindex="-1" role="dialog" aria-labelledby="bulk UpdatePhd" aria-hidden="true">
+                        <!-- BULK UPDATE PHD FORM -->
+                        <div class="modal fade" id="bulkUpdateModalPhd" tabindex="-1" role="dialog" aria-labelledby="bulk UpdatePhd" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-body">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalCenterTitle">BULK UPDATE COURSES</h5>
-                                            <button  type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <form id="bulkUpdateFormPhd">
-                                       
+
                                             <br>
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="form-group ">
                                                         <label for="semPhd"><b>Semester</b></label>
                                                         <select class="form-control" id="semPhd" name="sem" placeholder="Semester" value="" required>
-                                                          <?php
+                                                            <?php
                                                             $i = 1;
                                                             for ($i = 1; $i <= 8; $i++) {
-                                                            echo '<option value="';
-                                                            echo $i;
-                                                            echo '"';
-                                                            echo ">";
-                                                            echo $i;
-                                                            echo '</option>';
-                                                        }
-                                                        ?>
+                                                                echo '<option value="';
+                                                                echo $i;
+                                                                echo '"';
+                                                                echo ">";
+                                                                echo $i;
+                                                                echo '</option>';
+                                                            }
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group ">
                                                         <label for="yearPhd"><b>Year</b></label>
-                                                        <select class="form-control"  id="yearPhd" name="year" placeholder="Year" value="" required>
-                                                        <?php
-                                                            $year1=$row_yr['academic_year'];
-                                                            $year2=$row_yr['academic_year']; 
-                                                             for ($i = 0; $i < 2; $i++) {
+                                                        <select class="form-control" id="yearPhd" name="year" placeholder="Year" value="" required>
+                                                            <?php
+                                                            $year1 = $row_yr['academic_year'];
+                                                            $year2 = $row_yr['academic_year'];
+                                                            for ($i = 0; $i < 2; $i++) {
                                                                 $temp = explode('-', $year1)[0];
                                                                 $temp += 1;
                                                                 $temp2 = "" . ($temp + 1);
                                                                 $year1 = $temp . "-" . substr($temp2, 2);
-                                                                $year1_value=$temp;
+                                                                $year1_value = $temp;
                                                                 echo '<option>' . $year1_value . '</option>';
-                                                                }
-                                                                for ($i = 0; $i < 4; $i++) {
+                                                            }
+                                                            for ($i = 0; $i < 4; $i++) {
                                                                 if ($year == $year1) {
                                                                     $year_dropdown .= "<option selected>" . $year1_value . "</option>";
                                                                 }
@@ -756,30 +748,27 @@ include('../includes/header.php');
                                                                 $year2 = $temp . "-" . substr($temp2, 2);
                                                                 echo '<option>' . $year2_value . '</option>';
                                                             }
-                                                        ?>
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group ">
                                                         <label for="dept_idPhd"><b>Department</b></label>
-                                                        <select   class="form-control" id="dept_idPhd" name="dept_id" placeholder="Dept_id" value="" required>
+                                                        <select class="form-control" id="dept_idPhd" name="dept_id" placeholder="Dept_id" value="" required>
                                                             <?php
-                                                             while ($row = mysqli_fetch_assoc($dept_result2)) {
-                                                                if($row['dept_id']== $dept_id)
-                                                                {
-                                                                    echo '<option selected value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
+                                                            while ($row = mysqli_fetch_assoc($dept_result2)) {
+                                                                if ($row['dept_id'] == $dept_id) {
+                                                                    echo '<option selected value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
+                                                                } else {
+                                                                    echo '<option  value="' . $row['dept_id'] . '">' . $row['dept_name'] . '</option>';
                                                                 }
-                                                            else{
-                                                                echo '<option  value="'.$row['dept_id'].'">' . $row['dept_name'] . '</option>';
-                                                            }
-                                                            
                                                             }
                                                             ?>
                                                         </select>
                                                     </div>
                                                 </div>
-                                               
+
                                             </div>
                                             <br />
                                             <div class="modal-footer">
@@ -787,12 +776,12 @@ include('../includes/header.php');
                                                 <button type="submit" id="updatebtnPhd" class="btn btn-primary" name="filter">Update</button>
                                             </div>
                                         </form>
-                                      
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-    <!-- BULK UPDATE PHD FORM -->
+                        <!-- BULK UPDATE PHD FORM -->
                         <div class="card-header py-3">
                             <div class="row align-items-center">
                                 <div class="col text-right" id="delete_selected_Phd_div">
@@ -803,13 +792,13 @@ include('../includes/header.php');
                             </div>
                         </div>
                         <br>
-                        <table class="table table-bordered table-responsive" id="dataTable-studentPhd" width="100%" cellspacing="0">
+                        <table class="table table-bordered table-responsive" id="dataTable-studentPHD" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="select_allPhd">
-                                            <label class="custom-control-label" for="select_allPhd"></label>
+                                            <input type="checkbox" class="custom-control-input" id="select_allPHD">
+                                            <label class="custom-control-label" for="select_allPHD"></label>
                                         </div>
                                     </th>
                                     <th>Email Id</th>
@@ -845,7 +834,7 @@ include('../includes/header.php');
         var activeTab = "Ug";
         console.log(activeTab);
         $(document).ready(function() {
-            loadUg();
+            loadData("UG");
             $('#uploadstudent').on('hidden.bs.modal', function(e) {
                 document.querySelector("#bulkUploadstudent").reset();
                 $("#upload_student").text("Upload")
@@ -853,73 +842,145 @@ include('../includes/header.php');
             });
         });
 
-        function getFilters() {
-            const filters = $("#filter_student_form").serializeArray();
-            let normalizedFilters = {};
-            for (filter of filters) {
-                switch (filter.name) {
-                    case "filter_start_year":
-                        if (filter.value != "") {
-                            normalizedFilters.start_year = filter.value
-                        }
-                        break;
-                    case "filter_end_year":
-                        if (filter.value != "") {
-                            normalizedFilters.end_year = filter.value
-                        }
-                        break;
-                    case "filter_semester[]":
-                        if (!normalizedFilters.semesters) {
-                            normalizedFilters.semesters = []
-                        }
-                        normalizedFilters.semesters.push(filter.value)
-                        break;
-                    case "filter_dept[]":
-                        if (!normalizedFilters.depts) {
-                            normalizedFilters.depts = []
-                        }
-                        normalizedFilters.depts.push(filter.value)
-                        break;
+        function loadModal(program, target_row) {
+
+            // this line did the trick
+            console.log(target_row)
+            var aPos = $(`#dataTable-student${program}`).dataTable().fnGetPosition(target_row.get(0));
+            var courseData = $(`#dataTable-student${program}`).DataTable().row(aPos).data()
+            var json_courseData = JSON.stringify(courseData)
+            $.ajax({
+                type: "POST",
+                url: "adduser/loadModal/student_modal.php",
+                data: json_courseData,
+                success: function(output) {
+                    target_row.append(output);
+                    $('#update-del-modal').modal('show')
+                    $(document).on('hidden.bs.modal', '#update-del-modal', function() {
+                        $("#update-del-modal").remove();
+                    });
+                    $('#delete_student').submit(function(e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var form_serialize = form.serializeArray(); // serializes the form's elements.
+                        form_serialize.push({
+                            name: $("#delete_student_btn").attr('name'),
+                            value: $("#delete_student_btn").attr('value')
+                        });
+                        $("#delete_student_btn").text("Deleting...");
+                        $("#delete_student_btn").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "ic_queries/addstudent_queries.php",
+                            data: form_serialize,
+                            success: function(data) {
+                                //    alert(data); // show response from the php script.
+                                $("#delete_student_btn").text("Deleted Successfully");
+                                var row = $("#update-del-modal").closest('tr');
+                                var aPos = $(`#dataTable-student${program}`).dataTable().fnGetPosition(row.get(0));
+                                $('#update-del-modal').modal('hide');
+                                $('body').removeClass('modal-open');
+                                $('.modal-backdrop').remove();
+                                // row.remove();
+                                $(`#dataTable-student${program}`).DataTable().row(aPos).remove().draw(false);
+                                // console.log(aPos);
+                                // console.log(row)
+                            }
+                        });
+                    });
+                    $('#update_student').submit(function(e) {
+                        console.log(program);
+                        console.log(program);
+                        update_student(e, program);
+                    });
                 }
-            }
-
-            return normalizedFilters
+            });
         }
 
-        $("#filter_student_form").submit(function(e) {
+
+        function update_student(e, program) {
             e.preventDefault();
-            $(`#dataTable-student${activeTab}`).DataTable().ajax.reload(false);
-            $("#exampleModalCenter1").modal("hide")
-        })
+            var form = $('#update_student');
+            var form_serialize = form.serializeArray(); // serializes the form's elements.
+            form_serialize.push({
+                name: $("#update_student_btn").attr('name'),
+                value: $("#update_student_btn").attr('value')
+            });
+            $("#update_student_btn").text("Updating...");
+            $("#update_student_btn").attr("disabled", true);
+            $.ajax({
+                type: "POST",
+                url: "ic_queries/addstudent_queries.php",
+                data: form_serialize,
+                success: function(data) {
 
-        $("#clear-filters").click(function(e) {
-            $('#filter_student_form').trigger('reset');
-            $(`#dataTable-student${activeTab}`).DataTable().ajax.reload(false);
-        });
+                    if (data === "Exists_email_id") {
+                        $('#error_email_id').text('*This data already exists');
+                        $("#update_student_btn").text("Update");
+                        $("#update_student_btn").attr("disabled", false);
+                    } else if (data === "Exists_rollno") {
+                        $('#error_rollno').text('*This data already exists');
+                        $("#update_student_btn").text("Update");
+                        $("#update_student_btn").attr("disabled", false);
+                    } else {
+                        $("#update_student_btn").text("Updated Successfully");
+                        var row = $("#update-del-modal").closest('tr');
+                        var aPos = $(`#dataTable-student${program}`).dataTable().fnGetPosition(row.get(0));
+                        var temp = $(`#dataTable-student${program}`).DataTable().row(aPos).data();
 
-        function clearFilters() {
-            $('#filter_courses_form').trigger('reset');
+                        temp['fname'] = form_serialize[0].value; //new values
+                        temp['mname'] = form_serialize[1].value; //new values
+                        temp['lname'] = form_serialize[2].value; //new values
+                        temp['email_id'] = form_serialize[3].value;
+                        temp['rollno'] = form_serialize[5].value;
+                        temp['year_of_admission'] = form_serialize[7].value;
+                        temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
+                        temp['current_sem'] = form_serialize[10].value;
+                        $(`#dataTable-student${program}`).dataTable().fnUpdate(temp, aPos, undefined, false);
+                        $('.action-btn').off('click')
+                        $('.action-btn').on('click', function() {
+                            var target_row = $(this).closest("tr");
+                            loadModal(program, target_row)
+                        })
+                        $(".selectrow_student").attr("disabled", true);
+                        $('#error_email_id').remove();
+                        $('#error_rollno').remove();
+                    }
+                }
+            });
         }
 
+        function loadAdditionalInfo(program, selectedRow) {
 
-        $('#nav-tab').on("click", "a", function(event) {
-            activeTab = $(this).attr('id').split('-')[1];
-            console.log(activeTab);
-            console.log("fhhhhhhhhhhhhhh");
-            clearFilters();
-            if (activeTab == 'Ug') {
-                loadUg()
-            } else if (activeTab == 'Pg') {
-                loadPg();
-            } else if (activeTab == 'Phd') {
-                loadPhd();
+            var row = $(`#dataTable-student${program}`).DataTable().row(selectedRow);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                selectedRow.removeClass('shown table-warning');
+            } else {
+                // Open this row
+                var data = {}
+                data['email_id'] = row.data()['email_id'];
+                data['type'] = 'student'
+                data_json = JSON.stringify(data)
+                console.log(data_json)
+                $.ajax({
+                    type: "POST",
+                    url: "loadAdditionalInfo/additional_info_student.php",
+                    data: data_json,
+                    success: function(response) {
+                        row.child(response).show();
+                        selectedRow.addClass('shown table-warning');
+                    }
+                });
+                // row.child("<b>Hello</b>").show();
             }
-        });
-        //********** UG SECTION**************
+        }
 
-        function loadUg() {
+        function loadData(program) {
             // document.querySelector("#addCoursebtn").style.display="none"
-            $('#dataTable-studentUg').DataTable({
+            $(`#dataTable-student${program}`).DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
@@ -950,15 +1011,20 @@ include('../includes/header.php');
                     className: "btn btn-outline-primary bulkUpdate"
                 }],
                 ajax: {
-                    'url': 'adduser/loadInfo/add_student_ug.php',
+                    'url': 'adduser/loadInfo/add_student.php',
                     "data": function(d) {
                         d.filters = getFilters();
+                        d.program = program;
                         return d
                     }
                 },
                 fnDrawCallback: function() {
                     console.log("hii")
-                    $(".action-btn").on('click', loadModalUg)
+                    $(".action-btn").on('click', function() {
+                        var target_row = $(this).closest("tr");
+                        console.log(target_row);
+                        loadModal(program, target_row)
+                    })
                     $(".selectrow").attr("disabled", true);
                     $("th").removeClass('selectbox');
                     $(".selectbox").click(function(e) {
@@ -967,12 +1033,12 @@ include('../includes/header.php');
                         console.log(checkbox);
                         checkbox.attr("checked", !checkbox.attr("checked"));
                         row.toggleClass('selected table-secondary')
-                        if ($("#dataTable-studentUg tbody tr.selected").length != $("#dataTable-studentUg tbody tr").length) {
-                            $("#select_allUg").prop("checked", true)
-                            $("#select_allUg").prop("checked", false)
+                        if ($(`#dataTable-student${program} tbody tr.selected`).length != $(`#dataTable-student${program} tbody tr`).length) {
+                            $(`#select_all${program}`).prop("checked", true)
+                            $(`#select_all${program}`).prop("checked", false)
                         } else {
-                            $("#select_allUg").prop("checked", false)
-                            $("#select_allUg").prop("checked", true)
+                            $(`#select_all${program}`).prop("checked", false)
+                            $(`#select_all${program}`).prop("checked", true)
                         }
                     })
                 },
@@ -1019,73 +1085,232 @@ include('../includes/header.php');
             $('.bulkUpdate').detach().appendTo('#bulkUpdate')
         }
 
-        $("#select_allUg").click(function(e) {
+        function selectAllEntries(program, selectButton) {
             //   var row=$(this).closest('tr')
-            if ($(this).is(":checked")) {
-                $("#dataTable-studentUg tbody tr").addClass("selected table-secondary");
+            if (selectButton.is(":checked")) {
+                $(`#dataTable-student${program} tbody tr`).addClass("selected table-secondary");
                 $(".selectrow").attr("checked", true);
             } else {
                 $(".selectrow").attr("checked", false);
-                $("#dataTable-studentUg tbody tr").removeClass("selected table-secondary");
+                $(`#dataTable-student${program} tbody tr `).removeClass("selected table-secondary");
             }
-            //   row.toggleClass('selected table-secondary')
+        }
+
+        function getFilters() {
+            const filters = $("#filter_student_form").serializeArray();
+            let normalizedFilters = {};
+            for (filter of filters) {
+                switch (filter.name) {
+                    case "filter_start_year":
+                        if (filter.value != "") {
+                            normalizedFilters.start_year = filter.value
+                        }
+                        break;
+                    case "filter_end_year":
+                        if (filter.value != "") {
+                            normalizedFilters.end_year = filter.value
+                        }
+                        break;
+                    case "filter_semester[]":
+                        if (!normalizedFilters.semesters) {
+                            normalizedFilters.semesters = []
+                        }
+                        normalizedFilters.semesters.push(filter.value)
+                        break;
+                    case "filter_dept[]":
+                        if (!normalizedFilters.depts) {
+                            normalizedFilters.depts = []
+                        }
+                        normalizedFilters.depts.push(filter.value)
+                        break;
+                }
+            }
+
+            return normalizedFilters
+        }
+
+
+        $("#filter_student_form").submit(function(e) {
+            e.preventDefault();
+            $(`#dataTable-student${activeTab}`).DataTable().ajax.reload(false);
+            $("#exampleModalCenter1").modal("hide")
+        })
+
+        $("#clear-filters").click(function(e) {
+            $('#filter_student_form').trigger('reset');
+            $(`#dataTable-student${activeTab}`).DataTable().ajax.reload(false);
+        });
+
+        function clearFilters() {
+            $('#filter_courses_form').trigger('reset');
+        }
+
+        $('#nav-tab').on("click", "a", function(event) {
+            activeTab = $(this).attr('id').split('-')[1];
+            console.log(activeTab);
+            clearFilters();
+            if (activeTab == 'Ug') {
+                loadData("UG")
+            } else if (activeTab == 'Pg') {
+                loadData("PG")
+            } else if (activeTab == 'Phd') {
+                loadData("PHD")
+            }
+        });
+
+        $("#select_allUG").click(function(e) {
+            selectAllEntries("UG", $(this))
+        })
+
+        $("#select_allPG").click(function(e) {
+            selectAllEntries("PG", $(this))
+        })
+
+        $("#select_allPHD").click(function(e) {
+            selectAllEntries("PHD", $(this))
         })
 
         $("#bulkUpdateFormUg").submit(function(e) {
-        // console.log("a")
-        e.preventDefault();
-        var update_rows = $("#dataTable-studentUg").DataTable().rows('.selected').data();
-        // console.log(update_rows[0].email_id);
-        var update_data = {};
-        for (var i = 0; i < update_rows.length; i++) {
-            baseData = {}
+            e.preventDefault();
+            var update_rows = $("#dataTable-studentUG").DataTable().rows('.selected').data();
+            var update_data = {};
+            for (var i = 0; i < update_rows.length; i++) {
+                baseData = {}
+                baseData['email_id'] = update_rows[i].email_id
+                update_data[i] = baseData
+            }
+            console.log(update_data);
+            var formData = $(this).serializeArray();
+            var actual_data = {}
+            actual_data['type'] = 'student'
+            actual_data['update_data'] = update_data;
+            for (data of formData) {
+                actual_data[data.name] = data.value;
+            }
+            actual_update_data_json = JSON.stringify(actual_data);
+            console.log(actual_update_data_json)
+            $.ajax({
+                type: "POST",
+                url: "ic_queries/multioperation_queries/update_multiple_student.php",
+                data: actual_update_data_json,
+                success: function(data) {
+                    $("#updatebtnUg").text("Updated Successfully");
+                    $("#dataTable-studentUg").DataTable().draw(false);
+                }
+            })
+        });
+
+        $("#bulkUpdateFormPg").submit(function(e) {
+            // console.log("a")
+            e.preventDefault();
+            var update_rows = $("#dataTable-studentPG").DataTable().rows('.selected').data();
+            // console.log(update_rows[0].email_id);
+            var update_data = {};
+            for (var i = 0; i < update_rows.length; i++) {
+                baseData = {}
                 baseData['email_id'] = update_rows[i].email_id
                 // baseData['rollno'] = delete_rows[i].rollno
                 update_data[i] = baseData
-            // update_data.push($(update_rows[i].email_id).text());
-        }
-        console.log(update_data);
-        var formData = $(this).serializeArray();
-        var actual_data = {}
-        actual_data['type'] = 'student'
-        actual_data['update_data'] = update_data;
-        for (data of formData) {
-            actual_data[data.name] = data.value;
-        }
-        actual_update_data_json = JSON.stringify(actual_data);
-        console.log(actual_update_data_json)
-        $.ajax({
-            type: "POST",
-            url: "ic_queries/multioperation_queries/update_multiple_student.php",
-            data: actual_update_data_json,
-            success: function(data) {
-                $("#updatebtnUg").text("Updated Successfully");
-                // console.log(data)
-                $("#dataTable-studentUg").DataTable().draw(false);
+                // update_data.push($(update_rows[i].email_id).text());
+            }
+            console.log(update_data);
+            var formData = $(this).serializeArray();
+            var actual_data = {}
+            actual_data['type'] = 'student'
+            actual_data['update_data'] = update_data;
+            for (data of formData) {
+                actual_data[data.name] = data.value;
+            }
+            actual_update_data_json = JSON.stringify(actual_data);
+            console.log(actual_update_data_json)
+            $.ajax({
+                type: "POST",
+                url: "ic_queries/multioperation_queries/update_multiple_student.php",
+                data: actual_update_data_json,
+                success: function(data) {
+                    $("#updatebtnPg").text("Updated Successfully");
+                    // console.log(data)
+                    $("#dataTable-studentPg").DataTable().draw(false);
+                }
+            })
+        });
+
+        $("#bulkUpdateFormPHD").submit(function(e) {
+
+            // console.log("a")
+            e.preventDefault();
+            var update_rows = $("#dataTable-studentPhd").DataTable().rows('.selected').data();
+            // console.log(update_rows[0].email_id);
+            var update_data = {};
+            for (var i = 0; i < update_rows.length; i++) {
+                baseData = {}
+                baseData['email_id'] = update_rows[i].email_id
+                // baseData['rollno'] = delete_rows[i].rollno
+                update_data[i] = baseData
+                // update_data.push($(update_rows[i].email_id).text());
+            }
+            console.log(update_data);
+            var formData = $(this).serializeArray();
+            var actual_data = {}
+            actual_data['type'] = 'student'
+            actual_data['update_data'] = update_data;
+            for (data of formData) {
+                actual_data[data.name] = data.value;
+            }
+            actual_update_data_json = JSON.stringify(actual_data);
+            console.log(actual_update_data_json)
+            $.ajax({
+                type: "POST",
+                url: "ic_queries/multioperation_queries/update_multiple_student.php",
+                data: actual_update_data_json,
+                success: function(data) {
+                    $("#updatebtnPhd").text("Updated Successfully");
+                    // console.log(data)
+                    $("#dataTable-studentPhd").DataTable().draw(false);
+
+                }
+            })
+        });
+
+        $("body").on("click", ".bulkUpdate", function() {
+            var update_rows = $("#dataTable-studentUG").DataTable().rows('.selected').data();
+            if (update_rows.length > 0) {
+                $("#updatebtnUg").text("Update");
+                $("#bulkUpdateModalUg").modal('show');
+            } else {
+                alert("select some rows");
             }
         })
-    });
 
-    $("body").on("click", ".bulkUpdate", function() {
-        var update_rows = $("#dataTable-studentUg").DataTable().rows('.selected').data();
-        if (update_rows.length > 0) {
-            $("#updatebtnUg").text("Update");
-            $("#bulkUpdateModalUg").modal('show');
-        } else {
-            alert("select some rows");
-        }
-    })
+        $("body").on("click", ".bulkUpdatePg", function() {
+            var update_rows = $("#dataTable-studentPG").DataTable().rows('.selected').data();
+            if (update_rows.length > 0) {
+                $("#updatebtnUg").text("Update");
+                $("#bulkUpdateModalPg").modal('show');
+            } else {
+                alert("select some rows");
+            }
+        })
 
-        $("#delete_selected_Ug_btn").click(function(e) {
-            alert("You have selected " + $("#dataTable-studentUg tbody tr.selected").length + " record(s) for deletion");
-            var delete_rows = $("#dataTable-studentUg").DataTable().rows('.selected').data()
+        $("body").on("click", ".bulkUpdatePhd", function() {
+            var update_rows = $("#dataTable-studentPHD").DataTable().rows('.selected').data();
+            if (update_rows.length > 0) {
+                $("#updatebtnUg").text("Update");
+                $("#bulkUpdateModalPhd").modal('show');
+            } else {
+                alert("select some rows");
+            }
+        })
+
+        function multiDelete(program) {
+            alert("You have selected " + $(`#dataTable-student${program} tbody tr.selected`).length + " record(s) for deletion");
+            var delete_rows = $(`#dataTable-student${program}`).DataTable().rows('.selected').data()
             var delete_data = {}
             for (var i = 0; i < delete_rows.length; i++) {
                 baseData = {}
                 baseData['email_id'] = delete_rows[i].email_id
                 baseData['rollno'] = delete_rows[i].rollno
                 delete_data[i] = baseData
-                // console.log(baseData);
             }
             var actual_data = {}
             actual_data['type'] = 'student'
@@ -1097,820 +1322,36 @@ include('../includes/header.php');
                 url: "ic_queries/multioperation_queries/delete_multiple_student.php",
                 data: actual_delete_data_json,
                 success: function(data) {
-                    // console.log(data)
-                    $("#dataTable-studentUg").DataTable().draw(false);
+                    $(`#dataTable-student${program}`).DataTable().draw(false);
                 }
             })
+        }
+
+        $("#delete_selected_Ug_btn").click(function(e) {
+            multiDelete("UG")
         })
 
-        function loadModalUg() {
-            var target_row = $(this).closest("tr"); // this line did the trick
-            console.log(target_row)
-            var aPos = $("#dataTable-studentUg").dataTable().fnGetPosition(target_row.get(0));
-            var courseData = $('#dataTable-studentUg').DataTable().row(aPos).data()
-            var json_courseData = JSON.stringify(courseData)
-            // console.log(json_courseData)
-            $.ajax({
-                type: "POST",
-                url: "adduser/loadModal/student_modal.php",
-                // data: form_serialize, 
-                // dataType: "json",
-                data: json_courseData,
-                success: function(output) {
-                    // $("#"+x).text("Deleted Successfully");
-                    target_row.append(output);
-                    $('#update-del-modal').modal('show')
-                    $(document).on('hidden.bs.modal', '#update-del-modal', function() {
-                        $("#update-del-modal").remove();
-                    });
-                    $('#delete_student').submit(function(e) {
-                        e.preventDefault();
-                        var form = $(this);
-                        var form_serialize = form.serializeArray(); // serializes the form's elements.
-                        form_serialize.push({
-                            name: $("#delete_student_btn").attr('name'),
-                            value: $("#delete_student_btn").attr('value')
-                        });
-                        $("#delete_student_btn").text("Deleting...");
-                        $("#delete_student_btn").attr("disabled", true);
-                        $.ajax({
-                            type: "POST",
-                            url: "ic_queries/addstudent_queries.php",
-                            data: form_serialize,
-                            success: function(data) {
-                                //    alert(data); // show response from the php script.
-                                $("#delete_student_btn").text("Deleted Successfully");
-                                var row = $("#update-del-modal").closest('tr');
-                                var aPos = $("#dataTable-studentUg").dataTable().fnGetPosition(row.get(0));
-                                $('#update-del-modal').modal('hide');
-                                $('body').removeClass('modal-open');
-                                $('.modal-backdrop').remove();
-                                // row.remove();
-                                $("#dataTable-studentUg").DataTable().row(aPos).remove().draw(false);
-                                // console.log(aPos);
-                                // console.log(row)
-                            }
-                        });
-                    });
-                    $('#update_student').submit(function(e) {
-                        update_student_ug(e);
-                        // $('#update-del-modal').modal('hide');
-                    });
-                }
-            });
-        }
+        $("#delete_selected_Pg_btn").click(function(e) {
+            multiDelete("PG")
+        })
 
+        $("#delete_selected_Phd_btn").click(function(e) {
+            multiDelete("PHD")
+        })
 
-        function update_student_ug(e) {
-            e.preventDefault();
-            var form = $('#update_student');
-            var form_serialize = form.serializeArray(); // serializes the form's elements.
-            // console.log(form_serialize)
-            form_serialize.push({
-                name: $("#update_student_btn").attr('name'),
-                value: $("#update_student_btn").attr('value')
-            });
-            $("#update_student_btn").text("Updating...");
-            $("#update_student_btn").attr("disabled", true);
-            $.ajax({
-                type: "POST",
-                url: "ic_queries/addstudent_queries.php",
-                data: form_serialize,
-                success: function(data) {
-                    //    alert(data); // show response from the php script.
-                    // console.log(data)
-                    if (data === "Exists_email_id") {
-                        $('#error_email_id').text('*This data already exists');
-                        $("#update_student_btn").text("Update");
-                        $("#update_student_btn").attr("disabled", false);
-                    } else if (data === "Exists_rollno") {
-                        $('#error_rollno').text('*This data already exists');
-                        $("#update_student_btn").text("Update");
-                        $("#update_student_btn").attr("disabled", false);
-                    } else {
-                        $("#update_student_btn").text("Updated Successfully");
-                        var row = $("#update-del-modal").closest('tr');
-                        var aPos = $("#dataTable-studentUg").dataTable().fnGetPosition(row.get(0));
-                        var temp = $("#dataTable-studentUg").DataTable().row(aPos).data();
-                        // console.log(temp)
-                        // console.log(form_serialize)
-                        temp['fname'] = form_serialize[0].value; //new values
-                        temp['mname'] = form_serialize[1].value; //new values
-                        temp['lname'] = form_serialize[2].value; //new values
-                        temp['email_id'] = form_serialize[3].value;
-                        temp['rollno'] = form_serialize[5].value;
-                        temp['year_of_admission'] = form_serialize[7].value;
-                        temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
-                        temp['current_sem'] = form_serialize[10].value;
-                        // console.log(temp)
-                        $('#dataTable-studentUg').dataTable().fnUpdate(temp, aPos, undefined, false);
-                        $('.action-btn').off('click')
-                        $('.action-btn').on('click', loadModalUg)
-                        // $("#dataTable-student").DataTable().row(aPos).draw(false);
-                        $(".selectrow_student").attr("disabled", true);
-                        $('#error_email_id').remove();
-                        $('#error_rollno').remove();
-                    }
-                }
-            });
-        }
+        $("#dataTable-studentUG").on('click', 'td.email_id', function() {
+            var row = $(this).closest('tr');
+            loadAdditionalInfo("UG", row)
+        })
+        $("#dataTable-studentPG").on('click', 'td.email_id', function() {
+            loadAdditionalInfo("PG")
+        })
 
-        $("#dataTable-studentUg").on('click', 'td.email_id', function() {
+        $("#dataTable-studentPHD").on('click', 'td.email_id', function() {
             var tr = $(this).closest('tr');
-            var row = $("#dataTable-studentUg").DataTable().row(tr);
-
-            if (row.child.isShown()) {
-                // This row is already open - close it
-                row.child.hide();
-                tr.removeClass('shown table-warning');
-            } else {
-                // Open this row
-                var data = {}
-                data['email_id'] = row.data()['email_id'];
-                data['type'] = 'student'
-                data_json = JSON.stringify(data)
-                console.log(data_json)
-                $.ajax({
-                    type: "POST",
-                    url: "loadAdditionalInfo/additional_info_student.php",
-                    data: data_json,
-                    success: function(response) {
-                        row.child(response).show();
-                        tr.addClass('shown table-warning');
-                    }
-                });
-                // row.child("<b>Hello</b>").show();
-            }
+            loadAdditionalInfo("PHD", tr);
         })
 
-        // ********** UG SECTION COMPLETES***************
-
-
-        //********** PG SECTION**************
-
-        
-        function loadPg() {
-    // document.querySelector("#addCoursebtn").style.display="none"
-    $('#dataTable-studentPg').DataTable({
-        processing: true,
-        serverSide: true,
-        destroy: true,
-        serverMethod: 'post',
-        aaSorting: [],
-        dom: "<'d-flex justify-content-between'f<'#bulkUpdatePg'>Bl>tip",
-        buttons: [{
-            extend: 'excel',
-            title: "student-data",
-            text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
-            className: "btn btn-outline-primary  ",
-            action: newExportAction,
-            exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
-            },
-        }, {
-            extend: "pdfHtml5",
-            title: "student-data",
-            text: '<span> <i class="fas fa-download "></i> PDF</span>',
-            className: "btn btn-outline-primary  mx-2",
-            action: newExportAction,
-            exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
-            },
-        }, {
-            text: "BULK UPDATE",
-            container: "#bulkUpdatePg",
-            className: "btn btn-outline-primary bulkUpdatePg"
-        }],
-        ajax: {
-            'url': 'adduser/loadInfo/add_student_pg.php',
-            "data": function(d) {
-                d.filters = getFilters();
-                return d
-            }
-        },
-        fnDrawCallback: function() {
-            console.log("hii")
-            $(".action-btn").on('click', loadModalPg)
-            $(".selectrow").attr("disabled", true);
-            $("th").removeClass('selectbox');
-            $(".selectbox").click(function(e) {
-                var row = $(this).closest('tr')
-                var checkbox = $(this).find('input');
-                console.log(checkbox);
-                checkbox.attr("checked", !checkbox.attr("checked"));
-                row.toggleClass('selected table-secondary')
-                if ($("#dataTable-studentPg tbody tr.selected").length != $("#dataTable-studentPg tbody tr").length) {
-                    $("#select_allPg").prop("checked", true)
-                    $("#select_allPg").prop("checked", false)
-                } else {
-                    $("#select_allPg").prop("checked", false)
-                    $("#select_allPg").prop("checked", true)
-                }
-            })
-        },
-        columns: [{
-                data: 'select-cbox'
-            },
-            {
-                data: 'email_id'
-            },
-            {
-                data: 'rollno'
-            },
-            {
-                data: 'name'
-            },
-            {
-                data: 'dept_name'
-            },
-            {
-                data: 'year_of_admission'
-            },
-            {
-                data: 'current_sem'
-            },
-            {
-                data: 'action'
-            },
-        ],
-        columnDefs: [{
-                targets: [0, 7], // column index (start from 0)
-                orderable: false, // set orderable false for selected columns
-            },
-            {
-                className: "selectbox",
-                targets: [0]
-            },
-            {
-                className: "email_id",
-                "targets": [1]
-            },
-
-        ],
-    });
-    $('.bulkUpdatePg').detach().appendTo('#bulkUpdatePg')
-}
-
-$("#select_allPg").click(function(e) {
-    //   var row=$(this).closest('tr')
-    if ($(this).is(":checked")) {
-        $("#dataTable-studentPg tbody tr").addClass("selected table-secondary");
-        $(".selectrow").attr("checked", true);
-    } else {
-        $(".selectrow").attr("checked", false);
-        $("#dataTable-studentPg tbody tr").removeClass("selected table-secondary");
-    }
-    //   row.toggleClass('selected table-secondary')
-})
-
-$("#bulkUpdateFormPg").submit(function(e) {
-// console.log("a")
-e.preventDefault();
-var update_rows = $("#dataTable-studentPg").DataTable().rows('.selected').data();
-// console.log(update_rows[0].email_id);
-var update_data = {};
-for (var i = 0; i < update_rows.length; i++) {
-    baseData = {}
-        baseData['email_id'] = update_rows[i].email_id
-        // baseData['rollno'] = delete_rows[i].rollno
-        update_data[i] = baseData
-    // update_data.push($(update_rows[i].email_id).text());
-}
-console.log(update_data);
-var formData = $(this).serializeArray();
-var actual_data = {}
-actual_data['type'] = 'student'
-actual_data['update_data'] = update_data;
-for (data of formData) {
-    actual_data[data.name] = data.value;
-}
-actual_update_data_json = JSON.stringify(actual_data);
-console.log(actual_update_data_json)
-$.ajax({
-    type: "POST",
-    url: "ic_queries/multioperation_queries/update_multiple_student.php",
-    data: actual_update_data_json,
-    success: function(data) {
-        $("#updatebtnPg").text("Updated Successfully");
-        // console.log(data)
-        $("#dataTable-studentPg").DataTable().draw(false);
-    }
-})
-});
-
-$("body").on("click", ".bulkUpdatePg", function() {
-var update_rows = $("#dataTable-studentPg").DataTable().rows('.selected').data();
-if (update_rows.length > 0) {
-    $("#updatebtnUg").text("Update");
-    $("#bulkUpdateModalPg").modal('show');
-} else {
-    alert("select some rows");
-}
-})
-
-$("#delete_selected_Pg_btn").click(function(e) {
-    alert("You have selected " + $("#dataTable-studentPg tbody tr.selected").length + " record(s) for deletion");
-    var delete_rows = $("#dataTable-studentPg").DataTable().rows('.selected').data()
-    var delete_data = {}
-    for (var i = 0; i < delete_rows.length; i++) {
-        baseData = {}
-        baseData['email_id'] = delete_rows[i].email_id
-        baseData['rollno'] = delete_rows[i].rollno
-        delete_data[i] = baseData
-        // console.log(baseData);
-    }
-    var actual_data = {}
-    actual_data['type'] = 'student'
-    actual_data['delete_data'] = delete_data
-    actual_delete_data_json = JSON.stringify(actual_data)
-    console.log(actual_delete_data_json)
-    $.ajax({
-        type: "POST",
-        url: "ic_queries/multioperation_queries/delete_multiple_student.php",
-        data: actual_delete_data_json,
-        success: function(data) {
-            // console.log(data)
-            $("#dataTable-studentPg").DataTable().draw(false);
-        }
-    })
-})
-
-function loadModalPg() {
-    var target_row = $(this).closest("tr"); // this line did the trick
-    console.log(target_row)
-    var aPos = $("#dataTable-studentPg").dataTable().fnGetPosition(target_row.get(0));
-    var courseData = $('#dataTable-studentPg').DataTable().row(aPos).data()
-    var json_courseData = JSON.stringify(courseData)
-    // console.log(json_courseData)
-    $.ajax({
-        type: "POST",
-        url: "adduser/loadModal/student_modal.php",
-        // data: form_serialize, 
-        // dataType: "json",
-        data: json_courseData,
-        success: function(output) {
-            // $("#"+x).text("Deleted Successfully");
-            target_row.append(output);
-            $('#update-del-modal').modal('show')
-            $(document).on('hidden.bs.modal', '#update-del-modal', function() {
-                $("#update-del-modal").remove();
-            });
-            $('#delete_student').submit(function(e) {
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize = form.serializeArray(); // serializes the form's elements.
-                form_serialize.push({
-                    name: $("#delete_student_btn").attr('name'),
-                    value: $("#delete_student_btn").attr('value')
-                });
-                $("#delete_student_btn").text("Deleting...");
-                $("#delete_student_btn").attr("disabled", true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addstudent_queries.php",
-                    data: form_serialize,
-                    success: function(data) {
-                        //    alert(data); // show response from the php script.
-                        $("#delete_student_btn").text("Deleted Successfully");
-                        var row = $("#update-del-modal").closest('tr');
-                        var aPos = $("#dataTable-studentPg").dataTable().fnGetPosition(row.get(0));
-                        $('#update-del-modal').modal('hide');
-                        $('body').removeClass('modal-open');
-                        $('.modal-backdrop').remove();
-                        // row.remove();
-                        $("#dataTable-studentPg").DataTable().row(aPos).remove().draw(false);
-                        // console.log(aPos);
-                        // console.log(row)
-                    }
-                });
-            });
-            $('#update_student').submit(function(e) {
-                update_student_pg(e);
-                // $('#update-del-modal').modal('hide');
-            });
-        }
-    });
-}
-
-
-function update_student_pg(e) {
-    e.preventDefault();
-    var form = $('#update_student');
-    var form_serialize = form.serializeArray(); // serializes the form's elements.
-    // console.log(form_serialize)
-    form_serialize.push({
-        name: $("#update_student_btn").attr('name'),
-        value: $("#update_student_btn").attr('value')
-    });
-    $("#update_student_btn").text("Updating...");
-    $("#update_student_btn").attr("disabled", true);
-    $.ajax({
-        type: "POST",
-        url: "ic_queries/addstudent_queries.php",
-        data: form_serialize,
-        success: function(data) {
-            //    alert(data); // show response from the php script.
-            // console.log(data)
-            if (data === "Exists_email_id") {
-                $('#error_email_id').text('*This data already exists');
-                $("#update_student_btn").text("Update");
-                $("#update_student_btn").attr("disabled", false);
-            } else if (data === "Exists_rollno") {
-                $('#error_rollno').text('*This data already exists');
-                $("#update_student_btn").text("Update");
-                $("#update_student_btn").attr("disabled", false);
-            } else {
-                $("#update_student_btn").text("Updated Successfully");
-                var row = $("#update-del-modal").closest('tr');
-                var aPos = $("#dataTable-studentPg").dataTable().fnGetPosition(row.get(0));
-                var temp = $("#dataTable-studentPg").DataTable().row(aPos).data();
-                // console.log(temp)
-                // console.log(form_serialize)
-                temp['fname'] = form_serialize[0].value; //new values
-                temp['mname'] = form_serialize[1].value; //new values
-                temp['lname'] = form_serialize[2].value; //new values
-                temp['email_id'] = form_serialize[3].value;
-                temp['rollno'] = form_serialize[5].value;
-                temp['year_of_admission'] = form_serialize[7].value;
-                temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
-                temp['current_sem'] = form_serialize[10].value;
-                // console.log(temp)
-                $('#dataTable-studentPg').dataTable().fnUpdate(temp, aPos, undefined, false);
-                $('.action-btn').off('click')
-                $('.action-btn').on('click', loadModalPg)
-                // $("#dataTable-student").DataTable().row(aPos).draw(false);
-                $(".selectrow_student").attr("disabled", true);
-                $('#error_email_id').remove();
-                $('#error_rollno').remove();
-            }
-        }
-    });
-}
-
-$("#dataTable-studentPg").on('click', 'td.email_id', function() {
-    var tr = $(this).closest('tr');
-    var row = $("#dataTable-studentPg").DataTable().row(tr);
-
-    if (row.child.isShown()) {
-        // This row is already open - close it
-        row.child.hide();
-        tr.removeClass('shown table-warning');
-    } else {
-        // Open this row
-        var data = {}
-        data['email_id'] = row.data()['email_id'];
-        data['type'] = 'student'
-        data_json = JSON.stringify(data)
-        console.log(data_json)
-        $.ajax({
-            type: "POST",
-            url: "loadAdditionalInfo/additional_info_student.php",
-            data: data_json,
-            success: function(response) {
-                row.child(response).show();
-                tr.addClass('shown table-warning');
-            }
-        });
-        // row.child("<b>Hello</b>").show();
-    }
-})
-
-
-
-        // ********** PG SECTION COMPLETES***************
-
-        //********** PHD SECTION**************
-        function loadPhd() {
-    // document.querySelector("#addCoursebtn").style.display="none"
-    $('#dataTable-studentPhd').DataTable({
-        processing: true,
-        serverSide: true,
-        destroy: true,
-        serverMethod: 'post',
-        aaSorting: [],
-        dom: "<'d-flex justify-content-between'f<'#bulkUpdatePhd'>Bl>tip",
-        buttons: [{
-            extend: 'excel',
-            title: "student-data",
-            text: '<span> <i class="fas fa-download "></i> EXCEL</span>',
-            className: "btn btn-outline-primary  ",
-            action: newExportAction,
-            exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
-            },
-        }, {
-            extend: "pdfHtml5",
-            title: "student-data",
-            text: '<span> <i class="fas fa-download "></i> PDF</span>',
-            className: "btn btn-outline-primary  mx-2",
-            action: newExportAction,
-            exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
-            },
-        }, {
-            text: "BULK UPDATE",
-            container: "#bulkUpdatePhd",
-            className: "btn btn-outline-primary bulkUpdatePhd"
-        }],
-        ajax: {
-            'url': 'adduser/loadInfo/add_student_phd.php',
-            "data": function(d) {
-                d.filters = getFilters();
-                return d
-            }
-        },
-        fnDrawCallback: function() {
-            console.log("hii")
-            $(".action-btn").on('click', loadModalPhd)
-            $(".selectrow").attr("disabled", true);
-            $("th").removeClass('selectbox');
-            $(".selectbox").click(function(e) {
-                var row = $(this).closest('tr')
-                var checkbox = $(this).find('input');
-                console.log(checkbox);
-                checkbox.attr("checked", !checkbox.attr("checked"));
-                row.toggleClass('selected table-secondary')
-                if ($("#dataTable-studentPhd tbody tr.selected").length != $("#dataTable-studentPhd tbody tr").length) {
-                    $("#select_allPhd").prop("checked", true)
-                    $("#select_allPhd").prop("checked", false)
-                } else {
-                    $("#select_allPhd").prop("checked", false)
-                    $("#select_allPhd").prop("checked", true)
-                }
-            })
-        },
-        columns: [{
-                data: 'select-cbox'
-            },
-            {
-                data: 'email_id'
-            },
-            {
-                data: 'rollno'
-            },
-            {
-                data: 'name'
-            },
-            {
-                data: 'dept_name'
-            },
-            {
-                data: 'year_of_admission'
-            },
-            {
-                data: 'current_sem'
-            },
-            {
-                data: 'action'
-            },
-        ],
-        columnDefs: [{
-                targets: [0, 7], // column index (start from 0)
-                orderable: false, // set orderable false for selected columns
-            },
-            {
-                className: "selectbox",
-                targets: [0]
-            },
-            {
-                className: "email_id",
-                "targets": [1]
-            },
-
-        ],
-    });
-    $('.bulkUpdatePhd').detach().appendTo('#bulkUpdatePhd')
-}
-
-$("#select_allPhd").click(function(e) {
-    //   var row=$(this).closest('tr')
-    if ($(this).is(":checked")) {
-        $("#dataTable-studentPhd tbody tr").addClass("selected table-secondary");
-        $(".selectrow").attr("checked", true);
-    } else {
-        $(".selectrow").attr("checked", false);
-        $("#dataTable-studentPhd tbody tr").removeClass("selected table-secondary");
-    }
-    //   row.toggleClass('selected table-secondary')
-})
-
-$("#bulkUpdateFormPhd").submit(function(e) {
-
-// console.log("a")
-e.preventDefault();
-var update_rows = $("#dataTable-studentPhd").DataTable().rows('.selected').data();
-// console.log(update_rows[0].email_id);
-var update_data = {};
-for (var i = 0; i < update_rows.length; i++) {
-    baseData = {}
-        baseData['email_id'] = update_rows[i].email_id
-        // baseData['rollno'] = delete_rows[i].rollno
-        update_data[i] = baseData
-    // update_data.push($(update_rows[i].email_id).text());
-}
-console.log(update_data);
-var formData = $(this).serializeArray();
-var actual_data = {}
-actual_data['type'] = 'student'
-actual_data['update_data'] = update_data;
-for (data of formData) {
-    actual_data[data.name] = data.value;
-}
-actual_update_data_json = JSON.stringify(actual_data);
-console.log(actual_update_data_json)
-$.ajax({
-    type: "POST",
-    url: "ic_queries/multioperation_queries/update_multiple_student.php",
-    data: actual_update_data_json,
-    success: function(data) {
-        $("#updatebtnPhd").text("Updated Successfully");
-        // console.log(data)
-        $("#dataTable-studentPhd").DataTable().draw(false);
-     
-    }
-})
-});
-
-$("body").on("click", ".bulkUpdatePhd", function() {
-var update_rows = $("#dataTable-studentPhd").DataTable().rows('.selected').data();
-if (update_rows.length > 0) {
-    $("#updatebtnUg").text("Update");
-    $("#bulkUpdateModalPhd").modal('show');
-} else {
-    alert("select some rows");
-}
-})
-
-
-$("#delete_selected_Phd_btn").click(function(e) {
-    alert("You have selected " + $("#dataTable-studentPhd tbody tr.selected").length + " record(s) for deletion");
-    var delete_rows = $("#dataTable-studentPhd").DataTable().rows('.selected').data()
-    var delete_data = {}
-    for (var i = 0; i < delete_rows.length; i++) {
-        baseData = {}
-        baseData['email_id'] = delete_rows[i].email_id
-        baseData['rollno'] = delete_rows[i].rollno
-        delete_data[i] = baseData
-        // console.log(baseData);
-    }
-    var actual_data = {}
-    actual_data['type'] = 'student'
-    actual_data['delete_data'] = delete_data
-    actual_delete_data_json = JSON.stringify(actual_data)
-    console.log(actual_delete_data_json)
-    $.ajax({
-        type: "POST",
-        url: "ic_queries/multioperation_queries/delete_multiple_student.php",
-        data: actual_delete_data_json,
-        success: function(data) {
-            // console.log(data)
-            $("#dataTable-studentPhd").DataTable().draw(false);
-        }
-    })
-})
-
-function loadModalPhd() {
-    var target_row = $(this).closest("tr"); // this line did the trick
-    console.log(target_row)
-    var aPos = $("#dataTable-studentPhd").dataTable().fnGetPosition(target_row.get(0));
-    var courseData = $('#dataTable-studentPhd').DataTable().row(aPos).data()
-    var json_courseData = JSON.stringify(courseData)
-    // console.log(json_courseData)
-    $.ajax({
-        type: "POST",
-        url: "adduser/loadModal/student_modal.php",
-        // data: form_serialize, 
-        // dataType: "json",
-        data: json_courseData,
-        success: function(output) {
-            // $("#"+x).text("Deleted Successfully");
-            target_row.append(output);
-            $('#update-del-modal').modal('show')
-            $(document).on('hidden.bs.modal', '#update-del-modal', function() {
-                $("#update-del-modal").remove();
-            });
-            $('#delete_student').submit(function(e) {
-                e.preventDefault();
-                var form = $(this);
-                var form_serialize = form.serializeArray(); // serializes the form's elements.
-                form_serialize.push({
-                    name: $("#delete_student_btn").attr('name'),
-                    value: $("#delete_student_btn").attr('value')
-                });
-                $("#delete_student_btn").text("Deleting...");
-                $("#delete_student_btn").attr("disabled", true);
-                $.ajax({
-                    type: "POST",
-                    url: "ic_queries/addstudent_queries.php",
-                    data: form_serialize,
-                    success: function(data) {
-                        //    alert(data); // show response from the php script.
-                        $("#delete_student_btn").text("Deleted Successfully");
-                        var row = $("#update-del-modal").closest('tr');
-                        var aPos = $("#dataTable-studentPhd").dataTable().fnGetPosition(row.get(0));
-                        $('#update-del-modal').modal('hide');
-                        $('body').removeClass('modal-open');
-                        $('.modal-backdrop').remove();
-                        // row.remove();
-                        $("#dataTable-studentPhd").DataTable().row(aPos).remove().draw(false);
-                        // console.log(aPos);
-                        // console.log(row)
-                    }
-                });
-            });
-            $('#update_student').submit(function(e) {
-                update_student_phd(e);
-                // $('#update-del-modal').modal('hide');
-            });
-        }
-    });
-}
-
-
-function update_student_phd(e) {
-    e.preventDefault();
-    var form = $('#update_student');
-    var form_serialize = form.serializeArray(); // serializes the form's elements.
-    // console.log(form_serialize)
-    form_serialize.push({
-        name: $("#update_student_btn").attr('name'),
-        value: $("#update_student_btn").attr('value')
-    });
-    $("#update_student_btn").text("Updating...");
-    $("#update_student_btn").attr("disabled", true);
-    $.ajax({
-        type: "POST",
-        url: "ic_queries/addstudent_queries.php",
-        data: form_serialize,
-        success: function(data) {
-            //    alert(data); // show response from the php script.
-            // console.log(data)
-            if (data === "Exists_email_id") {
-                $('#error_email_id').text('*This data already exists');
-                $("#update_student_btn").text("Update");
-                $("#update_student_btn").attr("disabled", false);
-            } else if (data === "Exists_rollno") {
-                $('#error_rollno').text('*This data already exists');
-                $("#update_student_btn").text("Update");
-                $("#update_student_btn").attr("disabled", false);
-            } else {
-                $("#update_student_btn").text("Updated Successfully");
-                var row = $("#update-del-modal").closest('tr');
-                var aPos = $("#dataTable-studentPhd").dataTable().fnGetPosition(row.get(0));
-                var temp = $("#dataTable-studentPhd").DataTable().row(aPos).data();
-                // console.log(temp)
-                // console.log(form_serialize)
-                temp['fname'] = form_serialize[0].value; //new values
-                temp['mname'] = form_serialize[1].value; //new values
-                temp['lname'] = form_serialize[2].value; //new values
-                temp['email_id'] = form_serialize[3].value;
-                temp['rollno'] = form_serialize[5].value;
-                temp['year_of_admission'] = form_serialize[7].value;
-                temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
-                temp['current_sem'] = form_serialize[10].value;
-                // console.log(temp)
-                $('#dataTable-studentPhd').dataTable().fnUpdate(temp, aPos, undefined, false);
-                $('.action-btn').off('click')
-                $('.action-btn').on('click', loadModalPhd)
-                // $("#dataTable-student").DataTable().row(aPos).draw(false);
-                $(".selectrow_student").attr("disabled", true);
-                $('#error_email_id').remove();
-                $('#error_rollno').remove();
-            }
-        }
-    });
-}
-
-$("#dataTable-studentPhd").on('click', 'td.email_id', function() {
-    var tr = $(this).closest('tr');
-    var row = $("#dataTable-studentPhd").DataTable().row(tr);
-
-    if (row.child.isShown()) {
-        // This row is already open - close it
-        row.child.hide();
-        tr.removeClass('shown table-warning');
-    } else {
-        // Open this row
-        var data = {}
-        data['email_id'] = row.data()['email_id'];
-        data['type'] = 'student'
-        data_json = JSON.stringify(data)
-        console.log(data_json)
-        $.ajax({
-            type: "POST",
-            url: "loadAdditionalInfo/additional_info_student.php",
-            data: data_json,
-            success: function(response) {
-                row.child(response).show();
-                tr.addClass('shown table-warning');
-            }
-        });
-        // row.child("<b>Hello</b>").show();
-    }
-})
-
-       
-        // ********** PHD SECTION COMPLETES***************
         //Bulk Upload 
         $("#bulkUploadstudent").submit(function(e) {
             e.preventDefault();
@@ -1942,11 +1383,11 @@ $("#dataTable-studentPhd").on('click', 'td.email_id', function() {
                             alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
                         }
                         if (activeTab == "Ug") {
-                            loadUg();
+                            loadData("UG");
                         } else if (activeTab == "Pg") {
-                            loadPg();
+                            loadData('PG');
                         } else {
-                            loadPhd();
+                            loadPhd("PHD");
                         }
 
                     } else {
