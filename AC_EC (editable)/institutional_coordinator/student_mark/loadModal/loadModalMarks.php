@@ -77,6 +77,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   }
   echo '</select>
 <input type="hidden" class="form-control" placeholder="Semester" name="semold" value="' . $sem . '">
+
 <input type="hidden" class="form-control" placeholder="Semester" name="email_id_student" value="' . $email_id . '">
 </div>
 <div class="form-group col-md-6">
@@ -112,6 +113,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <div class="form-row">
                               <div class="form-group col-md-6">
                                   <label for="max"><b>GPA</b></label>
+                                  <input type="hidden" class="form-control" placeholder="Semester" name="gpaold" value="' . $gpa . '">
                                   <input type="number" step="0.001" class="form-control" required="required" name="gpa" placeholder="10.0" value="' . $gpa . '">
                               </div>
                               <div class="form-group col-md-6">

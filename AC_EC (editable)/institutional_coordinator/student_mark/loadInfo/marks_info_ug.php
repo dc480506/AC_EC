@@ -1,6 +1,10 @@
 <?php
 include_once('../../verify.php');
 include_once('../../../config.php');
+include_once("../../../Logger/StudentLogger.php");
+
+$logger = StudentLogger::getLogger();
+
 $draw = $_POST['draw'];
 $row = $_POST['start'];
 $rowperpage = $_POST['length']; // Rows display per page
@@ -87,5 +91,8 @@ $response = array(
    "iTotalDisplayRecords" => $totalRecordwithFilter,
    "aaData" => $data
 );
+if ($_POST['pageView'] == "true") {
+   $logger->studentsRecordsViewed($_SESSION['email_id'], "UG student marks");
+}
 
 echo json_encode($response);

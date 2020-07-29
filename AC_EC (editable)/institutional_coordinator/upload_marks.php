@@ -13,8 +13,8 @@ include('../includes/header.php');
         <div class="card-header py-3">
             <div class="row align-items-center">
                 <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Student Marksheet Records</h4>   
-                </div>   
+                    <h4 class="font-weight-bold text-primary mb-0">Student Marksheet Records</h4>
+                </div>
                 <div class="col text-center">
                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#uploadstudent">
                         <i class="fas fa-upload"></i>
@@ -26,7 +26,7 @@ include('../includes/header.php');
                     </button>
                 </div>
             </div>
-            
+
             <!-- Upload div -->
             <div class="modal fade" id="uploadstudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -84,8 +84,8 @@ include('../includes/header.php');
                                                         <option value="PHD">PhD</option>
                                                     </select>
                                                 </div>
-                                            </div> 
-                                            <div>     
+                                            </div>
+                                            <div>
                                                 <div class="form-group col-md-6">
                                                     <label for="semester"><b>Semester</b></label>
                                                     <?php
@@ -383,7 +383,7 @@ include('../includes/header.php');
                     </div>
                 </div>
             </div>
-     
+
             <!-- filter div ends -->
         </div>
 
@@ -441,9 +441,9 @@ include('../includes/header.php');
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
-                        </table> 
+                        </table>
                     </div>
-                    <!-- UG ends -->  
+                    <!-- UG ends -->
                     <!--PG-->
                     <div class="tab-pane fade  " id="nav-Pg" role="tabpanel" aria-labelledby="nav-Pg-tab">
                         <div class="card-header py-3">
@@ -488,9 +488,9 @@ include('../includes/header.php');
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
-                        </table> 
+                        </table>
                     </div>
-                    <!-- PG ends -->  
+                    <!-- PG ends -->
                     <!--PHD-->
                     <div class="tab-pane fade " id="nav-Phd" role="tabpanel" aria-labelledby="nav-Phd-tab">
                         <div class="card-header py-3">
@@ -535,22 +535,22 @@ include('../includes/header.php');
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
-                        </table> 
+                        </table>
                     </div>
-                    <!-- PHD ends -->  
+                    <!-- PHD ends -->
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- /.container-fluid -->                                  
-                        
+<!-- /.container-fluid -->
+
 
 
 <script type="text/javascript">
     var activeTab = "Ug";
     $(document).ready(function() {
-        loadUg();
+        loadUg(true);
         $('#uploadstudent').on('hidden.bs.modal', function(e) {
             document.querySelector("#bulkUploadstudent").reset();
             $("#upload_student").text("Upload")
@@ -628,11 +628,11 @@ include('../includes/header.php');
         console.log("fhhhhhhhhhhhhhh");
         clearFilters();
         if (activeTab == 'Ug') {
-            loadUg()
+            loadUg(true);
         } else if (activeTab == 'Pg') {
-            loadPg();
+            loadPg(true);
         } else if (activeTab == 'Phd') {
-            loadPhd();
+            loadPhd(true);
         }
     });
 
@@ -647,17 +647,13 @@ include('../includes/header.php');
             type: 'POST',
             data: formData,
             success: function(data) {
-               if ($.trim(data) == "Successful") {
+                if ($.trim(data) == "Successful") {
                     $("#upload_student").text("Uploaded Successfully")
-                    if(activeTab=="Ug")
-                    {
+                    if (activeTab == "Ug") {
                         loadUg();
-                    }
-                    else if(activeTab=="Pg")
-                    {
+                    } else if (activeTab == "Pg") {
                         loadPg();
-                    }
-                    else{
+                    } else {
                         loadPhd();
                     }
 
@@ -673,10 +669,10 @@ include('../includes/header.php');
         });
     })
 
-//  ------------------------------------------------------
-//********** UG SECTION**************
+    //  ------------------------------------------------------
+    //********** UG SECTION**************
 
-function loadUg() {
+    function loadUg(pageView = false) {
         // document.querySelector("#addCoursebtn").style.display="none"
         $('#dataTable-studentUg').DataTable({
             processing: true,
@@ -708,6 +704,7 @@ function loadUg() {
                 'url': 'student_mark/loadInfo/marks_info_ug.php',
                 "data": function(d) {
                     d.filters = getFilters();
+                    d.pageView = pageView;
                     return d
                 }
             },
@@ -731,33 +728,33 @@ function loadUg() {
                 })
             },
             columns: [{
-                data: 'select-cbox'
-            },
-            {
-                data: 'email_id'
-            },
-            {
-                data: 'rollno'
-            },
-            {
-                data: 'fullname'
-            },
-            {
-                data:'dept_name'
-            },
-            {
-                data: 'sem'
-            },
-            {
-                data: 'year'
-            },
-            {
-                data: 'gpa'
-            },
-            {
-                data: 'action'
-            },
-        ],
+                    data: 'select-cbox'
+                },
+                {
+                    data: 'email_id'
+                },
+                {
+                    data: 'rollno'
+                },
+                {
+                    data: 'fullname'
+                },
+                {
+                    data: 'dept_name'
+                },
+                {
+                    data: 'sem'
+                },
+                {
+                    data: 'year'
+                },
+                {
+                    data: 'gpa'
+                },
+                {
+                    data: 'action'
+                },
+            ],
             columnDefs: [{
                     targets: [0, 8], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
@@ -814,7 +811,7 @@ function loadUg() {
             }
         })
     })
- 
+
     function loadModalUg() {
         var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
@@ -825,7 +822,7 @@ function loadUg() {
         $.ajax({
             type: "POST",
             url: "student_mark/loadModal/loadModalMarks.php",
-         
+
             data: json_courseData,
             success: function(output) {
                 // $("#"+x).text("Deleted Successfully");
@@ -849,13 +846,13 @@ function loadUg() {
                         url: "ic_queries/studentmarks_queries.php",
                         data: form_serialize,
                         success: function(data) {
-                          
+
                             $("#delete_course_btn").text("Deleted Successfully");
                             var row = $("#update-del-modal").closest('tr');
                             var aPos = $("#dataTable-studentUg").dataTable().fnGetPosition(row.get(0));
                             $('#update-del-modal').modal('hide');
-                            $("#dataTable-studentUg").DataTable().row(aPos).remove().draw(false);
-                           
+                            loadUg();
+
                         }
                     });
                 });
@@ -900,12 +897,12 @@ function loadUg() {
         });
     }
 
-  
- 
-// ********** UG SECTION COMPLETES***************
-//********** PG SECTION**************
 
-function loadPg() {
+
+    // ********** UG SECTION COMPLETES***************
+    //********** PG SECTION**************
+
+    function loadPg(pageView = false) {
         // document.querySelector("#addCoursebtn").style.display="none"
         $('#dataTable-studentPg').DataTable({
             processing: true,
@@ -937,6 +934,7 @@ function loadPg() {
                 'url': 'student_mark/loadInfo/marks_info_pg.php',
                 "data": function(d) {
                     d.filters = getFilters();
+                    d.pageView = pageView;
                     return d
                 }
             },
@@ -960,33 +958,33 @@ function loadPg() {
                 })
             },
             columns: [{
-                data: 'select-cbox'
-            },
-            {
-                data: 'email_id'
-            },
-            {
-                data: 'rollno'
-            },
-            {
-                data: 'fullname'
-            },
-            {
-                data:'dept_name'
-            },
-            {
-                data: 'sem'
-            },
-            {
-                data: 'year'
-            },
-            {
-                data: 'gpa'
-            },
-            {
-                data: 'action'
-            },
-        ],
+                    data: 'select-cbox'
+                },
+                {
+                    data: 'email_id'
+                },
+                {
+                    data: 'rollno'
+                },
+                {
+                    data: 'fullname'
+                },
+                {
+                    data: 'dept_name'
+                },
+                {
+                    data: 'sem'
+                },
+                {
+                    data: 'year'
+                },
+                {
+                    data: 'gpa'
+                },
+                {
+                    data: 'action'
+                },
+            ],
             columnDefs: [{
                     targets: [0, 8], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
@@ -1043,7 +1041,7 @@ function loadPg() {
             }
         })
     })
- 
+
     function loadModalPg() {
         var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
@@ -1054,7 +1052,7 @@ function loadPg() {
         $.ajax({
             type: "POST",
             url: "student_mark/loadModal/loadModalMarks.php",
-         
+
             data: json_courseData,
             success: function(output) {
                 // $("#"+x).text("Deleted Successfully");
@@ -1078,13 +1076,13 @@ function loadPg() {
                         url: "ic_queries/studentmarks_queries.php",
                         data: form_serialize,
                         success: function(data) {
-                          
+
                             $("#delete_course_btn").text("Deleted Successfully");
                             var row = $("#update-del-modal").closest('tr');
                             var aPos = $("#dataTable-studentPg").dataTable().fnGetPosition(row.get(0));
                             $('#update-del-modal').modal('hide');
-                            $("#dataTable-studentPg").DataTable().row(aPos).remove().draw(false);
-                           
+                            loadPg();
+
                         }
                     });
                 });
@@ -1128,10 +1126,10 @@ function loadPg() {
             }
         });
     }
-// ********** PG SECTION COMPLETES***************
-//********** PHD SECTION**************
+    // ********** PG SECTION COMPLETES***************
+    //********** PHD SECTION**************
 
-function loadPhd() {
+    function loadPhd(pageView = false) {
         // document.querySelector("#addCoursebtn").style.display="none"
         $('#dataTable-studentPhd').DataTable({
             processing: true,
@@ -1163,6 +1161,7 @@ function loadPhd() {
                 'url': 'student_mark/loadInfo/marks_info_phd.php',
                 "data": function(d) {
                     d.filters = getFilters();
+                    d.pageView = pageView;
                     return d
                 }
             },
@@ -1186,33 +1185,33 @@ function loadPhd() {
                 })
             },
             columns: [{
-                data: 'select-cbox'
-            },
-            {
-                data: 'email_id'
-            },
-            {
-                data: 'rollno'
-            },
-            {
-                data: 'fullname'
-            },
-            {
-                data:'dept_name'
-            },
-            {
-                data: 'sem'
-            },
-            {
-                data: 'year'
-            },
-            {
-                data: 'gpa'
-            },
-            {
-                data: 'action'
-            },
-        ],
+                    data: 'select-cbox'
+                },
+                {
+                    data: 'email_id'
+                },
+                {
+                    data: 'rollno'
+                },
+                {
+                    data: 'fullname'
+                },
+                {
+                    data: 'dept_name'
+                },
+                {
+                    data: 'sem'
+                },
+                {
+                    data: 'year'
+                },
+                {
+                    data: 'gpa'
+                },
+                {
+                    data: 'action'
+                },
+            ],
             columnDefs: [{
                     targets: [0, 8], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
@@ -1269,7 +1268,7 @@ function loadPhd() {
             }
         })
     })
- 
+
     function loadModalPhd() {
         var target_row = $(this).closest("tr"); // this line did the trick
         console.log(target_row)
@@ -1280,7 +1279,7 @@ function loadPhd() {
         $.ajax({
             type: "POST",
             url: "student_mark/loadModal/loadModalMarks.php",
-         
+
             data: json_courseData,
             success: function(output) {
                 // $("#"+x).text("Deleted Successfully");
@@ -1304,13 +1303,12 @@ function loadPhd() {
                         url: "ic_queries/studentmarks_queries.php",
                         data: form_serialize,
                         success: function(data) {
-                          
+
                             $("#delete_course_btn").text("Deleted Successfully");
                             var row = $("#update-del-modal").closest('tr');
                             var aPos = $("#dataTable-studentPhd").dataTable().fnGetPosition(row.get(0));
                             $('#update-del-modal').modal('hide');
-                            $("#dataTable-studentPhd").DataTable().row(aPos).remove().draw(false);
-                           
+                            loadPhd();
                         }
                     });
                 });
@@ -1356,10 +1354,6 @@ function loadPhd() {
     }
 
     // ********** PHD SECTION COMPLETES***************
-
-
-
-    
 </script>
 
 
