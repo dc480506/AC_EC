@@ -25,7 +25,13 @@ class FacultyLogger extends ActivityLogger
         $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, "$affectedUser record was deleted", $affectedUser);
     }
 
-
+    public function facultyRoleChange($performing_user, $affectedUser, $oldRole, $newRole)
+    {
+        $pageAffected = "faculty records";
+        $operationPerformed = "UPDATE";
+        $status = "made $affectedUser $newRole from $oldRole";
+        $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, $status, $affectedUser);
+    }
     public function facultyInserted($performing_user, $affectedUser)
     {
         $pageAffected = "faculty records";

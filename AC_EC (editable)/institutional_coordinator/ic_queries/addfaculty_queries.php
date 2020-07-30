@@ -81,7 +81,9 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
         $post_new = mysqli_escape_string($conn, $_POST['post_new']);
         $role_old = mysqli_escape_string($conn, $_POST['role_old']);
         $role_new = mysqli_escape_string($conn, $_POST['role_new']);
-
+        if ($role_old != $role_new) {
+            $logger->facultyRoleChange($_SESSION['email'], $email_id_new, $role_old, $role_new);
+        }
         if ($email_id_new != $email_id_old) {
             // $query = "SELECT `email_id` FROM `faculty` WHERE `email_id`='$email_id_new'";
             $results = mysqli_query($conn, "select email_id from faculty where email_id='$email_id_new'");
