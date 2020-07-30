@@ -27,4 +27,11 @@ class UserLogger extends ActivityLogger
         $operationPerformed = "LOGIN";
         $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, "invalid login due to incorrect password");
     }
+
+    public function logout($performing_user)
+    {
+        $pageAffected = "logout";
+        $operationPerformed = 'LOGOUT';
+        $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, 'user logged out');
+    }
 }
