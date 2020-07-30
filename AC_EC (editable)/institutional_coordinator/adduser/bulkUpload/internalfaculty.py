@@ -74,13 +74,28 @@ errors = {"wrongDept": []}
 
 def insert_record(update_values, update_faculty_login, values_insert, values_login):
     global updated_records_count, inserted_records_count
+    log_entry = "insert into activity_log(performing_user, page_affected, affected_user, operation_performed, status) values(%s,%s,%s,%s,%s)"
+    performing_user = values_insert[8]
+    page_affected = 'faculty records'
+    affected_user = values_insert[0]
+    operation_performed = ""
+    status = ""
+
     if sys.argv[mapper['upload_constraint']] == "2":
+        operation_performed = "UPDATE"
+        status = "updated details for" + affected_user
         updated_records_count += cursor.execute(update_faculty, values)
         cursor.execute(update_faculty_login, values2)
+        cursor.execute(log_entry, (performing_user, page_affected,
+                                   affected_user, operation_performed, status))
     else:
+        operation_performed = "INSERT"
+        status = "faculty record inserted"
         cursor.execute(insert_faculty, values_insert)
         cursor.execute(insert_faculty_login, values_login)
         inserted_records_count += 1
+        cursor.execute(log_entry, (performing_user, page_affected,
+                                   affected_user, operation_performed, status))
 
 
 try:
@@ -158,9 +173,17 @@ try:
                               dept_id, post, added, timestamp, role, email)
                     values2 = (role, email)
                     try:
+                        log_entry = "insert into activity_log(performing_user, page_affected, affected_user, operation_performed, status) values(%s,%s,%s,%s,%s)"
+                        performing_user = values[7]
+                        page_affected = 'faculty records'
+                        affected_user = values[-1]
+                        operation_performed = "UPDATE"
+                        status = "updated details for" + affected_user
                         cursor.execute(update_faculty, values)
                         cursor.execute(update_faculty_login, values2)
                         updated_records_count += 1
+                        cursor.execute(log_entry, (performing_user, page_affected,
+                                                   affected_user, operation_performed, status))
                     except Exception as e:
                         print(e)
                         print("error+" + str(e))

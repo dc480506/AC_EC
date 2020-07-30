@@ -142,8 +142,18 @@ try:
                     values = (rollno, fname, mname, lname,
                               year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email)
                     try:
-                        cursor.execute(update, values)
-                        updated_records_count += 1
+                        log_entry = "insert into activity_log(performing_user, page_affected, affected_user, operation_performed, status) values(%s,%s,%s,%s,%s)"
+                        performing_user = values[8]
+                        page_affected = argument[mapper['program']
+                                                 ] + " students page"
+                        affected_user = values[-1]
+                        operation_performed = "UPDATE"
+                        status = "updated details for" + affected_user
+                        is_updated = cursor.execute(update, values)
+                        updated_records_count = updated_records_count + is_updated
+                        if(is_updated > 0):
+                            cursor.execute(log_entry, (performing_user, page_affected,
+                                                       affected_user, operation_performed, status))
                     except Exception as e:
                         print("error+" + e)
                         sys.exit(0)
