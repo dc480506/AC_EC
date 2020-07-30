@@ -65,12 +65,29 @@ errors = {"wrongDept": []}
 
 def insert_record(update_values, values_insert, values_login):
     global updated_records_count, inserted_records_count, argument
+    log_entry = "insert into activity_log(performing_user, page_affected, affected_user, operation_performed, status) values(%s,%s,%s,%s,%s)"
+    performing_user = values_insert[-1]
+    page_affected = argument[mapper['program']] + " students page"
+    affected_user = values_insert[0]
+    operation_performed = ""
+    status = ""
     if argument[mapper['upload_constraint']] == "2":
-        updated_records_count += cursor.execute(update, update_values)
+        operation_performed = "UPDATE"
+        status = "updated details for" + affected_user
+        is_updated = cursor.execute(update, update_values)
+        updated_records_count = updated_records_count + is_updated
+        if(is_updated > 0):
+            cursor.execute(log_entry, (performing_user, page_affected,
+                                       affected_user, operation_performed, status))
+
     else:
+        operation_performed = "INSERT"
+        status = "Student record inserted"
         cursor.execute(insert, values)
         cursor.execute(insert_student_login, values_login)
         inserted_records_count += 1
+        cursor.execute(log_entry, (performing_user, page_affected,
+                                   affected_user, operation_performed, status))
 
 
 try:
@@ -141,6 +158,7 @@ try:
                 sys.exit(0)
             else:
                 print(e)
+                print(cursor._last_executed)
                 sys.exit(0)
 
 except Exception as e:

@@ -1379,7 +1379,6 @@ $dept_result2 = mysqli_query($conn, $sql);
                 type: 'POST',
                 data: formData,
                 success: function(data) {
-
                     let [status, response] = $.trim(data).split("+");
 
                     if (status == "Successful") {
