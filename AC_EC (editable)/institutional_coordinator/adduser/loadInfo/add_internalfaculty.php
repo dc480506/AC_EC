@@ -1,8 +1,13 @@
 <?php
 include_once('../../verify.php');
 include_once('../../../config.php');
+include_once("../../../Logger/FacultyLogger.php");
+$logger = FacultyLogger::getLogger();
 $draw = $_POST['draw'];
 $row = $_POST['start'];
+if (isset($_POST['pageView']) && $_POST['pageView'] == "true") {
+   $logger->facultyRecordsViewed($_SESSION['email'], "faculty records");
+}
 $rowperpage = $_POST['length']; // Rows display per page
 if (isset($_POST['order'])) {
    $columnIndex = $_POST['order'][0]['column']; // Column index

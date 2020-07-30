@@ -169,7 +169,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
     echo '
                                                   
                                                 </select>
-                                                
+                                                <input type="hidden" class="form-control"  name="role_old" id="role_old" value="' . $role . '">
                                              </div> 
                                         </div>
                                     </div>

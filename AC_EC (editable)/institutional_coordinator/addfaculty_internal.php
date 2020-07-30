@@ -495,7 +495,7 @@ include('../includes/header.php');
     })
 
     $(document).ready(function() {
-        loadCurrent();
+        loadCurrent(true);
         // filterTable();
         $('#uploadinternal').on('hidden.bs.modal', function(e) {
             document.querySelector("#bulkUploadInternal").reset();
@@ -535,7 +535,7 @@ include('../includes/header.php');
     }
 
     //DATATABLE CREATE
-    function loadCurrent() {
+    function loadCurrent(pageView = false) {
         // document.querySelector("#addCoursebtn").style.display="none"
         $('#dataTable-internal').DataTable({
             processing: true,
@@ -567,6 +567,7 @@ include('../includes/header.php');
                 'url': 'adduser/loadInfo/add_internalfaculty.php',
                 "data": function(d) {
                     d.filters = getFilters();
+                    d.pageView = pageView;
                     return d
                 }
             },
@@ -693,7 +694,7 @@ include('../includes/header.php');
                             $('body').removeClass('modal-open');
                             $('.modal-backdrop').remove();
                             // row.remove();
-                            $("#dataTable-internal").DataTable().row(aPos).remove().draw(false);
+                            loadCurrent();
                             // console.log(aPos);
                             // console.log(row)
                         }

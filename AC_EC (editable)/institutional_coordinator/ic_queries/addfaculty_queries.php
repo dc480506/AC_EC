@@ -3,6 +3,8 @@ session_start();
 $allowed_roles = array("inst_coor", "faculty_co", "HOD");
 if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
     include_once("../../config.php");
+    include_once("../../Logger/FacultyLogger.php");
+    $logger = FacultyLogger::getLogger();
     //For Course deletion
     if (isset($_POST['delete_faculty'])) {
         $email = mysqli_escape_string($conn, $_POST['email']);
@@ -10,6 +12,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
         echo $sql;
         mysqli_query($conn, $sql);
         mysqli_query($conn, "DELETE FROM login_role WHERE email_id='$email'");
+        $logger->FacultyDeleted($_SESSION['email'], $email);
     } else if (isset($_POST['update_faculty'])) {
         $name = mysqli_escape_string($conn, $_POST['name']);
         $newemail = mysqli_escape_string($conn, $_POST['newemail']);
@@ -53,6 +56,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
         $sql2 = "INSERT INTO login_role(`username`,`email_id`,`password`,`password_set`,`role`) VALUES ('$username','$email','$password',$password_set,'$role')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
         mysqli_query($conn, $sql2) or die(mysqli_error($conn));
+        $logger->facultyInserted($_SESSION['email'], $email);
 
         header("Location: ../addfaculty_internal.php");
     } else if (isset($_POST['delete_internal_faculty'])) {
@@ -60,6 +64,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
         $sql = "DELETE FROM faculty WHERE email_id='$email_id'";
         mysqli_query($conn, $sql);
         mysqli_query($conn, "DELETE FROM login_role WHERE email_id='$email_id'");
+        $logger->FacultyDeleted($_SESSION['email'], $email_id);
         // header("Location: ../addcourse_ac.php");
         exit();
     } else if (isset($_POST['update_internal_faculty'])) {
@@ -74,7 +79,9 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
         $employee_id_old = mysqli_escape_string($conn, $_POST['employee_id_old']);
         $dept_id = mysqli_escape_string($conn, $_POST['dept_id']);
         $post_new = mysqli_escape_string($conn, $_POST['post_new']);
+        $role_old = mysqli_escape_string($conn, $_POST['role_old']);
         $role_new = mysqli_escape_string($conn, $_POST['role_new']);
+
         if ($email_id_new != $email_id_old) {
             // $query = "SELECT `email_id` FROM `faculty` WHERE `email_id`='$email_id_new'";
             $results = mysqli_query($conn, "select email_id from faculty where email_id='$email_id_new'");
@@ -93,6 +100,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                 // console.log(". $sql.");</script>";
                 mysqli_query($conn, $sql);
                 mysqli_query($conn, $sql2);
+                $logger->facultyModified($_SESSION['email'], $email_id_new);
                 // header("Location: ../addfaculty_internal.php");
                 exit();
             }
@@ -111,6 +119,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                 mysqli_query($conn, $sql);
                 $sql2 = "UPDATE login_role SET email_id='$email_id_new',role='$role_new' WHERE email_id='$email_id_old'";
                 mysqli_query($conn, $sql2);
+                $logger->facultyModified($_SESSION['email'], $email_id_new);
                 // header("Location: ../addfaculty_internal.php");
                 exit();
             }
@@ -128,7 +137,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                 mysqli_query($conn, $sql);
                 $sql2 = "UPDATE login_role SET email_id='$email_id_new',role='$role_new' WHERE email_id='$email_id_old'";
                 mysqli_query($conn, $sql2);
-
+                $logger->facultyModified($_SESSION['email'], $email_id_new);
                 // header("Location: ../addfaculty_internal.php");
                 exit();
             }
@@ -139,6 +148,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
             mysqli_query($conn, $sql);
             $sql2 = "UPDATE login_role SET email_id='$email_id_new',role='$role_new' WHERE email_id='$email_id_old'";
             mysqli_query($conn, $sql2);
+            $logger->facultyModified($_SESSION['email'], $email_id_new);
             // header("Location: ../addfaculty_internal.php");
             exit();
         }
