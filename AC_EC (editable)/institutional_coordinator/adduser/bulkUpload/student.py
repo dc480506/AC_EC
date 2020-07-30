@@ -20,12 +20,9 @@ mapper = {
     "password": 13,
     "dbname": 14,
     "program": 15,
-<<<<<<< HEAD
-=======
     "upload_constraint": 16,
     "role": 17,
     "uploader_dept": 18
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 }
 header = []
 header_id = {}
@@ -42,11 +39,7 @@ data = file.sheet_by_index(0)
 for y in range(0, data.ncols):
     header.append(data.cell(0, y).value.lower())
 try:
-<<<<<<< HEAD
-    for x in range(start_col, n-6):
-=======
     for x in range(start_col, n-9):
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
         header_id[argument[x].lower()] = header.index(argument[x].lower())
 except Exception as e:
     print(re.findall(r"'(.*?)'", str(e),)
@@ -56,8 +49,6 @@ ts = argument[mapper["timestamp"]]
 added_by = argument[mapper["added"]]
 insert = """INSERT into student(email_id,rollno,fname,mname,lname,year_of_admission,dept_id,current_sem,timestamp,adding_email_id,program) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'""" + \
     argument[mapper['program']] + """');"""
-<<<<<<< HEAD
-=======
 
 update = "update student set rollno=%s,fname=%s,mname=%s,lname=%s,year_of_admission=%s,dept_id=%s,current_sem=%s,timestamp=%s,adding_email_id=%s,program=%s where email_id=%s;"
 
@@ -65,6 +56,7 @@ insert_student_login = """Insert into login_role(username,email_id,password,pass
 password_set = 0
 role = "student"
 
+login_role = argument[mapper['role']]
 
 inserted_records_count = 0
 updated_records_count = 0
@@ -81,7 +73,6 @@ def insert_record(update_values, values_insert, values_login):
         inserted_records_count += 1
 
 
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 try:
     for x in range(1, data.nrows):
         email = data.cell(
@@ -114,9 +105,6 @@ try:
         values_login = (username, email, password, password_set, role)
         # executing query
         try:
-<<<<<<< HEAD
-            cursor.execute(insert, values)
-=======
             if login_role in ['faculty_co', 'HOD']:
                 if int(dept) == int(argument[mapper["uploader_dept"]]):
                     update_values = (rollno, fname, mname, lname,
@@ -129,7 +117,6 @@ try:
                                  year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email)
                 insert_record(update_values, values, values_login)
 
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
         except Exception as e:
             if "Duplicate entry" in str(e):
                 print("Email: "+email+" Rollno: " +
@@ -145,12 +132,8 @@ except Exception as e:
 # print("executed query")
 # commiting the query into db
 connection.commit()
-<<<<<<< HEAD
-print("Successful")
-=======
 output = {"insertedRecords": inserted_records_count,
           "updatedRecords": updated_records_count, "totalRecords": data.nrows-1, "errors": errors}
 print('Successful+%s' %
       (json.dumps(output)))
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 connection.close()

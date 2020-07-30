@@ -27,8 +27,8 @@ class PHPMailerHelper{
             $mail->Host = "smtp.gmail.com";
             $mail->Port = 465; // or 587
             $mail->IsHTML(true);           
-            $mail->Username   = 'ijoglekar16@gmail.com';                  
-            $mail->Password   = 'Arch@ngels23';                                                                   
+            $mail->Username   = 'Enter your Email';                  
+            $mail->Password   = 'Enter your Password';                                                                   
             $mail->Port       = 465;    
                     
         } catch (Exception $e) { 

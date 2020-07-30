@@ -6,10 +6,13 @@
     <i class="fa fa-bars"></i>
   </button>
   <?php
+  // die(var_dump($_SESSION));
+  // $base_dir = "C:/xampp/uploads/AC_EC/AC_EC (editable)/";
   if(isset($_SESSION['role'])){
-    if($_SESSION['role']=='inst_coor' ||  $_SESSION['role']=='HOD'){
+    if($_SESSION['role']=='faculty_co' ||  $_SESSION['role']=='HOD'){
   ?>
-    <button class="btn btn-primary">Student Portal</button>
+     <a href="./../faculty/index.php" class="btn btn-primary">Faculty Portal</a>     
+     <a href="./../institutional_coordinator/index.php" class="btn btn-primary ml-2">Admin Portal</a>     
   <?php
     }
   }
