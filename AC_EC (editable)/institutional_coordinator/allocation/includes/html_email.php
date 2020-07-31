@@ -25,8 +25,8 @@
         
         </div>
         
-        <div style="padding:60px;background-color:#f1f0f2">
-        <div style="background:#3d007a; padding:2px"></div>
+        <div style="padding:60px;background-color:#fcebf1">
+        <div style="background:#e00251; padding:2px"></div>
     <div style="font-family: 'Times New Roman';background-color:white;padding:20px;">
     
         <h4>Dear student,<br>
@@ -34,7 +34,7 @@
 </h4>
         
         <h4 style="color: black;">Allotment details:</h4>
-        <h4 style="color:#3d007a;">You have been alloted Course_id - Flutter,<br> for Semester 3 of Academic Year 2020.<br></h4>
+        <h4 style="color:#e00251;">You have been alloted Course_id - Flutter,<br> for Semester 3 of Academic Year 2020.<br></h4>
         <h4>The alloted course was your 1st preference as per the preference form filled by you.</h4>
         <h4>The details about the commencement of course and faculty responsible will be conveyed to you soon through mail.</h4>
     </div>
@@ -43,9 +43,9 @@
     <!-- <div style="font-family: 'Aref Ruqaa';background-color:white;padding:10px;">
      -->
     </div>
-    <div style="padding:40px;background-color:#f1f0f2">
+    <div style="padding:40px;background-color:#fcebf1">
     <div style="background:#d5d4d6; padding:1px"></div>
-    <div style="background-color:#f1f0f2;padding:10px;">
+    <div style="background-color:#fcebf1;padding:10px;">
     <h4>For any queries/doubts regarding the allotment, kindly contact HOD of your respective department.
         <br><br>Regards,<br>SDC KJSCE.
     </h4>
