@@ -26,6 +26,29 @@ include('../includes/header.php');
                     </button>
                 </div>
             </div>
+            <!-- Invalid students -->
+            <div class="modal fade " id="invalidstudents" tabindex="-1" role="dialog" aria-labelledby="invalid-students" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="invalid-students">INVALID STUDENTS LIST </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h6><b>Following students do not belong to <?php echo $_SESSION['dept_name']  ?> department:</b></h6>
+                            <ul id="invalidstudentslist">
+                                <li>abc</li>
+                                <li>def</li>
+                                <li>ghi</li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Invalid students div ends -->
             
             <!-- Upload div -->
             <div class="modal fade" id="uploadstudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -85,7 +108,21 @@ include('../includes/header.php');
                                                     </select>
                                                 </div>
                                             </div> 
-                                            <div>     
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">
+                                                    <label for="rno"><b>Upload Constraint</b></label>
+                                                    <select class="form-control" id="upload_constraint" name="upload_constraint" required>
+                                                        <option value="0">Only insert new Records</option>
+                                                        <option value="1">Insert and update Existing</option>
+                                                        <option value="2">Only Update existing records</option>
+                                                    </select>
+                                                </div>
+                                            </div>    
+                                            <label for="">
+                                                <br>
+                                                <h6>Information for mapping Data from excel sheet to Database</h6>
+                                            </label>
+                                            <div>
                                                 <div class="form-group col-md-6">
                                                     <label for="semester"><b>Semester</b></label>
                                                     <?php
@@ -316,13 +353,14 @@ include('../includes/header.php');
                                     $dept_names = array();
                                     $email = $_SESSION['email'];
                                     $department = 'department';
-                                    $query = "SELECT distinct(dept_name) FROM department";
+                                    $roleRestriction = in_array($_SESSION['role'], array("faculty_co", "HOD")) ? "where dept_id={$_SESSION['dept_id']}" : "";
+                                    $query = "SELECT distinct(dept_name) FROM department $roleRestriction";
                                     if ($result = mysqli_query($conn, $query)) {
                                         $rowcount = mysqli_num_rows($result);
                                         while ($row = mysqli_fetch_array($result)) {
                                             $dept_name = $row['dept_name'];
                                             echo '<div class="custom-control custom-checkbox custom-control-inline">
-                                                    <input type="checkbox" name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
+                                                    <input type="checkbox" checked name="filter_dept[]" class="custom-control-input" value="' . $dept_name . '" id="filter_dept_' . $dept_name . '">
                                                     <label class="custom-control-label" for="filter_dept_' . $dept_name . '">' . $dept_name . '</label>
                                                 </div>';
                                         }
@@ -646,27 +684,39 @@ include('../includes/header.php');
             url: "student_mark/bulkUpload/upload_mark_queries.php",
             type: 'POST',
             data: formData,
-            success: function(data) {
-               if ($.trim(data) == "Successful") {
+            success: function(data){
+                let [status, response] = $.trim(data).split("+");
+
+                if (status == "Successful") {
                     $("#upload_student").text("Uploaded Successfully")
-                    if(activeTab=="Ug")
-                    {
+                    const resData = JSON.parse(response);
+                    console.log(resData)
+                    if (resData.errors.wrongDept.length > 0) {
+                        $('#invalidstudentslist').empty();
+                        resData.errors.wrongDept.forEach((entry) => {
+                            console.log(entry);
+                            $('#invalidstudentslist').append(`<li class='text-danger'>${entry.email} - ${id_to_name_convertor_dept(entry.dept)}</li>`)
+                        })
+                        $('#uploadstudent').modal('hide');
+                        $('#invalidstudents').modal('show');
+                    } else {
+
+                        alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
+                    }
+                    if (activeTab == "Ug") {
                         loadUg();
-                    }
-                    else if(activeTab=="Pg")
-                    {
+                    } else if (activeTab == "Pg") {
                         loadPg();
-                    }
-                    else{
+                    } else {
                         loadPhd();
                     }
 
                 } else {
                     $("#upload_student").text("Upload Failed")
-                    alert(data);
+                    alert(response);
                 }
                 // form.reset();
-            },
+                },
             cache: false,
             contentType: false,
             processData: false
@@ -1357,7 +1407,17 @@ function loadPhd() {
 
     // ********** PHD SECTION COMPLETES***************
 
-
+    function id_to_name_convertor_dept(id) {
+            <?php
+            include_once('../config.php');
+            $sql = "SELECT * FROM department";
+            $result = mysqli_query($conn, $sql);
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo 'if(id=="' . $row['dept_id'] . '") return "' . $row['dept_name'] . '";';
+            }
+            ?>
+       
+        }
 
     
 </script>
