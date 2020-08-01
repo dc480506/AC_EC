@@ -1,4 +1,4 @@
-<?php 
+<?php
 include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
@@ -40,7 +40,7 @@ include('../includes/header.php');
                     $yoa = $row['year_of_admission'];
                     $program = $row['program'];
                     $current_sem = $row['current_sem'];
-                    $_SESSION['program']=$row['program'];
+                    $_SESSION['program'] = $row['program'];
                 }
             }
 
@@ -49,7 +49,7 @@ include('../includes/header.php');
             // $count= mysqli_num_rows($result);
             // echo 'hello';
             // $_SESSION['sem']=$row['current_sem'];
-            $_SESSION['rollno']=$row['rollno'];
+            $_SESSION['rollno'] = $row['rollno'];
             // $_SESSION['year']=$row['year'];
             // if($count==1)
             // {
@@ -64,12 +64,12 @@ include('../includes/header.php');
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo"{$row['fname']} {$row['mname']} {$row['lname']}";?></p>
-                                    <p class="text-dark"> <span><b>Email : </b></span><?php echo $row['email_id'];?></p>
+                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo "{$row['fname']} {$row['mname']} {$row['lname']}"; ?></p>
+                                    <p class="text-dark"> <span><b>Email : </b></span><?php echo $row['email_id']; ?></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Department : </b></span><?php echo $row['dept_name'];?></p>
-                                    <p class="text-dark"> <span><b>Mobile No. : </b></span><?php echo $row['rollno']; }?></p>
+                                    <p class="text-dark"> <span><b>Department : </b></span><?php echo $row['dept_name']; ?></p>
+                                    <p class="text-dark"> <span><b>Mobile No. : </b></span><?php echo $row['rollno']; ?></p>
                                 </div>
                             </div>
                         </div>
@@ -96,56 +96,54 @@ include('../includes/header.php');
                         <p class="card-description">
                             <h4><strong> Audit Course </strong></h4>
                         </p>
-                        <?php 
-                        $sql="SELECT ac.cname,sa.sem,(SELECT count(*) FROM student_audit sa WHERE currently_active=1 AND sa.cid=ac.cid) as no_of_allocated,sa.complete_status,ac.year FROM audit_course AS ac INNER Join student_audit AS sa on sa.cid=ac.cid AND sa.sem=ac.sem AND ac.year=sa.year WHERE sa.email_id='{$_SESSION['email']}' AND sa.currently_active='1'";
-                            $result= mysqli_query($conn,$sql);
-                            if(mysqli_num_rows($result)==0)
-                            { 
-                                ?><h5 style="color:red;"> <?php echo 'No courses available currently';?>&nbsp;<i class="fas fa-times"></i></h5>
-                                <?php 
-                                }
-                        else{
-                            $row= mysqli_fetch_array($result,MYSQLI_ASSOC);
-                            $count= mysqli_num_rows($result);
-                            if($count==1)
-                            {
-                        ?>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputCourseName"><b>Course Name</b></label>
-                                    <br>
-                                    <span><?php echo $row['cname'];?></span>
-                                </div>
-                            </div>
+                        <?php
+                        $sql = "SELECT ac.cname,sa.sem,(SELECT count(*) FROM student_audit sa WHERE currently_active=1 AND sa.cid=ac.cid) as no_of_allocated,sa.complete_status,ac.year FROM audit_course AS ac INNER Join student_audit AS sa on sa.cid=ac.cid AND sa.sem=ac.sem AND ac.year=sa.year WHERE sa.email_id='{$_SESSION['email']}' AND sa.currently_active='1'";
+                        $result = mysqli_query($conn, $sql);
+                        if (mysqli_num_rows($result) == 0) {
+                        ?><h5 style="color:red;"> <?php echo 'No courses available currently'; ?>&nbsp;<i class="fas fa-times"></i></h5>
+                            <?php
+                        } else {
+                            $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                            $count = mysqli_num_rows($result);
+                            if ($count == 1) {
+                            ?>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="exampleInputCourseName"><b>Course Name</b></label>
+                                            <br>
+                                            <span><?php echo $row['cname']; ?></span>
+                                        </div>
+                                    </div>
 
-                            <div class=" col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputSemester"><b>Semester</b></label>
-                                    <br>
-                                    <span><?php echo $row['sem'];?></span>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputStatus"><b>Course Status</b></label>
-                                    <br>
-                                    <span><?php 
-                                    if($row['complete_status']==1)
-                                        echo "Complete";
-                                    else
-                                        echo "Incomplete";
-                                    ?></span>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputStrength"><b>Course Strength</b></label>
-                                    <br>
-                                    <span><?php echo $row['no_of_allocated'];}?></span>
-                                </div>
-                            </div>
-                        </div> <?php }?>
+                                    <div class=" col-md-3">
+                                        <div class="form-group">
+                                            <label for="exampleInputSemester"><b>Semester</b></label>
+                                            <br>
+                                            <span><?php echo $row['sem']; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="exampleInputStatus"><b>Course Status</b></label>
+                                            <br>
+                                            <span><?php
+                                                    if ($row['complete_status'] == 1)
+                                                        echo "Complete";
+                                                    else
+                                                        echo "Incomplete";
+                                                    ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="exampleInputStrength"><b>Course Strength</b></label>
+                                            <br>
+                                            <span><?php echo $row['no_of_allocated'];
+                                                } ?></span>
+                                        </div>
+                                    </div>
+                                </div> <?php } ?>
                     </form>
                 </div>
             </div>
