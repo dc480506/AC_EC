@@ -20,8 +20,7 @@ $output = shell_exec($cmd . " 2>&1");
         background-color: #ffcccc;
     }
 
-    #spinner_prev,
-    #spinner-complete {
+    #spinner_prev {
         position: fixed;
         top: 50%;
         left: 50%;
@@ -279,11 +278,6 @@ $output = shell_exec($cmd . " 2>&1");
         <label class="text-dark">Navigating to 1st Iteration Allocation Analysis</label>
         <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
     </div>
-
-    <div id="spinner-complete" style="display: none;">
-        <label class="text-dark">generating reports and finalizing allocation</label>
-        <img src="loadTabs/ajax-loader.gif" alt="loading" id="img-spinner">
-    </div>
 </div>
 <script>
     // $("#spinner").show();
@@ -383,9 +377,10 @@ $output = shell_exec($cmd . " 2>&1");
                         echo "
                         {
                             data: 'gpa'
-                        },";
+                        }";
                     }
-                    ?> {
+                    ?>,
+                    {
                         data: 'timestamp'
                     },
                     {
@@ -446,9 +441,10 @@ $output = shell_exec($cmd . " 2>&1");
                     echo "
                         {
                             data: 'gpa'
-                        },";
+                        }";
                 }
-                ?> {
+                ?>,
+                {
                     data: 'timestamp'
                 },
                 {
@@ -625,38 +621,23 @@ $output = shell_exec($cmd . " 2>&1");
             // row.child("<b>Hello</b>").show();
         }
     })
-    $("#show_all_course_analysis").on('change', function() {
-        $('.view_analysis').trigger('click');
-    })
+    // $("#show_all_course_analysis").on('change',function(){
+    //     var rows=$("#dataTable-courses tbody tr")
+    //     console.log(rows)
+    //     if($(this).is(':checked')){
+
+    //     }else{
+    //     try{
+    //         $("#dataTable-courses tbody tr").child.hide()
+    //     }catch(err){
+
+    //     }
+    //         $("#dataTable-courses tbody tr").removeClass('shown table-warning')
+
+    //     }
+    // })
     $("#complete_allocation").submit(function(e) {
         e.preventDefault();
-        $("#nav-final-allocate-tab").removeClass("active")
-        $("#nav-final-allocate-tab").addClass("disabled")
-        // $("body").css("opacity",'0.5')
-        data_serialize = "prev_result_tab=1"
-        $.ajax({
-            // url:'../allocation/loadPreviousTabs/load_allocation_analysis_tab_previous.php',
-            url: 'complete_allocation.php',
-            data: data_serialize,
-            method: "POST",
-            success: function(html) {
-                $("#spinner-complete").hide()
-                $("#nav-final-allocate-tab").removeClass("disabled")
-                $("#nav-tabContent").html(html)
-                $("#nav-final-allocate-tab").addClass("active")
-            },
-            beforeSend: function() {
-                //Loader daalna hai baadme
-                $("#complete_allocation").css("opacity", 0.3)
-                $('#spinner-complete').show();
-                $('#complete_btn').attr('disabled', true);
-                $('#prev_btn').attr('disabled', true);
-            },
-        })
-        // $("#complete_allocation").css("opacity", 0.3)
-        // $('#spinner_prev').show();
-        // $('#complete_btn').attr('disabled', true);
-        // $('#prev_btn').attr('disabled', true);
     })
     // Previous Button Action
     $("#prev_btn").on("click", function() {

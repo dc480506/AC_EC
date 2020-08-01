@@ -48,27 +48,6 @@ include('includes/header.php');
                 </div>
             </div>
         </div>
-        <div class="modal fade " id="invalidstudents" tabindex="-1" role="dialog" aria-labelledby="invalid-students" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="invalid-students">INVALID STUDENTS LIST </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h6><b>Following students were not found in the system:</b></h6>
-                        <ul id="invalidstudentslist">
-                            <li>abc</li>
-                            <li>def</li>
-                            <li>ghi</li>
-                            <li></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="modal fade" id="uploadstudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -205,16 +184,6 @@ include('includes/header.php');
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <label for="rno"><b>Upload Constraint</b></label>
-                                                <select class="form-control" id="upload_constraint" name="upload_constraint" required>
-                                                    <option value="0">Only insert new Records</option>
-                                                    <option value="1">Insert and update Existing</option>
-                                                    <option value="2">Only Update existing records</option>
-                                                </select>
-                                            </div>
-                                        </div>
                                         <div id="bulk_current_fields">
                                             <label for="">
                                                 <h6><b>Information for mapping Excel sheet columns to Database columns:</b></h6>
@@ -269,7 +238,6 @@ include('includes/header.php');
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                         <br>
@@ -453,39 +421,22 @@ include('includes/header.php');
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
-        // $("#upload_current").attr("disabled", true);
-        // $("#upload_current").text("Uploading...")
+        $("#upload_current").attr("disabled", true);
+        $("#upload_current").text("Uploading...")
         $.ajax({
             url: "bulkUpload/upload_response_queries.php",
             type: 'POST',
             data: formData,
             success: function(data) {
-
-                let [status, response] = $.trim(data).split("+");
-                if (status == "Successful") {
+                if ($.trim(data) == "Successful") {
+                    $("#upload_current").text("Uploaded Successfully")
                     get_response_stats();
                     loadCurrent();
-                    const resData = JSON.parse(response);
-
-                    console.log(resData)
-                    // $("#upload_current").text("Uploaded Successfully")
-                    if (resData.invalidEntries.length == 0) {
-
-                        alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
-                    } else {
-                        $('#invalidstudentslist').empty();
-                        resData.invalidEntries.forEach((entry) => {
-                            $('#invalidstudentslist').append(`<li class='text-danger'>${entry}</li>`)
-                        })
-                        $('#uploadstudent').modal('hide');
-                        $('#invalidstudents').modal('show')
-                    }
-
-
                 } else {
-                    $("#upload_student").text("Upload Failed")
-                    alert(response);
+                    $("#upload_current").text("Upload Failed")
+                    alert(data);
                 }
+                // form.reset();
             },
             cache: false,
             contentType: false,
@@ -618,7 +569,7 @@ include('includes/header.php');
             url: "../../ic_queries/multioperation_queries/delete_multiple_response.php",
             data: actual_delete_data_json,
             success: function(data) {
-                console.log(data)
+                console.log("Yo")
                 $("#dataTable-response").DataTable().draw(false);
                 get_response_stats();
             },

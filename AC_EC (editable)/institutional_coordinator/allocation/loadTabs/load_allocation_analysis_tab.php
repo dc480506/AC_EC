@@ -13,9 +13,9 @@ if (isset($_POST['prev_result_tab'])) {
 }
 $args = '["' . $_SESSION['sem'] . '","' . $_SESSION['year'] . '","' . $_SESSION['student_pref'] . '","' . $_SESSION['student_course_table'] . '","' . $_SESSION['course_allocate_info'] . '","' . $_SESSION['course_table'] . '","' . $_SESSION['course_app_dept_table'] . '","' . $_SESSION['no_of_preferences'] . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $_SESSION['program'] . '"]';
 $cmd = 'python ../algorithms/' . $_SESSION['algorithm_chosen'] . '_phase1.py ' . $args;
-// echo $cmd;
+echo $cmd;
 $output = shell_exec($cmd . " 2>&1");
-// echo "<b>$output</b>";
+echo "<b>$output</b>";
 ?>
 <br>
 <h5 class="font-weight-bold text-dark mb-0">
@@ -27,44 +27,6 @@ $output = shell_exec($cmd . " 2>&1");
                         ?>
 </h5>
 <div class="tab-pane fade show active" id="nav-result" role="tabpanel" aria-labelledby="nav-result-tab">
-    <div class="modal fade" id="bulkUpdateModal" tabindex="-1" role="dialog" aria-labelledby="bulk Update" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">BULK UPDATE COURSES</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form id="bulkUpdateForm">
-                        <br>
-                        <br>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group ">
-                                    <label for="min"><b>Minimum students</b></label>
-                                    <input type="number" min="0" class="form-control" id="min" name="min" placeholder="Minimum students" value="" required>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group ">
-                                    <label for="max"><b>Maximum students</b></label>
-                                    <input type="number" min="0" class="form-control" id="max" name="max" placeholder="Maximum students" value="" required>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" name="close">Close</button>
-                            <button type="submit" class="btn btn-primary" name="filter">Update</button>
-                        </div>
-                    </form>
-                    <!-- filter ends -->
-                </div>
-            </div>
-        </div>
-    </div>
     <br>
     <div class="progress">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
@@ -158,7 +120,7 @@ $output = shell_exec($cmd . " 2>&1");
             ajax: {
                 'url': '../allocation/loadInfo/course_analysis.php'
             },
-            dom: "<'d-flex justify-content-between'f<'#bulkUpdate'>Bl>tip",
+            dom: '<"d-flex justify-content-between"fBl>tip',
             buttons: [{
                 extend: 'excel',
                 title: `<?php
@@ -185,10 +147,6 @@ $output = shell_exec($cmd . " 2>&1");
                 exportOptions: {
                     columns: [1, 2, 3, 4, 5, 6, 7, 8]
                 },
-            }, {
-                text: "BULK UPDATE",
-                container: "#bulkUpdate",
-                className: "btn btn-outline-primary bulkUpdate-analysis"
             }],
             fnDrawCallback: function() {
                 $(".action-btn").on('click', loadModalCurrent)
@@ -260,61 +218,17 @@ $output = shell_exec($cmd . " 2>&1");
                 // { className: "min", "targets": [ 6 ] }
             ],
         });
-        $('.bulkUpdate-analysis').detach().appendTo('#bulkUpdate')
     }
     $("#select_all").click(function(e) {
         //   var row=$(this).closest('tr')
         if ($(this).is(":checked")) {
-            $("#dataTable-analysis tbody tr").addClass("selected table-secondary");
+            $("#dataTable-course tbody tr").addClass("selected table-secondary");
             $(".selectrow").attr("checked", true);
         } else {
             $(".selectrow").attr("checked", false);
-            $("#dataTable-analysis tbody tr").removeClass("selected table-secondary");
+            $("#dataTable-course tbody tr").removeClass("selected table-secondary");
         }
         //   row.toggleClass('selected table-secondary')
-    })
-
-    $("#bulkUpdateForm").submit(function(e) {
-        console.log("a")
-        e.preventDefault();
-        var update_rows = $("#dataTable-analysis").DataTable().rows('.selected').data();
-        var update_data = [];
-        for (var i = 0; i < update_rows.length; i++) {
-            update_data.push($(update_rows[i].cid).text());
-        }
-        var formData = $(this).serializeArray();
-        var actual_data = {}
-        actual_data['type'] = 'student'
-        actual_data['update_data'] = update_data;
-        for (data of formData) {
-            actual_data[data.name] = data.value;
-        }
-        actual_delete_data_json = JSON.stringify(actual_data);
-        $.ajax({
-            type: "POST",
-            url: "../ic_queries/multioperation_queries/update_multiple_sandbox_courses.php",
-            data: actual_delete_data_json,
-            success: function(data) {
-                if (!courseUpdated) {
-                    courseUpdated = true;
-                }
-                $("#next_btn").hide();
-                $("#reallocate").show();
-
-                $("#bulkUpdateModal").modal('hide');
-                $("#dataTable-analysis").DataTable().draw(false);
-            }
-        })
-    });
-
-    $("body").on("click", ".bulkUpdate-analysis", function() {
-        var update_rows = $("#dataTable-analysis").DataTable().rows('.selected').data();
-        console.log(update_rows);
-        if (update_rows.length > 0) {
-            $("#bulkUpdateModal").modal('show');
-        } else {
-            alert("select some rows");
-        }
     })
 
     function loadModalCurrent() {

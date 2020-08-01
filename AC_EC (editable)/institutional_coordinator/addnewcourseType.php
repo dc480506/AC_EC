@@ -103,8 +103,8 @@ include('../includes/header.php');
 
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" checked class="custom-control-input" id="edit_is_gradable" name="edit_is_gradable" value="">
-                                        <label class="custom-control-label" for="edit_is_gradable">Is Gradable</label>
+                                        <input type="checkbox" checked class="custom-control-input" id="is_gradable" name="is_gradable" value="">
+                                        <label class="custom-control-label" for="is_gradable">Is Gradable</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
                                         <input type="checkbox" checked class="custom-control-input" id="edit_is_closed_elective" name="edit_is_closed_elective" value="">
@@ -236,16 +236,20 @@ include('../includes/header.php');
     }
 
     function loadEditModal() {
-
+        console.log("abcd")
         var target_row = $(this).closest("tr");
         var aPos = $("#dataTable-coursetypes").dataTable().fnGetPosition(target_row.get(0));
         var courseTypeData = $('#dataTable-coursetypes').DataTable().row(aPos).data();
         $("#edit_course_type_form #courseTypeName").val(courseTypeData.name)
         $("#edit_course_type_form #courseTypeId").val(courseTypeData.course_type_id)
         $("#edit_course_type_form #program").val(courseTypeData.program);
+<<<<<<< HEAD
+        $("#edit_course_type_form #is_gradable").attr("checked", courseTypeData.is_gradable == "yes" ? true : false)
+=======
         console.log(courseTypeData.is_closed_elective)
         $("#edit_course_type_form #edit_is_gradable").attr("checked", courseTypeData.is_gradable == "yes" ? true : false)
         $("#edit_course_type_form #edit_is_closed_elective").attr("checked", courseTypeData.is_closed_elective == "yes" ? true : false)
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 
         $("#edit_course_type_form").submit(editCourseType);
         $('#editCourseType').modal("show");

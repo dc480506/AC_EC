@@ -119,32 +119,15 @@ try:
 
         except Exception as e:
             if "Duplicate entry" in str(e):
-                if argument[mapper['upload_constraint']] == "0":
-                    pass
-                elif argument[mapper['upload_constraint']] == "1":
-                    values = (rollno, fname, mname, lname,
-                              year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email)
-                    try:
-                        cursor.execute(update, values)
-                        updated_records_count += 1
-                    except Exception as e:
-                        print("error+" + e)
-                        sys.exit(0)
-                else:
-                    print("error+Email: "+email+" Rollno: " +
-                          str(int(rollno)) + " has duplicate entry.")
-                    sys.exit(0)
-
+                print("Email: "+email+" Rollno: " +
+                      str(int(rollno))+" has duplicate entry.")
             elif "foreign key constraint fails" in str(e):
-                print("error+Department id: "+str(int(dept)) +
+                print("Department id: "+str(int(dept)) +
                       " does not exist/(if present, wrong value) in the table.")
-                sys.exit(0)
-            else:
-                print(e)
-                sys.exit(0)
-
+            print(e)
+            sys.exit(0)
 except Exception as e:
-    print("error+", e)
+    print(str(e))
     sys.exit(0)
 # print("executed query")
 # commiting the query into db

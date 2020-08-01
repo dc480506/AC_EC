@@ -32,10 +32,82 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
         $result = mysqli_query($conn, "select academic_year from current_sem_info WHERE currently_active=1");
         $row = mysqli_fetch_assoc($result);
         $year = $row['academic_year'];
+<<<<<<< HEAD
+        $_SESSION['cid'] = $cid;
+        $_SESSION['sem'] = $sem;
+        $_SESSION['year'] = $year;
+<<<<<<< HEAD
+=======
+        $_SESSION['course_type_id'] = $course_type_id;
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
+        $_SESSION['active'] = 1;
+=======
     }
+>>>>>>> eea83ad88dd5a749d32ab60a12ab059108f28c61
 
 
 
+<<<<<<< HEAD
+        echo '
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="added_by"><b>Added by: </b></label>
+                    <small><span>' . $email_id . '</span></small>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="added_on"><b>Added on: </b></label>
+                    <small><span>' . $timestamp . '</span></small>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="syllabus"><b>Syllabus: </b></label>
+                   ' . $syllabus_field . '
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="similar_courses_info"><b>Similar Courses Info: </b></label>'
+            . $similar_courses . '
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="faculties_assigned"><b>Faculties assigned: </b></label>'
+            . $faculty_info . '
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+<<<<<<< HEAD
+                    <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
+                    <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+=======
+                    <a href="loadAdditionalInfo/additional_info_course_students.php">          
+                    <button ' . $role_restriction . ' type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
+                    </a>
+                </div>
+            </div>
+        ';
+    } else if ($data['type'] == 'upcoming') {
+
+        $_SESSION['cid'] = $cid;
+        $_SESSION['sem'] = $sem;
+        $_SESSION['year'] = $year;
+<<<<<<< HEAD
+=======
+        $_SESSION['course_type_id'] = $course_type_id;
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
+        $_SESSION['active'] = 0;
+        $sql = "SELECT timestamp,email_id,syllabus_path FROM course WHERE cid='$cid' AND sem='$sem' AND year='$year'  and course_type_id='$course_type_id' and program='$program'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $timestamp = date_format(date_create($row['timestamp']), 'd-M-Y h:i:s A');
+        $syllabus_link = $row['syllabus_path'];
+        $syllabus_field = ' <a href="ic_queries/download_syllabus.php?file=' . urlencode($syllabus_link) . '">Download</a>';
+        if ($syllabus_link == "") {
+            $syllabus_field = '<small><span>Syllabus not present</span></small>';
+        }
+        $email_id = $row['email_id'];
+        $sql = "(SELECT cname,oldcid,oldsem, name ,oldyear FROM course INNER JOIN course_similar_map INNER JOIN course_types as ct
+=======
     $_SESSION['cid'] = $cid;
     $_SESSION['sem'] = $sem;
     $_SESSION['year'] = $year;
@@ -56,6 +128,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
 
 
     $similarCoursesQuery = "(SELECT cname,oldcid,oldsem, name ,oldyear FROM course INNER JOIN course_similar_map INNER JOIN course_types as ct
+>>>>>>> eea83ad88dd5a749d32ab60a12ab059108f28c61
                 ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
                 UNION
                (SELECT cname,oldcid,oldsem, name ,oldyear FROM course_log INNER JOIN course_similar_map INNER JOIN course_types as ct
@@ -97,6 +170,81 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                 <label for="added_on"><b>Added on: </b></label>
                 <small><span>' . $timestamp . '</span></small>
             </div>
+<<<<<<< HEAD
+            <div class="form-row">
+                <div class="form-group col-md-6">
+<<<<<<< HEAD
+                    <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
+                    <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+=======
+                    <a href="loadAdditionalInfo/additional_info_course_students.php">          
+                    <button ' . $role_restriction . ' type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
+                    </a>
+                </div>
+            </div>
+        ';
+    } else if ($data['type'] == 'previous') {
+
+        $_SESSION['cid'] = $cid;
+        $_SESSION['sem'] = $sem;
+        $_SESSION['year'] = $year;
+<<<<<<< HEAD
+=======
+        $_SESSION['course_type_id'] = $course_type_id;
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
+        $_SESSION['active'] = 2;
+        $sql = "SELECT timestamp,email_id,syllabus_path FROM course_log WHERE cid='$cid' AND sem='$sem' AND year='$year' and course_type_id='$course_type_id'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $timestamp = date_format(date_create($row['timestamp']), 'd-M-Y h:i:s A');
+        $email_id = $row['email_id'];
+        $syllabus_link = $row['syllabus_path'];
+        $syllabus_field = ' <a href="ic_queries/download_syllabus.php?file=' . urlencode($syllabus_link) . '">Download</a>';
+        if ($syllabus_link == "") {
+            $syllabus_field = '<small><span>Syllabus not present</span></small>';
+        }
+        $sql = "SELECT cname,oldcid,oldsem,oldyear,name FROM course_log INNER JOIN course_similar_map INNER JOIN course_types as ct
+              ON newcid='$cid' AND newsem='$sem' AND newyear='$year' and new_course_type_id='$course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id
+              ";
+        $result = mysqli_query($conn, $sql);
+        $similar_courses = "";
+        if (mysqli_num_rows($result) == 0) {
+            $similar_courses = "<p><i><small>No similar courses found</small></i></p>";
+        } else {
+            $i = 1;
+            while ($row = mysqli_fetch_assoc($result)) {
+                $similar_courses .= "<p><small>" . $i . ") " . $row['cname'] . " (Course ID: " . $row['oldcid'] . " , Sem: " . $row['oldsem'] . " , Year: " . $row['oldyear'] . " , Type: " . $row['name'] . ")</small></p>";
+                $i++;
+            }
+        }
+        $sql = "SELECT fname,mname,lname,faculty_code FROM faculty_course_alloted_log fa INNER JOIN faculty f ON fa.cid='$cid' AND fa.sem='$sem' AND fa.year='$year' and fa.course_type_id='$course_type_id' AND fa.email_id=f.email_id";
+        $result = mysqli_query($conn, $sql);
+        $faculty_info = "";
+        if (mysqli_num_rows($result) == 0) {
+            $faculty_info = "<p><i><small>No faculties found for this course</small></i></p>";
+        } else {
+            $i = 1;
+            while ($row = mysqli_fetch_assoc($result)) {
+                $faculty_info .= "<p><small>" . $i . ") " . $row['fname'] . " " . $row['mname'] . " " . $row['lname'] . " (" . $row['faculty_code'] . ")</small></p>";
+                $i++;
+            }
+        }
+        echo '
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="added_by"><b>Added by: </b></label>
+                    <small><span>' . $email_id . '</span></small>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="added_on"><b>Added on: </b></label>
+                    <small><span>' . $timestamp . '</span></small>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="syllabus"><b>Syllabus: </b></label>
+                    ' . $syllabus_field . '
+                </div>
+=======
             <div class="form-group col-md-4">
                 <label for="syllabus"><b>Syllabus: </b></label>
                 ' . $syllabus_field . '
@@ -106,17 +254,32 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
             <div class="form-group col-md-6">
                 <label for="similar_courses_info"><b>Similar Courses Info: </b></label>'
         . $similar_courses . '
+>>>>>>> eea83ad88dd5a749d32ab60a12ab059108f28c61
             </div>
             <div class="form-group col-md-6">
                 <label for="faculties_assigned"><b>Faculties assigned: </b></label>'
         . $faculty_info . '
             </div>
+<<<<<<< HEAD
+            <div class="form-row">
+                <div class="form-group col-md-6">
+<<<<<<< HEAD
+                    <a href="loadAdditionalInfo/additional_info_audit_course_students.php">          
+                    <button type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+=======
+                    <a href="loadAdditionalInfo/additional_info_course_students.php">          
+                    <button ' . $role_restriction . ' type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
+>>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
+                    </a>
+                </div>
+=======
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <a href="loadAdditionalInfo/additional_info_course_students.php">          
                 <button ' . $role_restriction . ' type="submit" class="btn btn-primary"  role="button" >View Enrolled Students</button>    
                 </a>
+>>>>>>> eea83ad88dd5a749d32ab60a12ab059108f28c61
             </div>
         </div>
     ';
