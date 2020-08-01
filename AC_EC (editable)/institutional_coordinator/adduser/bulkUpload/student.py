@@ -163,16 +163,12 @@ try:
                     sys.exit(0)
 
             elif "foreign key constraint fails" in str(e):
-                print("error+Department id: "+str(int(dept)) +
+                print("Department id: "+str(int(dept)) +
                       " does not exist/(if present, wrong value) in the table.")
-                sys.exit(0)
-            else:
-                print(e)
-                print(cursor._last_executed)
-                sys.exit(0)
-
+            print(e)
+            sys.exit(0)
 except Exception as e:
-    print("error+", e)
+    print(str(e))
     sys.exit(0)
 # print("executed query")
 # commiting the query into db

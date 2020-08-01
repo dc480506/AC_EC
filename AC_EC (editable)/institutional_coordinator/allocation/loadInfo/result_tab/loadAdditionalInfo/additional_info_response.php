@@ -3,7 +3,7 @@
     include_once('../../../../../config.php');
     $data = json_decode(file_get_contents("php://input"),true); 
     $email_id=$data['email_id'];
-    $sql_course="SELECT cname,cid FROM course WHERE sem='{$_SESSION['sem']}' AND year='{$_SESSION['year']}'";
+    $sql_course="SELECT cname,cid FROM {$_SESSION['type']}_course WHERE sem='{$_SESSION['sem']}' AND year='{$_SESSION['year']}'";
     $result=mysqli_query($conn,$sql_course);
     $courses=array();
     while($row=mysqli_fetch_assoc($result)){
@@ -35,3 +35,4 @@
                 '.$preference_list.'
             </div>
         </div>';
+?>

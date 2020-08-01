@@ -1,6 +1,7 @@
 <?php
 session_start();
-if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
+$allowed_roles = array("inst_coor", "faculty_co", "HOD");
+if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
     include_once('../../../config.php');
     include_once("../../../Logger/StudentLogger.php");
     $logger = StudentLogger::getLogger();

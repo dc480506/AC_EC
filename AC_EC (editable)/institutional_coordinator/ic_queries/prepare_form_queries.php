@@ -51,7 +51,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
             $sql_course_type_map = "INSERT INTO form_course_category_map values " . implode(",", $insert_course_types);
 
             $newsql = "INSERT INTO student_form(`form_id`,`email_id`,`dept_id`)
-                       SELECT '$form_id',email_id, dept_id FROM student WHERE current_sem='$curr_sem' and program='$program' and dept_id in  (" . implode(",", $dept_applicable) . ");";
+                       SELECT '$form_id',email_id, dept_id FROM student WHERE current_sem='$curr_sem' and dept_id in  (" . implode(",", $dept_applicable) . ");";
 
 
             $hidesql = "INSERT INTO hide_student_course (`email_id`,`cid`,`course_type_id`,`sem`,`year`,`cname`) 

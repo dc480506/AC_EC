@@ -2,7 +2,6 @@ import pymysql
 import xlrd
 import sys
 import re
-import json
 from datetime import timedelta, datetime
 mapper = {
     "file_location": 0,
@@ -13,7 +12,7 @@ mapper = {
     "sem": 5,
     "year": 6,
     "form_id": 7,
-    "upload_constraint": 8,
+    "no": 8,
     "status": 9,
     "npref": 10,
     "rollno": 11,
@@ -28,7 +27,6 @@ no_of_valid_preferences = argument[mapper['npref']]
 header, choice = [], []
 header_id = {}
 preferences = ''
-update_preferences = ''
 percent = ''
 pm = "PM GMT+5:30"
 am = "AM GMT+5:30"
@@ -87,27 +85,17 @@ except Exception as e:
 allocate_status = argument[mapper['status']]
 sem = argument[mapper['sem']]
 year = argument[mapper['year']]
-upload_constraint = argument[mapper['upload_constraint']]
-for z in range(1, int(no_of_valid_preferences)+1):
+no = argument[mapper['no']]
+for z in range(1, int(no_of_valid_preferences)):
     preferences = preferences+'pref'+str(z)+','
-    update_preferences = update_preferences + 'pref'+str(z)+"=%s,"
-    percent = percent + '%s,'
-preferences = preferences[:-1]
-percent = percent[:-1]
-update_preferences = update_preferences[:-1]
-
-
+    percent = percent+'%s,'
+preferences = preferences+'pref'+str(no_of_valid_preferences)
+percent = percent+'%s'
 form_id = str(argument[mapper['form_id']])
 update_student_form = """UPDATE student_form SET form_filled=1, timestamp=%s WHERE email_id=%s AND form_id=%s"""
 insertform = """INSERT into student_preferences(email_id,form_id,sem,year,rollno,timestamp,allocate_status,no_of_valid_preferences,""" + \
-    preferences + """) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,""" + percent + """);"""
-updateform = 'update student_preferences set sem=%s,year=%s,rollno=%s,timestamp=%s,allocate_status=%s,no_of_valid_preferences=%s,' + \
-    update_preferences+' where email_id=%s and form_id=%s'
+    preferences+""") VALUES(%s,%s,%s,%s,%s,%s,%s,%s,"""+percent+""");"""
 # print(insertform)
-
-inserted_records_count = 0
-updated_records_count = 0
-invalid_students = []
 try:
     for x in range(1, data.nrows):
         prefer = []
@@ -155,49 +143,22 @@ try:
         # print(values)
         cursor.execute(update_student_form, values)
         try:
-            if upload_constraint == "2":
-                values2 = [sem, year, rollno, time,
-                           allocate_status, no_of_valid_preferences]
-                values2.extend(prefer)
-                values2.extend([email, form_id])
-                updated_records_count += cursor.execute(updateform, values2)
-            else:
-                cursor.execute(insertform, values2)
-                inserted_records_count += 1
+            cursor.execute(insertform, values2)
         except Exception as e:
-
             if "foreign key constraint fails" in str(e):
-                invalid_students.append(email)
-                # print("error+Email: "+email+" Rollno: "+str(int(rollno)) +
-                #       " is not/(if present, wrong value) in student table.")
-                # sys.exit(0)
+                print("Email: "+email+" Rollno: "+str(int(rollno)) +
+                      " is not/(if present, wrong value) in student table.")
             elif "Duplicate entry" in str(e):
-                if upload_constraint == "0":
-                    pass
-                elif upload_constraint == "1":
-                    values2 = [sem, year, rollno, time,
-                               allocate_status, no_of_valid_preferences]
-                    values2.extend(prefer)
-                    values2.extend([email, form_id])
-                    # print(updateform)
-                    # print('\n', values2)
-                    # sys.exit(0)
-                    updated_records_count += cursor.execute(
-                        updateform, values2)
-                else:
-                    print(upload_constraint)
-                    print("error+Email: "+email+" Rollno: " +
-                          str(int(rollno)) + " has a duplicate entry.")
-                    sys.exit(0)
-            else:
-                print("error+", e)
-                sys.exit(0)
+                print("Email: "+email+" Rollno: " +
+                      str(int(rollno)) + " has a duplicate entry.")
+            print(e)
+            print("The upload was unsuccessful.")
+            sys.exit(0)
 except Exception as e:
-    print("error+", str(e))
+    print(str(e))
     sys.exit(0)
 # commit the query into db
 connection.commit()
-print('Successful+{"insertedRecords":%d,"updatedRecords":%d,"totalRecords": %d,"invalidEntries":%s}' %
-      (inserted_records_count, updated_records_count, data.nrows-1, json.dumps(invalid_students)))
+print("Successful")
 # close the connection
 connection.close()
