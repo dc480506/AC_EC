@@ -2,7 +2,9 @@
 include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
-include("../")
+include("../Logger/FacultyLogger.php");
+$logger = FacultyLogger::getLogger();
+$logger->facultyRecordsViewed($_SESSION['email'], "faculty dashboard");
 ?>
 
 <?php include('sidebar.php'); ?>

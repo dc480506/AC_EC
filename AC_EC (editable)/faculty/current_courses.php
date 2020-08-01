@@ -2,6 +2,9 @@
 include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
+include("../Logger/FacultyLogger.php");
+$logger = FacultyLogger::getLogger();
+$logger->facultyRecordsViewed($_SESSION['email'], "faculty current courses");
 ?>
 
 <?php include('sidebar.php'); ?>
@@ -249,110 +252,106 @@ include('../includes/header.php');
       </div>
       <div class="card shadow mb-4">
         <div class="card-body">
-            <table class="table table-bordered table-responsive" id="dataTable" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>Roll No. </th>
-                  <th>First Name</th>
-                  <th>Middle Name</th>
-                  <th>Last Name</th>
-                  <th>Year</th>
-                  <th>Email Address</th>
-                  <th>Semester</th>
-                  <th>Department</th>
-                  <th>Program </th>
-                  <th>Course Type </th>
-                  <th>Course Name</th>
-                  <th>Course ID</th>
-                  <th>Attendance</th>
-                  <th>Marks</th>
-                  <th>Completion Status </th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>Roll No. </th>
-                  <th>First Name</th>
-                  <th>Middle Name</th>
-                  <th>Last Name</th>
-                  <th>Year</th>
-                  <th>Email Address</th>
-                  <th>Semester</th>
-                  <th>Department</th>
-                  <th>Program</th>
-                  <th>Course Type </th>
-                  <th>Course Name</th>
-                  <th>Course ID</th>
-                  <th>Attendance</th>
-                  <th>Marks</th>
-                  <th>Completion Status </th>
-                  <th>Action</th>
-                </tr>
-              </tfoot>
-              <tbody>
-                <?php
-                $email = $_SESSION['email'];
-                $query = "SELECT faculty_course_alloted.cid,course.isgradable , faculty_course_alloted.course_type_id, course_types.name FROM faculty_course_alloted,course_types,course WHERE faculty_course_alloted.cid=course.cid and faculty_course_alloted.email_id = '$email' and faculty_course_alloted.course_type_id=course_types.id";
-                if ($result = mysqli_query($conn, $query)) {
+          <table class="table table-bordered table-responsive" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Roll No. </th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>Year</th>
+                <th>Email Address</th>
+                <th>Semester</th>
+                <th>Department</th>
+                <th>Program </th>
+                <th>Course Type </th>
+                <th>Course Name</th>
+                <th>Course ID</th>
+                <th>Attendance</th>
+                <th>Marks</th>
+                <th>Completion Status </th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Roll No. </th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>Year</th>
+                <th>Email Address</th>
+                <th>Semester</th>
+                <th>Department</th>
+                <th>Program</th>
+                <th>Course Type </th>
+                <th>Course Name</th>
+                <th>Course ID</th>
+                <th>Attendance</th>
+                <th>Marks</th>
+                <th>Completion Status </th>
+                <th>Action</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <?php
+              $email = $_SESSION['email'];
+              $query = "SELECT faculty_course_alloted.cid,course.isgradable , faculty_course_alloted.course_type_id, course_types.name FROM faculty_course_alloted,course_types,course WHERE faculty_course_alloted.cid=course.cid and faculty_course_alloted.email_id = '$email' and faculty_course_alloted.course_type_id=course_types.id";
+              if ($result = mysqli_query($conn, $query)) {
 
-                  while ($row = mysqli_fetch_array($result)) {
-                    $cid = $row['cid'];
-                    $ctype=$row['name'];
-                    $isgradale=$row['isgradable'];
+                while ($row = mysqli_fetch_array($result)) {
+                  $cid = $row['cid'];
+                  $ctype = $row['name'];
+                  $isgradale = $row['isgradable'];
 
 
-                    $query1 = "SELECT course.cname, course_applicable_dept.dept_id FROM course,course_applicable_dept WHERE 
+                  $query1 = "SELECT course.cname, course_applicable_dept.dept_id FROM course,course_applicable_dept WHERE 
                     course.cid = '$cid' and course_applicable_dept.cid='$cid'";
-                    $result1 = mysqli_query($conn, $query1);
-                    $row1 = mysqli_fetch_assoc($result1);
-                    $cname = $row1['cname'];
-                    $dept_id = $row1['dept_id'];
+                  $result1 = mysqli_query($conn, $query1);
+                  $row1 = mysqli_fetch_assoc($result1);
+                  $cname = $row1['cname'];
+                  $dept_id = $row1['dept_id'];
 
-                    $query2 = "SELECT email_id, sem, year FROM student_course_alloted WHERE cid = '$cid'";
-                    if ($result2 = mysqli_query($conn, $query2)) {
+                  $query2 = "SELECT email_id, sem, year FROM student_course_alloted WHERE cid = '$cid'";
+                  if ($result2 = mysqli_query($conn, $query2)) {
 
-                      while ($row2 = mysqli_fetch_array($result2)) {
-                        $email_id = $row2['email_id'];
-                        $sem = $row2['sem'];
-                        $year = $row2['year'];
-                        
-                        $query3 = "SELECT rollno, fname, mname, lname, dept_id FROM student WHERE email_id = '$email_id'";
-                        $result3 = mysqli_query($conn, $query3);
-                        $row3 = mysqli_fetch_assoc($result3);
-                        $rollno = $row3['rollno'];
-                        $fname = $row3['fname'];
-                        $mname = $row3['mname'];
-                        $lname = $row3['lname'];
+                    while ($row2 = mysqli_fetch_array($result2)) {
+                      $email_id = $row2['email_id'];
+                      $sem = $row2['sem'];
+                      $year = $row2['year'];
 
-                        if($isgradable==1){
-                          $subquery= "SELECT marks, completion_status, student_attendance from student_courses_grade where  email_id= ' $email_id' and cid='$cid ' ";
-                          $sub_result = mysqli_query($conn,$subquery);  
-                          $sub_row=mysqli_fetch_assoc($sub_result);
+                      $query3 = "SELECT rollno, fname, mname, lname, dept_id FROM student WHERE email_id = '$email_id'";
+                      $result3 = mysqli_query($conn, $query3);
+                      $row3 = mysqli_fetch_assoc($result3);
+                      $rollno = $row3['rollno'];
+                      $fname = $row3['fname'];
+                      $mname = $row3['mname'];
+                      $lname = $row3['lname'];
 
-                          $marks= $sub_row['marks'];
-                            $comp_stat=$sub_row['completion_status'];
-                            $attendance=$sub_row['student_attendance'];
-                          
-                        }
+                      if ($isgradable == 1) {
+                        $subquery = "SELECT marks, completion_status, student_attendance from student_courses_grade where  email_id= ' $email_id' and cid='$cid ' ";
+                        $sub_result = mysqli_query($conn, $subquery);
+                        $sub_row = mysqli_fetch_assoc($sub_result);
 
-                        else{
-                          $subquery= "SELECT completion_status, student_attendance from student_courses_nongrade where  email_id= ' $email_id' and cid='$cid ' ";
-                          $sub_result = mysqli_query($conn,$subquery);
-                            $sub_row=mysqli_fetch_assoc($sub_result);
+                        $marks = $sub_row['marks'];
+                        $comp_stat = $sub_row['completion_status'];
+                        $attendance = $sub_row['student_attendance'];
+                      } else {
+                        $subquery = "SELECT completion_status, student_attendance from student_courses_nongrade where  email_id= ' $email_id' and cid='$cid ' ";
+                        $sub_result = mysqli_query($conn, $subquery);
+                        $sub_row = mysqli_fetch_assoc($sub_result);
 
-                            $marks= 'NA';
-                            $comp_stat=$sub_row['completion_status'];
-                            $attendance=$sub_row['student_attendance'];
-                          
-                        }
+                        $marks = 'NA';
+                        $comp_stat = $sub_row['completion_status'];
+                        $attendance = $sub_row['student_attendance'];
+                      }
 
-                        $query4 = "SELECT dept_name FROM department WHERE dept_id = '$dept_id'";
-                        $result4 = mysqli_query($conn, $query4);
-                        $row4 = mysqli_fetch_assoc($result4);
-                        $dept_name = $row4['dept_name'];
+                      $query4 = "SELECT dept_name FROM department WHERE dept_id = '$dept_id'";
+                      $result4 = mysqli_query($conn, $query4);
+                      $row4 = mysqli_fetch_assoc($result4);
+                      $dept_name = $row4['dept_name'];
 
-                        echo '
+                      echo '
                                   <tr>
                                     <td>' . $rollno . '</td>
                                     <td>' . $fname . '</td>
@@ -481,14 +480,14 @@ include('../includes/header.php');
                                     </td>
                                   </tr>
                                   ';
-                      }
                     }
                   }
                 }
-                ?>
-              </tbody>
-            </table>
-          
+              }
+              ?>
+            </tbody>
+          </table>
+
         </div>
       </div>
     </div>
