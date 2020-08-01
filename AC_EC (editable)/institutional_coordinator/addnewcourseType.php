@@ -243,13 +243,9 @@ include('../includes/header.php');
         $("#edit_course_type_form #courseTypeName").val(courseTypeData.name)
         $("#edit_course_type_form #courseTypeId").val(courseTypeData.course_type_id)
         $("#edit_course_type_form #program").val(courseTypeData.program);
-<<<<<<< HEAD
-        $("#edit_course_type_form #is_gradable").attr("checked", courseTypeData.is_gradable == "yes" ? true : false)
-=======
         console.log(courseTypeData.is_closed_elective)
         $("#edit_course_type_form #edit_is_gradable").attr("checked", courseTypeData.is_gradable == "yes" ? true : false)
         $("#edit_course_type_form #edit_is_closed_elective").attr("checked", courseTypeData.is_closed_elective == "yes" ? true : false)
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 
         $("#edit_course_type_form").submit(editCourseType);
         $('#editCourseType').modal("show");

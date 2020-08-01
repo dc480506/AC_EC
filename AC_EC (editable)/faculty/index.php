@@ -2,6 +2,7 @@
 include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
+include("../")
 ?>
 
 <?php include('sidebar.php'); ?>
@@ -18,10 +19,10 @@ include('../includes/header.php');
                     <?php
                     $email = $_SESSION['email'];
                     $fname = 'fname';
-                    $mname='mname';
+                    $mname = 'mname';
                     $lname = 'lname';
-                    $post= 'prof';
-                    $emp_id='1';
+                    $post = 'prof';
+                    $emp_id = '1';
                     $department = 'department';
                     $mobile = '9876543201';
                     $image = "../vendor/img/person1.jpg";
@@ -31,9 +32,9 @@ include('../includes/header.php');
                         if ($rowcount == 1) {
                             $row = mysqli_fetch_assoc($result);
                             $fname = $row['fname'];
-                            $mname= $row['mname'];
-                            $emp_id= $row['employee_id'];
-                            $post=$row['post'];
+                            $mname = $row['mname'];
+                            $emp_id = $row['employee_id'];
+                            $post = $row['post'];
                             $lname = $row['lname'];
                             $dept_id = $row['dept_id'];
                             $query = "SELECT dept_name FROM department WHERE dept_id = '$dept_id'";
@@ -50,7 +51,7 @@ include('../includes/header.php');
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo $fname . ' ' . $mname.' ' . $lname; ?></p>
+                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo $fname . ' ' . $mname . ' ' . $lname; ?></p>
                                     <p class="text-dark"> <span><b>ID : </b></span><?php echo $emp_id; ?> </p>
                                     <p class="text-dark"> <span><b>POST : </b></span><?php echo $post; ?> </p>
                                 </div>
@@ -106,9 +107,9 @@ include('../includes/header.php');
                             </tfoot>
                             <tbody>
 
-                            <?php 
-                            
-                                $sql="SELECT fca.cid,fca.course_type_id,fca.sem,fca.year,ctype.name,course.cname from faculty_course_alloted as fca, course, course_types as ctype where fca.cid=course.cid and fca.course_type_id=ctype.id and fca.email_id='$email'";
+                                <?php
+
+                                $sql = "SELECT fca.cid,fca.course_type_id,fca.sem,fca.year,ctype.name,course.cname from faculty_course_alloted as fca, course, course_types as ctype where fca.cid=course.cid and fca.course_type_id=ctype.id and fca.email_id='$email'";
                                 $result = mysqli_query($conn, $sql);
                                 $count = 0;
 
@@ -124,10 +125,10 @@ include('../includes/header.php');
 
                                         <td><?php echo $row['year']; ?></td>
                                     </tr>
-                            
-                               
 
-                            <!-- select fca.cid,fca.course_type_id,fca.sem,fca.year,ctype.name,course.cname from faculty_course_alloted as fca, course, course_types as ctype where fca.cid=course.cid and fca.course_type_id=ctype.id and fca.email_id="faculty@somaiya.edu" -->
+
+
+                                    <!-- select fca.cid,fca.course_type_id,fca.sem,fca.year,ctype.name,course.cname from faculty_course_alloted as fca, course, course_types as ctype where fca.cid=course.cid and fca.course_type_id=ctype.id and fca.email_id="faculty@somaiya.edu" -->
                                     <td>
 
                                         <!-- Button trigger modal -->
@@ -271,7 +272,7 @@ include('../includes/header.php');
                                             </div>
                                         </div>
                                     </td>
-                                    <?php } ?> 
+                                <?php } ?>
                                 </tr>
                             </tbody>
                         </table>
