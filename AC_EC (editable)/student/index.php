@@ -12,19 +12,6 @@ include('../includes/header.php');
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card mt-2">
-<<<<<<< HEAD
-             <?php 
-                // inserting the my profile card
-                $sql="SELECT s.fname,s.mname,s.lname,s.email_id,d.dept_name,s.rollno,s.year_of_admission,s.current_sem FROM student AS s,department AS d WHERE s.email_id='{$_SESSION['email']}' AND s.dept_id=d.dept_id";
-                $result= mysqli_query($conn,$sql);
-                $row= mysqli_fetch_array($result,MYSQLI_ASSOC);
-                $count= mysqli_num_rows($result);
-                $_SESSION['sem']=$row['current_sem'];
-                $_SESSION['rollno']=$row['rollno'];
-                // $_SESSION['year']=$row['year'];
-                if($count==1)
-                {
-=======
             <?php
             // inserting the my profile card
 
@@ -66,7 +53,6 @@ include('../includes/header.php');
             // $_SESSION['year']=$row['year'];
             // if($count==1)
             // {
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
             ?>
             <div class="card">
                 <div class="card-body">

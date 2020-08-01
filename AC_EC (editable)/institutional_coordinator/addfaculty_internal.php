@@ -240,11 +240,7 @@ include('../includes/header.php');
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="eid"><b>Employee ID</b></label>
-<<<<<<< HEAD
                                         <input type="text" class="form-control" id="eid" name="eid" placeholder="Employee Id">
-=======
-                                        <input required type="text" class="form-control" name="eid" placeholder="Employee Id">
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
                                         <!-- <span id="error_employee_id" class="text-danger"></span> -->
                                     </div>
                                 </div>
@@ -274,9 +270,6 @@ include('../includes/header.php');
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="postadd"><b>Post</b></label>
-<<<<<<< HEAD
-                                        <input type="text" class="form-control" id="post" name="post" placeholder="post">
-=======
                                         <input required type="text" class="form-control" name="post" placeholder="post">
                                     </div>
                                 </div>
@@ -301,7 +294,6 @@ include('../includes/header.php');
                                                 } ?>
                                             </select>
                                         </div>
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
                                     </div>
                                 </div>
 
@@ -374,8 +366,6 @@ include('../includes/header.php');
                                 ?>
                             </div>
 
-<<<<<<< HEAD
-=======
                             <div class="form-check">
                                 <label for="">Role</label>
                                 <br>
@@ -397,7 +387,6 @@ include('../includes/header.php');
                                 ?>
                             </div>
 
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-primary" id="clear-filters" name="clear">clear filters</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
@@ -459,10 +448,6 @@ include('../includes/header.php');
             type: 'POST',
             data: formData,
             success: function(data) {
-<<<<<<< HEAD
-                if ($.trim(data) == "Successful") {
-                    $("#upload_internal").text("Uploaded Successfully")
-=======
 
                 let [status, response] = $.trim(data).split("+");
                 console.log(status)
@@ -480,7 +465,6 @@ include('../includes/header.php');
 
                         alert("inserted : " + resData.insertedRecords + "\nupdated : " + resData.updatedRecords + "\nno Operation : " + (resData.totalRecords - (resData.updatedRecords + resData.insertedRecords)))
                     }
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
                     loadCurrent();
                 } else {
                     $("#upload_internal").text("Upload Failed")
@@ -777,8 +761,8 @@ include('../includes/header.php');
             data['faculty_code'] = row.data()['faculty_code'];
             console.log(row.data());
             data['type'] = 'faculty';
-            data['email_id']=row.data()['email_id'];
-            
+            data['email_id'] = row.data()['email_id'];
+
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({

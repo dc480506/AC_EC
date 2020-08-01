@@ -17,21 +17,13 @@ $error = false;
 // die($_SESSION['pref_student_alloted_table']);
 
 $zipPath = "";
-<<<<<<< HEAD
-
-=======
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 if (isset($_REQUEST['path'])) {
     $zipPath = $base_dir . $_REQUEST['path'];
 } else {
     $args = '["' . $_SESSION['sem'] . '","' . $_SESSION['year'] . '","' . $_SESSION['student_pref'] . '","' . $_SESSION['student_course_table'] . '","' . $_SESSION['course_allocate_info'] . '","' . $_SESSION['course_table'] . '","' . $_SESSION['pref_percent_table'] . '","' . $_SESSION['pref_student_alloted_table'] . '","' . $_SESSION['course_app_dept_table'] . '","' . $_SESSION['no_of_preferences'] . '","' . $servername . '","' . $username . '","' . $password . '","' . $dbname . '","' . $_SESSION['program'] . '","' . $_SESSION['form_id'] . '","' . $base_dir . ' "]';
     $cmd = 'python ./result_gen.py ' . $args;
     $outputs = explode("+", shell_exec($cmd . " 2>&1"));
-<<<<<<< HEAD
-    // echo $output;
-=======
     // echo json_encode($outputs);
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 
     // echo "<h1>$outputs[0]</h1>";
     if ($outputs[0] == "done") {
@@ -46,7 +38,6 @@ if (isset($_REQUEST['path'])) {
         EmailQueue::getInstance()->sendCourseAllotmentEmailToStudents();
     } else {
         $error = true;
-        
     }
 }
 if (!$error) {
@@ -56,13 +47,9 @@ if (!$error) {
     <br>
     <h6>Click on Download to get the allocation reports.</h6>
     
-<<<<<<< HEAD
-    <a href="download_reports.php?path=' . urlencode(substr($zipPath, strlen($base_dir))) . '" class=" btn btn-primary align-center" style="background-color: #28a745;border-color:#28a745">Download Reports</a>
-=======
     
     <a href="download_reports.php?path=' . urlencode(substr($zipPath, strlen($base_dir))) . '" class=" btn btn-primary align-center" style="background-color: #28a745;border-color:#28a745">Download Reports</a>
     <a href="allocation_results.php" class=" btn btn-primary align-center mt-2" style="background-color: #28a745;border-color:#28a745">View Results</a>
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
     <a disabled href="../../index.php" class="btn btn-link text-primary"><u>Go back to portal</u></a>
     
     </div>';

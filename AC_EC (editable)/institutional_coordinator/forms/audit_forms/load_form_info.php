@@ -30,11 +30,7 @@ if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
 }
 
 ## Total number of records without filtering
-<<<<<<< HEAD
-$sel = mysqli_query($conn, "select count(*) as totalcount from form WHERE form_type='audit'");
-=======
 $sel = mysqli_query($conn, "select count(*) as totalcount from form f $role_restriction[0]  where $role_restriction[1]");
->>>>>>> dc92e723bb853cecd634325384b23c64a55b8156
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['totalcount'];
 

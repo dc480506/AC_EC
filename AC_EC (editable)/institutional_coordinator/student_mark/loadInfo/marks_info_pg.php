@@ -52,7 +52,7 @@ if ($_SESSION['role'] == 'faculty_co' || $_SESSION['role'] == 'HOD') {
 
 
 ## Total number of records without filtering
-$query = "select count(*) as totalcount from student_marks s where program='PG' $role_restriction";
+$query = "select count(*) as totalcount from student_marks where program='PG' ";
 $sel = mysqli_query($conn, $query);
 // echo $query;
 $records = mysqli_fetch_assoc($sel);
