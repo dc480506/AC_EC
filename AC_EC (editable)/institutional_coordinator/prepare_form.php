@@ -39,6 +39,21 @@ include('../includes/header.php');
         </div>
         <div class="card-body">
             <div class="row align-items-center">
+                <div class="col">
+                    <h4 class="font-weight-bold text-primary mb-0">Form Records</h4>
+                    <br>
+                </div>
+                <div class="col text-right" id="delete_selected_response_div">
+                    <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
+                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Form(s)
+                    </button>
+                </div>
+                <div class="col text-right">
+                    <button id="create-form-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createForm">
+                        <i class="fas fa-plus"></i> Create Form
+                    </button>
+                </div>
+
                 <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="createForm" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -209,7 +224,12 @@ include('../includes/header.php');
                 <table class="table table-bordered" id="dataTable-form" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-
+                            <th>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="select_all_current_page">
+                                    <label class="custom-control-label" for="select_all_current_page"></label>
+                                </div>
+                            </th>
                             <th>Form ID</th>
                             <th>Floating Sem</th>
                             <th>Year</th>
@@ -229,7 +249,7 @@ include('../includes/header.php');
                     </thead>
                     <tfoot>
                         <tr>
-
+                            <th></th>
                             <th>Form ID</th>
                             <th>Floating Sem</th>
                             <th>Year</th>
@@ -283,12 +303,11 @@ include('../includes/header.php');
 
         }
     })
-
-    function onCreateFormClick() {
+    $("#create-form-button").click(function() {
         $('#create-form #course_type_id').attr('multiple', false);
         $("#multi-course").attr('checked', false);
         $("#multi-course-info").hide();
-    }
+    })
 
     $("#delete_selected_response_btn").click(function(e) {
         alert("You have selected " + $("#dataTable-form tbody tr.selected").length + " record(s) for deletion");
@@ -435,16 +454,6 @@ include('../includes/header.php');
             destroy: true,
             serverMethod: 'post',
             aaSorting: [],
-            autoWidth: false,
-            dom: '<"d-flex justify-content-between"Bl>tip',
-            buttons: [{
-
-                title: "create-from",
-                text: '<button id="create-form-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createForm"> <i class = "fas fa-plus" > </i> Create Form </button>',
-                action: function(e, dt, node, config) {
-                    onCreateFormClick();
-                }
-            }],
             ajax: {
                 'url': 'forms/audit_forms/load_form_info.php'
             },
@@ -467,6 +476,9 @@ include('../includes/header.php');
                 })
             },
             columns: [{
+                    data: 'select-cbox'
+                },
+                {
                     data: 'form_id'
                 },
                 {
@@ -513,14 +525,22 @@ include('../includes/header.php');
                 },
             ],
             columnDefs: [{
-                    className: "form_id",
-                    "targets": [0],
-                    visible: false,
+                    targets: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // column index (start from 0)
+                    orderable: false, // set orderable false for selected columns
                 },
                 {
-                    targets: [0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-                    orderable: false
-                }
+                    className: "selectbox_current_td",
+                    targets: [0]
+                },
+                {
+                    className: "cname",
+                    "targets": [2]
+                },
+                {
+                    className: "form_id",
+                    "targets": [1],
+                    visible: false,
+                },
                 // { className: "cid", "targets": [ 1 ] },
                 // { className: "sem", "targets": [ 2 ] },
                 // { className: "dept_name", "targets": [ 3 ] },

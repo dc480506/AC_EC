@@ -38,7 +38,6 @@ if (isset($_REQUEST['path'])) {
         EmailQueue::getInstance()->sendCourseAllotmentEmailToStudents();
     } else {
         $error = true;
-        
     }
 }
 if (!$error) {

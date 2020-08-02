@@ -22,7 +22,7 @@ include('../includes/header.php');
             </div>
         </div>
         <div class="card-body">
-            <form action="courses.php" method="POST" id="courseTypesForm">
+            <form action="courses.php" method="GET" id="courseTypesForm">
                 <div class="form-group">
                     <h5><label for="FormControlSelect1">Select Course:</label></h5>
                     <input type="text" name="program" hidden value="<?php echo $program; ?>" />
@@ -42,7 +42,7 @@ include('../includes/header.php');
                 </div>
                 <div class="form-group row">
                     <div class="col-12 col-sm-2 offset-sm-5">
-                        <button type="submit" class="btn btn-primary btn-block px-2" name="submit"> Submit </button>
+                        <button type="submit" class="btn btn-primary btn-block px-2"> Submit </button>
                     </div>
                 </div>
             </form>

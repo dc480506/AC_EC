@@ -1,7 +1,8 @@
 <?php
 // echo 'Hi';
 session_start();
-if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
+$allowed_roles = array("inst_coor" , "faculty_co" , "HOD");
+if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
   // echo 'Hi';
   include_once('../../../config.php');
   $data = json_decode(file_get_contents("php://input"), true);
@@ -77,6 +78,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
   }
   echo '</select>
 <input type="hidden" class="form-control" placeholder="Semester" name="semold" value="' . $sem . '">
+
 <input type="hidden" class="form-control" placeholder="Semester" name="email_id_student" value="' . $email_id . '">
 </div>
 <div class="form-group col-md-6">
@@ -112,6 +114,7 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == 'inst_coor') {
                           <div class="form-row">
                               <div class="form-group col-md-6">
                                   <label for="max"><b>GPA</b></label>
+                                  <input type="hidden" class="form-control" placeholder="Semester" name="gpaold" value="' . $gpa . '">
                                   <input type="number" step="0.001" class="form-control" required="required" name="gpa" placeholder="10.0" value="' . $gpa . '">
                               </div>
                               <div class="form-group col-md-6">

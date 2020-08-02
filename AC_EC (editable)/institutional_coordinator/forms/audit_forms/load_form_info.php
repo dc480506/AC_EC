@@ -96,6 +96,10 @@ while ($row = mysqli_fetch_assoc($courseRecords)) {
    }
    $data[] = array(
       // "select-cbox"=>'<input type="checkbox">',
+      "select-cbox" => '<div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input selectrow_current" id="selectrow_current' . $count . '">
+                        <label class="custom-control-label" for="selectrow_current' . $count . '"></label>
+                     </div>',
       "form_id" => '<span class=' . $color . '>' . $row['form_id'] . '</span>',
       "sem" => '<span class=' . $color . '>' . $row['sem'] . '</span>',
       "year" => '<span class=' . $color . '>' . $row['year'] . '</span>',

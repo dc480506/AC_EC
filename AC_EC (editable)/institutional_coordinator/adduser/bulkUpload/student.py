@@ -56,6 +56,7 @@ insert_student_login = """Insert into login_role(username,email_id,password,pass
 password_set = 0
 role = "student"
 
+login_role = argument[mapper['role']]
 
 inserted_records_count = 0
 updated_records_count = 0
@@ -64,12 +65,29 @@ errors = {"wrongDept": []}
 
 def insert_record(update_values, values_insert, values_login):
     global updated_records_count, inserted_records_count, argument
+    log_entry = "insert into activity_log(performing_user, page_affected, affected_user, operation_performed, status) values(%s,%s,%s,%s,%s)"
+    performing_user = values_insert[-1]
+    page_affected = argument[mapper['program']] + " students page"
+    affected_user = values_insert[0]
+    operation_performed = ""
+    status = ""
     if argument[mapper['upload_constraint']] == "2":
-        updated_records_count += cursor.execute(update, update_values)
+        operation_performed = "UPDATE"
+        status = "updated details for" + affected_user
+        is_updated = cursor.execute(update, update_values)
+        updated_records_count = updated_records_count + is_updated
+        if(is_updated > 0):
+            cursor.execute(log_entry, (performing_user, page_affected,
+                                       affected_user, operation_performed, status))
+
     else:
+        operation_performed = "INSERT"
+        status = "Student record inserted"
         cursor.execute(insert, values)
         cursor.execute(insert_student_login, values_login)
         inserted_records_count += 1
+        cursor.execute(log_entry, (performing_user, page_affected,
+                                   affected_user, operation_performed, status))
 
 
 try:
@@ -124,8 +142,18 @@ try:
                     values = (rollno, fname, mname, lname,
                               year_of_admission, dept, current_sem, ts, added_by, argument[mapper['program']], email)
                     try:
-                        cursor.execute(update, values)
-                        updated_records_count += 1
+                        log_entry = "insert into activity_log(performing_user, page_affected, affected_user, operation_performed, status) values(%s,%s,%s,%s,%s)"
+                        performing_user = values[8]
+                        page_affected = argument[mapper['program']
+                                                 ] + " students page"
+                        affected_user = values[-1]
+                        operation_performed = "UPDATE"
+                        status = "updated details for" + affected_user
+                        is_updated = cursor.execute(update, values)
+                        updated_records_count = updated_records_count + is_updated
+                        if(is_updated > 0):
+                            cursor.execute(log_entry, (performing_user, page_affected,
+                                                       affected_user, operation_performed, status))
                     except Exception as e:
                         print("error+" + e)
                         sys.exit(0)
@@ -135,15 +163,12 @@ try:
                     sys.exit(0)
 
             elif "foreign key constraint fails" in str(e):
-                print("error+Department id: "+str(int(dept)) +
+                print("Department id: "+str(int(dept)) +
                       " does not exist/(if present, wrong value) in the table.")
-                sys.exit(0)
-            else:
-                print(e)
-                sys.exit(0)
-
+            print(e)
+            sys.exit(0)
 except Exception as e:
-    print("error+", e)
+    print(str(e))
     sys.exit(0)
 # print("executed query")
 # commiting the query into db

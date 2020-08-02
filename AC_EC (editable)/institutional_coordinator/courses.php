@@ -8,11 +8,12 @@ include('../includes/header.php');
 <?php include('../includes/topbar.php'); ?>
 
 <?php
-$course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
+// die(json_encode($_REQUEST));
+$course_type_id = mysqli_escape_string($conn, $_REQUEST['course_type_id']);
 $sql = "select name from course_types where id='$course_type_id'";
 $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
-$is_closed_elective = $_POST['is_closed_elective'];
-// die($is_closed_elective == 1 ? "hello" : "hi");
+$is_closed_elective = $_REQUEST['is_closed_elective'];
+$program = $_REQUEST['program'];
 ?>
 
 <!-- Begin Page Content -->
@@ -124,7 +125,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                     <?php
                                     $years = array();
                                     $email = $_SESSION['email'];
-                                    $condition = "program='{$_POST['program']}' and course_type_id=$course_type_id ";
+                                    $condition = "program='{$program}' and course_type_id=$course_type_id ";
                                     $query = "SELECT distinct(year) FROM course where $condition UNION SELECT distinct(year) FROM course_log where $condition ORDER by year desc";
                                     if ($result = mysqli_query($conn, $query)) {
                                         $rowcount = mysqli_num_rows($result);
@@ -1346,7 +1347,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
-        formData.append("program", "<?php echo $_POST['program']; ?>")
+        formData.append("program", "<?php echo $program; ?>")
         formData.append("course_type_id", "<?php echo $course_type_id; ?>")
         formData.append("is_closed_elective", "<?php echo $is_closed_elective == 1 ? 1 : 0; ?>")
         $("#upload_current").attr("disabled", true);
@@ -1390,7 +1391,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         var actual_data = {}
         actual_data['type'] = 'current'
         actual_data['course_type_id'] = '<?php echo $course_type_id; ?>';
-        actual_data['program'] = '<?php echo $_POST['program']; ?>';
+        actual_data['program'] = '<?php echo $program; ?>';
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json);
@@ -1483,7 +1484,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
                 'url': 'course/loadInfo/current_courses.php',
                 "data": function(d) {
                     d.filters = getFilters();
-                    d.program = "<?php echo $_POST['program']; ?>";
+                    d.program = "<?php echo $program; ?>";
                     d.course_type_id = "<?php echo $course_type_id; ?>"
                     return d
                 }
@@ -1569,7 +1570,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         var aPos = $("#dataTable-current").dataTable().fnGetPosition(target_row.get(0));
         var courseData = $('#dataTable-current').DataTable().row(aPos).data();
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
-        courseData['program'] = '<?php echo $_POST['program']; ?>';
+        courseData['program'] = '<?php echo $program; ?>';
         // delete courseData.action
         // delete courseData.allocate_faculty
         var json_courseData = JSON.stringify(courseData)
@@ -1709,7 +1710,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         // delete courseData.allocate_faculty
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
         courseData['is_closed_elective'] = '<?php echo $is_closed_elective; ?>';
-        courseData['program'] = '<?php echo $_POST['program']; ?>';
+        courseData['program'] = '<?php echo $program; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
 
@@ -1777,7 +1778,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                 dataFor: "semester",
                                 courseType: "CURRENT",
                                 year: year,
-                                program: "<?php echo $_POST['program']; ?>"
+                                program: "<?php echo $program; ?>"
                             },
                             success: function(data) {
                                 $("#tempsem option").not(":first").remove();
@@ -1801,7 +1802,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                 dataFor: "courses",
                                 year: year,
                                 sem: sem,
-                                program: "<?php echo $_POST['program']; ?>"
+                                program: "<?php echo $program; ?>"
                             },
                             success: function(data) {
                                 $("#tempcid option").not(":first").remove();
@@ -2035,7 +2036,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
             data['cid'] = row.data()['cid'];
             data['sem'] = row.data()['sem'];
             data['course_type_id'] = '<?php echo $course_type_id; ?>';
-            data['program'] = '<?php echo $_POST['program'] ?>';
+            data['program'] = '<?php echo $program ?>';
             data['type'] = 'current'
             data_json = JSON.stringify(data)
             console.log(data_json)
@@ -2098,7 +2099,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
-        formData.append("program", "<?php echo $_POST['program']; ?>")
+        formData.append("program", "<?php echo $program; ?>")
         formData.append("course_type_id", "<?php echo $course_type_id; ?>")
         formData.append("is_closed_elective", "<?php echo $is_closed_elective == 1 ? 1 : 0; ?>")
         // $("#upload_upcoming").attr("disabled", true);
@@ -2141,7 +2142,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         var actual_data = {}
         actual_data['type'] = 'upcoming'
         actual_data['course_type_id'] = '<?php echo $course_type_id; ?>';
-        actual_data['program'] = '<?php echo $_POST['program']; ?>';
+        actual_data['program'] = '<?php echo $program; ?>';
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json)
@@ -2188,7 +2189,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
                 'url': 'course/loadInfo/upcoming_courses.php',
                 "data": function(d) {
                     d.filters = getFilters();
-                    d.program = "<?php echo $_POST['program']; ?>";
+                    d.program = "<?php echo $program; ?>";
                     d.course_type_id = "<?php echo $course_type_id; ?>"
                     return d
                 }
@@ -2270,7 +2271,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         var aPos = $("#dataTable-upcoming").dataTable().fnGetPosition(target_row.get(0));
         var courseData = $('#dataTable-upcoming').DataTable().row(aPos).data()
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
-        courseData['program'] = '<?php echo $_POST['program']; ?>';
+        courseData['program'] = '<?php echo $program; ?>';
         // delete courseData.action
         // delete courseData.allocate_faculty
         var json_courseData = JSON.stringify(courseData)
@@ -2419,7 +2420,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         // delete courseData.allocate_faculty
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
         courseData['is_closed_elective'] = '<?php echo $is_closed_elective; ?>';
-        courseData['program'] = '<?php echo $_POST['program']; ?>';
+        courseData['program'] = '<?php echo $program; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
@@ -2486,7 +2487,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                 dataFor: "semester",
                                 courseType: "CURRENT",
                                 year: year,
-                                program: "<?php echo $_POST['program']; ?>"
+                                program: "<?php echo $program; ?>"
                             },
                             success: function(data) {
                                 $("#tempsem option").not(":first").remove();
@@ -2510,7 +2511,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                 dataFor: "courses",
                                 year: year,
                                 sem: sem,
-                                program: "<?php echo $_POST['program']; ?>"
+                                program: "<?php echo $program; ?>"
                             },
                             success: function(data) {
                                 $("#tempcid option").not(":first").remove();
@@ -2747,7 +2748,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
             data['year'] = row.data()['year'];
             data['type'] = 'upcoming'
             data['course_type_id'] = '<?php echo $course_type_id; ?>';
-            data['program'] = '<?php echo $_POST['program'] ?>';
+            data['program'] = '<?php echo $program ?>';
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
@@ -2768,7 +2769,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         e.preventDefault();
         form = this;
         var formData = new FormData(this);
-        formData.append("program", "<?php echo $_POST['program']; ?>")
+        formData.append("program", "<?php echo $program; ?>")
         formData.append("course_type_id", "<?php echo $course_type_id; ?>")
         formData.append("is_closed_elective", "<?php echo $is_closed_elective == 1 ? 1 : 0; ?>")
         $("#upload_previous").attr("disabled", true);
@@ -2813,7 +2814,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         var actual_data = {}
         actual_data['type'] = 'previous'
         actual_data['course_type_id'] = '<?php echo $course_type_id; ?>';
-        actual_data['program'] = '<?php echo $_POST['program']; ?>';
+        actual_data['program'] = '<?php echo $program; ?>';
         actual_data['delete_data'] = delete_data
         actual_delete_data_json = JSON.stringify(actual_data)
         console.log(actual_delete_data_json)
@@ -2860,7 +2861,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
                 'url': 'course/loadInfo/previous_courses.php',
                 "data": function(d) {
                     d.filters = getFilters();
-                    d.program = "<?php echo $_POST['program']; ?>";
+                    d.program = "<?php echo $program; ?>";
                     d.course_type_id = "<?php echo $course_type_id; ?>"
                     return d
                 }
@@ -2945,7 +2946,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         // delete courseData.action
         // delete courseData.allocate_faculty
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
-        courseData['program'] = '<?php echo $_POST['program']; ?>';
+        courseData['program'] = '<?php echo $program; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
@@ -3091,7 +3092,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         // delete courseData.allocate_faculty
         courseData['course_type_id'] = '<?php echo $course_type_id; ?>';
         courseData['is_closed_elective'] = '<?php echo $is_closed_elective; ?>';
-        courseData['program'] = '<?php echo $_POST['program']; ?>';
+        courseData['program'] = '<?php echo $program; ?>';
         var json_courseData = JSON.stringify(courseData)
         // console.log(json_courseData)
         $.ajax({
@@ -3153,7 +3154,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                 dataFor: "semester",
                                 courseType: "CURRENT",
                                 year: year,
-                                program: "<?php echo $_POST['program']; ?>"
+                                program: "<?php echo $program; ?>"
                             },
                             success: function(data) {
                                 $("#tempsem option").not(":first").remove();
@@ -3177,7 +3178,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
                                 dataFor: "courses",
                                 year: year,
                                 sem: sem,
-                                program: "<?php echo $_POST['program']; ?>"
+                                program: "<?php echo $program; ?>"
                             },
                             success: function(data) {
                                 $("#tempcid option").not(":first").remove();
@@ -3418,7 +3419,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
             data['year'] = row.data()['year'];
             data['type'] = 'previous'
             data['course_type_id'] = '<?php echo $course_type_id; ?>';
-            data['program'] = '<?php echo $_POST['program'] ?>';
+            data['program'] = '<?php echo $program ?>';
             data_json = JSON.stringify(data)
             console.log(data_json)
             $.ajax({
@@ -3472,7 +3473,7 @@ $is_closed_elective = $_POST['is_closed_elective'];
         });
         form_serialize.push({
             name: "program",
-            value: '<?php echo $_POST['program']; ?>'
+            value: '<?php echo $program; ?>'
         });
         form_serialize.push({
             name: "course_type_id",

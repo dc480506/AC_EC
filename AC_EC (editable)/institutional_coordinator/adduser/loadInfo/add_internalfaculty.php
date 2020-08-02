@@ -1,8 +1,13 @@
 <?php
 include_once('../../verify.php');
 include_once('../../../config.php');
+include_once("../../../Logger/FacultyLogger.php");
+$logger = FacultyLogger::getLogger();
 $draw = $_POST['draw'];
 $row = $_POST['start'];
+if (isset($_POST['pageView']) && $_POST['pageView'] == "true") {
+   $logger->facultyRecordsViewed($_SESSION['email'], "faculty records");
+}
 $rowperpage = $_POST['length']; // Rows display per page
 if (isset($_POST['order'])) {
    $columnIndex = $_POST['order'][0]['column']; // Column index
@@ -12,7 +17,7 @@ if (isset($_POST['order'])) {
 } else {
    // $columnName='sem';
    // $columnSortOrder='asc';
-   $orderQuery = ' order by role,faculty_code asc ';
+   $orderQuery = ' order by faculty_code asc ';
 }
 $searchValue = $_POST['search']['value']; // Search value
 
@@ -32,9 +37,6 @@ if (isset($_POST['filters'])) {
 
    if (isset($filters['post'])) {
       $filterQuery .= "&& post in(" . "'" . implode("', '", $filters['post']) . "'" . ")" . " ";
-   }
-   if (isset($filters['role'])) {
-      $filterQuery .= "&& role in(" . "'" . implode("', '", $filters['role']) . "'" . ")" . " ";
    }
    if (isset($filters['depts'])) {
       $filterQuery .= "&& dept_name in(" . "'" . implode("', '", $filters['depts']) . "'" . ")";
@@ -73,14 +75,19 @@ $totalRecordwithFilter = $records['totalcountfilters'];
 
 $sql = "select faculty_code,email_id,employee_id,dept_name,CONCAT(fname,' ',mname,' ',lname) as name,post,role from faculty f INNER JOIN department d ON f.dept_id=d.dept_id WHERE 1 $role_restriction and "
    . $searchQuery . "&& (" . $filterQuery . ")" . $orderQuery . " limit " . $row . "," . $rowperpage;
-// echo $sql;
 $facultyRecords = mysqli_query($conn, $sql);
 $data = array();
 $count = 0;
 $fullname = "";
 while ($row = mysqli_fetch_assoc($facultyRecords)) {
-
+   //   if($row['mname']!=''){
+   //   $fullname=$row['fname']." ".$row['mname']." ".$row['lname'];}
+   //   else{
+   //     $fullname=$row['fname']." ".$row['lname'];
+   //   }
    $data[] = array(
+
+      // "select-cbox"=>'<input type="checkbox">',
       "select-cbox" => '<div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input selectrow" id="selectrow' . $count . '">
                         <label class="custom-control-label" for="selectrow' . $count . '"></label>
@@ -91,7 +98,6 @@ while ($row = mysqli_fetch_assoc($facultyRecords)) {
       "email_id" => $row['email_id'],
       "dept_name" => $row['dept_name'],
       "post" => $row['post'],
-      "role" => $row['role'],
       "action" => '<!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary icon-btn action-btn" >
                     <i class="fas fa-tools"></i>
@@ -109,3 +115,4 @@ $response = array(
 );
 
 echo json_encode($response);
+// select cname,cid,sem,dept_name,max,min,no_of_allocated,(SELECT aad.dept_id as app FROM audit_course_applicable_dept aad WHERE a.cid=aad.cid AND a.sem=aad.sem AND a.year=aad.year) from audit_course a INNER JOIN department d ON a.dept_id=d.dept_id WHERE currently_active=1

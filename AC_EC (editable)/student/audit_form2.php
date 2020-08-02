@@ -71,6 +71,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
             ::-webkit-scrollbar {
                 display: none !important
             }
+
             option:disabled {
                 color: red;
             }
@@ -111,9 +112,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
                 </div>
             </div>
         </div>
-        <?php }
-
-    else {
+        <?php } else {
 
         $_SESSION['endTime'] = $row1['end_timestamp'];
         $endTime = new DateTime($_SESSION['endTime']);
@@ -157,7 +156,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
                                             <h5 class="card-description"> Audit Courses </h5>
                                             >>>>>>> e489cab50bdd364b7f926b74ba2079c3b0f8d171
                                             <br>
-                                </div>
+                                    </div>
                                     <div class="row float-right text-danger" id="response">
                                     </div>
 
@@ -190,13 +189,13 @@ if (mysqli_num_rows($result1) == 0) { ?>
                                             <?php } ?>
                                             <div class="modal-footer">
                                                 <button id="ResetForm" type="reset" class="btn btn-danger align-center">Clear</button>
-                                            <input type="reset" class="btn btn-danger" id="ResetForm" value="Reset">
-                                                 
+                                                <input type="reset" class="btn btn-danger" id="ResetForm" value="Reset">
 
-                                           
-                                                    <button id="button" type="submit" class="btn btn-primary align-center" name="submit">Submit</button>
 
-               
+
+                                                <button id="button" type="submit" class="btn btn-primary align-center" name="submit">Submit</button>
+
+
                                             </div>
                                         </form>
                                 </div>
@@ -205,39 +204,39 @@ if (mysqli_num_rows($result1) == 0) { ?>
                     </div>
 
                     <!-- confirm modal -->
-<<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to submit?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Are you sure you want to submit the following details?
+                    <<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Ready to submit?</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">Are you sure you want to submit the following details?
 
-                <!-- We display the details entered by the user here -->
-                     <table class="table">
-                    <tr>
-                        <th>ID</th>
-                        <td id="cidd"></td>
-                    </tr>
-                    <tr>
-                        <th>Course Name</th>
-                        <td id="cnam"></td>
-                    </tr>
-                </table>
-        </div>
-       
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <a href='#' id="submitc" class="btn btn-success success" name="sub">Submit</a>
-                
-                
-        </div>
-      </div>
-    </div>
-  </div> 
+                                    <!-- We display the details entered by the user here -->
+                                    <table class="table">
+                                        <tr>
+                                            <th>ID</th>
+                                            <td id="cidd"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Course Name</th>
+                                            <td id="cnam"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <a href='#' id="submitc" class="btn btn-success success" name="sub">Submit</a>
+
+
+                                </div>
+                            </div>
+                        </div>
+                </div>
 
                 </div>
 
@@ -292,8 +291,8 @@ if (mysqli_num_rows($result1) == 0) { ?>
 
 
                                     <div class="modal-footer">
-                        <button type="modify" class="btn btn-primary align-center" name="modify">Modify</button>
-                    </div>
+                                        <button type="modify" class="btn btn-primary align-center" name="modify">Modify</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -341,23 +340,23 @@ if (mysqli_num_rows($result1) == 0) { ?>
     // });
 
 
-    $('#submitc').click(function(){
+    $('#submitc').click(function() {
         console.log("hii");
-         /* when the submit button in the modal is clicked, submit the form */
-        var formm=document.getElementById('prefForm');
+        /* when the submit button in the modal is clicked, submit the form */
+        var formm = document.getElementById('prefForm');
         console.log(formm);
     });
-    function openModal()
-    {
+
+    function openModal() {
         $('#confirmModal').modal('show');
-        $('#submitc').click(function(e){
+        $('#submitc').click(function(e) {
             e.preventDefault();
-       var formm=document.getElementById('prefForm');
-        console.log(formm);
-        formm.submit();
+            var formm = document.getElementById('prefForm');
+            console.log(formm);
+            formm.submit();
         });
     }
-    $('#prefForm').on('submit', function(e){
+    $('#prefForm').on('submit', function(e) {
         e.preventDefault();
         openModal();
     });
@@ -390,10 +389,11 @@ if (mysqli_num_rows($result1) == 0) { ?>
             xmlhttp.send(null);
             document.getElementById("response").innerHTML = xmlhttp.responseText;
         }, 1000);
-        
 
-        
-        <script type = "text/javascript" >
+
+
+        <
+        script type = "text/javascript" >
             var m = new Date("<?php echo " " . date_format($endTime, "Y m d H:i:s") ?>");
         console.log(m);
         // var countDownDate = new Date("June 28, 2020 13:59:00").getTime();
@@ -416,8 +416,7 @@ if (mysqli_num_rows($result1) == 0) { ?>
 
                 document.getElementById("response").innerHTML = `<p style="font-size:17px;"><i class="fas fa-stopwatch" style="font-size:30px;"></i>&nbsp;` + "Form closes in " + days + " days, " + hours + " hours, " +
                     minutes + " minutes " + "and " + seconds + " seconds.";
-                if(distance==0)
-                {
+                if (distance == 0) {
                     console.log("here");
                     document.getElementById("response").innerHTML = "Expired";
                     window.location.reload();
@@ -439,72 +438,70 @@ if (mysqli_num_rows($result1) == 0) { ?>
                 }
             }
         }, 1000);
-           setInterval(() => {
-               var xmlhttp=new XMLHttpRequest();
-               xmlhttp.open("GET","timer.php",false);
-               xmlhttp.send(null);
-               document.getElementById("response").innerHTML=xmlhttp.responseText;
-           }, 1000);
+        setInterval(() => {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", "timer.php", false);
+            xmlhttp.send(null);
+            document.getElementById("response").innerHTML = xmlhttp.responseText;
+        }, 1000);
 
         var ar = [];
         $('#ResetForm').click(function() {
-            console.log("hiiiii0");
-            Reset the form
-            $('.dropdown-toggle option :selected')
-            console.log(ar);
-            var elems = document.getElementsByTagName('option');
-            for (var i = 0, iLen = elems.length; i < iLen; i++) {
-                elems[i].disabled = false;
-            }
-            console.log(elems);
-            document.getElementById('prefForm').reset();
+                    console.log("hiiiii0");
+                    Reset the form
+                    $('.dropdown-toggle option :selected')
+                    console.log(ar);
+                    var elems = document.getElementsByTagName('option');
+                    for (var i = 0, iLen = elems.length; i < iLen; i++) {
+                        elems[i].disabled = false;
+                    }
+                    console.log(elems);
+                    document.getElementById('prefForm').reset();
 
-            var selVal = [];
-            $(".dropdown-toggle").each(function() {
-                selVal.push(this.value);
-            });
+                    var selVal = [];
+                    $(".dropdown-toggle").each(function() {
+                        selVal.push(this.value);
+                    });
 
-            $(this).siblings(".dropdown-toggle").find("option").prop("disabled", false);
-            $(".dropdown-toggle").eq(0).trigger('change');
+                    $(this).siblings(".dropdown-toggle").find("option").prop("disabled", false);
+                    $(".dropdown-toggle").eq(0).trigger('change');
 
-            if($(".me").prop("disabled", "disabled"))
-            {
-                console.log("hey");
-                $(".me").prop("disabled", false);
-            }
+                    if ($(".me").prop("disabled", "disabled")) {
+                        console.log("hey");
+                        $(".me").prop("disabled", false);
+                    }
 
-            $('.dropdown-toggle').find('option').prop("disabled", false);
-            $('.dropdown-menu').find('option').removeAttr("disabled");
-            $(".dropdown-toggle option").prop('disabled',false);
+                    $('.dropdown-toggle').find('option').prop("disabled", false);
+                    $('.dropdown-menu').find('option').removeAttr("disabled");
+                    $(".dropdown-toggle option").prop('disabled', false);
 
-                $(".dropdown-toggle").each(function() {
-                    console.log("found");
-                    $('.dropdown-toggle').find("option").prop('disabled', false);
+                    $(".dropdown-toggle").each(function() {
+                        console.log("found");
+                        $('.dropdown-toggle').find("option").prop('disabled', false);
 
-            });
-               var arr=[];
-                $(".dropdown-toggle option:selected").each((i,items)=>{
-                    // arr.push(items);
+                    });
+                    var arr = [];
+                    $(".dropdown-toggle option:selected").each((i, items) => {
+                        // arr.push(items);
 
-                    // $(items).attr('disabled',false);
-
-
-                });
-                console.log(items);
+                        // $(items).attr('disabled',false);
 
 
-            var select=$(".dropdown-toggle");
-            if(select.find("option"))
-            {
-                console.log("hi");
-            }
-            select.find("option:disabled").prop("disabled", false);
-            select.find("option").each(function(index,item.attr('disabled',false);
+                    });
+                    console.log(items);
 
 
-        });
+                    var select = $(".dropdown-toggle");
+                    if (select.find("option")) {
+                        console.log("hi");
+                    }
+                    select.find("option:disabled").prop("disabled", false);
+                    select.find("option").each(function(index, item.attr('disabled', false);
+
+
+                    });
     </script>
 
-        <?php include('../includes/footer.php');
-        include('../includes/scripts.php');
-        ?>
+    <?php include('../includes/footer.php');
+    include('../includes/scripts.php');
+    ?>

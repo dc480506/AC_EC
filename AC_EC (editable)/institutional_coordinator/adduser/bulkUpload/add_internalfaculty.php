@@ -22,8 +22,8 @@ date_default_timezone_set('Asia/Kolkata');
 $timestamp = date("Y-m-d H:i:s");
 $cmd = 'python internalfaculty.py "' . $_SESSION['email'] . '" "' . $timestamp . '" "' . $fname . '" "' . $mname . '" "' . $lname . '" "' . $eid . '" "' . $fcode . '" "' . $emailid . '" "' . $department . '" "' . $post . '" "' . $role . '" "' . $servername . '" "' . $target_location . '" "' . $username . '" "' . $dbname . '" "' . $password . '" "' . $upload_constraint . '" "' . $login_role . '" "' . $uploader_dept_id . '"  ';
 //echo $cmd;
-$output = shell_exec($cmd);
-echo $output;
+ $output = shell_exec($cmd);
+ echo $output;
 //  if(strpos($output,"Duplicate entry")){
 //     echo "Import Unsuccessful as adding caused duplicate entries";
 // }else{

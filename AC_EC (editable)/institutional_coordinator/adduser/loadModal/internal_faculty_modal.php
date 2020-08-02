@@ -75,25 +75,25 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                             <!--Update-->
                             <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
                                 <form method="POST" id="update_internal_faculty">
-                                    <div class="form-row mt-4">
-                                        <div class="form-group col-md-6">
-                                            <label for="fname"><b>First Name</b></label> 
-                                            <input type="text" class="form-control"  placeholder="First Name" name="fname_new" value="' . $fname . '">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="mname"><b>Middle Name</b></label> 
-                                            <input type="text" class="form-control"  placeholder="Middle Name" name="mname_new" value="' . $mname . '">
-                                        </div><div class="form-group col-md-6">
-                                            <label for="lname"><b>Last Name</b></label> 
-                                            <input type="text" class="form-control"  placeholder="Last Name" name="lname_new" value="' . $lname . '">
-                                        </div>  
-                                        <div class="form-group col-md-6">
-                                            <label for="email_id"><b>Email ID</b></label>
-                                            <input type="email" class="form-control" required="required" placeholder="New Email Id" name="email_id_new" id="email_id_new" value="' . $email_id . '">
-                                            <input type="hidden" class="form-control"  name="email_id_old" id="email_id_old" value="' . $email_id . '">
-                                            <span id="error_email_id" class="text-danger"></span>
-                                        </div>                                   
+                                <div class="form-row mt-4">
+                                    <div class="form-group col-md-6">
+                                        <label for="fname"><b>First Name</b></label> 
+                                        <input type="text" class="form-control"  placeholder="First Name" name="fname_new" value="' . $fname . '">
                                     </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="mname"><b>Middle Name</b></label> 
+                                        <input type="text" class="form-control"  placeholder="Middle Name" name="mname_new" value="' . $mname . '">
+                                    </div><div class="form-group col-md-6">
+                                        <label for="lname"><b>Last Name</b></label> 
+                                        <input type="text" class="form-control"  placeholder="Last Name" name="lname_new" value="' . $lname . '">
+                                    </div>  
+                                    <div class="form-group col-md-6">
+                                        <label for="email_id"><b>Email ID</b></label>
+                                        <input type="email" class="form-control" required="required" placeholder="New Email Id" name="email_id_new" id="email_id_new" value="' . $email_id . '">
+                                        <input type="hidden" class="form-control"  name="email_id_old" id="email_id_old" value="' . $email_id . '">
+                                        <span id="error_email_id" class="text-danger"></span>
+                                    </div>                                   
+                                </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="faculty_code"><b>Short Name</b></label>
@@ -169,7 +169,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
     echo '
                                                   
                                                 </select>
-                                                
+                                                <input type="hidden" class="form-control"  name="role_old" id="role_old" value="' . $role . '">
                                              </div> 
                                         </div>
                                     </div>
@@ -182,10 +182,13 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                                         </div>
                                     </div>
                                 </form>
-                            
+                                <br>
                             </div>
                             <!--end Update-->
-                  
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" name="close">Close</button>
+                                <button type="button" class="btn btn-primary" name="save_changes">Save changes</button>
+                            </div>
                         </div>
                     </div>
                     </div>
