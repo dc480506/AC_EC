@@ -117,6 +117,15 @@
 
       <span>Marks</span></a>
   </li>
+
+  <hr class="sidebar-divider">
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="activitylog.php">
+    <i class="fas fa-user-clock" style="font-size:15px"></i>
+
+      <span>Activity Log</span></a>
+  </li>
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
 
