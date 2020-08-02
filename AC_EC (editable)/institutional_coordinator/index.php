@@ -44,6 +44,13 @@ include('../includes/header.php');
                     </div>
                 </div>
             </div>
+            <?php if ($_SESSION['role'] == 'inst_coor') { ?>
+                <form method="POST" action="ic_queries/sem_switch.php">
+                    <button type="button" class="btn btn-danger float-right mt-4" name="addcourse" data-toggle="modal" data-target="#exampleModalCenter">
+                        <i class="fas fa-sync">&nbsp;</i>Switch Semester
+                    </button>
+                </form>
+            <?php } ?>
         </div>
 
 

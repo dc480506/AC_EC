@@ -135,6 +135,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor')) {
         exit();
     }
     mysqli_close($conn);
+    header("Location: ../index.php");
     // mysqli_autocommit($conn, TRUE);
     echo "done";
 }
