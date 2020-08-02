@@ -157,18 +157,19 @@
             <h3 class="card-title text-center headd" s>Forgot Password ?</h3>
             <form class="form-signin" method="post" action="loginusername.php" style="width:100%">
               <br>
-              <div class="row" style="width:100%">
+              <!--<div class="row" style="width:100%">
                 <span class="input-icon" style="width:20%">
                   <div class="login100-social-item">
                     <i class="fas fa-user"></i>
                   </div>
                 </span>
+                
                 <div class="input-text form-label-group" style="width:80%">
                   <input type="username" name="username" id="inputusername" class="form-control" placeholder="username address"  autofocus>
                   <label for="inputusername">Username</label>
                    </div>
               </div> 
-            <p align="center">Or</p>
+            <p align="center">Or</p>-->
               <div class="row" style="width:100%">
                 <span class="input-icon" style="width:20%">
                   <div class="login100-social-item">
@@ -184,7 +185,7 @@
               </div>
 
               <br>
-              <button  name="forgot-password" class="btn btn-lg btn-outline-primary btn-block text-uppercase raisedb" type="submit">Submit</button>
+              <button  name="forget-password" class="btn btn-lg btn-outline-primary btn-block text-uppercase raisedb" type="forget-password">Submit</button>
               <br>
               <hr>
               </div>
@@ -198,7 +199,7 @@
   <?php
 
   include_once('config.php');
-	if(!empty($_POST["forgot-password"])){
+	if(!empty($_POST["forget-password"])){
 		$condition = "";
 		if(!empty($_POST["user-login-name"])) 
 			$condition = " username = '" . $_POST["username"] . "'";
