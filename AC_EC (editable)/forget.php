@@ -217,7 +217,7 @@
 		$user = mysqli_fetch_array($result);
 		
 		if(!empty($user)) {
-			require_once("forgot-password-recovery-mail.php");
+			require_once("forget_password_recovery_mail.php");
 		} else {
 			$error_message = 'No User Found';
 		}
