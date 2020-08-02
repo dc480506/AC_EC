@@ -164,7 +164,7 @@
                   </div>
                 </span>
                 <div class="input-text form-label-group" style="width:80%">
-                  <input type="username" name="uname" id="inputusername" class="form-control" placeholder="username address"  autofocus>
+                  <input type="username" name="username" id="inputusername" class="form-control" placeholder="username address"  autofocus>
                   <label for="inputusername">Username</label>
                    </div>
               </div> 
@@ -176,7 +176,7 @@
                   </div>
                 </span>
                 <div class="input-text form-label-group" style="width:80%">
-                    <input type="password" name="password" id="inputemail" class="form-control" placeholder="email address" >  
+                    <input type="email" name="email" id="inputemail" class="form-control" placeholder="email address" >  
                 <label for="inputemail">Email Id</label>
                 </div>
 
@@ -184,7 +184,7 @@
               </div>
 
               <br>
-              <button  name="submit" class="btn btn-lg btn-outline-primary btn-block text-uppercase raisedb" type="submit">Submit</button>
+              <button  name="forgot-password" class="btn btn-lg btn-outline-primary btn-block text-uppercase raisedb" type="submit">Submit</button>
               <br>
               <hr>
               </div>
@@ -196,24 +196,23 @@
 
   </div>
   <?php
+
+  include_once('config.php');
 	if(!empty($_POST["forgot-password"])){
-		$conn = mysqli_connect("localhost", "root", "", "blog_samples");
-		
 		$condition = "";
 		if(!empty($_POST["user-login-name"])) 
-			$condition = " member_name = '" . $_POST["user-login-name"] . "'";
-		if(!empty($_POST["user-email"])) {
+			$condition = " username = '" . $_POST["username"] . "'";
+		if(!empty($_POST["username"])) {
 			if(!empty($condition)) {
 				$condition = " and ";
 			}
-			$condition = " member_email = '" . $_POST["user-email"] . "'";
+			$condition = " email_id = '" . $_POST["email"] . "'";
 		}
-		
 		if(!empty($condition)) {
 			$condition = " where " . $condition;
 		}
 
-		$sql = "Select * from members " . $condition;
+		$sql = "Select * from login_role " . $condition;
 		$result = mysqli_query($conn,$sql);
 		$user = mysqli_fetch_array($result);
 		
