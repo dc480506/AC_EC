@@ -3,7 +3,8 @@
 require_once __DIR__."../../utils/email_queue.php";
 session_start();
 $insertFlag=false;
-if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
+$allowed_roles = array("inst_coor", "faculty_co", "HOD");
+if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles))  {
   include_once("../../config.php");
   if (isset($_POST['faculty_unallocate']) || isset($_POST['faculty_unallocate_upcoming']) || isset($_POST['faculty_unallocate_log'])) {
     $cid = mysqli_escape_string($conn, $_POST['cid']);
@@ -128,4 +129,3 @@ if (isset($_SESSION['email']) && $_SESSION['role'] == "inst_coor") {
     exit();
   }
 }
-?>

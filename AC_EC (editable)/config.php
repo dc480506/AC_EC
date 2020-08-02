@@ -12,6 +12,8 @@ $exclude_dept = "6,7";
 $other_pref_cols_audit_count = 9;
 $hash_key = "35621";
 $roles = array("inst_coor" => "institutional Co-ordinator", "HOD" => "HOD", "faculty_co" => "faculty Co-ordinator", "faculty" => "Faculty");
+$all_roles = array("inst_coor" => "institutional Co-ordinator", "HOD" => "HOD", "faculty_co" => "faculty Co-ordinator", "faculty" => "Faculty", 'student' => "student");
+
 if ($conn->connect_error) {
 	die("Connection: " . $conn->connect_error);
 }
