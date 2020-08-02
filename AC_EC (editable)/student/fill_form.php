@@ -44,6 +44,13 @@ $result3 = mysqli_query($conn, $sql3);
         }         
 ?>
 
+<style>
+    option{
+        background: #fff!important;
+        color: #000!important;
+        
+    }
+</style>
         
 
 <!-- Begin Page Content -->
@@ -79,24 +86,29 @@ $result3 = mysqli_query($conn, $sql3);
                     <!-- echo $_SERVER['PHP_SELF']; -->
                   
                     <form id="prefForm" onsubmit="return confirmpref();" method="post" action="student_queries/store_preference.php">
+                
+                     
                         <?php
                             for($i=1;$i<=$row1['no_of_preferences'];$i++){ ?>
                         <h4 style="color:gray;"><?php echo "Preference $i"; ?></h4>
-                        <select id="cname<?php echo $i; ?>" class="btn btn-info dropdown-toggle"
+                    
+                     <select id="cname<?php echo $i; ?>" class="btn btn-info dropdown-toggle courses"
                           aria-haspopup="true" aria-expanded="false"
-                            name="cname<?php echo $i; ?>" style="color:#ffffff;" required>
+                            name="cname<?php echo $i; ?>" required>
                             <!-- btn btn-primary dropdown-toggle -->
                             <option hidden="false" value="">--------</option>
+                            
                             <div class="dropdown-menu">
                                 <?php 
                                 foreach ($course as $key)
                                 {
                                 ?>
-                                <option style="color:white; " class="dropdown-item me" value="<?php echo $key['cid']; ?>">
+                                <option style="color:white;line-height: 40px!important; " class="dropdown-item me form-control" value="<?php echo $key['cid']; ?>">
                                     <?php echo "{$key['cname']} ({$key['cid']})"; ?></option>
                                 <?php } ?>
                             </div>
                         </select>
+                     
                         <br>
                         <br>
                         <?php }?>
@@ -128,22 +140,10 @@ function confirmpref(){
     };
 
 
-$(".dropdown-toggle").change(function() {
-    var selVal = [];
-    $(".dropdown-toggle").each(function() {
-        selVal.push(this.value);
-    });
-
-    $(this).siblings(".dropdown-toggle").find("option").removeAttr("disabled").filter(function() {
-        var a = $(this).parent("select").val();
-        return (($.inArray(this.value, selVal) > -1) && (this.value != a))
-    }).attr("disabled", "disabled");
-});
-$(".dropdown-toggle").eq(0).trigger('change');
 </script>
 
 <script src="https://kit.fontawesome.com/57397afa58.js" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
        
         <script type="text/javascript">
         var m=new Date("<?php echo " ". date_format($endTime,"Y m d H:i:s") ?>");
@@ -175,7 +175,7 @@ $(".dropdown-toggle").eq(0).trigger('change');
         var res=(now1.toString()).localeCompare(m.toString());
 
         if (distance > 0 && distance<1000) {
-            console.log("ho");
+            
             // window.location.reload();
             document.getElementById("response").innerHTML = "";   
               
@@ -183,7 +183,7 @@ $(".dropdown-toggle").eq(0).trigger('change');
 
         else if(res==0)
         {
-            console.log("hi");
+            
             window.location.reload();
             document.getElementById("response").innerHTML = "";   
             clearInterval(x); 
@@ -204,6 +204,29 @@ $(".dropdown-toggle").eq(0).trigger('change');
     });     
         </script>
       
-<?php include('../includes/footer.php');
-include('../includes/scripts.php');
+<?php 
+    include('../includes/footer.php');
+    include('../includes/scripts.php');
 ?>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.courses').select2();
+        
+    });
+
+    
+$(".dropdown-toggle").change(function() {
+    var selVal = [];
+    $(".dropdown-toggle").each(function() {
+        selVal.push(this.value);
+    });
+
+    $(this).siblings(".dropdown-toggle").find("option").removeAttr("disabled").filter(function() {
+        var a = $(this).parent("select").val();
+        return (($.inArray(this.value, selVal) > -1) && (this.value != a))
+    }).attr("disabled", "disabled");
+});
+$(".dropdown-toggle").eq(0).trigger('change');
+</script>
