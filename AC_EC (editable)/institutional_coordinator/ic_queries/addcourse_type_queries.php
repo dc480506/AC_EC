@@ -6,12 +6,26 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION[
     if (isset($_POST['add_new_course_type'])) {
         $course_type_name = mysqli_escape_string($conn, $_POST['courseTypeName']);
         $program = mysqli_escape_string($conn, $_POST['program']);
-        $program = mysqli_escape_string($conn, $_POST['program']);
         $is_gradable = mysqli_escape_string($conn, $_POST['is_gradable']);
         $is_closed_elective=mysqli_escape_string($conn, $_POST['is_closed_elective']);
-        $sql = "insert into course_types(name,program,is_gradable,is_closed_elective) values ('$course_type_name','$program','$is_gradable',$is_closed_elective)";
+        $sql = "insert into course_types(name,program,is_gradable,is_closed_elective) values ('$course_type_name','$program','$is_gradable',$is_closed_elective) ";
+        // echo $sql;
 
-        mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        if (mysqli_query($conn, $sql)) {
+            $last_id = mysqli_insert_id($conn);
+            // echo "New record created successfully. Last inserted ID is: " . $last_id;
+          } else {
+            die(mysqli_erro($conn));
+          }
+
+        $cid=$last_id;
+        $Values = "";
+        foreach ($_POST['check_dept'] as $u) {
+            $Values .= "('$cid','$u'),";
+        };
+        $query = "INSERT INTO course_type_applicable_dept VALUES " . substr($Values, 0, strlen($Values) - 1);
+        // echo $query;
+        mysqli_query($conn, $query);
         echo "added";
     } else if (isset($_POST['get_course_types'])) {
         $draw = $_POST['draw'];
@@ -96,9 +110,64 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION[
         $is_gradable = mysqli_escape_string($conn, $_POST['is_gradable']);
         $is_closed_elective=mysqli_escape_string($conn, $_POST['is_closed_elective']);
         
-        mysqli_escape_string($conn, $_POST['courseTypeId']);
+        // mysqli_escape_string($conn, $_POST['courseTypeId']);
         $sql = "UPDATE course_types set name='$course_type_name',is_gradable='$is_gradable',is_closed_elective='$is_closed_elective' where id = '$course_type_id'";
+        // echo $sql;
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+        //Department applicable updation start
+        $query="SELECT dept_id from course_type_applicable_dept where course_type_id = '$course_type_id'";
+        // echo $query;
+        $result = mysqli_query($conn, $query);
+        $delete_dept = array();
+        $insert_dept = array();
+        $row_dept = array();
+        // echo "Prev dept: ";
+        while ($row = mysqli_fetch_assoc($result)) {        
+            array_push($row_dept, $row['dept_id']);
+            // echo $row['dept_id']." ";
+
+        }
+        // echo "DElete dept: ";
+        foreach ($row_dept as $r) {
+            if (!in_array($r, $_POST['check_dept'])) {
+                array_push($delete_dept, $r);
+                // echo $r." ";
+            }
+        }
+        // echo "Insert new dept: ";
+        foreach ($_POST['check_dept'] as $r) {
+            if (!in_array($r, $row_dept)) {
+                array_push($insert_dept, $r);
+                // echo $r." ";
+            }
+        }
+      
+        if (!empty($delete_dept)) {
+            $s = "(";
+            foreach ($delete_dept as $r) {
+                $s .= "$r,";
+            }
+            $s = substr($s, 0, strlen($s) - 1);
+            $s .= ")";
+        
+            $sql1 = "DELETE FROM course_type_applicable_dept WHERE  course_type_id='$course_type_id' AND dept_id IN $s";
+            // echo $sql1;
+            mysqli_query($conn, $sql1);
+        }
+
+        if (!empty($insert_dept)) {
+            $Values = "";
+            foreach ($insert_dept as $u) {
+                $Values .= "('$course_type_id','$u'),";
+            }
+          
+            $sql1 = "INSERT INTO course_type_applicable_dept VALUES " . substr($Values, 0, strlen($Values) - 1);
+            // echo $sql1;
+            mysqli_query($conn, $sql1) or die(mysqli_error($conn));
+        }
+    //Department applicable updation end
+
         echo "edited";
     } else {
         die(json_encode($_POST));

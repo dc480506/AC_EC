@@ -13,15 +13,12 @@ include('../includes/header.php');
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row align-items-center">
-                <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Existing course types</h4>
-                </div>
-            
-                <div class="col text-right" id="addCurrentCoursebtn" style="display:block">
-                    <!-- <h4 class="font-weight-bold text-primary mb-0">Add new course <i class="fas fa-book-open"></i></h4>
-                    <br> -->
+
+                <div class="col" id="addCurrentCoursebtn" style="display:block">
+                    <h4 class="font-weight-bold text-primary mb-0">Add new course <i class="fas fa-book-open"></i></h4>
+                    <br>
                     <button type="button" class="btn btn-primary" name="addcourse" data-toggle="modal" data-target="#addCourseType">
-                        <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course Type &nbsp <i class="fas fa-book-open"></i>
+                        <i class="ni ni-fat-add">&nbsp;</i>+ &nbsp;Add Course
                     </button>
 
                 </div>
@@ -55,42 +52,6 @@ include('../includes/header.php');
                                         </select>
                                         <!-- <span id="add_upcoming_cid_error" class="text-danger"></span> -->
                                     </div>
-                                    <label for="branch"><b>Branches to opt for</b></label>
-                                    <br>
-
-                                    <?php
-                                    include_once('../config.php');
-                                    $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
-                                    $result = mysqli_query($conn, $sql);
-                                    $c = 8;
-
-                                    if ($_SESSION['role'] == "inst_coor") {
-                                        echo '<div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" class="custom-control-input" id="applicable_dept_upcoming_cb7" checked>
-                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb7"><small>All</small></label>
-                                    </div>';
-
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo '
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
-                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                        </div>
-                                        ';
-                                            $c++;
-                                        }  
-                                    } else {
-                                        echo '
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                        
-                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $_SESSION['dept_id'] . '" checked>
-                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
-                                        </div>
-                                        ';
-                                    }
-                                    
-                                    ?>
-                                    <br>
                                     <div class="custom-control custom-checkbox custom-control-inline">
                                         <input type="checkbox" checked class="custom-control-input" id="is_gradable" name="is_gradable" value="">
                                         <label class="custom-control-label" for="is_gradable">Is Gradable</label>
@@ -134,50 +95,16 @@ include('../includes/header.php');
 
                                     <div class="form-group">
                                         <label for="program"><b>Program</b></label>
-                                        <select disabled class="form-control" id="programName" name="program" required>
+                                        <select disabled class="form-control" id="program" name="program" required>
                                             <option value="UG">UG</option>
                                             <option value="PG">PG</option>
                                             <option value="PHD">PHD</option>
                                         </select>
 
                                     </div>
-
-                                    <label for="branch"><b>Branches to opt for</b></label>
-                                    <br>
-
-                                    <?php
-                                    include_once('../config.php');
-                                    $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
-                                    $result = mysqli_query($conn, $sql);
-                                    $c = 8;
-
-                                    if ($_SESSION['role'] == "inst_coor") {
-                                        
-
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo '
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
-                                        <label class="custom-control-label" for="applicable_dept' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                        </div>
-                                        ';
-                                            $c++;
-                                        }  
-                                    } else {
-                                        echo '
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                        
-                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept' . $c . '"  name="check_dept[]" value="' . $_SESSION['dept_id'] . '" checked>
-                                        <label class="custom-control-label" for="applicable_dept' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
-                                        </div>
-                                        ';
-                                    }
-                                    
-                                    ?>
-                                    <br>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" checked class="custom-control-input" id="edit_is_gradable" name="is_gradable" value="">
-                                        <label class="custom-control-label" for="edit_is_gradable">Is Gradable</label>
+                                        <input type="checkbox" checked class="custom-control-input" id="is_gradable" name="is_gradable" value="">
+                                        <label class="custom-control-label" for="is_gradable">Is Gradable</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
                                         <input type="checkbox" checked class="custom-control-input" id="edit_is_closed_elective" name="edit_is_closed_elective" value="">
@@ -198,8 +125,8 @@ include('../includes/header.php');
 
         <div class="card shadow mb-4">
             <div class="card-body">
-                <!-- <h4 class="font-weight-bold text-primary mb-0">Existing course types</h4> -->
-                <!-- <br> -->
+                <h4 class="font-weight-bold text-primary mb-0">Existing course types</h4>
+                <br>
                 <div class="table-responsive">
                     <table style=" margin: 0 auto !important;" class="table table-bordered table-responsive" id="dataTable-coursetypes" cellspacing="0">
                         <thead>
@@ -244,61 +171,6 @@ include('../includes/header.php');
     $(document).ready(function(e) {
         loadCurrent();
     })
-
-    dept_checkbox = document.querySelectorAll(".dept");
-
-    if (document.querySelector("#applicable_dept_upcoming_cb7").checked) {
-        for (i = 0; i < dept_checkbox.length; i++) {
-            dept_checkbox[i].checked = true;
-        }
-    }
-    all_cbox = document.querySelector("#applicable_dept_upcoming_cb7")
-    for (i = 0; i < dept_checkbox.length; i++) {
-        dept_checkbox[i].addEventListener("click", function() {
-            if (!this.checked && all_cbox.checked) {
-                all_cbox.checked = false;
-            }
-            if (this.checked) {
-                p = true;
-                for (i = 0; i < dept_checkbox.length; i++) {
-                    if (!dept_checkbox[i].checked) {
-                        p = false
-                        break;
-                    }
-                }
-                if (p) {
-                    all_cbox.checked = true;
-                }
-            }
-        })
-    }
-    all_cbox.addEventListener("click", function() {
-        if (this.checked) {
-            //Check all boxes
-            for (i = 0; i < dept_checkbox.length; i++) {
-                dept_checkbox[i].checked = true;
-            }
-        } else {
-            //Uncheck all boxes
-            for (i = 0; i < dept_checkbox.length; i++) {
-                dept_checkbox[i].checked = false;
-            }
-        }
-    })
-
-    $("#select_all").click(function(e) {
-        //   var row=$(this).closest('tr')
-        if ($(this).is(":checked")) {
-            $("#dataTable-coursetypes tbody tr").addClass("selected table-secondary");
-            $(".selectrow").attr("checked", true);
-        } else {
-            $(".selectrow").attr("checked", false);
-            $("#dataTable-coursetypes tbody tr").removeClass("selected table-secondary");
-        }
-        console.log("blah blah blahhhh");
-
-    });
-
     $("#add_new_course_type_form").submit(function(e) {
         e.preventDefault();
         const form = $(this).serializeArray();
@@ -368,10 +240,9 @@ include('../includes/header.php');
         var target_row = $(this).closest("tr");
         var aPos = $("#dataTable-coursetypes").dataTable().fnGetPosition(target_row.get(0));
         var courseTypeData = $('#dataTable-coursetypes').DataTable().row(aPos).data();
-        var edit_cid=courseTypeData.course_type_id;
         $("#edit_course_type_form #courseTypeName").val(courseTypeData.name)
         $("#edit_course_type_form #courseTypeId").val(courseTypeData.course_type_id)
-        $("#edit_course_type_form #programName").val(courseTypeData.program);
+        $("#edit_course_type_form #program").val(courseTypeData.program);
         console.log(courseTypeData.is_closed_elective)
         $("#edit_course_type_form #edit_is_gradable").attr("checked", courseTypeData.is_gradable == "yes" ? true : false)
         $("#edit_course_type_form #edit_is_closed_elective").attr("checked", courseTypeData.is_closed_elective == "yes" ? true : false)
@@ -436,15 +307,15 @@ include('../includes/header.php');
                 console.log('aaa');
                 $(".edit-button").on('click', loadEditModal)
                 $(".delete-button").on('click', deleteCourseType);
-                $(".selectrow").attr("disabled", true);
-                $("th").removeClass('selectbox');
+                // $(".selectrow").attr("disabled", true);
+                // $("th").removeClass('selectbox');
                 $(".selectbox").click(function(e) {
                     var row = $(this).closest('tr')
                     var checkbox = $(this).find('input');
                     console.log(checkbox);
                     checkbox.attr("checked", !checkbox.attr("checked"));
                     row.toggleClass('selected table-secondary')
-                    if ($("#dataTable-coursetypes tbody tr.selected").length != $("#dataTable-coursetypes tbody tr").length) {
+                    if ($("#dataTable-student tbody tr.selected").length != $("#dataTable-student tbody tr").length) {
                         $("#select_all").prop("checked", true)
                         $("#select_all").prop("checked", false)
                     } else {
@@ -456,6 +327,12 @@ include('../includes/header.php');
             columns: [{
                     data: 'select-cbox'
                 },
+                // {
+                //     data: 'email_id'
+                // },
+                // {
+                //     data: 'rollno'
+                // },
                 {
                     data: 'course_type_id'
                 },
@@ -471,13 +348,25 @@ include('../includes/header.php');
                 {
                     data: 'is_closed_elective'
                 },
+                // {
+                //     data: 'dept_name'
+                // },
+                // {
+                //     data: 'year_of_admission'
+                // },
+                // {
+                //     data: 'current_sem'
+                // },
                 {
                     data: 'action'
                 },
 
             ],
             columnDefs: [
-      
+                // {
+                //     targets: [0, 7], // column index (start from 0)
+                //     orderable: false, // set orderable false for selected columns
+                // },
                 {
                     className: "selectbox",
                     targets: [0]
@@ -498,12 +387,18 @@ include('../includes/header.php');
             ],
         });
     }
-   
+    $("#select_all").click(function(e) {
+        //   var row=$(this).closest('tr')
+        if ($(this).is(":checked")) {
+            $("#dataTable-student tbody tr").addClass("selected table-secondary");
+            $(".selectrow").attr("checked", true);
+        } else {
+            $(".selectrow").attr("checked", false);
+            $("#dataTable-student tbody tr").removeClass("selected table-secondary");
+        }
+        //   row.toggleClass('selected table-secondary')
+    })
 </script>
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');
 ?>
-
-
-
-

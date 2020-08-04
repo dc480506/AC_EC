@@ -37,7 +37,7 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <i class="fas fa-chalkboard-teacher"></i>
-      <span>Add User</span>
+      <span>Users</span>
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
@@ -54,7 +54,7 @@
   <li class="nav-item">
     <a class="nav-link" href="addnewcourseType.php">
       <i class="fas fa-book"></i>
-      <span>Add new course Type</span></a>
+      <span>Course Types</span></a>
   </li>
 
 
@@ -75,10 +75,7 @@
         <a class="collapse-item" href="courses_landing.php?program=PG">PG</a>
         <a class="collapse-item" href="courses_landing.php?program=PHD">PHD</a>
 
-        <!-- <a class="collapse-item" href="audit_course.php">Audit Course</a>
-        <a class="collapse-item" href="addcourse_idc.php">Interdisciplinary Course</a>
-        <a class="collapse-item" href="addcourse_cec.php">Close Elective Course</a>
-        <a class="collapse-item" href="addcourse_oec.php">Open Elective Course</a> -->
+
       </div>
     </div>
   </li>
@@ -139,7 +136,18 @@
 <!-- End of Sidebar -->
 <!-- Content Wrapper -->
 
-
+<script>
+// // When we click on the LI
+// $("li").click(function(){
+//   // If this isn't already active
+//   if (!$(this).hasClass("active")) {
+//     // Remove the class from anything that is active
+//     $("li.active").removeClass("active");
+//     // And make this active
+//     $(this).addClass("active");
+//   }
+// });
+</script>
 
 <div id="content-wrapper" class="d-flex flex-column">
 
