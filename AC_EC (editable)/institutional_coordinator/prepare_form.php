@@ -34,28 +34,22 @@ $logger->formRecordsViewed($_SESSION['email']);
 <div class="container-fluid" id="form_sect  ion">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Form Records</h4>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row align-items-center">
-                <div class="col">
+            <div class="row align-items-center justify-content-center">
+                <div class="col d-flex align-content-center">
                     <h4 class="font-weight-bold text-primary mb-0">Form Records</h4>
                     <br>
                 </div>
-                <div class="col text-right" id="delete_selected_response_div">
-                    <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
-                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Form(s)
-                    </button>
-                </div>
+
                 <div class="col text-right">
                     <button id="create-form-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createForm">
                         <i class="fas fa-plus"></i> Create Form
                     </button>
                 </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center">
+
 
                 <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="createForm" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -222,12 +216,7 @@ $logger->formRecordsViewed($_SESSION['email']);
                 <table class="table table-bordered" id="dataTable-form" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="select_all_current_page">
-                                    <label class="custom-control-label" for="select_all_current_page"></label>
-                                </div>
-                            </th>
+
                             <th>Form ID</th>
                             <th>Floating Sem</th>
                             <th>Year</th>
@@ -247,7 +236,7 @@ $logger->formRecordsViewed($_SESSION['email']);
                     </thead>
                     <tfoot>
                         <tr>
-                            <th></th>
+
                             <th>Form ID</th>
                             <th>Floating Sem</th>
                             <th>Year</th>
@@ -473,9 +462,6 @@ $logger->formRecordsViewed($_SESSION['email']);
                 })
             },
             columns: [{
-                    data: 'select-cbox'
-                },
-                {
                     data: 'form_id'
                 },
                 {
@@ -525,17 +511,17 @@ $logger->formRecordsViewed($_SESSION['email']);
                     targets: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
-                {
-                    className: "selectbox_current_td",
-                    targets: [0]
-                },
+                // {
+                //     className: "selectbox_current_td",
+                //     targets: [0]
+                // },
                 {
                     className: "cname",
                     "targets": [2]
                 },
                 {
                     className: "form_id",
-                    "targets": [1],
+                    "targets": [0],
                     visible: false,
                 },
                 // { className: "cid", "targets": [ 1 ] },
