@@ -2,6 +2,9 @@
 include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
+include("../Logger/FormLogger.php");
+$logger = FormLogger::getLogger();
+$logger->formRecordsViewed($_SESSION['email']);
 ?>
 <?php include('sidebar.php'); ?>
 
@@ -109,61 +112,56 @@ include('../includes/header.php');
                                         <label for=""><b>Departments Applicable</b></label>
                                         <br>
                                         <!-- <select class="form-control" required name="dept">-->
-                                        
+
                                         <?php
                                         include_once('../config.php');
-                                       $sql = "SELECT * FROM department";
+                                        $sql = "SELECT * FROM department";
                                         $result1 = mysqli_query($conn, $sql);
 
-                                       function id_to_name_convertor_dept($id,$res) {
-                                        
-                                        include_once('../config.php');
-                                        
-                                        while ($row = mysqli_fetch_assoc($res)) {
-                                            if($row['dept_id']==$id)
-                                            {
-                                                return $row['dept_name'];
+                                        function id_to_name_convertor_dept($id, $res)
+                                        {
+
+                                            include_once('../config.php');
+
+                                            while ($row = mysqli_fetch_assoc($res)) {
+                                                if ($row['dept_id'] == $id) {
+                                                    return $row['dept_name'];
+                                                }
                                             }
                                         }
-                                    }
-                                        
+
                                         $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
                                         $result = mysqli_query($conn, $sql);
                                         $c = 8;
-                                        if($_SESSION['role']=='faculty_co')
-                                        {
-                                            $deptName=id_to_name_convertor_dept($_SESSION['dept_id'],$result1);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                          
+                                        if ($_SESSION['role'] == 'faculty_co') {
+                                            $deptName = id_to_name_convertor_dept($_SESSION['dept_id'], $result1);
+                                            while ($row = mysqli_fetch_assoc($result)) {
 
-                                                if($row['dept_name']==$deptName )
-                                                {
-                                                   
-                                                echo  '
+
+                                                if ($row['dept_name'] == $deptName) {
+
+                                                    echo  '
                                                 
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                             <input type="checkbox" checked class="custom-control-input" id="dept_applicable_cb' . $c . '"  name="dept_applicable[]" value="' . $row['dept_id'] . '">
                                                             <label class="custom-control-label" for="dept_applicable_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
                                                         </div>
                                                         ';
-                                            $c++;
+                                                    $c++;
                                                 }
-                                                
                                             }
-                                        }
-                                            else
-                                            {
-                                                while ($row = mysqli_fetch_assoc($result)) { 
-                                            echo '
+                                        } else {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo '
                                                         <div class="custom-control custom-checkbox custom-control-inline">
                                                             <input type="checkbox" checked class="custom-control-input" id="dept_applicable_cb' . $c . '"  name="dept_applicable[]" value="' . $row['dept_id'] . '">
                                                             <label class="custom-control-label" for="dept_applicable_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
                                                         </div>
                                                         ';
-                                            $c++;
+                                                $c++;
+                                            }
                                         }
-                                    }
-                                    
+
                                         ?>
 
                                     </div>
@@ -275,7 +273,6 @@ include('../includes/header.php');
 
 <!-- /.container-fluid -->
 <script>
-
     $('#create-form #program').change(function(e) {
         var program = $(this).val();
         let data = {
@@ -419,10 +416,10 @@ include('../includes/header.php');
             },
             success: function(data) {
                 console.log($.trim(data));
-                if ($.trim(data)=="done") {
+                if ($.trim(data) == "done") {
                     console.log("success!");
                     $('#dataTable-form').DataTable().draw(false);
-                    
+
                     $("#create_form_btn").text("Created Successfully")
                 } else {
                     if (data == 'present') {

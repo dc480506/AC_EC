@@ -1,7 +1,9 @@
 <?php
 session_start();
-if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION['role'] == 'faculty_co')  ) {
+if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION['role'] == 'faculty_co')) {
     include_once('../../config.php');
+    include_once("../../Logger/FormLogger.php");
+    $logger = FormLogger::getLogger();
     // echo "Hi";
     if (isset($_POST['createForm'])) {
         // die(json_encode($_POST));
@@ -12,7 +14,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
         $start_date = mysqli_escape_string($conn, $_POST['start_date']);
         $start_time = mysqli_escape_string($conn, $_POST['start_time']);
         $dept_applicable = $_POST['dept_applicable'];
-        
+
         $program = mysqli_escape_string($conn, $_POST['program']);
         $course_type_id = $_POST['course_type_id'];
 
@@ -81,6 +83,13 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
             mysqli_close($conn);
             // mysqli_autocommit($conn,TRUE);
             echo "done";
+            $sql = "SELECT name from course_types where course_type_id in (" . implode(",", $insert_course_types) . ")";
+            $result = mysqli_query($conn, $sql);
+            $course_types = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                array_push($course_types, $row['name']);
+            }
+            $logger->formCreated($_SESSION['email'], implode(",", $course_types));
         } else {
             die("present");
         }
@@ -88,6 +97,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
         $form_id = mysqli_escape_string($conn, $_POST['form_id']);
         $sql = "DELETE FROM form WHERE form_id='$form_id'";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $logger->formDeleted($_SESSION['email'], $form_id);
         echo 'done';
     } else if (isset($_POST['modifyForm'])) {
         $nop = mysqli_escape_string($conn, $_POST['nop']);
@@ -140,30 +150,27 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
          SELECT '$form_id',email_id , dept_id FROM student WHERE current_sem='$curr_sem' and dept_id in  ('" . implode("','", $added_depts) . "');";
         mysqli_query($conn, $newsql) or die(mysqli_error($conn) . $newsql);
 
+        $logger->formModified($_SESSION['email'], $form_id);
         echo "done";
     } elseif (isset($_POST['getCourseTypes'])) {
         $program = mysqli_escape_string($conn, $_POST['program']);
-        if($_SESSION['role']=='faculty_co')
-        {
-        $sql = "select id,name from course_types where program='$program' and is_closed_elective=1";
-        $result = mysqli_query($conn, $sql);
-        $options = '';
-        while ($row = mysqli_fetch_assoc($result)) {
-            $options .= "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
-        }
+        if (in_array($_SESSION['role'], array("faculty_co", "HOD"))) {
+            $sql = "select id,name from course_types where program='$program' and is_closed_elective=1";
+            $result = mysqli_query($conn, $sql);
+            $options = '';
+            while ($row = mysqli_fetch_assoc($result)) {
+                $options .= "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+            }
+            echo $options;
+        } else {
+            $sql = "select id,name from course_types where program='$program'";
+            $result = mysqli_query($conn, $sql);
+            $options = '';
+            while ($row = mysqli_fetch_assoc($result)) {
+                $options .= "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+            }
 
-        echo $options;
-    }
-    else
-    {
-        $sql = "select id,name from course_types where program='$program'";
-        $result = mysqli_query($conn, $sql);
-        $options = '';
-        while ($row = mysqli_fetch_assoc($result)) {
-            $options .= "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+            echo $options;
         }
-
-        echo $options;
-    }
     }
 }
