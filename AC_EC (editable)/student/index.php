@@ -2,6 +2,9 @@
 include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
+include("../Logger/StudentLogger.php");
+$logger = StudentLogger::getLogger();
+$logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
 ?>
 
 <?php include('sidebar.php'); ?>

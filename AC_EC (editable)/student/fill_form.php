@@ -4,6 +4,8 @@ include_once('verify.php');
 include('../includes/header.php');
 include('sidebar.php');
 include('../includes/topbar_student.php');
+include("../Logger/StudentLogger.php");
+$logger = StudentLogger::getLogger();
 $course = array();
 $course_types = array();
 $index = 0;
@@ -78,11 +80,15 @@ while ($row2 = mysqli_fetch_array($result2)) {
                         <h1 class="h3 mb-4 text-gray-800">
                             <?php
                             $i = 0;
+                            $course_name = "";
                             while ($row3 = mysqli_fetch_array($result3)) {
                                 $course_types[$i] = $row3;
                                 $i++;
-                                echo $row3['name'] . " ";
+                                $course_name .= $row3['name'] . " ";
                             }
+                            $_SESSION['form_name'] = $course_name;
+                            $logger->studentsRecordsViewed($_SESSION['email'], "fill $course_name form");
+                            echo $course_name;
                             ?>
                             Form</h1>
                     </div>
