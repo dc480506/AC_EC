@@ -24,6 +24,12 @@ class FormLogger extends ActivityLogger
         $operationPerformed = "DELETE";
         $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, "form ID-$formId deleted");
     }
+    public function formResponsesViewed($performing_user, $formId)
+    {
+        $pageAffected = "forms";
+        $operationPerformed = "READ";
+        $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, "reponses viewed for form ID-$formId ");
+    }
 
 
     public function formCreated($performing_user, $formType)
@@ -32,6 +38,8 @@ class FormLogger extends ActivityLogger
         $operationPerformed = "INSERT";
         $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, "form for $formType created");
     }
+
+
 
     public function formRecordsViewed($performing_user, $affectedUser = '')
     {

@@ -217,7 +217,7 @@ $logger->formRecordsViewed($_SESSION['email']);
                     <thead>
                         <tr>
 
-                            <th>Form ID</th>
+                            <th>ID</th>
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
@@ -237,7 +237,7 @@ $logger->formRecordsViewed($_SESSION['email']);
                     <tfoot>
                         <tr>
 
-                            <th>Form ID</th>
+                            <th>ID</th>
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
@@ -519,11 +519,11 @@ $logger->formRecordsViewed($_SESSION['email']);
                     className: "cname",
                     "targets": [2]
                 },
-                {
-                    className: "form_id",
-                    "targets": [0],
-                    visible: false,
-                },
+                // {
+                //     className: "form_id",
+                //     "targets": [0],
+                //     visible: false,
+                // },
                 // { className: "cid", "targets": [ 1 ] },
                 // { className: "sem", "targets": [ 2 ] },
                 // { className: "dept_name", "targets": [ 3 ] },

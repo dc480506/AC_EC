@@ -1,6 +1,9 @@
 <?php
 include('../../../config.php');
 include_once('../../verify.php');
+include("../../../Logger/FormLogger.php");
+$logger = FormLogger::getLogger();
+$logger->formResponsesViewed($_SESSION['email'], $_POST['form_id']);
 if (!isset($_POST['view_response_btn'])) {
     header('Location: ../../../index.php');
     exit();
