@@ -14,6 +14,10 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
         $role_restriction = "";
         $accessible_roles = array();
         $isaccessible = false;
+        $userLogs = "1";
+        if ($_SESSION['userLogs'] != FALSE) {
+            $userLogs = "al.performing_user='{$_SESSION["userLogs"]}'";
+        }
         foreach ($all_roles as $role => $value) {
             if ($_SESSION["role"] == $role) {
                 $isaccessible = true;
@@ -31,17 +35,17 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
         }
 
         ## Total number of records without filtering
-        $sel = mysqli_query($conn, "select count(*) as totalcount from activity_log al inner join login_role lg on al.performing_user = lg.email_id where $role_restriction");
+        $sel = mysqli_query($conn, "select count(*) as totalcount from activity_log al inner join login_role lg on al.performing_user = lg.email_id where $role_restriction and $userLogs");
         $records = mysqli_fetch_assoc($sel);
         $totalRecords = $records['totalcount'];
 
         // ## Total number of record with filtering
-        $sel = mysqli_query($conn, "select count(*) as totalcountfilters  from activity_log al inner join login_role lg on al.performing_user = lg.email_id WHERE $role_restriction and $searchQuery");
+        $sel = mysqli_query($conn, "select count(*) as totalcountfilters  from activity_log al inner join login_role lg on al.performing_user = lg.email_id WHERE $role_restriction and $userLogs and $searchQuery");
         $records = mysqli_fetch_assoc($sel);
         $totalRecordwithFilter = $records['totalcountfilters'];
 
 
-        $sql = "select  * from activity_log al inner join login_role lg on al.performing_user = lg.email_id WHERE $role_restriction and  $searchQuery   $orderQuery  limit  $row , $rowperpage";
+        $sql = "select  * from activity_log al inner join login_role lg on al.performing_user = lg.email_id WHERE $role_restriction and $userLogs and  $searchQuery   $orderQuery  limit  $row , $rowperpage";
         // echo $sql;
         $logs = mysqli_query($conn, $sql);
         $data = array();

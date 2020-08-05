@@ -3,7 +3,13 @@ include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
 ?>
-<?php include('sidebar.php'); ?>
+<?php include('sidebar.php');
+if (isset($_POST['userLogs'])) {
+    $_SESSION['userLogs'] = $_POST['userLogs'];
+} else {
+    $_SESSION['userLogs'] = FALSE;
+}
+?>
 
 <?php include('../includes/topbar.php'); ?>
 
