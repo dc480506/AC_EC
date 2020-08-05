@@ -174,6 +174,15 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION[
         //Department applicable updation end
 
         echo "edited";
+    } else if (isset($_POST["edit_course_type_depts"])) {
+        $course_type_id = mysqli_escape_string($conn, $_POST['id']);
+        $sql = "SELECT * from course_type_applicable_dept ctad inner join department d on ctad.dept_id = d.dept_id where course_type_id=$course_type_id";
+        $result = mysqli_query($conn, $sql);
+        $applicable_Depts = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($applicable_Depts, $row["dept_id"]);
+        }
+        echo json_encode($applicable_Depts);
     } else {
         die(json_encode($_POST));
     }

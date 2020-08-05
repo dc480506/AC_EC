@@ -16,7 +16,7 @@ include('../includes/header.php');
                 <div class="col">
                     <h4 class="font-weight-bold text-primary mb-0">Existing course types</h4>
                 </div>
-            
+
                 <div class="col text-right" id="addCurrentCoursebtn" style="display:block">
                     <!-- <h4 class="font-weight-bold text-primary mb-0">Add new course <i class="fas fa-book-open"></i></h4>
                     <br> -->
@@ -78,7 +78,7 @@ include('../includes/header.php');
                                         </div>
                                         ';
                                             $c++;
-                                        }  
+                                        }
                                     } else {
                                         echo '
                                         <div class="custom-control custom-checkbox custom-control-inline">
@@ -88,7 +88,7 @@ include('../includes/header.php');
                                         </div>
                                         ';
                                     }
-                                    
+
                                     ?>
                                     <br>
                                     <div class="custom-control custom-checkbox custom-control-inline">
@@ -144,36 +144,38 @@ include('../includes/header.php');
 
                                     <label for="branch"><b>Branches to opt for</b></label>
                                     <br>
+                                    <div class="row ml-1" id="editdepartments">
 
-                                    <?php
-                                    include_once('../config.php');
-                                    $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
-                                    $result = mysqli_query($conn, $sql);
-                                    $c = 8;
+                                        <?php
+                                        include_once('../config.php');
+                                        $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
+                                        $result = mysqli_query($conn, $sql);
+                                        $c = 8;
 
-                                    if ($_SESSION['role'] == "inst_coor") {
-                                        
+                                        if ($_SESSION['role'] == "inst_coor") {
 
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo '
+
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo '
                                         <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
-                                        <label class="custom-control-label" for="applicable_dept' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept' . $row['dept_id'] . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
+                                        <label class="custom-control-label" for="applicable_dept' . $row['dept_id'] . '"><small>' . $row['dept_name'] . '</small></label>
                                         </div>
                                         ';
-                                            $c++;
-                                        }  
-                                    } else {
-                                        echo '
+                                                $c++;
+                                            }
+                                        } else {
+                                            echo '
                                         <div class="custom-control custom-checkbox custom-control-inline">
                                         
                                         <input type="checkbox" class="custom-control-input dept" id="applicable_dept' . $c . '"  name="check_dept[]" value="' . $_SESSION['dept_id'] . '" checked>
                                         <label class="custom-control-label" for="applicable_dept' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
                                         </div>
                                         ';
-                                    }
-                                    
-                                    ?>
+                                        }
+
+                                        ?>
+                                    </div>
                                     <br>
                                     <div class="custom-control custom-checkbox custom-control-inline">
                                         <input type="checkbox" checked class="custom-control-input" id="edit_is_gradable" name="is_gradable" value="">
@@ -368,9 +370,30 @@ include('../includes/header.php');
         var target_row = $(this).closest("tr");
         var aPos = $("#dataTable-coursetypes").dataTable().fnGetPosition(target_row.get(0));
         var courseTypeData = $('#dataTable-coursetypes').DataTable().row(aPos).data();
-        var edit_cid=courseTypeData.course_type_id;
+        var edit_cid = courseTypeData.course_type_id;
         $("#edit_course_type_form #courseTypeName").val(courseTypeData.name)
         $("#edit_course_type_form #courseTypeId").val(courseTypeData.course_type_id)
+        $.ajax({
+            method: "POST",
+            data: {
+                id: courseTypeData.course_type_id,
+                edit_course_type_depts: true
+            },
+            url: "ic_queries/addcourse_type_queries.php",
+            success: function(data) {
+                let applicable_depts = JSON.parse(data);
+                var dept_div = $("#editdepartments input");
+                $.each(dept_div, function() {
+                    var checked = applicable_depts.includes($(this).val()) ? true : false;
+                    $(this).prop("checked", checked);
+
+
+                })
+            },
+            error: function(err) {
+                window.alert("something went wrong");
+            }
+        })
         $("#edit_course_type_form #programName").val(courseTypeData.program);
         console.log(courseTypeData.is_closed_elective)
         $("#edit_course_type_form #edit_is_gradable").attr("checked", courseTypeData.is_gradable == "yes" ? true : false)
@@ -477,7 +500,7 @@ include('../includes/header.php');
 
             ],
             columnDefs: [
-      
+
                 {
                     className: "selectbox",
                     targets: [0]
@@ -498,12 +521,23 @@ include('../includes/header.php');
             ],
         });
     }
-   
+
+    function id_to_name_convertor_dept(id) {
+        <?php
+        include_once('../config.php');
+        $sql = "SELECT * FROM department";
+        $result = mysqli_query($conn, $sql);
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo 'if(id=="' . $row['dept_id'] . '") return "' . $row['dept_name'] . '";';
+        }
+        ?>
+        // if(id == "1") return "Comp";
+        // if(id == "2") return "ETRX";
+        // if(id == "3") return "EXTC";
+        // if(id == "4") return "IT";
+        // if(id == "5") return "MECH";
+    }
 </script>
 <?php include('../includes/footer.php');
 include('../includes/scripts.php');
 ?>
-
-
-
-
