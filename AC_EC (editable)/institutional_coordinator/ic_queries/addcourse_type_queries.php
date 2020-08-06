@@ -47,14 +47,19 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION[
 
 
         ## Total number of records without filtering
-        $sel = mysqli_query($conn, "select count(distinct(course_type_id)) as totalcount from course_type_applicable_dept ctad where $role_restriction");
+        $query="select  count(*) as totalcount from course_types inner join (select distinct course_type_id from course_type_applicable_dept ctad where $role_restriction) as cta on cta.course_type_id = course_types.id";
+        $sel = mysqli_query($conn,$query);
+        // echo $query;
         $records = mysqli_fetch_assoc($sel);
         $totalRecords = $records['totalcount'];
 
         ## Total number of record with filtering
-        $sel = mysqli_query($conn, "select count(*) as totalcountfilters  from course_types WHERE " . $searchQuery);
+        $query= "select  count(*) as totalcountfilters  from course_types inner join (select distinct course_type_id from course_type_applicable_dept ctad where $role_restriction) as cta on cta.course_type_id = course_types.id where " . $searchQuery;
+        // echo $query;
+        $sel = mysqli_query($conn,$query);
         $records = mysqli_fetch_assoc($sel);
         $totalRecordwithFilter = $records['totalcountfilters'];
+        // echo $totalRecordwithFilter;
 
         $sql = "select  * from course_types inner join (select distinct course_type_id from course_type_applicable_dept ctad where $role_restriction) as cta on cta.course_type_id = course_types.id  WHERE " . $searchQuery  . $orderQuery . " limit " . $row . "," . $rowperpage;
         // die($sql);

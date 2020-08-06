@@ -198,7 +198,7 @@ include('../includes/header.php');
             </div>
         </div>
 
-        <div class="card shadow mb-4">
+    
             <div class="card-body">
                 <!-- <h4 class="font-weight-bold text-primary mb-0">Existing course types</h4> -->
                 <!-- <br> -->
@@ -222,7 +222,7 @@ include('../includes/header.php');
                         </thead>
                         <tfoot>
                             <tr>
-                                <th></th>
+                                <th></th> .
                                 <th>id</th>
                                 <th>Course Type</th>
                                 <th>Program</th>
@@ -238,9 +238,10 @@ include('../includes/header.php');
             </div>
             <br>
             <br>
-        </div>
+
     </div>
 </div>
+
 
 <script type="text/javascript">
     $(document).ready(function(e) {
