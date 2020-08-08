@@ -59,7 +59,7 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
             ?>
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title font-weight-bold text-primary mb-0">My Profile</h3>
+                    <h3 class="card-title font-weight-bold text-dark mb-0">My Profile</h3>
                     <div class="row">
                         <div class="col-md-4">
                             <img src="../vendor/img/person1.jpg" class="rounded-circle mx-auto d-block mb-4" alt="..." width="100em" height="100em">
@@ -85,9 +85,9 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-12">
-                            <h3 class=" text-primary mb-0"><strong>My Current Courses</strong></h3>
+                            <h3 class=" text-dark mb-0"><strong>My Current Courses <i class="fas fa-book-open"></i></strong></h3>
                            <br>
-                          
+                          <br>
                             <?php 
                             // echo "$current_sem";
                             $query="select cname,cid,course_type_id from course c where c.cid in (select cid from student_course_alloted s where s.email_id='$email' and c.sem='$current_sem' and s.sem='$current_sem' and c.currently_active=1 and s.currently_active=1)";
@@ -95,6 +95,8 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                             $c=mysqli_num_rows($result);
         
                             if($c>0) {
+                                ?><div class="row">
+                                <?php
                                 while($row=mysqli_fetch_assoc($result))
                                 {
                                    $course_type=$row['course_type_id'];
@@ -102,24 +104,33 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                                    $res1=mysqli_query($conn,$quer);
                                    
                                     ?>
-                                    <div class="card shadow mb-4">
+                                    
+
+                                    <div class="col-sm-6">
+                                    <div class="card w-79 shadow mb-4 text-center">
                                     <div class="card-header">
                                     <?php
                                     while($r=mysqli_fetch_assoc($res1))
                                     {
                                         ?>
-                                    <h5 class="font-weight-bold text-danger">Course Type: <?php echo $r['name'];?></h5>
+                                    <h4 class="font-weight-bold text-primary">Course: <?php echo $r['name'];?></h4>
+                                    
                                     <?php
                                     }
                                     ?>
                                     </div>
-                                    <div class="card-body">
-                                    <div class="row">
-                                    <div class="col-6">
-                                    <h5 class="font-weight-bold text-dark"><?php echo $row['cid'];?> - <?php echo $row['cname'];?></h5>
+                                    <div class="card-body text-center">
                                     
-                                    </div>
                                    
+                                    <div class="card-title font-weight-bold">
+                                    <br>
+                                    <h4 class="font-weight-bold text-danger"><?php echo $row['cname'];?></h4>
+                                   
+                                    <!-- <h5 class="font-weight-bold text-dark">Course ID: <?php echo $row['cid'];?></h5> -->
+                                    </div>
+                                  
+                                    
+                                   <br>
                                     <?php
                                      $cid=$row['cid'];
                                     // $query1="select student_attendance from student_courses_grade where cid='$row['cid']' and email_id='$email' and currently_active=1";
@@ -127,23 +138,45 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                                     $query1="select student_attendance,marks from student_courses_grade g where g.cid in (select cid from student_course_alloted a where a.cid='$cid' and a.email_id ='$email' and g.currently_active=1 and a.currently_active=1 and a.sem='$current_sem' and g.complete_status=1)";
                                     $res=mysqli_query($conn,$query1);
                                     $c1=mysqli_num_rows($res);
+                                    if($c1>0)
+                                        {
                                     while($row1=mysqli_fetch_assoc($res))
                                     {
+                                        
                                         ?>
-                                         <div class="col-md-6">
-                                        <h5 class="font-weight-bold" style="float:right">Marks obtained: <?php echo $row1['marks'];?></h5>
-                                        </div>
-                                        <div class="col">
-
-                                        <h5 class="font-weight-bold" style="float:right">Attendance: <?php echo $row1['student_attendance'];?></h5>
-                                        </div>
+                                         
+                                        <h5 class="card-text font-weight-bold text-dark">Marks obtained: </h5>
+                                        <h5 class="font-weight-bold text-danger"><?php echo $row1['marks'];?></h5>
+                                       
+                                
+                                        <h5 class="font-weight-bold text-dark">Attendance <i class="fas fa-user-check"></i> </h5>
+                                        <h5 class="font-weight-bold text-danger"><?php echo $row1['student_attendance'];?></h5>
                                         <br>
                                        
                                         <?php
+                                        
                                     }
+                                }
+                                else
+                                {
+                                    ?>
+                                    <h5 class="card-text font-weight-bold text-dark">Marks obtained: </h5>
+                                        <h5 class="font-weight-bold text-danger"> --</h5>
+                                       
+                                       
+
+                                        <h5 class="font-weight-bold text-dark">Attendance <i class="fas fa-user-check"></i> </h5>
+                                        <h5 class="font-weight-bold text-danger"> --</h5>
+                                        <br>
+                                    <?php
+                                }
                                     ?>
                                     </div>
+                                    
                                     </div>
+                                    
+                                    
+                                    <!-- row -->
                                     </div>
                                     <br>
                                     <?php
