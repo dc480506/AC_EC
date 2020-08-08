@@ -520,46 +520,43 @@ $program = $_REQUEST['program'];
                                                                 <option ></option>';
                                                             }
 
-                                                            while ($row = mysqli_fetch_assoc($result)) {
-
-                                                                if ($is_closed_elective == "1") {
-                                                                    if (!in_array($row["dept_id"], explode(",", $exclude_dept)))
-                                                                        echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
-                                                                } else {
-
-                                                                    echo '
-                                                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
-                                                                    <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                                                    </div>
-                                                                    ';
-                                                                }
-                                                                $c++;
+                                                            $include_dept_type_arr=array();
+                                                            $sql4="SELECT dept_id FROM course_type_applicable_dept where course_type_id=$course_type_id";
+                                                            // echo $sql;
+                                                            $result4 = mysqli_query($conn, $sql4);
+                                                            while ($row = mysqli_fetch_assoc($result4)) {
+                                                              array_push($include_dept_type_arr, $row['dept_id']);
                                                             }
+
+                                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                                if(in_array($row["dept_id"], $include_dept_type_arr)){
+                                                                    if ($is_closed_elective == "1" ) {
+                                                                        if (!in_array($row["dept_id"], explode(",", $exclude_dept)) )
+                                                                            echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
+                                                                    } else {
+    
+                                                                        echo '
+                                                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                                                        <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
+                                                                        <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                                        </div>
+                                                                        ';
+                                                                    }
+                                                                    $c++;
+                                                                    }
+                                                                }
                                                             if ($is_closed_elective == "1") {
                                                                 echo '</select>';
                                                             }
-                                                        } else if (in_array($_SESSION['role'], array('faculty_co', "HOD"))) {
-                                                            echo '  
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" checked class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $_SESSION['dept_id'] . '">
-                                                                <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
-                                                            </div>';
-                                                        }
-
-
-                                                        // $sql = "SELECT * FROM department";
-                                                        // $result = mysqli_query($conn, $sql);
-                                                        // $c = 8;
-                                                        // while ($row = mysqli_fetch_assoc($result)) {
-                                                        //     echo '
-                                                        // <div class="custom-control custom-checkbox custom-control-inline">
-                                                        //     <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
-                                                        //     <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                                        // </div>
-                                                        // ';
-                                                        //     $c++;
-                                                        // }
+                                                            }
+                                                        else if (in_array($_SESSION['role'], array('faculty_co', "HOD")) && in_array( $_SESSION['dept_id'], $include_dept_type_arr)) {
+                                                                echo '  
+                                                                <div class="custom-control custom-checkbox custom-control-inline">
+                                                                    <input type="checkbox" checked class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $_SESSION['dept_id'] . '">
+                                                                    <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
+                                                                </div>';
+                                                            }
+                                                            
                                                         ?>
 
                                                     </div>
@@ -589,13 +586,17 @@ $program = $_REQUEST['program'];
                                                     </div>';
 
                                                         while ($row = mysqli_fetch_assoc($result)) {
+                                                            if(in_array($row['dept_id'], $include_dept_type_arr))
+                                                            {
                                                             echo '
-                                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
-                                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                                        </div>
-                                                        ';
-                                                            $c++;
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
+                                                            <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                            </div>
+                                                            ';
+                                                                $c++;
+
+                                                          }  
                                                         }
                                                     } else {
                                                         if ($_SESSION['role'] == "inst_coor") {
@@ -608,6 +609,8 @@ $program = $_REQUEST['program'];
                                                             // }
                                                             // echo "</select>";
                                                         } else {
+                                                            if(in_array($row['dept_id'], $include_dept_type_arr))
+                                                            {
                                                             echo '
                                                             <div class="custom-control custom-checkbox custom-control-inline">
                                                             
@@ -616,6 +619,7 @@ $program = $_REQUEST['program'];
                                                             </div>
                                                             ';
                                                         }
+                                                    }
                                                     }
                                                     ?>
                                                     <br>

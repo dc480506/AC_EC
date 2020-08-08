@@ -8,7 +8,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION[
         $program = mysqli_escape_string($conn, $_POST['program']);
         $is_gradable = mysqli_escape_string($conn, $_POST['is_gradable']);
         $is_closed_elective = mysqli_escape_string($conn, $_POST['is_closed_elective']);
-        $sql = "insert into course_types(name,prsogram,is_gradable,is_closed_elective) values ('$course_type_name','$program','$is_gradable',$is_closed_elective) ";
+        $sql = "insert into course_types(name,program,is_gradable,is_closed_elective) values ('$course_type_name','$program','$is_gradable',$is_closed_elective) ";
         // echo $sql;
 
         if (mysqli_query($conn, $sql)) {
