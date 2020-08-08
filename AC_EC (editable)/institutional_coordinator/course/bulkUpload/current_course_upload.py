@@ -67,7 +67,25 @@ course_type_id = args[mapper['course_type_id']]
 uploader_role = args[mapper['login_role']]
 uploader_dept_id = args[mapper['uploader_dept_id']]
 is_closed_elective = int(args[mapper['is_closed_elective']])
-errors = {"invalidFloatingDept": [], "invalidApplicableDept": []}
+errors = {"invalidFloatingDept": [],
+          "invalidApplicableDept": [], "courseNotValidForDept": []}
+
+course_type_applicable_depts = []
+try:
+    sql = "select * from course_type_applicable_dept where course_type_id='%s'" % course_type_id
+    cursor.execute(sql)
+    for rec in cursor.fetchall():
+        course_type_applicable_depts.append(int(rec[1]))
+except Exception as e:
+    print("error+"+str(e))
+    sys.exit(0)
+
+
+def is_valid_applicable_dept(course_type_applicable_depts, applicable_depts):
+    for dept in applicable_depts:
+        if dept not in course_type_applicable_depts:
+            return False
+    return True
 
 
 def is_valid_closed_elective(floating_dept, applicable_dept):
@@ -77,11 +95,19 @@ def is_valid_closed_elective(floating_dept, applicable_dept):
         return False
 
 
-def exec_queries(queries, cid, cname, floating_dept, applicable_dept):
+def exec_queries(queries, cid, cname, floating_dept, applicable_dept, course_type_applicable_depts):
     global errors, is_closed_elective
-    if is_closed_elective and not is_valid_closed_elective(floating_dept, applicable_dept):
-        errors['invalidApplicableDept'].append({"cid": cid, "cname": cname})
-        return
+    if is_closed_elective:
+
+        if not is_valid_closed_elective(floating_dept, applicable_dept):
+            errors['invalidApplicableDept'].append(
+                {"cid": cid, "cname": cname})
+            return
+    else:
+        if not is_valid_applicable_dept(course_type_applicable_depts, applicable_dept):
+            errors['courseNotValidForDept'].append(
+                {"cid": cid, "cname": cname})
+            return
     for query in queries:
         cursor.execute(query)
 
@@ -125,14 +151,14 @@ try:
         if (uploader_role in ['HOD', 'faculty_co']):
             if (int(uploader_dept_id) in floating_dept):
                 exec_queries(
-                    [audit_table_query, audit_floating_table_query, audit_applicable_table_query], cid, cname, floating_dept, applicable_dept)
+                    [audit_table_query, audit_floating_table_query, audit_applicable_table_query], cid, cname, floating_dept, applicable_dept, course_type_applicable_depts)
 
             else:
                 errors['invalidFloatingDept'].append(
                     {"cid": cid, 'cname': cname})
         elif uploader_role == 'inst_coor':
             exec_queries(
-                [audit_table_query, audit_floating_table_query, audit_applicable_table_query], cid, cname, floating_dept, applicable_dept)
+                [audit_table_query, audit_floating_table_query, audit_applicable_table_query], cid, cname, floating_dept, applicable_dept, course_type_applicable_depts)
 
 
 except Exception as e:

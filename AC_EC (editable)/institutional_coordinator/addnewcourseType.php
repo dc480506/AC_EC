@@ -92,13 +92,13 @@ include('../includes/header.php');
                                     ?>
                                     <br>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox"  class="custom-control-input" id="is_gradable" name="is_gradable" value="" checked>
+                                        <input type="checkbox" class="custom-control-input" id="is_gradable" name="is_gradable" value="" checked>
                                         <label class="custom-control-label" for="is_gradable">Is Gradable</label>
                                     </div>
                                     <br>
 
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox"  class="custom-control-input" id="is_closed_elective" name="is_closed_elective" value="" >
+                                        <input type="checkbox" class="custom-control-input" id="is_closed_elective" name="is_closed_elective" value="">
                                         <label class="custom-control-label" for="is_closed_elective">Is Closed Elective</label>
                                     </div>
                                     <br>
@@ -198,46 +198,46 @@ include('../includes/header.php');
             </div>
         </div>
 
-    
-            <div class="card-body">
-                <!-- <h4 class="font-weight-bold text-primary mb-0">Existing course types</h4> -->
-                <!-- <br> -->
-                <div class="table-responsive">
-                    <table style=" margin: 0 auto !important;" class="table table-bordered table-responsive" id="dataTable-coursetypes" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="select_all">
-                                        <label class="custom-control-label" for="select_all"></label>
-                                    </div>
-                                </th>
-                                <th>id</th>
-                                <th>Course Type</th>
-                                <th>Program</th>
-                                <th>Graded</th>
-                                <th>Closed Elective</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th></th> .
-                                <th>id</th>
-                                <th>Course Type</th>
-                                <th>Program</th>
-                                <th>Graded</th>
-                                <th>Closed Elective</th>
-                                <th>Actions</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                    <!-- </div> -->
-                </div>
 
+        <div class="card-body">
+            <!-- <h4 class="font-weight-bold text-primary mb-0">Existing course types</h4> -->
+            <!-- <br> -->
+            <div class="table-responsive">
+                <table style=" margin: 0 auto !important;" class="table table-bordered table-responsive" id="dataTable-coursetypes" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="select_all">
+                                    <label class="custom-control-label" for="select_all"></label>
+                                </div>
+                            </th>
+                            <th>id</th>
+                            <th>Course Type</th>
+                            <th>Program</th>
+                            <th>Graded</th>
+                            <th>Closed Elective</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th></th> .
+                            <th>id</th>
+                            <th>Course Type</th>
+                            <th>Program</th>
+                            <th>Graded</th>
+                            <th>Closed Elective</th>
+                            <th>Actions</th>
+                        </tr>
+                    </tfoot>
+                </table>
+                <!-- </div> -->
             </div>
-            <br>
-            <br>
+
+        </div>
+        <br>
+        <br>
 
     </div>
 </div>
@@ -416,7 +416,7 @@ include('../includes/header.php');
             name: "is_gradable",
             value: is_gradable
         });
-        var is_closed_elective = $("#edit_course_type_form #edit_is_closed_elective").attr("checked") ? 1 : 0;
+        var is_closed_elective = $("#edit_course_type_form #edit_is_closed_elective").prop("checked") == "checked" ? 1 : 0;
         form.push({
             name: "is_closed_elective",
             value: is_closed_elective

@@ -50,7 +50,7 @@ connection = pymysql.connect(host=args[mapper['host']],
                              database=args[mapper['dbname']])
 cursor = connection.cursor()
 
-# course_type_dept="select dept_id from course_type_appicable_dept where course_type_id="+args[mapper['course_type_id']] 
+# course_type_dept="select dept_id from course_type_appicable_dept where course_type_id="+args[mapper['course_type_id']]
 
 # cursor.execute(course_type_dept)
 # dept_data = cursor.fetchall()
@@ -74,7 +74,25 @@ course_type_id = args[mapper['course_type_id']]
 uploader_role = args[mapper['login_role']]
 uploader_dept_id = args[mapper['uploader_dept_id']]
 is_closed_elective = int(args[mapper['is_closed_elective']])
-errors = {"invalidFloatingDept": [], "invalidApplicableDept": []}
+errors = {"invalidFloatingDept": [],
+          "invalidApplicableDept": [], "courseNotValidForDept": []}
+
+course_type_applicable_depts = []
+try:
+    sql = "select * from course_type_applicable_dept where course_type_id='%s'" % course_type_id
+    cursor.execute(sql)
+    for rec in cursor.fetchall():
+        course_type_applicable_depts.append(rec[1])
+except Exception as e:
+    print("error+"+str(e))
+    sys.exit(0)
+
+
+def is_valid_applicable_dept(course_type_applicable_depts, applicable_depts):
+    for dept in applicable_depts:
+        if not dept in course_type_applicable_depts:
+            return False
+    return True
 
 
 def is_valid_closed_elective(floating_dept, applicable_dept):
@@ -84,11 +102,18 @@ def is_valid_closed_elective(floating_dept, applicable_dept):
         return False
 
 
-def exec_queries(queries, cid, cname, floating_dept, applicable_dept):
+def exec_queries(queries, cid, cname, floating_dept, applicable_dept, course_type_applicable_depts):
     global errors, is_closed_elective
-    if is_closed_elective and not is_valid_closed_elective(floating_dept, applicable_dept):
-        errors['invalidApplicableDept'].append({"cid": cid, "cname": cname})
-        return
+    if is_closed_elective:
+        if not is_valid_closed_elective(floating_dept, applicable_dept):
+            errors['invalidApplicableDept'].append(
+                {"cid": cid, "cname": cname})
+            return
+    else:
+        if not is_valid_applicable_dept(course_type_applicable_depts, applicable_dept):
+            errors['courseNotValidForDept'].append(
+                {"cid": cid, "cname": cname})
+            return
     for query in queries:
         cursor.execute(query)
 
