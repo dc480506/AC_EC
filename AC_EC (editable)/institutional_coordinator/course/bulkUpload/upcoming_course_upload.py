@@ -49,6 +49,14 @@ connection = pymysql.connect(host=args[mapper['host']],
                              passwd=args[mapper['password_db']],
                              database=args[mapper['dbname']])
 cursor = connection.cursor()
+
+# course_type_dept="select dept_id from course_type_appicable_dept where course_type_id="+args[mapper['course_type_id']] 
+
+# cursor.execute(course_type_dept)
+# dept_data = cursor.fetchall()
+# dept_data_count = cursor.rowcount
+# print(dept_data)
+
 insert_audit = """INSERT INTO course(cid,sem,year,cname,min,max,email_id,timestamp,currently_active,program,course_type_id) VALUES """
 # print(header_id)
 insert_audit_floating = """INSERT INTO course_floating_dept VALUES """
