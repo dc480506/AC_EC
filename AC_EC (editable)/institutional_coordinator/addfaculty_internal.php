@@ -515,10 +515,12 @@ include('../includes/header.php');
     //DATATABLE CREATE
     function loadCurrent(pageView = false) {
         // document.querySelector("#addCoursebtn").style.display="none"
-        $('#dataTable-internal').DataTable({
+        var table = $('#dataTable-internal').DataTable({
             processing: true,
             serverSide: true,
             destroy: true,
+            autoWidth: false,
+            responsive: true,
             serverMethod: 'post',
             aaSorting: [],
             dom: '<"d-flex justify-content-between"fBl>tip',
@@ -605,8 +607,13 @@ include('../includes/header.php');
                     className: "faculty_code",
                     "targets": [1]
                 },
+                {
+                    width: "20%",
+                    targets: [4]
+                }
             ],
         });
+        table.columns.adjust()
     }
     //SELECT CHECKALL
     $("#select_all").click(function(e) {
@@ -759,6 +766,7 @@ include('../includes/header.php');
             // Open this row
             var data = {}
             data['faculty_code'] = row.data()['faculty_code'];
+            data['email_id'] = row.data()['email_id'];
             console.log(row.data());
             data['type'] = 'faculty';
             data['email_id'] = row.data()['email_id'];
