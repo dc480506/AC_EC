@@ -92,13 +92,13 @@ include('../includes/header.php');
                                     ?>
                                     <br>
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" checked class="custom-control-input" id="is_gradable" name="is_gradable" value="">
+                                        <input type="checkbox"  class="custom-control-input" id="is_gradable" name="is_gradable" value="" checked>
                                         <label class="custom-control-label" for="is_gradable">Is Gradable</label>
                                     </div>
                                     <br>
 
                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" checked class="custom-control-input" id="is_closed_elective" name="is_closed_elective" value="">
+                                        <input type="checkbox"  class="custom-control-input" id="is_closed_elective" name="is_closed_elective" value="" >
                                         <label class="custom-control-label" for="is_closed_elective">Is Closed Elective</label>
                                     </div>
                                     <br>
