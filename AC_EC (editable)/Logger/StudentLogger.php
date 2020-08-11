@@ -56,4 +56,20 @@ class StudentLogger extends ActivityLogger
         $operationPerformed = "UPDATE";
         $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, $status, $affectedUser);
     }
+
+    public function formFill($performing_user, $form_name)
+    {
+        $pageAffected = $form_name;
+        $operationPerformed = "INSERT";
+        $status = "$form_name filled by $performing_user";
+        $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, $status);
+    }
+
+    public function formUpdate($performing_user, $form_name)
+    {
+        $pageAffected = $form_name;
+        $operationPerformed = "UPDATE";
+        $status = "$form_name edited by $performing_user";
+        $this->createLogEntry($performing_user, $pageAffected, $operationPerformed, $status);
+    }
 }

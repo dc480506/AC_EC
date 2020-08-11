@@ -99,10 +99,20 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
   $dept_list = array();
   $dept_ids = array();
   $result3 = mysqli_query($conn, $sql3);
+  $include_dept_type_arr=array();
   while ($row = mysqli_fetch_assoc($result3)) {
     array_push($dept_list, $row['dept_id'], $row['dept_name']);
     $dept_ids[$row['dept_name']] = $row['dept_id'];
   }
+
+  
+  $sql4="SELECT dept_id FROM course_type_applicable_dept where course_type_id=$course_type_id";
+  // echo $sql;
+  $result4 = mysqli_query($conn, $sql4);
+  while ($row = mysqli_fetch_assoc($result4)) {
+    array_push($include_dept_type_arr, $row['dept_id']);
+  }
+
   $str_arr = explode(", ", $dept_applicable);
   $str_arr2 = explode(", ", $floating_dept);
   $exclude_dept_arr = explode(',', $exclude_dept);
@@ -123,7 +133,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
       $applicable_dept_div .= '<input type="hidden" value="' . $dept_ids[$floating_dept] . '"  id= "exampleInputApplicableDeptUpdateVal" name= "check_dept[]" />';
       $floating_dept_div = '<select class="form-control" required id="exampleInputFloatingDeptUpdate" name="floating_check_dept[]" required>';
       for ($i = 1; $i < count($dept_list); $i = $i + 2) {
-        if (!in_array($dept_list[$i - 1], $exclude_dept_arr)) {
+        if (!in_array($dept_list[$i - 1], $exclude_dept_arr) && in_array($dept_list[$i - 1], $include_dept_type_arr)) {
           $isChecked = in_array($dept_list[$i], $str_arr) ? "selected" : "";
           echo $dept_list[$i];
           $floating_dept_div .= "<option $isChecked value='{$dept_list[$i - 1]}'>{$dept_list[$i]}</option>";
@@ -136,7 +146,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
   for ($i = 1; $i < count($dept_list); $i = $i + 2) {
     // For applicable dept
 
-    if (!$is_closed_elective && !in_array($dept_list[$i - 1], $exclude_dept_arr)) {
+    if (!$is_closed_elective && !in_array($dept_list[$i - 1], $exclude_dept_arr)&& in_array($dept_list[$i - 1], $include_dept_type_arr) ) {
       $isChecked = in_array($dept_list[$i], $str_arr) ? "checked" : "";
       $applicable_dept_div .= '
         <div class="custom-control custom-checkbox custom-control-inline">
@@ -146,7 +156,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
         ';
     }
     // For floating dept
-    if (((!$is_closed_elective && $_SESSION['role'] == "inst_coor") || (in_array($_SESSION['role'], array("faculty_co", "HOD")) && $_SESSION['dept_name'] == $dept_list[$i]))) {
+    if ( in_array($dept_list[$i - 1], $include_dept_type_arr)  && ((!$is_closed_elective && $_SESSION['role'] == "inst_coor") || (in_array($_SESSION['role'], array("faculty_co", "HOD")) && $_SESSION['dept_name'] == $dept_list[$i]))) {
       $isChecked = in_array($dept_list[$i], $str_arr2) ? "checked" : "";
       $isEnabled = in_array($_SESSION['role'], array("faculty_co", "HOD")) ? "disabled" : "";
       $floating_dept_div .= '
@@ -234,7 +244,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                       <!--Update-->
                       <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
                         <form method="POST" id="update_course_form">
-                          input type="hidden" name="program" value="' . $program . '">
+                          <input type="hidden" name="program" value="' . $program . '">
                           <input type="hidden" name="course_type_id" value="' . $course_type_id . '">
                           <div class="form-row mt-4">
                               <div class="form-group col-md-6">

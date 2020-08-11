@@ -2,6 +2,9 @@
 include('../config.php');
 include_once('verify.php');
 include('../includes/header.php');
+include("../Logger/FormLogger.php");
+$logger = FormLogger::getLogger();
+$logger->formRecordsViewed($_SESSION['email']);
 ?>
 <?php include('sidebar.php'); ?>
 
@@ -31,28 +34,22 @@ include('../includes/header.php');
 <div class="container-fluid" id="form_sect  ion">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h4 class="font-weight-bold text-primary mb-0">Form Records</h4>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row align-items-center">
-                <div class="col">
+            <div class="row align-items-center justify-content-center">
+                <div class="col d-flex align-content-center">
                     <h4 class="font-weight-bold text-primary mb-0">Form Records</h4>
                     <br>
                 </div>
-                <div class="col text-right" id="delete_selected_response_div">
-                    <button type="button" class="btn btn-danger" id="delete_selected_response_btn" name="delete_selected_current">
-                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Form(s)
-                    </button>
-                </div>
+
                 <div class="col text-right">
                     <button id="create-form-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createForm">
                         <i class="fas fa-plus"></i> Create Form
                     </button>
                 </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center">
+
 
                 <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="createForm" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -109,61 +106,56 @@ include('../includes/header.php');
                                         <label for=""><b>Departments Applicable</b></label>
                                         <br>
                                         <!-- <select class="form-control" required name="dept">-->
-                                        
+
                                         <?php
                                         include_once('../config.php');
-                                       $sql = "SELECT * FROM department";
+                                        $sql = "SELECT * FROM department";
                                         $result1 = mysqli_query($conn, $sql);
 
-                                       function id_to_name_convertor_dept($id,$res) {
-                                        
-                                        include_once('../config.php');
-                                        
-                                        while ($row = mysqli_fetch_assoc($res)) {
-                                            if($row['dept_id']==$id)
-                                            {
-                                                return $row['dept_name'];
+                                        function id_to_name_convertor_dept($id, $res)
+                                        {
+
+                                            include_once('../config.php');
+
+                                            while ($row = mysqli_fetch_assoc($res)) {
+                                                if ($row['dept_id'] == $id) {
+                                                    return $row['dept_name'];
+                                                }
                                             }
                                         }
-                                    }
-                                        
+
                                         $sql = "SELECT * FROM department WHERE dept_id NOT IN (" . $exclude_dept . ")";
                                         $result = mysqli_query($conn, $sql);
                                         $c = 8;
-                                        if($_SESSION['role']=='faculty_co')
-                                        {
-                                            $deptName=id_to_name_convertor_dept($_SESSION['dept_id'],$result1);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                          
+                                        if ($_SESSION['role'] == 'faculty_co') {
+                                            $deptName = id_to_name_convertor_dept($_SESSION['dept_id'], $result1);
+                                            while ($row = mysqli_fetch_assoc($result)) {
 
-                                                if($row['dept_name']==$deptName )
-                                                {
-                                                   
-                                                echo  '
+
+                                                if ($row['dept_name'] == $deptName) {
+
+                                                    echo  '
                                                 
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                             <input type="checkbox" checked class="custom-control-input" id="dept_applicable_cb' . $c . '"  name="dept_applicable[]" value="' . $row['dept_id'] . '">
                                                             <label class="custom-control-label" for="dept_applicable_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
                                                         </div>
                                                         ';
-                                            $c++;
+                                                    $c++;
                                                 }
-                                                
                                             }
-                                        }
-                                            else
-                                            {
-                                                while ($row = mysqli_fetch_assoc($result)) { 
-                                            echo '
+                                        } else {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo '
                                                         <div class="custom-control custom-checkbox custom-control-inline">
                                                             <input type="checkbox" checked class="custom-control-input" id="dept_applicable_cb' . $c . '"  name="dept_applicable[]" value="' . $row['dept_id'] . '">
                                                             <label class="custom-control-label" for="dept_applicable_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
                                                         </div>
                                                         ';
-                                            $c++;
+                                                $c++;
+                                            }
                                         }
-                                    }
-                                    
+
                                         ?>
 
                                     </div>
@@ -224,13 +216,8 @@ include('../includes/header.php');
                 <table class="table table-bordered" id="dataTable-form" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="select_all_current_page">
-                                    <label class="custom-control-label" for="select_all_current_page"></label>
-                                </div>
-                            </th>
-                            <th>Form ID</th>
+
+                            <th>ID</th>
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
@@ -249,8 +236,8 @@ include('../includes/header.php');
                     </thead>
                     <tfoot>
                         <tr>
-                            <th></th>
-                            <th>Form ID</th>
+
+                            <th>ID</th>
                             <th>Floating Sem</th>
                             <th>Year</th>
                             <th>Current Sem</th>
@@ -275,7 +262,6 @@ include('../includes/header.php');
 
 <!-- /.container-fluid -->
 <script>
-
     $('#create-form #program').change(function(e) {
         var program = $(this).val();
         let data = {
@@ -419,10 +405,10 @@ include('../includes/header.php');
             },
             success: function(data) {
                 console.log($.trim(data));
-                if ($.trim(data)=="done") {
+                if ($.trim(data) == "done") {
                     console.log("success!");
                     $('#dataTable-form').DataTable().draw(false);
-                    
+
                     $("#create_form_btn").text("Created Successfully")
                 } else {
                     if (data == 'present') {
@@ -476,9 +462,6 @@ include('../includes/header.php');
                 })
             },
             columns: [{
-                    data: 'select-cbox'
-                },
-                {
                     data: 'form_id'
                 },
                 {
@@ -528,19 +511,19 @@ include('../includes/header.php');
                     targets: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // column index (start from 0)
                     orderable: false, // set orderable false for selected columns
                 },
-                {
-                    className: "selectbox_current_td",
-                    targets: [0]
-                },
+                // {
+                //     className: "selectbox_current_td",
+                //     targets: [0]
+                // },
                 {
                     className: "cname",
                     "targets": [2]
                 },
-                {
-                    className: "form_id",
-                    "targets": [1],
-                    visible: false,
-                },
+                // {
+                //     className: "form_id",
+                //     "targets": [0],
+                //     visible: false,
+                // },
                 // { className: "cid", "targets": [ 1 ] },
                 // { className: "sem", "targets": [ 2 ] },
                 // { className: "dept_name", "targets": [ 3 ] },

@@ -22,15 +22,22 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
                     <label for="added_by"><b>Added by: </b></label>
                     <small><span>' . $adding_email_id . '</span></small>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-8">
                     <label for="added_on"><b>Added on: </b></label>
                     <small><span>' . $timestamp . '</span></small>
                 </div>
                 
-                <div class="form-group col-md-4">  
+                <div class="form-group col-md-2">  
                 <a href="loadAdditionalInfo/additional_info_student_courses.php">          
                     <button type="submit" class="btn btn-primary" onClick="myfun()" role="button" id="student_courses">View Courses Info</button>    
                 </a>  
+                
+                </div>
+                <div class="form-group col-md-2">  
+                <form method="POST" action="activityLog.php">
+                <input type="hidden" name="userLogs" value="' . $email_id . '">
+                <button type="submit" class="btn btn-primary" id="student_logs">View Activity Logs</button>
+                </form>
                 </div>
             </div>
         ';

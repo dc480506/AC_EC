@@ -520,46 +520,42 @@ $program = $_REQUEST['program'];
                                                                 <option ></option>';
                                                             }
 
+                                                            $include_dept_type_arr = array();
+                                                            $sql4 = "SELECT dept_id FROM course_type_applicable_dept where course_type_id=$course_type_id";
+                                                            // echo $sql;
+                                                            $result4 = mysqli_query($conn, $sql4);
+                                                            while ($row = mysqli_fetch_assoc($result4)) {
+                                                                array_push($include_dept_type_arr, $row['dept_id']);
+                                                            }
+
                                                             while ($row = mysqli_fetch_assoc($result)) {
+                                                                if (in_array($row["dept_id"], $include_dept_type_arr)) {
+                                                                    if ($is_closed_elective == "1") {
+                                                                        if (!in_array($row["dept_id"], explode(",", $exclude_dept)))
+                                                                            echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
+                                                                    } else {
 
-                                                                if ($is_closed_elective == "1") {
-                                                                    if (!in_array($row["dept_id"], explode(",", $exclude_dept)))
-                                                                        echo "<option value='{$row['dept_id']}'>{$row['dept_name']}</option>";
-                                                                } else {
-
-                                                                    echo '
-                                                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
-                                                                    <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                                                    </div>
-                                                                    ';
+                                                                        echo '
+                                                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                                                        <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
+                                                                        <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                                        </div>
+                                                                        ';
+                                                                    }
+                                                                    $c++;
                                                                 }
-                                                                $c++;
                                                             }
                                                             if ($is_closed_elective == "1") {
                                                                 echo '</select>';
                                                             }
-                                                        } else if (in_array($_SESSION['role'], array('faculty_co', "HOD"))) {
+                                                        } else if (in_array($_SESSION['role'], array('faculty_co', "HOD")) && in_array($_SESSION['dept_id'], $include_dept_type_arr)) {
                                                             echo '  
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" checked class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $_SESSION['dept_id'] . '">
-                                                                <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
-                                                            </div>';
+                                                                <div class="custom-control custom-checkbox custom-control-inline">
+                                                                    <input type="checkbox" checked class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $_SESSION['dept_id'] . '">
+                                                                    <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
+                                                                </div>';
                                                         }
 
-
-                                                        // $sql = "SELECT * FROM department";
-                                                        // $result = mysqli_query($conn, $sql);
-                                                        // $c = 8;
-                                                        // while ($row = mysqli_fetch_assoc($result)) {
-                                                        //     echo '
-                                                        // <div class="custom-control custom-checkbox custom-control-inline">
-                                                        //     <input type="checkbox" class="custom-control-input" id="floating_dept_upcoming_cb' . $c . '"  name="floating_check_dept[]" value="' . $row['dept_id'] . '">
-                                                        //     <label class="custom-control-label" for="floating_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                                        // </div>
-                                                        // ';
-                                                        //     $c++;
-                                                        // }
                                                         ?>
 
                                                     </div>
@@ -589,13 +585,15 @@ $program = $_REQUEST['program'];
                                                     </div>';
 
                                                         while ($row = mysqli_fetch_assoc($result)) {
-                                                            echo '
-                                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                                        <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
-                                                        <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
-                                                        </div>
-                                                        ';
-                                                            $c++;
+                                                            if (in_array($row['dept_id'], $include_dept_type_arr)) {
+                                                                echo '
+                                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $row['dept_id'] . '" checked>
+                                                            <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $row['dept_name'] . '</small></label>
+                                                            </div>
+                                                            ';
+                                                                $c++;
+                                                            }
                                                         }
                                                     } else {
                                                         if ($_SESSION['role'] == "inst_coor") {
@@ -608,13 +606,15 @@ $program = $_REQUEST['program'];
                                                             // }
                                                             // echo "</select>";
                                                         } else {
-                                                            echo '
+                                                            if (in_array($row['dept_id'], $include_dept_type_arr)) {
+                                                                echo '
                                                             <div class="custom-control custom-checkbox custom-control-inline">
                                                             
                                                             <input type="checkbox" class="custom-control-input dept" id="applicable_dept_upcoming_cb' . $c . '"  name="check_dept[]" value="' . $_SESSION['dept_id'] . '" checked>
                                                             <label class="custom-control-label" for="applicable_dept_upcoming_cb' . $c . '"><small>' . $_SESSION['dept_name'] . '</small></label>
                                                             </div>
                                                             ';
+                                                            }
                                                         }
                                                     }
                                                     ?>
@@ -1350,8 +1350,8 @@ $program = $_REQUEST['program'];
         formData.append("program", "<?php echo $program; ?>")
         formData.append("course_type_id", "<?php echo $course_type_id; ?>")
         formData.append("is_closed_elective", "<?php echo $is_closed_elective == 1 ? 1 : 0; ?>")
-        $("#upload_current").attr("disabled", true);
-        $("#upload_current").text("Uploading...")
+        // $("#upload_current").attr("disabled", true);
+        // $("#upload_current").text("Uploading...")
         $.ajax({
             url: "course/bulkUpload/current_course_upload.php",
             type: 'POST',
@@ -2054,6 +2054,7 @@ $program = $_REQUEST['program'];
     })
 
     function bulkUploadSuccess(data, callback) {
+
         let [status, response] = $.trim(data).split("+");
         // alert(status);
         if (status == "successful") {
@@ -2072,6 +2073,10 @@ $program = $_REQUEST['program'];
                         case "invalidApplicableDept":
                             $("#invalidCoursesBody").append('<h6><b>Following courses are not applicable to ypur department for closed elective:</b></h6><ul>');
                             break;
+                        case "courseNotValidForDept":
+                            $("#invalidCoursesBody").append('<h6><b>Following courses have an invalid department in thier applicable departments list:</b></h6><ul>');
+                            break;
+
                     }
                     resData[key].forEach(course => {
                         $("#invalidCoursesBody").append(`<li class='text-danger'>${course.cid} - ${course.cname}</li>`);

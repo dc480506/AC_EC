@@ -10,6 +10,7 @@ class ActivityLogger
         $this->dbConn = new mysqli($servername, $username, $password, $dbname, $port);
     }
 
+
     function __call($name, $arguments)
     {
 
