@@ -1,6 +1,8 @@
 <?php
 include_once('../verify.php');
 include_once('../../config.php');
+include_once("../../Logger/CourseLogger.php");
+$logger = CourseLogger::getLogger();
 $year = $_POST['year'];
 $cid = $_POST['cid'];
 $cname = $_POST['cname'];
@@ -29,7 +31,12 @@ if ($_POST['courseType'] == "PREVIOUS") {
 $sql = "update " . $table_name . " set syllabus_path = '" . $rel_file_path . "' , upload_timestamp =  '" . $upload_time . "' where cid = '$cid' and sem='$sem' and year='$year' and course_type_id='$course_type_id' and program='$program'";
 
 if (mysqli_query($conn, $sql)) {
+    $active_status= $_SESSION['active_status'];
+    $course_type_name=$_SESSION['course_type_name'];
+    $affectedCourse=$cid." sem ".$sem." year ".$year." of ".$course_type_name;    
+    $logger->courseSyllabusInserted($_SESSION['email'], $affectedCourse,$active_status);
     echo "uploaded successfully";
+
 } else {
     echo "Something went wrong.";
 }

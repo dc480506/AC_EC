@@ -34,6 +34,7 @@ class ActivityLogger
     {
         $sql = "insert into activity_log(performing_user,page_affected,operation_performed,status) 
                 values ('$performing_user' , '$page_affected','$operation_performed' , '$status')";
+            //    echo $sql; 
         if ($this->dbConn->query($sql) === FALSE) {
             die($this->dbConn->error);
         }

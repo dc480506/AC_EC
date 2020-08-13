@@ -1,5 +1,7 @@
 <?php
 include_once('../../config.php');
+include_once("../../Logger/CourseLogger.php");
+$logger = CourseLogger::getLogger();
 $file = urldecode($_REQUEST["file"]);
 $filepath = $base_dir . $file;
 

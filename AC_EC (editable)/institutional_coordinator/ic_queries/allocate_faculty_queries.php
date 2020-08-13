@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__."../../utils/email_queue.php";
+include_once("../../Logger/CourseLogger.php");
+$logger = CourseLogger::getLogger();
 session_start();
 $insertFlag=false;
 $allowed_roles = array("inst_coor", "faculty_co", "HOD");
@@ -14,13 +16,24 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles))  {
     $program = mysqli_escape_string($conn, $_POST['program']);
     $course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
 
+    
+  
+    $course_type_name=$_SESSION['course_type_name'];
+    $affectedCourse=$cid." sem ".$sem." year ".$year." of ".$course_type_name; 
+
     if ($email_id != "null") {
       if (isset($_POST['faculty_unallocate'])) {
         $sql = "DELETE FROM faculty_course_alloted WHERE cid='$cid' AND sem='$sem' AND year='$year' AND email_id='$email_id'  AND course_type_id='$course_type_id' AND currently_active='1'";
+        $active_status="Current";
+        $logger->courseFacultyDeleted($_SESSION['email'],$email_id, $affectedCourse,$active_status);
       } else if (isset($_POST['faculty_unallocate_upcoming'])) {
         $sql = "DELETE FROM faculty_course_alloted WHERE cid='$cid' AND sem='$sem' AND year='$year' AND email_id='$email_id'  AND course_type_id='$course_type_id' AND currently_active='0'";
+        $active_status="Upcoming";
+        $logger->courseFacultyDeleted($_SESSION['email'],$email_id, $affectedCourse,$active_status);
       } else if (isset($_POST['faculty_unallocate_log'])) {
         $sql = "DELETE FROM faculty_course_alloted_log WHERE cid='$cid' AND sem='$sem' AND year='$year'  AND course_type_id='$course_type_id' AND email_id='$email_id'";
+        $active_status="Previous";
+        $logger->courseFacultyDeleted($_SESSION['email'],$email_id, $affectedCourse,$active_status);
       }
       mysqli_query($conn, $sql);
     }
@@ -66,20 +79,27 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles))  {
     $email_id = mysqli_escape_string($conn, $_POST['email_id']);
     $program = mysqli_escape_string($conn, $_POST['program']);
     $course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
+    $course_type_name=$_SESSION['course_type_name'];
+    $affectedCourse=$cid." sem ".$sem." year ".$year." of ".$course_type_name; 
 
     if (isset($_POST['allocate_faculty_audit'])) {
       $sql = "INSERT INTO faculty_course_alloted VALUES ('$email_id','$cid','$course_type_id','$sem','$year','1')";
       $insertFlag = true;
-    
+      $active_status="Current";
+      $logger->courseFacultyInserted($_SESSION['email'],$email_id, $affectedCourse,$active_status);
      
     } else if (isset($_POST['allocate_faculty_audit_upcoming'])) {
       $sql = "INSERT INTO faculty_course_alloted VALUES ('$email_id','$cid','$course_type_id','$sem','$year','0')";
       $insertFlag = true;
-
+      $active_status="Upcoming";
+      $logger->courseFacultyInserted($_SESSION['email'],$email_id, $affectedCourse,$active_status);
     
     } else if (isset($_POST['allocate_faculty_audit_log'])) {
       $sql = "INSERT INTO faculty_course_alloted_log VALUES ('$email_id','$cid','$course_type_id','$sem','$year')";
+      // echo $sql;
       $insertFlag = true;
+      $active_status="Previous";
+      $logger->courseFacultyInserted($_SESSION['email'],$email_id, $affectedCourse,$active_status);
       
 
     }

@@ -12,6 +12,7 @@ include('../includes/header.php');
 $course_type_id = mysqli_escape_string($conn, $_REQUEST['course_type_id']);
 $sql = "select name from course_types where id='$course_type_id'";
 $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
+$_SESSION['course_type_name']=$course_type_name;
 $is_closed_elective = $_REQUEST['is_closed_elective'];
 $program = $_REQUEST['program'];
 ?>
@@ -1314,7 +1315,7 @@ $program = $_REQUEST['program'];
 
     var activeTab = "current"
     $(document).ready(function() {
-        loadCurrent();
+        loadCurrent(true);
         $('#uploadCurrent').on('hidden.bs.modal', function(e) {
             document.querySelector("#bulkUploadCurrent").reset();
             $("#upload_current").text("Upload")
@@ -1452,7 +1453,7 @@ $program = $_REQUEST['program'];
         $(`#dataTable-${activeTab}`).DataTable().ajax.reload(false);
     });
 
-    function loadCurrent() {
+    function loadCurrent(loadPage=false) {
         // document.querySelector("#addCoursebtn").style.display="none"
         $('#dataTable-current').DataTable({
             processing: true,
@@ -1485,7 +1486,8 @@ $program = $_REQUEST['program'];
                 "data": function(d) {
                     d.filters = getFilters();
                     d.program = "<?php echo $program; ?>";
-                    d.course_type_id = "<?php echo $course_type_id; ?>"
+                    d.course_type_id = "<?php echo $course_type_id; ?>";
+                    d.pageView = loadPage;
                     return d
                 }
             },
@@ -2162,7 +2164,7 @@ $program = $_REQUEST['program'];
         })
     })
 
-    function loadUpcoming() {
+    function loadUpcoming(loadPage=false) {
         // document.querySelector("#addCoursebtn").style.display="block"
         $('#dataTable-upcoming').DataTable({
             processing: true,
@@ -2195,7 +2197,8 @@ $program = $_REQUEST['program'];
                 "data": function(d) {
                     d.filters = getFilters();
                     d.program = "<?php echo $program; ?>";
-                    d.course_type_id = "<?php echo $course_type_id; ?>"
+                    d.course_type_id = "<?php echo $course_type_id; ?>";
+                    d.pageView = loadPage;
                     return d
                 }
             },
@@ -2834,7 +2837,7 @@ $program = $_REQUEST['program'];
         })
     })
 
-    function loadPrevious() {
+    function loadPrevious(loadPage=false) {
         // document.querySelector("#addCoursebtn").style.display="none"
         $('#dataTable-previous').DataTable({
             processing: true,
@@ -2867,7 +2870,8 @@ $program = $_REQUEST['program'];
                 "data": function(d) {
                     d.filters = getFilters();
                     d.program = "<?php echo $program; ?>";
-                    d.course_type_id = "<?php echo $course_type_id; ?>"
+                    d.course_type_id = "<?php echo $course_type_id; ?>";
+                    d.pageView = loadPage;
                     return d
                 }
             },
@@ -3461,11 +3465,11 @@ $program = $_REQUEST['program'];
         console.log(activeTab)
         clearFilters();
         if (activeTab == 'current') {
-            loadCurrent()
+            loadCurrent(true)
         } else if (activeTab == 'upcoming') {
-            loadUpcoming();
+            loadUpcoming(true);
         } else if (activeTab == 'previous') {
-            loadPrevious()
+            loadPrevious(true)
         }
     });
     $("#add_course_form").submit(function(e) {
