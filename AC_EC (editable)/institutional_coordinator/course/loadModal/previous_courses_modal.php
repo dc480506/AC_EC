@@ -17,7 +17,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
   $dept_applicable = mysqli_escape_string($conn, $data['dept_applicable']);
   $floating_dept = mysqli_escape_string($conn, $data['dept_name']);
   $is_closed_elective = mysqli_escape_string($conn, $data['is_closed_elective']) == 1;
-
+  $_SESSION['active_status']="Previous";
   // $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
   // $row=mysqli_fetch_assoc($result);
   // $year=$row['academic_year'];

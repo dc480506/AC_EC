@@ -1,6 +1,8 @@
 <?php
 include_once '../verify.php';
 include_once "../../config.php";
+include_once("../../Logger/CourseLogger.php");
+$logger = CourseLogger::getLogger();
 //For Course deletion
 if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     $cid = mysqli_escape_string($conn, $_POST['cid']);
@@ -8,6 +10,14 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     $year = mysqli_escape_string($conn, $_POST['year']);
     $course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
     $program = mysqli_escape_string($conn, $_POST['program']);
+
+    $active_status= $_SESSION['active_status'];
+    $course_type_name=$_SESSION['course_type_name'];
+    $affectedCourse=$cid." sem ".$sem." year ".$year." of ".$course_type_name; 
+ 
+
+    $logger->courseDeleted($_SESSION['email'], $affectedCourse,$active_status);
+
     if (isset($_POST['delete_course'])) {
         $sql = "DELETE FROM course WHERE cid='$cid' AND sem='$sem' AND year='$year' AND course_type_id='$course_type_id' AND program='$program'";
     } else if (isset($_POST['delete_course_log'])) {
@@ -31,11 +41,18 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     if ($max < $min) {
         echo "Max_error";
     } else {
+        $active_status= $_SESSION['active_status'];
+        $course_type_name=$_SESSION['course_type_name'];
+        $affectedCourse=$cidold." sem ".$sem." year ".$year." of ".$course_type_name; 
+  
+        
         if ($cidnew != $cidold) {
             $results = mysqli_query($conn, "select cid from audit_course where cid='$cidnew' and sem='$semnew'");
             if (mysqli_num_rows($results) > 0) {
                 echo "Exists_cid";
             } else {
+                
+                $logger->courseModified($_SESSION['email'], $affectedCourse,$active_status);
                 if (isset($_POST['update_course'])) {
                     $sql = "UPDATE course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' and course_type_id='$course_type_id' and program='$program'
                             AND sem='$semold' AND year='$year'";
@@ -51,6 +68,7 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
             if (mysqli_num_rows($results) > 0) {
                 echo "Exists_sem";
             } else {
+                $logger->courseModified($_SESSION['email'], $affectedCourse,$active_status);
                 if (isset($_POST['update_course'])) {
                     $sql = "UPDATE course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' and course_type_id='$course_type_id' and program='$program'
                             AND sem='$semold' AND year='$year'";
@@ -62,6 +80,7 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
                 }
             }
         } else {
+            $logger->courseModified($_SESSION['email'], $affectedCourse,$active_status);
             if (isset($_POST['update_course'])) {
                 $sql = "UPDATE course SET cname='$cname',cid='$cidnew',sem='$semnew',min='$min',max='$max' WHERE cid='$cidold' and course_type_id='$course_type_id' and program='$program'
                         AND sem='$semold' AND year='$year'";
@@ -251,6 +270,11 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
         } else {
             $sql = "INSERT INTO course(`cid`,`sem`,`year`,`program`,`course_type_id`,`cname`,`min`,`max`,`email_id`,`timestamp`) VALUES('$cid','$sem','$year','$program','$course_type_id','$cname','$min','$max','$email','$timestamp')";
             mysqli_query($conn, $sql);
+            $active_status= "Upcoming";
+            $course_type_name=$_SESSION['course_type_name'];
+            
+            $affectedCourse=$cid." sem ".$sem." year ".$year." of ".$course_type_name;    
+            $logger->courseInserted($_SESSION['email'], $affectedCourse,$active_status);
         }
 
         $Values = "";
@@ -292,6 +316,15 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     $new_course_type_id = mysqli_escape_string($conn, $_POST['new_course_type_id']);
     $old_course_type_id = mysqli_escape_string($conn, $_POST['old_course_type_id']);
 
+ 
+
+    $active_status= $_SESSION['active_status'];
+    $course_type_name=$_SESSION['course_type_name'];
+    $affectedCourse=$newcid." sem ".$newsem." year ".$newyear." of ".$course_type_name;
+    $affectedSimilarCourse=$oldcid." sem ".$oldsem." year ".$oldyear." of ".$old_course_type_id; 
+  
+    $logger->courseSimilarDeleted($_SESSION['email'], $affectedSimilarCourse,$affectedCourse, $active_status);
+
     $sql = "DELETE FROM course_similar_map WHERE oldcid='$oldcid' AND newcid='$newcid' AND oldyear='$oldyear' AND newyear='$newyear' AND oldsem='$oldsem' AND newsem='$newsem' and old_course_type_id = '$old_course_type_id' and new_course_type_id='$new_course_type_id'";
     $result = mysqli_query($conn, $sql);
 
@@ -299,11 +332,11 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     $i = 1;
     //$faculties_allocated_temp = "(";
     $sql = "(SELECT cname,oldcid,oldsem,old_course_type_id,new_course_type_id , name ,oldyear,newcid, newsem,newyear,new_course_type_id FROM course INNER JOIN course_similar_map INNER JOIN course_types as ct
-                ON newcid='$newcid' AND newsem='$newsem' AND newyear='$newyear' and new_course_type_id='$new_course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
-                UNION
-               (SELECT cname,oldcid,oldsem,old_course_type_id,new_course_type_id , name ,oldyear,newcid, newsem,newyear,new_course_type_id FROM course_log INNER JOIN course_similar_map INNER JOIN course_types as ct
-                ON newcid='$newcid' AND newsem='$newsem' AND newyear='$newyear' and new_course_type_id='$new_course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
-                ";
+            ON newcid='$newcid' AND newsem='$newsem' AND newyear='$newyear' and new_course_type_id='$new_course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
+            UNION
+            (SELECT cname,oldcid,oldsem,old_course_type_id,new_course_type_id , name ,oldyear,newcid, newsem,newyear,new_course_type_id FROM course_log INNER JOIN course_similar_map INNER JOIN course_types as ct
+            ON newcid='$newcid' AND newsem='$newsem' AND newyear='$newyear' and new_course_type_id='$new_course_type_id' AND oldcid=cid AND oldsem=sem AND oldyear=year and old_course_type_id=course_type_id and old_course_type_id = ct.id)
+            ";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) == 0) {
@@ -318,6 +351,7 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
             $oldcid = $row['oldcid'];
             $newcid = $row['newcid'];
             $cname = $row['cname'];
+            $course_type = $row['name'];
             $new_course_type_id = $row['new_course_type_id'];
             $old_course_type_id = $row['old_course_type_id'];
             // $similar_courses.="<p><small>".$i.") ".$row['cname']." (Course ID: ".$row['oldcid']." , Sem: ".$row['oldsem']." , Year: ".$row['oldyear'].")</small></p>";
@@ -351,8 +385,16 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     $new_course_type_id = mysqli_escape_string($conn, $_POST['new_course_type_id']);
     $old_course_type_id = mysqli_escape_string($conn, $_POST['old_course_type_id']);
 
+    $active_status= $_SESSION['active_status'];
+    $course_type_name=$_SESSION['course_type_name'];
+    $affectedCourse=$newcid." sem ".$newsem." year ".$newyear." of ".$course_type_name;
+    $affectedSimilarCourse=$oldcid." sem ".$oldsem." year ".$oldyear." of ".$old_course_type_id; 
+      
+    $logger->courseSimilarDeleted($_SESSION['email'], $affectedSimilarCourse,$affectedCourse, $active_status);
+    
     $sql = "DELETE FROM course_similar_map_log WHERE oldcid='$oldcid' AND newcid='$newcid' AND oldyear='$oldyear' AND newyear='$newyear' AND oldsem='$oldsem' AND newsem='$newsem' and old_course_type_id = '$old_course_type_id' and new_course_type_id='$new_course_type_id'";
     $result = mysqli_query($conn, $sql);
+
 
     $faculty_div = "";
     $i = 1;
@@ -416,6 +458,13 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
 
     mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
+    $active_status= $_SESSION['active_status'];
+    $course_type_name=$_SESSION['course_type_name'];
+    $affectedCourse=$newcid." sem ".$newsem." year ".$newyear." of ".$course_type_name;
+    $affectedSimilarCourse=$oldcid." sem ".$oldsem." year ".$oldyear." of ".$old_course_type_id; 
+ 
+    $logger->courseSimilarInserted($_SESSION['email'], $affectedSimilarCourse,$affectedCourse, $active_status);
+
     $faculty_div = "";
     $i = 1;
     //$faculties_allocated_temp = "(";
@@ -477,6 +526,13 @@ if (isset($_POST['delete_course']) || isset($_POST['delete_course_log'])) {
     $sql = "INSERT INTO course_similar_map_log(`newcid`,`newsem`,`newyear`,`new_course_type_id`,`oldcid`,`oldsem`,`oldyear`,`old_course_type_id`) VALUES('$oldcid','$oldsem','$oldyear','$old_course_type_id','$newcid','$newsem','$newyear','$new_course_type_id')";
 
     mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+    $active_status= $_SESSION['active_status'];
+    $course_type_name=$_SESSION['course_type_name'];
+    $affectedCourse=$newcid." sem ".$newsem." year ".$newyear." of ".$course_type_name;
+    $affectedSimilarCourse=$oldcid." sem ".$oldsem." year ".$oldyear." of ".$old_course_type_id; 
+ 
+    $logger->courseSimilarInserted($_SESSION['email'], $affectedSimilarCourse,$affectedCourse, $active_status);
 
     $faculty_div = "";
     $i = 1;
