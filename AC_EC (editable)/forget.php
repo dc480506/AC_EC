@@ -155,7 +155,7 @@
         <div class="card card-signin ">
           <div class="card-body">
             <h3 class="card-title text-center headd" s>Forgot Password ?</h3>
-            <form class="form-signin" method="post" action="loginusername.php" style="width:100%">
+            <form class="form-signin" method="post" action="send_link.php" style="width:100%">
               <br>
               <!--<div class="row" style="width:100%">
                 <span class="input-icon" style="width:20%">
@@ -177,7 +177,7 @@
                   </div>
                 </span>
                 <div class="input-text form-label-group" style="width:80%">
-                    <input type="email" name="email" id="inputemail" class="form-control" placeholder="email address" >  
+                    <input type="email_id" name="email_id" id="inputemail" class="form-control" placeholder="email address" >  
                 <label for="inputemail">Email Id</label>
                 </div>
 
@@ -185,7 +185,7 @@
               </div>
 
               <br>
-              <button  name="forget-password" class="btn btn-lg btn-outline-primary btn-block text-uppercase raisedb" type="forget-password">Submit</button>
+              <button  name="submit_email" class="btn btn-lg btn-outline-primary btn-block text-uppercase raisedb" type="forget-password">Submit</button>
               <br>
               <hr>
               </div>
