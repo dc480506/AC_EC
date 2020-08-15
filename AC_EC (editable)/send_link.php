@@ -1,17 +1,20 @@
 <?php
 include_once 'config.php';
+require_once $google_api_path.'vendor/autoload.php';
 if(isset($_POST['submit_email']) && $_POST['email_id'])
 {
-  $select=mysql_query("select email_id , password from login_role where email_id='$email_id'");
-  if(mysql_num_rows($select)==1)
+ $query="SELECT email_id , password from login_role where email_id='$email_id'";
+ if($result= mysqli_query($conn,$query))
+ {
+     $rowcount =mysqli_query($conn,$query);
+  if($rowcount == 1)
   {
-    while($row=mysql_fetch_array($select))
+    while($row=mysqli_fetch_array($result))
     {
       $email_id=md5($row['email_id']);
       $password=md5($row['password']);
     }
-    $link="<a href='reset.php?key=".$email."&reset=".$pass."'>Click To Reset password</a>";
-    require_once('phpmail/PHPMailerAutoload.php');
+    $link="<a href='reset.php?key=".$email."&reset=".$password."'>Click To Reset password</a>";
     $mail = new PHPMailer();
     $mail->CharSet =  "utf-8";
     $mail->IsSMTP();
@@ -31,7 +34,7 @@ if(isset($_POST['submit_email']) && $_POST['email_id'])
     $mail->AddAddress('reciever_email_id', 'reciever_name');
     $mail->Subject  =  'Reset Password';
     $mail->IsHTML(true);
-    $mail->Body    = 'Click On This Link to Reset Password '.$pass.'';
+    $mail->Body    = 'Click On This Link to Reset Password '.$password.'';
     if($mail->Send())
     {
       echo "Check Your Email and Click on the link sent to your email";
@@ -41,5 +44,6 @@ if(isset($_POST['submit_email']) && $_POST['email_id'])
       echo "Mail Error - >".$mail->ErrorInfo;
     }
   }	
+}
 }
 ?>
