@@ -17,6 +17,7 @@ if (isset($_SESSION['email']) && in_array($_SESSION['role'], $allowed_roles)) {
   $year = mysqli_escape_string($conn, $data['year']);
   $dept_applicable = mysqli_escape_string($conn, $data['dept_applicable']);
   $floating_dept = mysqli_escape_string($conn, $data['dept_name']);
+  $_SESSION['active_status']="Upcoming";
   // $result = mysqli_query($conn,"select academic_year from current_sem_info WHERE currently_active=1");
   // $row=mysqli_fetch_assoc($result);
   // $year=$row['academic_year'];

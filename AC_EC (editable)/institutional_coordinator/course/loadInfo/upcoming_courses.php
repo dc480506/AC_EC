@@ -1,11 +1,16 @@
 <?php
 include_once('../../verify.php');
 include_once('../../../config.php');
+include_once("../../../Logger/CourseLogger.php");
+$logger = CourseLogger::getLogger();
 $draw = $_POST['draw'];
 $row = $_POST['start'];
 $program = $_POST['program'];
 $course_type_id = $_POST['course_type_id'];
 $rowperpage = $_POST['length']; // Rows display per page
+if ($_POST['pageView'] == "true") {
+   $logger->coursesRecordsViewed($_SESSION['email'], "Upcoming");
+  }
 if (isset($_POST['order'])) {
    $columnIndex = $_POST['order'][0]['column']; // Column index
    $columnName = $_POST['columns'][$columnIndex]['data']; // Column name

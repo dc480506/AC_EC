@@ -47,7 +47,7 @@ if (isset($_POST['userLogs'])) {
 
                             <th>Performing User</th>
                             <th>Role</th>
-                            <th>Affected User</th>
+                            <th>Affected User/Course</th>
                             <th>Page Affected</th>
                             <th>Operation Performed</th>
                             <th>Status</th>
@@ -59,7 +59,7 @@ if (isset($_POST['userLogs'])) {
                         <tr>
                             <th>Performing User</th>
                             <th>Role</th>
-                            <th>Affected User</th>
+                            <th>Affected User/Course</th>
                             <th>Page Affected</th>
                             <th>Operation Performed</th>
                             <th>Status</th>

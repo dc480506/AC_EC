@@ -1,6 +1,8 @@
 <?php 
 include('../../config.php');
 include_once('../verify.php');
+include_once("../../Logger/CourseLogger.php");
+$logger = CourseLogger::getLogger();
 ?>
 
 
@@ -16,10 +18,14 @@ include('includes/header.php');
     $sem=$_SESSION['sem'];
     $year=$_SESSION['year'];
     $active=$_SESSION['active'];
-    // echo $cid .' ';
-    // echo $sem.' ';
-    // echo $year.' ';
-    // echo $active;
+
+    // $course_type_name=$_SESSION['course_type_name'];
+    // $affectedCourse=$cid." sem ".$sem." year ".$year." of ".$course_type_name; 
+    // unset($_SESSION['course_type_name']);  
+
+    $affectedCourse=$cid." sem ".$sem." year ".$year; 
+    $logger->addiCoursesRecordsViewed($_SESSION['email'], "student enrolled in course", $affectedCourse);
+
     if($active==0 || $active==1){
         $query1 ="SELECT cname FROM course where cid='$cid' AND sem=$sem AND year='$year' AND course_type_id=$course_type_id ";
     }
