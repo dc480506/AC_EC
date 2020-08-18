@@ -90,10 +90,7 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                                    $course_type=$row['course_type_id'];
                                    $quer="select name from course_types where id='$course_type'";
                                    $res1=mysqli_query($conn,$quer);
-                                   
                                     ?>
-                                    
-
                                     <div class="col-sm-6">
                                     <div class="card w-79 shadow mb-4 text-center">
                                     <div class="card-header">
@@ -150,9 +147,6 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                                     ?>
                                     <h5 class="card-text font-weight-bold text-dark">Marks obtained: </h5>
                                         <h5 class="font-weight-bold text-danger"> --</h5>
-                                       
-                                       
-
                                         <h5 class="font-weight-bold text-dark">Attendance <i class="fas fa-user-check"></i> </h5>
                                         <h5 class="font-weight-bold text-danger"> --</h5>
                                         <br>
@@ -160,10 +154,7 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                                 }
                                     ?>
                                     </div>
-                                    
                                     </div>
-                                    
-                                    
                                     <!-- row -->
                                     </div>
                                     <br>
