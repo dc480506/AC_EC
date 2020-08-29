@@ -126,7 +126,7 @@ $logger->facultyRecordsViewed($_SESSION['email'], "faculty dashboard");
                                         <td><?php echo $row['sem']; ?></td>
 
                                         <td><?php echo $row['year']; ?></td>
-                                    </tr>
+                                    
 
 
 

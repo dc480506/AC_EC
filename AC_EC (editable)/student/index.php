@@ -18,13 +18,11 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
             <?php
             // inserting the my profile card
 
-
             $email = $_SESSION['email'];
             $fname = 'fname';
             $lname = 'lname';
             $mname = 'mname';
             $department = 'department';
-            // $mobile = '9876543201';
             $roll = 'rollno';
             $yoa = '2018';
             $program = "program";
@@ -43,19 +41,10 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                     $yoa = $row['year_of_admission'];
                     $program = $row['program'];
                     $current_sem = $row['current_sem'];
-                    $_SESSION['program'] = $row['program'];
+                    $program = $row['program'];
                 }
             }
 
-            // $result= mysqli_query($conn,$sql);
-            // $row= mysqli_fetch_array($result,MYSQLI_ASSOC);
-            // $count= mysqli_num_rows($result);
-            // echo 'hello';
-            // $_SESSION['sem']=$row['current_sem'];
-            $_SESSION['rollno'] = $row['rollno'];
-            // $_SESSION['year']=$row['year'];
-            // if($count==1)
-            // {
             ?>
             <div class="card">
                 <div class="card-body">
@@ -67,12 +56,15 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo "{$row['fname']} {$row['mname']} {$row['lname']}"; ?></p>
-                                    <p class="text-dark"> <span><b>Email : </b></span><?php echo $row['email_id']; ?></p>
+                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo $fname . " " .$mname. " " .$lname. ""; ?></p>
+                                    <p class="text-dark"> <span><b>Email : </b></span><?php echo $email; ?></p>
+                                    <p class="text-dark"> <span><b>Year of addmission : </b></span><?php echo $yoa; ?></p>
+                                    <p class="text-dark"> <span><b>Roll number : </b></span><?php echo $roll; ?></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Department : </b></span><?php echo $row['dept_name']; ?></p>
-                                    <p class="text-dark"> <span><b>Mobile No. : </b></span><?php echo $row['rollno']; ?></p>
+                                    <p class="text-dark"> <span><b>Program : </b></span><?php echo $program; ?></p>
+                                    <p class="text-dark"> <span><b>Department : </b></span><?php echo $department; ?></p>
+                                    <p class="text-dark"> <span><b>Current semester : </b></span><?php echo $current_sem; ?></p>
                                 </div>
                             </div>
                         </div>
