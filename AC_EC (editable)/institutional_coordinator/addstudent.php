@@ -648,7 +648,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                             <div class="row align-items-center">
                                 <div class="col text-right" id="delete_selected_Pg_div">
                                     <button type="button" class="btn btn-danger" id="delete_selected_Pg_btn" name="delete_selected_Pg">
-                                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Student(s)
                                     </button>
                                 </div>
                             </div>
@@ -786,7 +786,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                             <div class="row align-items-center">
                                 <div class="col text-right" id="delete_selected_Phd_div">
                                     <button type="button" class="btn btn-danger" id="delete_selected_Phd_btn" name="delete_selected_Phd">
-                                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Course(s)
+                                        <i class="fas fa-trash-alt">&nbsp;</i> &nbsp;Selected Students(s)
                                     </button>
                                 </div>
                             </div>
@@ -878,7 +878,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                             url: "ic_queries/addstudent_queries.php",
                             data: form_serialize,
                             success: function(data) {
-                                alert(data); // show response from the php script.
+                                alert("Are you sure want to delete this student's record?"); // show response from the php script.
                                 $("#delete_student_btn").text("Deleted Successfully");
                                 var row = $("#update-del-modal").closest('tr');
                                 var aPos = $(`#dataTable-student${program}`).dataTable().fnGetPosition(row.get(0));
