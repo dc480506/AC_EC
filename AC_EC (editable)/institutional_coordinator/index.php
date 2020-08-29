@@ -34,6 +34,7 @@ include('../includes/header.php');
                                         $user = mysqli_fetch_assoc($user_res);
                                     }
                                     ?>
+                                     
                                     <p class="text-dark"> <span><b>Name : </b></span><?php echo "{$user['fname']} {$user['lname']}" ?></p>
                                     <p class="text-dark"> <span><b>Email : </b></span><?php echo "{$user['email_id']}" ?></p>
                                     <p class="text-dark"> <span><b>Department : </b></span><?php echo "{$user['dept_name']}" ?> </p>
