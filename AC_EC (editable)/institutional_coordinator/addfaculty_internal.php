@@ -58,6 +58,16 @@ include('../includes/header.php');
                                     </label>
                                     <label for=""><small><b>Note:</b> The following fields should be column names in excel sheet</small>
                                     </label>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="rno"><b>Upload Constraint</b></label>
+                                            <select class="form-control" id="upload_constraint" name="upload_constraint" required>
+                                                <option value="0">Only insert new Records</option>
+                                                <option value="1">Insert and update Existing</option>
+                                                <option value="2">Only Update existing records</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="form-row mt-4">
                                         <div class="form-group col-md-6">
                                             <label for="fcode"><b>Faculty Code</b></label>
@@ -448,9 +458,9 @@ include('../includes/header.php');
             type: 'POST',
             data: formData,
             success: function(data) {
-
+                console.log(data);
                 let [status, response] = $.trim(data).split("+");
-                console.log(status)
+
                 if (status == "Successful") {
                     const resData = JSON.parse(response);
                     console.log(resData)

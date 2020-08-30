@@ -411,12 +411,14 @@ include('../includes/header.php');
             name: "edit_course_type",
             value: "true"
         });
-        var is_gradable = $("#edit_course_type_form #edit_is_gradable").attr("checked") ? 1 : 0;
+        var is_gradable = $("#edit_course_type_form #edit_is_gradable").prop("checked") ? 1 : 0;
+
         form.push({
             name: "is_gradable",
             value: is_gradable
         });
-        var is_closed_elective = $("#edit_course_type_form #edit_is_closed_elective").prop("checked") == "checked" ? 1 : 0;
+        var is_closed_elective = $("#edit_course_type_form #edit_is_closed_elective").prop("checked") ? 1 : 0;
+        console.log(is_closed_elective);
         form.push({
             name: "is_closed_elective",
             value: is_closed_elective

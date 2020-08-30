@@ -921,7 +921,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                 url: "ic_queries/addstudent_queries.php",
                 data: form_serialize,
                 success: function(data) {
-
+                    console.log(data);
                     if (data === "Exists_email_id") {
                         $('#error_email_id').text('*This data already exists');
                         $("#update_student_btn").text("Update");
@@ -932,10 +932,11 @@ $dept_result2 = mysqli_query($conn, $sql);
                         $("#update_student_btn").attr("disabled", false);
                     } else {
                         $("#update_student_btn").text("Updated Successfully");
+                        console.log(program + " 77");
                         var row = $("#update-del-modal").closest('tr');
                         var aPos = $(`#dataTable-student${program}`).dataTable().fnGetPosition(row.get(0));
                         var temp = $(`#dataTable-student${program}`).DataTable().row(aPos).data();
-
+                        console.log(temp);
                         temp['fname'] = form_serialize[0].value; //new values
                         temp['mname'] = form_serialize[1].value; //new values
                         temp['lname'] = form_serialize[2].value; //new values
@@ -944,7 +945,8 @@ $dept_result2 = mysqli_query($conn, $sql);
                         temp['year_of_admission'] = form_serialize[7].value;
                         temp['dept_name'] = id_to_name_convertor_dept(form_serialize[9].value);
                         temp['current_sem'] = form_serialize[10].value;
-                        $(`#dataTable-student${program}`).dataTable().fnUpdate(temp, aPos, undefined, false);
+                        console.log(temp, aPos);
+                        console.log($(`#dataTable-student${program}`).dataTable().fnUpdate(temp, aPos, undefined, false, false));
                         $('.action-btn').off('click')
                         $('.action-btn').on('click', function() {
                             var target_row = $(this).closest("tr");
@@ -1207,7 +1209,7 @@ $dept_result2 = mysqli_query($conn, $sql);
                 success: function(data) {
                     $("#updatebtnUg").text("Updated Successfully");
                     loadData("UG");
-                    $("#dataTable-studentUg").DataTable().draw(false);
+                    $("#dataTable-studentUG").DataTable().draw(false);
                 }
             })
         });
@@ -1299,7 +1301,7 @@ $dept_result2 = mysqli_query($conn, $sql);
         $("body").on("click", ".bulkUpdatePG", function() {
             var update_rows = $("#dataTable-studentPG").DataTable().rows('.selected').data();
             if (update_rows.length > 0) {
-                $("#updatebtnUg").text("Update");
+                $("#updatebtnPg").text("Update");
                 $("#bulkUpdateModalPg").modal('show');
             } else {
                 alert("select some rows");
@@ -1309,7 +1311,7 @@ $dept_result2 = mysqli_query($conn, $sql);
         $("body").on("click", ".bulkUpdatePHD", function() {
             var update_rows = $("#dataTable-studentPHD").DataTable().rows('.selected').data();
             if (update_rows.length > 0) {
-                $("#updatebtnUg").text("Update");
+                $("#updatebtnPhd").text("Update");
                 $("#bulkUpdateModalPhd").modal('show');
             } else {
                 alert("select some rows");
