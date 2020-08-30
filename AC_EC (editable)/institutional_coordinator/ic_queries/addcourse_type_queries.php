@@ -2,6 +2,9 @@
 session_start();
 if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION['role'] == 'faculty_co')) {
     include_once("../../config.php");
+    include_once("../../Logger/CourseTypeLogger.php");
+    $logger = CourseTypeLogger::getLogger();
+   
     //For Course deletion
     if (isset($_POST['add_new_course_type'])) {
         $course_type_name = mysqli_escape_string($conn, $_POST['courseTypeName']);
@@ -13,6 +16,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION[
 
         if (mysqli_query($conn, $sql)) {
             $last_id = mysqli_insert_id($conn);
+            $logger->courseTypeInserted($_SESSION['email'], $course_type_name);
             // echo "New record created successfully. Last inserted ID is: " . $last_id;
         } else {
             die(mysqli_error($conn));
@@ -34,7 +38,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION[
         $orderQuery = " ORDER BY program desc";
         $searchValue = $_POST['search']['value']; // Search value
 
-
+        $logger->coursesTypeRecordsViewed($_SESSION['email']);
         ## Search 
         $searchQuery = "1";
         if ($searchValue != '') {
@@ -111,8 +115,13 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION[
         echo json_encode($response);
     } elseif (isset($_POST["delete_course_type"])) {
         $course_type_id = mysqli_escape_string($conn, $_POST['course_type_id']);
+        $query="SELECT name from course_types where id='$course_type_id'";
+        $result=mysqli_query($conn,$query);
+        $row=mysqli_fetch_assoc($result);
+        $name=$row['name'];
         $sql = "DELETE from course_types where id = '$course_type_id'";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $logger->courseTypeDeleted($_SESSION['email'], $name);
         echo "deleted";
     } else if (isset($_POST["edit_course_type"])) {
         $course_type_id = mysqli_escape_string($conn, $_POST['courseTypeId']);
@@ -124,6 +133,7 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == "inst_coor" || $_SESSION[
         $sql = "UPDATE course_types set name='$course_type_name',is_gradable='$is_gradable',is_closed_elective='$is_closed_elective' where id = '$course_type_id'";
         // echo $sql;
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $logger->courseTypeModified($_SESSION['email'],$course_type_name);
 
         //Department applicable updation start
         $query = "SELECT dept_id from course_type_applicable_dept where course_type_id = '$course_type_id'";
