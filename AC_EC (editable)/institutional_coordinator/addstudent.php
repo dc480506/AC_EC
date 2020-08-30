@@ -1406,7 +1406,7 @@ $dept_result2 = mysqli_query($conn, $sql);
 
                     } else {
                         $("#upload_student").text("Upload Failed")
-                        alert(response);
+                        alert(data);
                     }
                     // form.reset();
                 },
