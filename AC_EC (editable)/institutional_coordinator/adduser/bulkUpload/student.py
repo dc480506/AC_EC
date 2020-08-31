@@ -165,8 +165,9 @@ try:
             elif "foreign key constraint fails" in str(e):
                 print("Department id: "+str(int(dept)) +
                       " does not exist/(if present, wrong value) in the table.")
-            print(e)
-            sys.exit(0)
+            else:
+                print(str(e)+"abcd")
+                sys.exit(0)
 except Exception as e:
     print(str(e))
     sys.exit(0)

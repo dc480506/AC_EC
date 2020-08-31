@@ -14,7 +14,6 @@ mapper = {
     "email_col": 8,
     "department_col": 9,
     "post_col": 10,
-    "role": 11,
     "host": 12,
     "username_db": 14,
     "password_db": 16,
@@ -26,7 +25,7 @@ mapper = {
 }
 header = []
 header_id = {}
-end_col = 8
+end_col = 9
 startcol_index = 3
 passw = ""
 file = xlrd.open_workbook(sys.argv[mapper['file_location']])
@@ -126,7 +125,7 @@ try:
             x, header_id[sys.argv[mapper['post_col']].lower()]).value
         # print("A")
         # print(header_id[sys.argv[mapper['role']]])
-        role = data.cell(x, header_id[sys.argv[mapper['role']].lower()]).value
+        role = 'faculty'
         # print(role)
         values = (email, fcode, eid, fname, mname, lname,
                   dept_id, post, added, timestamp, role)
@@ -193,8 +192,9 @@ try:
             elif "foreign key constraint fails" in str(e):
                 print("Department id: "+str(int(dept_id)) +
                       "does not exist/(if present, wrong value) in the table.")
-            print("The upload was unsuccessful.")
-            sys.exit(0)
+            else:
+                print("The upload was unsuccessful.")
+                sys.exit(0)
 except Exception as e:
     print(str(e))
     sys.exit(0)
