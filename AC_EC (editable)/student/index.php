@@ -17,12 +17,12 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
         <div class="col-md-12 grid-margin stretch-card mt-2">
             <?php
             // inserting the my profile card
-
             $email = $_SESSION['email'];
             $fname = 'fname';
             $lname = 'lname';
             $mname = 'mname';
             $department = 'department';
+            // $mobile = '9876543201';
             $roll = 'rollno';
             $yoa = '2018';
             $program = "program";
@@ -41,10 +41,9 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                     $yoa = $row['year_of_admission'];
                     $program = $row['program'];
                     $current_sem = $row['current_sem'];
-                    $program = $row['program'];
+                    $_SESSION['program'] = $row['program'];
                 }
             }
-
             ?>
             <div class="card">
                 <div class="card-body">
@@ -56,15 +55,12 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo $fname . " " .$mname. " " .$lname. ""; ?></p>
-                                    <p class="text-dark"> <span><b>Email : </b></span><?php echo $email; ?></p>
-                                    <p class="text-dark"> <span><b>Year of addmission : </b></span><?php echo $yoa; ?></p>
-                                    <p class="text-dark"> <span><b>Roll number : </b></span><?php echo $roll; ?></p>
+                                    <p class="text-dark"> <span><b>Name : </b></span><?php echo "{$fname} {$mname} {$lname}"; ?></p>
+                                    <p class="text-dark"> <span><b>Email : </b></span><?php echo "{$email}"; ?></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="text-dark"> <span><b>Program : </b></span><?php echo $program; ?></p>
-                                    <p class="text-dark"> <span><b>Department : </b></span><?php echo $department; ?></p>
-                                    <p class="text-dark"> <span><b>Current semester : </b></span><?php echo $current_sem; ?></p>
+                                    <p class="text-dark"> <span><b>Department : </b></span><?php echo "{$department}"; ?></p>
+                                    <p class="text-dark"> <span><b>Mobile No. : </b></span><?php echo  "{$roll}"; ?></p>
                                 </div>
                             </div>
                         </div>
@@ -94,10 +90,7 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                                    $course_type=$row['course_type_id'];
                                    $quer="select name from course_types where id='$course_type'";
                                    $res1=mysqli_query($conn,$quer);
-                                   
                                     ?>
-                                    
-
                                     <div class="col-sm-6">
                                     <div class="card w-79 shadow mb-4 text-center">
                                     <div class="card-header">
@@ -154,9 +147,6 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                                     ?>
                                     <h5 class="card-text font-weight-bold text-dark">Marks obtained: </h5>
                                         <h5 class="font-weight-bold text-danger"> --</h5>
-                                       
-                                       
-
                                         <h5 class="font-weight-bold text-dark">Attendance <i class="fas fa-user-check"></i> </h5>
                                         <h5 class="font-weight-bold text-danger"> --</h5>
                                         <br>
@@ -164,10 +154,7 @@ $logger->studentsRecordsViewed($_SESSION['email'], "student dashboard");
                                 }
                                     ?>
                                     </div>
-                                    
                                     </div>
-                                    
-                                    
                                     <!-- row -->
                                     </div>
                                     <br>
