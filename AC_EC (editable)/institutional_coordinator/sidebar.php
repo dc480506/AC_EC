@@ -80,7 +80,7 @@
     </div>
   </li>
 
-  <hr class="sidebar-divider">
+  <!-- <hr class="sidebar-divider">
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages10" aria-expanded="true" aria-controls="collapseUtilities">
       <i class="fas fa-user-graduate"></i>
@@ -95,7 +95,7 @@
 
       </div>
     </div>
-  </li>
+  </li> -->
 
 
   <hr class="sidebar-divider">
@@ -119,7 +119,7 @@
   <!-- Nav Item - Pages Collapse Menu -->
   <li class="nav-item">
     <a class="nav-link" href="activitylog.php">
-    <i class="fas fa-user-clock" style="font-size:15px"></i>
+      <i class="fas fa-user-clock" style="font-size:15px"></i>
 
       <span>Activity Log</span></a>
   </li>
@@ -137,16 +137,16 @@
 <!-- Content Wrapper -->
 
 <script>
-// // When we click on the LI
-// $("li").click(function(){
-//   // If this isn't already active
-//   if (!$(this).hasClass("active")) {
-//     // Remove the class from anything that is active
-//     $("li.active").removeClass("active");
-//     // And make this active
-//     $(this).addClass("active");
-//   }
-// });
+  // // When we click on the LI
+  // $("li").click(function(){
+  //   // If this isn't already active
+  //   if (!$(this).hasClass("active")) {
+  //     // Remove the class from anything that is active
+  //     $("li.active").removeClass("active");
+  //     // And make this active
+  //     $(this).addClass("active");
+  //   }
+  // });
 </script>
 
 <div id="content-wrapper" class="d-flex flex-column">

@@ -158,14 +158,14 @@ try:
         if (uploader_role in ['HOD', 'faculty_co']):
             if (int(uploader_dept_id) in floating_dept):
                 exec_queries(
-                    [audit_table_query, audit_floating_table_query, audit_applicable_table_query], cid, cname, floating_dept, applicable_dept)
+                    [audit_table_query, audit_floating_table_query, audit_applicable_table_query], cid, cname, floating_dept, applicable_dept, course_type_applicable_depts)
 
             else:
                 errors['invalidFloatingDept'].append(
                     {"cid": cid, 'cname': cname})
         elif uploader_role == 'inst_coor':
             exec_queries(
-                [audit_table_query, audit_floating_table_query, audit_applicable_table_query], cid, cname, floating_dept, applicable_dept)
+                [audit_table_query, audit_floating_table_query, audit_applicable_table_query], cid, cname, floating_dept, applicable_dept, course_type_applicable_depts)
 
 
 except Exception as e:

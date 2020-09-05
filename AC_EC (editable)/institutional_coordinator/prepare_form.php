@@ -404,6 +404,7 @@ $logger->formRecordsViewed($_SESSION['email']);
                 $("#create_form_btn").attr("disabled", true)
             },
             success: function(data) {
+                console.log(data);
                 console.log($.trim(data));
                 if ($.trim(data) == "done") {
                     console.log("success!");

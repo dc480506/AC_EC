@@ -685,6 +685,7 @@ include('../includes/header.php');
             type: 'POST',
             data: formData,
             success: function(data) {
+                console.log(data);
                 let [status, response] = $.trim(data).split("+");
 
                 if (status == "Successful") {

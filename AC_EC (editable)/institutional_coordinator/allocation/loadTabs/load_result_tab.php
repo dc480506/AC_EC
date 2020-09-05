@@ -638,6 +638,33 @@ $output = shell_exec($cmd . " 2>&1");
     // })
     $("#complete_allocation").submit(function(e) {
         e.preventDefault();
+        $("#nav-final-allocate-tab").removeClass("active")
+        $("#nav-final-allocate-tab").addClass("disabled")
+        // $("body").css("opacity",'0.5')
+        data_serialize = "prev_result_tab=1"
+        $.ajax({
+            // url:'../allocation/loadPreviousTabs/load_allocation_analysis_tab_previous.php',
+            url: 'complete_allocation.php',
+            data: data_serialize,
+            method: "POST",
+            success: function(html) {
+                $("#spinner-complete").hide()
+                $("#nav-final-allocate-tab").removeClass("disabled")
+                $("#nav-tabContent").html(html)
+                $("#nav-final-allocate-tab").addClass("active")
+            },
+            beforeSend: function() {
+                //Loader daalna hai baadme
+                $("#complete_allocation").css("opacity", 0.3)
+                $('#spinner-complete').show();
+                $('#complete_btn').attr('disabled', true);
+                $('#prev_btn').attr('disabled', true);
+            },
+        })
+        // $("#complete_allocation").css("opacity", 0.3)
+        // $('#spinner_prev').show();
+        // $('#complete_btn').attr('disabled', true);
+        // $('#prev_btn').attr('disabled', true);
     })
     // Previous Button Action
     $("#prev_btn").on("click", function() {

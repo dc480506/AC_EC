@@ -12,7 +12,7 @@ include('../includes/header.php');
 $course_type_id = mysqli_escape_string($conn, $_REQUEST['course_type_id']);
 $sql = "select name from course_types where id='$course_type_id'";
 $course_type_name = mysqli_fetch_assoc(mysqli_query($conn, $sql))['name'];
-$_SESSION['course_type_name']=$course_type_name;
+$_SESSION['course_type_name'] = $course_type_name;
 $is_closed_elective = $_REQUEST['is_closed_elective'];
 $program = $_REQUEST['program'];
 ?>
@@ -512,6 +512,13 @@ $program = $_REQUEST['program'];
                                                         <?php
                                                         include_once('../config.php');
                                                         $c = 8;
+                                                        $include_dept_type_arr = array();
+                                                        $sql4 = "SELECT dept_id FROM course_type_applicable_dept where course_type_id=$course_type_id";
+                                                        // echo $sql;
+                                                        $result4 = mysqli_query($conn, $sql4);
+                                                        while ($row = mysqli_fetch_assoc($result4)) {
+                                                            array_push($include_dept_type_arr, $row['dept_id']);
+                                                        }
                                                         if ($_SESSION['role'] == "inst_coor") {
                                                             $sql = "SELECT * FROM department";
                                                             $result = mysqli_query($conn, $sql);
@@ -521,13 +528,6 @@ $program = $_REQUEST['program'];
                                                                 <option ></option>';
                                                             }
 
-                                                            $include_dept_type_arr = array();
-                                                            $sql4 = "SELECT dept_id FROM course_type_applicable_dept where course_type_id=$course_type_id";
-                                                            // echo $sql;
-                                                            $result4 = mysqli_query($conn, $sql4);
-                                                            while ($row = mysqli_fetch_assoc($result4)) {
-                                                                array_push($include_dept_type_arr, $row['dept_id']);
-                                                            }
 
                                                             while ($row = mysqli_fetch_assoc($result)) {
                                                                 if (in_array($row["dept_id"], $include_dept_type_arr)) {
@@ -1453,7 +1453,7 @@ $program = $_REQUEST['program'];
         $(`#dataTable-${activeTab}`).DataTable().ajax.reload(false);
     });
 
-    function loadCurrent(loadPage=false) {
+    function loadCurrent(loadPage = false) {
         // document.querySelector("#addCoursebtn").style.display="none"
         $('#dataTable-current').DataTable({
             processing: true,
@@ -2164,7 +2164,7 @@ $program = $_REQUEST['program'];
         })
     })
 
-    function loadUpcoming(loadPage=false) {
+    function loadUpcoming(loadPage = false) {
         // document.querySelector("#addCoursebtn").style.display="block"
         $('#dataTable-upcoming').DataTable({
             processing: true,
@@ -2837,7 +2837,7 @@ $program = $_REQUEST['program'];
         })
     })
 
-    function loadPrevious(loadPage=false) {
+    function loadPrevious(loadPage = false) {
         // document.querySelector("#addCoursebtn").style.display="none"
         $('#dataTable-previous').DataTable({
             processing: true,

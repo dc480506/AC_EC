@@ -80,16 +80,17 @@ if (isset($_SESSION['email']) && ($_SESSION['role'] == 'inst_coor' || $_SESSION[
                 // mysqli_autocommit($conn,TRUE);
                 exit();
             }
-            mysqli_close($conn);
             // mysqli_autocommit($conn,TRUE);
-            echo "done";
-            $sql = "SELECT name from course_types where course_type_id in (" . implode(",", $insert_course_types) . ")";
+            $sql = "SELECT name from course_types where id in " . implode("','", $insert_course_types);
+            // die($sql);
             $result = mysqli_query($conn, $sql);
             $course_types = array();
             while ($row = mysqli_fetch_assoc($result)) {
                 array_push($course_types, $row['name']);
             }
             $logger->formCreated($_SESSION['email'], implode(",", $course_types));
+            echo "done";
+            mysqli_close($conn);
         } else {
             die("present");
         }
