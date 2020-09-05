@@ -12,7 +12,7 @@
     header("location: institutional_coordinator/index.php");
   }
  ?>
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -85,7 +85,6 @@
           opacity: 1;
       }
   }
-
   @-webkit-keyframes fadeout {
       from {
           top: 30px;
@@ -212,7 +211,6 @@ function validate_password_reset() {
 	<?php echo $error_message; ?>
     <?php
      }
-  <?php
 
   include_once('config.php');
   if(isset($_POST["reset-password"])) {
@@ -291,8 +289,5 @@ function validate_password_reset() {
     <!-- Page level custom scripts -->
     <script src="vendor/js/demo/chart-area-demo.js"></script>
     <script src="vendor/js/demo/chart-pie-demo.js"></script>  
-
-
 </body>
-
 </html>
